@@ -2,35 +2,43 @@
 
 Autonomous build log. Branch `feat/mvp-client`. Spec: `docs/superpowers/specs/2026-06-17-translate-the-damn-design.md`.
 
-## Phases
+## Status: MVP complete ✅
 
-- [x] P0 — Environment + scaffold (.NET 9 solution: Core / App(WPF+WinForms) / Tests; offline build verified; no-NuGet constraint)
-- [x] P0 — Design spec + this tracker committed
-- [x] P1 — Core models, ConfigService (config.json bootstrap), PathResolver, PromptBuilder, AnsiStripper (+ tests)
-- [x] P2 — Backends: ProcessTranslator (claude/codex/copilot/agy) + HttpTranslator (google-v2/doubao) + registry (+ tests)
-- [x] P3 — TranslationPipeline (filter/dedupe/supersede) + ProcessRunner (timeout/kill-tree) (+ tests)  ·  **74 tests green**
-- [x] P4 — App shell: tray icon + global switch (persisted) + AppController composition root
-- [x] P5 — ClipboardListener (AddClipboardFormatListener + self-write guard) + HotkeyService (RegisterHotKey + conflict) + hidden message window
-- [x] P6 — PopupWindow (WS_EX_NOACTIVATE no-focus-steal, acrylic blur, original+translation, copy, hover-keep, auto-dismiss, top-centre)
-- [x] P7 — SettingsWindow (dark/Mica, backend→model combobox from catalog, per-backend fields, auth hint, live hotkey check) → writes config.json + hot-reload
-- [x] P8a — Full solution builds clean; app launches without crash; first-run config.json bootstrap verified (clean, Chinese unescaped)
-- [ ] P8 — README + final polish + final commit
+All phases done. Solution builds clean (Debug + Release). 83 offline tests green. claude + codex
+verified live (real translations). Google/Doubao request+parse unit-verified (need a key to run).
 
-## Test coverage so far (dependency-free harness, `dotnet run` in tests/)
+- [x] P0 — Environment + scaffold (.NET 9: Core / App(WPF+WinForms) / Tests; offline + no-NuGet)
+- [x] P1 — Core models, ConfigService (bootstrap), PathResolver, PromptBuilder, AnsiStripper (+ tests)
+- [x] P2 — 6 backends: ProcessTranslator (claude/codex/copilot/agy) + HttpTranslator (google-v2/doubao) (+ tests)
+- [x] P3 — TranslationPipeline (filter/dedupe/supersede) + ProcessRunner (timeout/kill-tree) (+ tests)
+- [x] P4 — Tray icon + global switch (persisted) + AppController composition root
+- [x] P5 — ClipboardListener (self-write guard) + HotkeyService (RegisterHotKey + conflict) + message window
+- [x] P6 — PopupWindow (no-focus-steal, acrylic, source+translation, copy, hover-keep, auto-dismiss)
+- [x] P7 — SettingsWindow (backend→model catalog, per-backend fields, live hotkey check) → config.json + hot-reload
+- [x] P8 — Live end-to-end fixes (stdin prompt, neutral sandbox CWD), README, Release build, final commit
 
-ConfigService bootstrap/round-trip/corrupt-recovery/Chinese-unescaped · PathResolver PATH/known-paths/.cmd-wrap/qualified ·
-PromptBuilder · AnsiStripper · every CLI adapter argv (claude/codex/copilot/agy) · google-v2 & doubao request bodies +
-response parsing (incl. doubao reasoning-item-before-message) · HTTP credential gating · registry · pipeline filter/dedupe/route.
+## Verified
 
-## Notes / decisions baked in
+- Build: `dotnet build TranslateTheDamn.sln` (Debug + Release) clean.
+- Tests: `dotnet run --project tests\TranslateTheDamn.Tests` → 83 passed.
+- App: launches to tray, bootstraps `%USERPROFILE%\.translatethedamn\config.json` (clean, Chinese unescaped).
+- Live: `--live claude` and `--live codex` both return correct translations end-to-end.
 
-- Windows 11 only, .NET 9, C#. WPF + WinForms tray. Zero external NuGet (nuget.org blocked) → framework-only + custom test harness.
-- 6 backends. CLI ones tamed into clean text→text (light model, no approvals, empty stdin, strip ANSI).
-- config.json at `%USERPROFILE%\.translatethedamn\config.json`; first-run hardcoded bootstrap; UI reads/writes it.
-- Dual trigger: clipboard watcher (toggleable) + global hotkey (translates current clipboard).
+## Backend status (see README for detail)
 
-## For the user (usage phase, not blockers)
+claude ✅live · codex ✅live · google-v2 ✅unit (needs key) · doubao ⚠️unit (confirm with real ARK key)
+· copilot ⚠️best-effort (GitHub token; Win #1181) · agy ⚠️best-effort (Win #27466; gemini fallback)
 
-- Fill google/doubao API keys in settings.
-- Live smoke-test copilot/agy on this machine (both have Windows `-p` no-output bug reports; agy has gemini fallback + log diagnosis).
-- Confirm doubao request shape with a real ARK key (official docs were JS-rendered; medium confidence).
+## For the user (usage phase)
+
+- Open Settings → fill google/doubao API keys to use the fast HTTP backends.
+- Live-test copilot/agy (need auth; both have known Windows `-p` quirks — agy falls back to gemini).
+- Confirm the doubao request shape with a real ARK key (official docs were JS-rendered → medium confidence).
+- Default backend is `claude`; switch in Settings. Default hotkey Ctrl+Alt+T.
+
+## Notable engineering decisions
+
+- Zero external NuGet (sandbox blocks nuget.org) → framework-only + a dependency-free test harness.
+- CLI prompts go via stdin (cmd.exe mangles multi-line/Chinese args); CLIs spawn from an empty
+  sandbox dir so they don't load the current project's CLAUDE.md/MCP/hooks.
+- One adapter contract (ported from hopper-plugin's VendorAdapter) over two families: ProcessTranslator / HttpTranslator.
