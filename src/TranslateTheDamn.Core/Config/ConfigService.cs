@@ -17,7 +17,7 @@ public sealed class ConfigService
         DictionaryKeyPolicy = null,                 // backend ids / model-catalog keys verbatim
         PropertyNameCaseInsensitive = true,
         WriteIndented = true,
-        DefaultIgnoreCondition = JsonIgnoreCondition.Never,
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping  // keep Chinese readable in the file
     };
 

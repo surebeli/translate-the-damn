@@ -203,4 +203,20 @@ Check.Section("TranslationPipeline");
     Check.True(await pipe.RunAsync("   ", TriggerSource.Hotkey) is null, "filtered trigger returns null");
 }
 
+// ---------------------------------------------------------------- HotkeyParser
+Check.Section("HotkeyParser");
+{
+    var h = HotkeyParser.Parse("Ctrl+Alt+T");
+    Check.True(h.IsValid, "Ctrl+Alt+T valid");
+    Check.True((h.Modifiers & HotkeyParser.MOD_CONTROL) != 0, "has Control");
+    Check.True((h.Modifiers & HotkeyParser.MOD_ALT) != 0, "has Alt");
+    Check.Eq((uint)'T', h.VirtualKey, "vk = T (0x54)");
+    Check.Eq("Ctrl+Alt+T", h.Display, "display normalised");
+
+    Check.Eq((uint)0x71, HotkeyParser.Parse("Ctrl+F2").VirtualKey, "F2 -> 0x71");
+    Check.True(!HotkeyParser.Parse("T").IsValid, "bare key without modifier invalid");
+    Check.True(!HotkeyParser.Parse("").IsValid, "empty invalid");
+    Check.True(!HotkeyParser.Parse("Ctrl+Foo").IsValid, "unknown key invalid");
+}
+
 return Check.Report();

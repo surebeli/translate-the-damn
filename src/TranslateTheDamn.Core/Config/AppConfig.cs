@@ -74,6 +74,7 @@ public sealed class BackendConfig
     [JsonExtensionData]
     public Dictionary<string, JsonElement>? Extra { get; set; }
 
+    [JsonIgnore]
     public BackendKind Kind => string.Equals(Type, "http", StringComparison.OrdinalIgnoreCase)
         ? BackendKind.Http
         : BackendKind.Cli;

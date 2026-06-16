@@ -9,11 +9,12 @@ Autonomous build log. Branch `feat/mvp-client`. Spec: `docs/superpowers/specs/20
 - [x] P1 — Core models, ConfigService (config.json bootstrap), PathResolver, PromptBuilder, AnsiStripper (+ tests)
 - [x] P2 — Backends: ProcessTranslator (claude/codex/copilot/agy) + HttpTranslator (google-v2/doubao) + registry (+ tests)
 - [x] P3 — TranslationPipeline (filter/dedupe/supersede) + ProcessRunner (timeout/kill-tree) (+ tests)  ·  **74 tests green**
-- [ ] P4 — App shell: tray icon + global switch (persisted)
-- [ ] P5 — ClipboardListener (AddClipboardFormatListener) + HotkeyService (RegisterHotKey + conflict)
-- [ ] P6 — PopupWindow (no-focus-steal, acrylic, original+translation, copy, hover-keep, auto-dismiss)
-- [ ] P7 — SettingsWindow (Mica, backend/model combobox, auth lamp, fields) → writes config.json + hot-reload
-- [ ] P8 — Full build green, tests green, README, final commit
+- [x] P4 — App shell: tray icon + global switch (persisted) + AppController composition root
+- [x] P5 — ClipboardListener (AddClipboardFormatListener + self-write guard) + HotkeyService (RegisterHotKey + conflict) + hidden message window
+- [x] P6 — PopupWindow (WS_EX_NOACTIVATE no-focus-steal, acrylic blur, original+translation, copy, hover-keep, auto-dismiss, top-centre)
+- [x] P7 — SettingsWindow (dark/Mica, backend→model combobox from catalog, per-backend fields, auth hint, live hotkey check) → writes config.json + hot-reload
+- [x] P8a — Full solution builds clean; app launches without crash; first-run config.json bootstrap verified (clean, Chinese unescaped)
+- [ ] P8 — README + final polish + final commit
 
 ## Test coverage so far (dependency-free harness, `dotnet run` in tests/)
 
