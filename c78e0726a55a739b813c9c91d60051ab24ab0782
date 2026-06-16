@@ -1,0 +1,45 @@
+.gitignore
+  0000019ed1c740b7 1-26
+PROGRESS.md
+  0000019ed1c740b7 1-29
+TranslateTheDamn.sln
+  0000019ed1c740b7 1-39
+docs/superpowers/specs/2026-06-17-translate-the-damn-design.md
+  0000019ed1c740b7 1-224
+src/TranslateTheDamn.App/App.xaml
+  0000019ed1c740b7 1-7
+src/TranslateTheDamn.App/App.xaml.cs
+  0000019ed1c740b7 1-18
+src/TranslateTheDamn.App/AssemblyInfo.cs
+  0000019ed1c740b7 1-10
+src/TranslateTheDamn.App/TranslateTheDamn.App.csproj
+  0000019ed1c740b7 1-22
+src/TranslateTheDamn.App/app.manifest
+  0000019ed1c740b7 1-28
+src/TranslateTheDamn.Core/TranslateTheDamn.Core.csproj
+  0000019ed1c740b7 1-9
+tests/TranslateTheDamn.Tests/Program.cs
+  0000019ed1c740b7 1-2
+tests/TranslateTheDamn.Tests/TranslateTheDamn.Tests.csproj
+  0000019ed1c740b7 1-14
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "c78e0726a55a739b813c9c91d60051ab24ab0782",
+  "prompts": {
+    "0000019ed1c740b7": {
+      "agent_id": {
+        "tool": "claude",
+        "model": "claude-opus-4-8",
+        "id": "ai-thread-claude-claude-opus-4-8-1781635956919"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 428,
+      "total_deletions": 0,
+      "accepted_lines": 428,
+      "overriden_lines": 0
+    }
+  }
+}
