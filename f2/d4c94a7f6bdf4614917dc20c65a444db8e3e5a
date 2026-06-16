@@ -1,0 +1,21 @@
+PROGRESS.md
+  s_d25ce361606c9b::t_b6dd83b9fd0882 5-44
+README.md
+  s_d25ce361606c9b::t_9e97f76a5afa2e 1-84
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "f2d4c94a7f6bdf4614917dc20c65a444db8e3e5a",
+  "prompts": {},
+  "sessions": {
+    "s_d25ce361606c9b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0a05337f-368d-4719-8efb-6d38379e816e",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
