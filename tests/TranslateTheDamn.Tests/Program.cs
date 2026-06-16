@@ -6,6 +6,28 @@ using TranslateTheDamn.Core.Config;
 using TranslateTheDamn.Core.Util;
 using TranslateTheDamn.Tests;
 
+// Opt-in live end-to-end check against a real, installed, authenticated CLI (not part of the
+// default offline suite). Usage: dotnet run -- --live [backendId]
+if (args.Contains("--live"))
+{
+    var backendId = args.FirstOrDefault(a => !a.StartsWith("--")) ?? "claude";
+    Console.WriteLine($"# LIVE end-to-end via real backend: {backendId}");
+    var liveCfg = DefaultConfig.Create();
+    var reg = TranslatorRegistry.Build(liveCfg);
+    var translator = reg.Get(backendId);
+    if (translator is null) { Console.WriteLine("unknown backend"); return 2; }
+
+    var sample = "Hello, world. The TranslationPipeline supersedes any in-flight request.";
+    Console.WriteLine($"source = {sample}");
+    var sw = System.Diagnostics.Stopwatch.StartNew();
+    var live = await translator.TranslateAsync(new TranslationRequest(sample), CancellationToken.None);
+    sw.Stop();
+    Console.WriteLine($"status = {live.Status}   ({sw.ElapsedMilliseconds} ms)");
+    Console.WriteLine($"text   = {live.Text}");
+    if (!string.IsNullOrEmpty(live.Error)) Console.WriteLine($"error  = {live.Error}");
+    return live.Ok ? 0 : 2;
+}
+
 // ---------------------------------------------------------------- ConfigService
 Check.Section("ConfigService");
 {
@@ -101,10 +123,10 @@ Check.Section("CLI BuildInvocation");
     var claude = new ClaudeTranslator(new BackendConfig { Type = "cli", Command = "claude" }, tmpl);
     var ci = claude.BuildInvocation("PROMPT", null);
     Check.SeqContains(ci.Args, "-p", "claude has -p");
-    Check.SeqContains(ci.Args, "PROMPT", "claude passes prompt arg");
     Check.SeqContains(ci.Args, "haiku", "claude default model haiku");
     Check.SeqContains(ci.Args, "text", "claude output-format text");
-    Check.Eq(StdinMode.Empty, ci.StdinMode, "claude empty stdin");
+    Check.Eq(StdinMode.Pipe, ci.StdinMode, "claude pipes prompt via stdin");
+    Check.Eq("PROMPT", ci.StdinText, "claude stdin text = prompt (avoids cmd.exe mangling)");
 
     var claude2 = new ClaudeTranslator(new BackendConfig { Type = "cli", Command = "claude", Model = "sonnet" }, tmpl);
     Check.SeqContains(claude2.BuildInvocation("P", null).Args, "sonnet", "claude honours model override");

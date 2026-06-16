@@ -55,7 +55,7 @@ public sealed class AgyTranslator : ProcessTranslator
 
         var args = new[] { "-p", prompt, "--output-format", "text" };
         var ceiling = Math.Max(3000, Cfg.TimeoutSec * 1000);
-        var r = await Runner.RunAsync(resolved, args, StdinMode.Empty, null, ceiling, 0, null, ct);
+        var r = await Runner.RunAsync(resolved, args, StdinMode.Empty, null, ceiling, 0, null, Sandbox.Directory, ct);
         return Classify(r, null);
     }
 }

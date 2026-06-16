@@ -15,8 +15,11 @@ public sealed class ClaudeTranslator : ProcessTranslator
 
     private string OutputFormat => string.IsNullOrWhiteSpace(Cfg.OutputFormat) ? "text" : Cfg.OutputFormat!;
 
+    // The prompt is fed via stdin (only simple flags as args). Passing a multi-line / Chinese /
+    // parenthesised prompt as a cmd.exe argument gets mangled by .NET's argv escaping vs cmd.exe's
+    // own quoting rules, which makes claude hang. stdin sidesteps the shell entirely.
     public override CliInvocation BuildInvocation(string prompt, string? logFilePath) =>
-        new(new[] { "-p", prompt, "--model", Model, "--output-format", OutputFormat }, StdinMode.Empty, null);
+        new(new[] { "-p", "--model", Model, "--output-format", OutputFormat }, StdinMode.Pipe, prompt);
 
     protected override string CleanOutput(ProcessResult r)
     {

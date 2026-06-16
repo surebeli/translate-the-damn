@@ -28,6 +28,7 @@ public sealed class ProcessRunner
         int ceilingMs,
         int idleMs,
         IReadOnlyDictionary<string, string>? extraEnv,
+        string? workingDirectory,
         CancellationToken ct)
     {
         var psi = new ProcessStartInfo
@@ -35,12 +36,14 @@ public sealed class ProcessRunner
             FileName = cmd.Executable,
             RedirectStandardOutput = true,
             RedirectStandardError = true,
-            RedirectStandardInput = stdinMode != StdinMode.None,
+            RedirectStandardInput = stdinMode == StdinMode.Pipe,
             UseShellExecute = false,
             CreateNoWindow = true,
             StandardOutputEncoding = Encoding.UTF8,
             StandardErrorEncoding = Encoding.UTF8
         };
+        if (!string.IsNullOrEmpty(workingDirectory) && Directory.Exists(workingDirectory))
+            psi.WorkingDirectory = workingDirectory;
         foreach (var a in cmd.PrependArgs) psi.ArgumentList.Add(a);
         foreach (var a in args) psi.ArgumentList.Add(a);
         if (extraEnv is not null)
@@ -66,11 +69,9 @@ public sealed class ProcessRunner
         proc.BeginOutputReadLine();
         proc.BeginErrorReadLine();
 
-        if (stdinMode == StdinMode.Empty)
-        {
-            try { proc.StandardInput.Close(); } catch { /* ignore */ }
-        }
-        else if (stdinMode == StdinMode.Pipe)
+        // StdinMode.Empty / None: do NOT redirect stdin — agent CLIs (notably claude) hang when
+        // handed a redirected-then-closed stdin pipe, but proceed fine with no stdin connected.
+        if (stdinMode == StdinMode.Pipe)
         {
             try
             {

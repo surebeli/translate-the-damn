@@ -54,7 +54,7 @@ public abstract class ProcessTranslator : ITranslator
         }
 
         var ceiling = Math.Max(3000, Cfg.TimeoutSec * 1000);
-        var result = await Runner.RunAsync(resolved, probe.Args, probe.StdinMode, probe.StdinText, ceiling, idleMs: 0, ExtraEnv(), ct);
+        var result = await Runner.RunAsync(resolved, probe.Args, probe.StdinMode, probe.StdinText, ceiling, idleMs: 0, ExtraEnv(), Sandbox.Directory, ct);
 
         string? logContent = null;
         if (logFile is not null)

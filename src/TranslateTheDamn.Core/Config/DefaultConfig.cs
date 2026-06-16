@@ -27,10 +27,10 @@ public static class DefaultConfig
         },
         Backends = new Dictionary<string, BackendConfig>
         {
-            ["claude"]  = new() { Type = "cli", Command = "claude", Model = "haiku", OutputFormat = "text", TimeoutSec = 30 },
-            ["codex"]   = new() { Type = "cli", Command = "codex", Model = "gpt-5.4-mini", Reasoning = "low", TimeoutSec = 30 },
-            ["copilot"] = new() { Type = "cli", Command = "copilot", Model = "claude-haiku-4.5", TimeoutSec = 30 },
-            ["agy"]     = new() { Type = "cli", Command = "agy", Model = "gemini-3.5-flash", FallbackCommand = "gemini", TimeoutSec = 30 },
+            ["claude"]  = new() { Type = "cli", Command = "claude", Model = "haiku", OutputFormat = "text", TimeoutSec = 60 },
+            ["codex"]   = new() { Type = "cli", Command = "codex", Model = "gpt-5.4-mini", Reasoning = "low", TimeoutSec = 60 },
+            ["copilot"] = new() { Type = "cli", Command = "copilot", Model = "claude-haiku-4.5", TimeoutSec = 60 },
+            ["agy"]     = new() { Type = "cli", Command = "agy", Model = "gemini-3.5-flash", FallbackCommand = "gemini", TimeoutSec = 60 },
             ["google-v2"] = new() { Type = "http", Endpoint = "https://translation.googleapis.com/language/translate/v2", ApiKey = "", Target = "zh-CN", Source = "", Format = "text" },
             ["doubao"]  = new() { Type = "http", Endpoint = "https://ark.cn-beijing.volces.com/api/v3/responses", ApiKey = "", Model = "doubao-seed-translation-250915", TargetLanguage = "zh", SourceLanguage = "" }
         },
