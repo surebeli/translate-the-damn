@@ -1,0 +1,57 @@
+src/TranslateTheDamn.App/Interop/NativeMethods.cs
+  s_d25ce361606c9b::t_482cdec6f04617 1-90
+src/TranslateTheDamn.App/UI/PopupWindow.xaml.cs
+  s_d25ce361606c9b::t_5bc6bb3765ac09 1-130
+src/TranslateTheDamn.App/Services/StartupManager.cs
+  s_d25ce361606c9b::t_6a48ad6404497c 1-30
+src/TranslateTheDamn.App/Services/HotkeyService.cs
+  s_d25ce361606c9b::t_0db9f0ea340bb3 1-49
+src/TranslateTheDamn.App/Services/NativeMessageWindow.cs
+  s_d25ce361606c9b::t_3278d9a36440cc 1-40
+PROGRESS.md
+  s_d25ce361606c9b::t_5f762e0759cf4e 12-17
+src/TranslateTheDamn.Core/Config/AppConfig.cs
+  s_d25ce361606c9b::t_5abd62651b485a 77
+src/TranslateTheDamn.Core/Config/ConfigService.cs
+  s_d25ce361606c9b::t_c361eef404db37 20
+src/TranslateTheDamn.App/UI/SettingsWindow.xaml
+  s_d25ce361606c9b::t_d412a05e17f2b2 1-195
+src/TranslateTheDamn.Core/Util/HotkeyParser.cs
+  s_d25ce361606c9b::t_5420eb1af93d87 1-90
+src/TranslateTheDamn.App/Services/ClipboardListener.cs
+  s_d25ce361606c9b::t_ab37d9c5b5b899 1-63
+src/TranslateTheDamn.App/Services/TrayIconController.cs
+  s_d25ce361606c9b::t_b7f875dbc81772 1-80
+.gitattributes
+  s_d25ce361606c9b::t_4a8ef4a0e8b92f 1-8
+src/TranslateTheDamn.App/UI/PopupWindow.xaml
+  s_d25ce361606c9b::t_b53abf66d3f2fe 1-33
+src/TranslateTheDamn.App/App.xaml.cs
+  s_d25ce361606c9b::t_38e2fa5a18fd93 6-7,11-12,16-30
+src/TranslateTheDamn.App/GlobalUsings.cs
+  s_d25ce361606c9b::t_ddb4112dc3106a 1-7
+src/TranslateTheDamn.App/UI/SettingsWindow.xaml.cs
+  s_d25ce361606c9b::t_69d5cb872d856a 1-181
+src/TranslateTheDamn.App/AppController.cs
+  s_d25ce361606c9b::t_6833f7f32dc86a 1-175
+tests/TranslateTheDamn.Tests/Program.cs
+  s_d25ce361606c9b::t_12af4264df6548 206-221
+src/TranslateTheDamn.App/Interop/WindowEffects.cs
+  s_d25ce361606c9b::t_36cc1511c09977 1-50
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "dca5963b7aa86ccc9dbf595fac6326f09d8cb3b8",
+  "prompts": {},
+  "sessions": {
+    "s_d25ce361606c9b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0a05337f-368d-4719-8efb-6d38379e816e",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
