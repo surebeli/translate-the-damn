@@ -1,0 +1,23 @@
+tests/TranslateTheDamn.Tests/Program.cs
+  s_d25ce361606c9b::t_b85fc9d4404eae 244-281
+docs/superpowers/specs/2026-06-17-translate-the-damn-design.md
+  s_d25ce361606c9b::t_615e76b1f9a51c 98-102
+src/TranslateTheDamn.Core/TranslationPipeline.cs
+  s_d25ce361606c9b::t_11418f3809c494 9-11,20,28,31,56-57,67,72-83,85,89-95,98-101,113-118
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "5c44087176867beb5239d9e274b5164a196800f0",
+  "prompts": {},
+  "sessions": {
+    "s_d25ce361606c9b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0a05337f-368d-4719-8efb-6d38379e816e",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
