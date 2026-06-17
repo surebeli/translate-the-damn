@@ -6,9 +6,9 @@ namespace TranslateTheDamn.Core;
 public enum TriggerSource { Clipboard, Hotkey }
 
 /// <summary>
-/// Orchestrates one translation: applies filters (empty / max-length / clipboard dedupe),
-/// resolves the active backend, and supersedes any in-flight translation (a newer trigger cancels
-/// the older one). UI concerns (loading popup, presenting the result) live in the App layer.
+/// Orchestrates one translation: applies filters (empty / max-length / clipboard dedupe), serves a
+/// one-entry "last translation" cache, resolves the active backend, and supersedes any in-flight
+/// translation (a newer trigger cancels the older one). UI concerns live in the App layer.
 /// </summary>
 public sealed class TranslationPipeline
 {
@@ -17,6 +17,7 @@ public sealed class TranslationPipeline
     private TranslatorRegistry _registry;
     private string? _lastClipboardText;
     private CancellationTokenSource? _inflight;
+    private CacheEntry? _cache;
 
     public TranslationPipeline(AppConfig cfg, TranslatorRegistry registry)
     {
@@ -24,10 +25,10 @@ public sealed class TranslationPipeline
         _registry = registry;
     }
 
-    /// <summary>Swap config + registry after the user edits settings (hot reload).</summary>
+    /// <summary>Swap config + registry after the user edits settings (hot reload). Clears the cache.</summary>
     public void Update(AppConfig cfg, TranslatorRegistry registry)
     {
-        lock (_gate) { _cfg = cfg; _registry = registry; }
+        lock (_gate) { _cfg = cfg; _registry = registry; _cache = null; }
     }
 
     public string ActiveBackendId => _cfg.General.ActiveBackend;
@@ -52,14 +53,38 @@ public sealed class TranslationPipeline
     public void NoteClipboardText(string? text) => _lastClipboardText = text;
 
     /// <summary>
-    /// Runs a translation with supersession. Returns null if the trigger was filtered out or
-    /// superseded by a newer one; otherwise the backend's <see cref="TranslationResult"/>.
+    /// Runs a translation with supersession and a one-entry cache. Returns null if the trigger was
+    /// filtered out or superseded; otherwise the backend's (or cached) <see cref="TranslationResult"/>.
     /// </summary>
     public async Task<TranslationResult?> RunAsync(string? rawText, TriggerSource source)
     {
         var text = Accept(rawText, source);
         if (text is null) return null;
         if (source == TriggerSource.Clipboard) _lastClipboardText = text;
+
+        ITranslator? translator;
+        string backendId;
+        string model;
+        lock (_gate)
+        {
+            backendId = _cfg.General.ActiveBackend;
+            translator = _registry.Get(backendId);
+            model = ResolveModel(backendId);
+
+            // Cache hit: identical source text under the SAME backend + model as the last successful
+            // translation returns instantly without calling the model (e.g. repeated hotkey on
+            // unchanged clipboard content). A different backend/model is a different key -> re-translate.
+            if (_cache is not null && _cache.Result.Ok
+                && string.Equals(_cache.Text, text, StringComparison.Ordinal)
+                && string.Equals(_cache.BackendId, backendId, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(_cache.Model, model, StringComparison.Ordinal))
+            {
+                return _cache.Result;
+            }
+        }
+
+        if (translator is null)
+            return TranslationResult.Failure(TranslateStatus.NotFound, $"未配置后端 “{backendId}”。");
 
         CancellationTokenSource cts;
         lock (_gate)
@@ -68,19 +93,12 @@ public sealed class TranslationPipeline
             _inflight = cts = new CancellationTokenSource();
         }
 
-        ITranslator? translator;
-        string backendId;
-        lock (_gate)
-        {
-            backendId = _cfg.General.ActiveBackend;
-            translator = _registry.Get(backendId);
-        }
-        if (translator is null)
-            return TranslationResult.Failure(TranslateStatus.NotFound, $"未配置后端 “{backendId}”。");
-
         try
         {
-            return await translator.TranslateAsync(new TranslationRequest(text), cts.Token);
+            var result = await translator.TranslateAsync(new TranslationRequest(text), cts.Token);
+            if (result.Ok)
+                lock (_gate) { _cache = new CacheEntry(text, backendId, model, result); }
+            return result;
         }
         catch (OperationCanceledException)
         {
@@ -92,4 +110,10 @@ public sealed class TranslationPipeline
             cts.Dispose();
         }
     }
+
+    private string ResolveModel(string backendId) =>
+        _cfg.Backends.TryGetValue(backendId, out var bc) ? (bc.Model ?? string.Empty) : string.Empty;
+
+    /// <summary>The single most-recent successful translation, keyed by source text + backend + model.</summary>
+    private sealed record CacheEntry(string Text, string BackendId, string Model, TranslationResult Result);
 }

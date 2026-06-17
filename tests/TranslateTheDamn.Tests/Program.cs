@@ -241,4 +241,42 @@ Check.Section("HotkeyParser");
     Check.True(!HotkeyParser.Parse("Ctrl+Foo").IsValid, "unknown key invalid");
 }
 
+// ---------------------------------------------------------------- TranslationPipeline cache
+Check.Section("TranslationPipeline cache");
+{
+    var cfg = DefaultConfig.Create();
+    cfg.General.ActiveBackend = "fake";
+    cfg.Backends["fake"] = new BackendConfig { Type = "http", Model = "m1" };
+    var reg = TranslatorRegistry.Build(new AppConfig());
+    var fake = new FakeTranslator("fake", (req, _) => Task.FromResult(TranslationResult.Successful("T:" + req.Text)));
+    reg.Add(fake);
+    var pipe = new TranslationPipeline(cfg, reg);
+
+    var a = await pipe.RunAsync("same", TriggerSource.Hotkey);
+    Check.Eq(1, fake.Calls, "first translate calls the model");
+    Check.Eq("T:same", a!.Text, "first translate returns model text");
+
+    var b = await pipe.RunAsync("same", TriggerSource.Hotkey);
+    Check.Eq(1, fake.Calls, "repeated same text+model -> cache hit, model NOT called");
+    Check.Eq("T:same", b!.Text, "cache returns the same translation");
+
+    // switching the model forces a re-translate even for identical text
+    cfg.Backends["fake"].Model = "m2";
+    await pipe.RunAsync("same", TriggerSource.Hotkey);
+    Check.Eq(2, fake.Calls, "model switch forces re-translate (cache key includes model)");
+
+    // different text misses
+    await pipe.RunAsync("other", TriggerSource.Hotkey);
+    Check.Eq(3, fake.Calls, "different text -> cache miss");
+
+    // failures are not cached (so a retry still hits the model)
+    var failReg = TranslatorRegistry.Build(new AppConfig());
+    var failFake = new FakeTranslator("fake", (_, _) => Task.FromResult(TranslationResult.Failure(TranslateStatus.UnknownFail, "boom")));
+    failReg.Add(failFake);
+    var failPipe = new TranslationPipeline(cfg, failReg);
+    await failPipe.RunAsync("z", TriggerSource.Hotkey);
+    await failPipe.RunAsync("z", TriggerSource.Hotkey);
+    Check.Eq(2, failFake.Calls, "failed translations are not cached");
+}
+
 return Check.Report();

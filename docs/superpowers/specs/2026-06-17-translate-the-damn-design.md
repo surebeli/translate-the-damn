@@ -95,6 +95,11 @@ the per-vendor argv/body building and output parsing.
 - **Dedupe** consecutive identical clipboard content (clipboard path only; hotkey always runs).
 - **Debounce** rapid clipboard bursts.
 - **Supersede**: a new trigger cancels an in-flight translation (CancellationToken).
+- **Last-translation cache** (one entry): before calling the model, if the source text matches the
+  last successful translation **and** the active backend + model are unchanged, return the cached
+  result instantly (skip the model). Main case: repeated hotkey on unchanged clipboard content.
+  Switching backend or model changes the key ⇒ forced re-translate. Only successful results are
+  cached; settings changes clear it.
 - Show a "翻译中…" popup immediately, then update in place with the result.
 
 ## 5. Translation rules / prompt
