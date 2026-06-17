@@ -14,6 +14,7 @@
     <RootNamespace>TranslateTheDamn.App</RootNamespace>
     <AssemblyName>TranslateTheDamn</AssemblyName>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>app.ico</ApplicationIcon>
     <Version>0.1.0</Version>
     <!-- WPF owns DPI via PerMonitorV2 in app.manifest; silence the WinForms-only DPI analyzer. -->
     <NoWarn>$(NoWarn);WFO0003</NoWarn>

@@ -13,6 +13,15 @@ public partial class App : System.Windows.Application
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
+
+        // One-shot icon generator (build tooling): TranslateTheDamn.exe --gen-icon <path>
+        if (e.Args.Length >= 2 && e.Args[0] == "--gen-icon")
+        {
+            try { UI.AppIcon.WriteIcoFile(e.Args[1]); Shutdown(0); }
+            catch (Exception ex) { MessageBox.Show(ex.ToString()); Shutdown(1); }
+            return;
+        }
+
         try
         {
             _controller = new AppController();

@@ -1,4 +1,5 @@
 using System.Drawing;
+using System.IO;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
@@ -51,5 +52,45 @@ internal static class AppIcon
             return source;
         }
         finally { NativeMethods.DeleteObject(hbitmap); }
+    }
+
+    /// <summary>
+    /// Writes a multi-resolution .ico of the same glyph for use as the exe's ApplicationIcon, so the
+    /// Explorer / taskbar / Alt-Tab icon matches the tray + window icons. Run once via
+    /// <c>TranslateTheDamn.exe --gen-icon &lt;path&gt;</c>; the result is committed and embedded at build.
+    /// </summary>
+    public static void WriteIcoFile(string path)
+    {
+        int[] sizes = { 16, 24, 32, 48, 64, 128, 256 };
+        var images = new List<byte[]>(sizes.Length);
+        foreach (var s in sizes)
+        {
+            using var bmp = Draw(true, s);
+            using var ms = new MemoryStream();
+            bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png); // PNG entries (Vista+); 256px must be PNG
+            images.Add(ms.ToArray());
+        }
+
+        using var fs = File.Create(path);
+        using var bw = new BinaryWriter(fs);
+        bw.Write((short)0);              // reserved
+        bw.Write((short)1);              // type = icon
+        bw.Write((short)sizes.Length);   // image count
+
+        var offset = 6 + 16 * sizes.Length;
+        for (var i = 0; i < sizes.Length; i++)
+        {
+            var s = sizes[i];
+            bw.Write((byte)(s >= 256 ? 0 : s)); // width  (0 => 256)
+            bw.Write((byte)(s >= 256 ? 0 : s)); // height (0 => 256)
+            bw.Write((byte)0);                  // palette
+            bw.Write((byte)0);                  // reserved
+            bw.Write((short)1);                 // colour planes
+            bw.Write((short)32);                // bits per pixel
+            bw.Write(images[i].Length);         // bytes of image data
+            bw.Write(offset);                   // offset of image data
+            offset += images[i].Length;
+        }
+        foreach (var img in images) bw.Write(img);
     }
 }
