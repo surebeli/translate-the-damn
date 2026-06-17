@@ -53,11 +53,15 @@ public sealed class ManifestHttpBackend : HttpTranslator
     {
         ["text"] = text,
         ["apiKey"] = Cfg.ApiKey ?? string.Empty,
-        ["model"] = Cfg.Model ?? _def.DefaultString("model") ?? string.Empty,
-        ["target"] = Cfg.Target ?? _def.DefaultString("target") ?? string.Empty,
-        ["format"] = Cfg.Format ?? _def.DefaultString("format") ?? string.Empty,
-        ["source"] = Cfg.Source ?? string.Empty,
-        ["targetLanguage"] = Cfg.TargetLanguage ?? _def.DefaultString("targetLanguage") ?? string.Empty,
+        ["model"] = Pick(Cfg.Model, "model"),
+        ["target"] = Pick(Cfg.Target, "target"),
+        ["format"] = Pick(Cfg.Format, "format"),
+        ["targetLanguage"] = Pick(Cfg.TargetLanguage, "targetLanguage"),
+        ["source"] = Cfg.Source ?? string.Empty,            // empty is valid (omitted) — no default
         ["sourceLanguage"] = Cfg.SourceLanguage ?? string.Empty
     };
+
+    // Config value if non-blank, else the manifest default (an empty string counts as unset).
+    private string Pick(string? cfgValue, string defaultKey) =>
+        string.IsNullOrWhiteSpace(cfgValue) ? (_def.DefaultString(defaultKey) ?? string.Empty) : cfgValue;
 }

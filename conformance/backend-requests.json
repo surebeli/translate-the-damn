@@ -25,6 +25,15 @@
       }
     },
     {
+      "name": "google-v2 empty target falls back to the manifest default",
+      "backend": "google-v2",
+      "config": { "apiKey": "K", "target": "" },
+      "text": "Hi",
+      "expect": {
+        "bodyContains": ["\"target\":\"zh-CN\""]
+      }
+    },
+    {
       "name": "doubao default zh, auto source, Responses API",
       "backend": "doubao",
       "config": { "apiKey": "K", "model": "doubao-seed-translation-250915", "targetLanguage": "zh" },

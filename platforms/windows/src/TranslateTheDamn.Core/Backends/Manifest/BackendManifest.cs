@@ -33,8 +33,12 @@ public sealed class BackendManifest
         using var reader = new StreamReader(stream);
         var json = reader.ReadToEnd();
 
-        _cached = JsonSerializer.Deserialize<BackendManifest>(json, Options)
+        var manifest = JsonSerializer.Deserialize<BackendManifest>(json, Options)
             ?? throw new InvalidOperationException("Failed to parse backends.json.");
+
+        // Look up backends case-insensitively (the registry map is too).
+        manifest.Backends = new Dictionary<string, BackendDef>(manifest.Backends, StringComparer.OrdinalIgnoreCase);
+        _cached = manifest;
         return _cached;
     }
 }

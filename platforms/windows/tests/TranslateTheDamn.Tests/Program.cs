@@ -198,6 +198,29 @@ Check.Section("TranslatorRegistry");
     Check.True(reg.Get("nope") is null, "unknown backend -> null");
 }
 
+// ---------------------------------------------------------------- Manifest hardening (codex review fixes)
+Check.Section("Manifest hardening");
+{
+    // Eval returns a string leaf; null (not raw JSON) for a non-string -> bad path fails cleanly.
+    using var d1 = System.Text.Json.JsonDocument.Parse("{\"a\":{\"b\":\"hi\"}}");
+    Check.Eq("hi", ManifestEngine.Eval(d1.RootElement, "a.b"), "Eval reads a string leaf");
+    Check.True(ManifestEngine.Eval(d1.RootElement, "a") is null, "Eval -> null for an object (not raw JSON)");
+    using var d2 = System.Text.Json.JsonDocument.Parse("{\"n\":5}");
+    Check.True(ManifestEngine.Eval(d2.RootElement, "n") is null, "Eval -> null for a number");
+
+    // A backend whose config key isn't lowercase still resolves against the manifest.
+    var ucfg = DefaultConfig.Create();
+    var bc = ucfg.Backends["claude"];
+    ucfg.Backends.Remove("claude");
+    ucfg.Backends["CLAUDE"] = bc;
+    var ureg = TranslatorRegistry.Build(ucfg);
+    Check.True(ureg.Get("CLAUDE") is ManifestCliBackend, "uppercase config backend key resolves via manifest");
+
+    // Empty config value falls back to the manifest default (not sent empty).
+    var hb = Tb.Http("google-v2", new BackendConfig { Type = "http", ApiKey = "K", Target = "" });
+    Check.Contains(hb.BuildCall("Hi").BodyJson, "\"target\":\"zh-CN\"", "empty target -> manifest default zh-CN");
+}
+
 // ---------------------------------------------------------------- TranslationPipeline
 Check.Section("TranslationPipeline");
 {

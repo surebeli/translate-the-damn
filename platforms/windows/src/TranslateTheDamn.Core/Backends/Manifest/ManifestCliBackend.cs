@@ -27,6 +27,7 @@ public sealed class ManifestCliBackend : ProcessTranslator
     private string Command => string.IsNullOrWhiteSpace(Cfg.Command) ? (_def.Command ?? _id) : Cfg.Command!;
     private string Reasoning => string.IsNullOrWhiteSpace(Cfg.Reasoning) ? (_def.DefaultString("reasoning") ?? string.Empty) : Cfg.Reasoning!;
     private string OutputFormat => string.IsNullOrWhiteSpace(Cfg.OutputFormat) ? (_def.DefaultString("outputFormat") ?? "text") : Cfg.OutputFormat!;
+    private string? FallbackCommand => string.IsNullOrWhiteSpace(Cfg.FallbackCommand) ? _def.FallbackCommand : Cfg.FallbackCommand;
 
     protected override IReadOnlyList<string> KnownInstallPaths =>
         _def.KnownInstallPaths is not null && _def.KnownInstallPaths.TryGetValue("windows", out var p) ? p : Array.Empty<string>();
@@ -70,7 +71,7 @@ public sealed class ManifestCliBackend : ProcessTranslator
     {
         var prompt = PromptBuilder.Build(PromptTemplate, request.Text);
         var primary = await RunCommandAsync(Command, prompt, ct);
-        if (primary.Ok || string.IsNullOrWhiteSpace(_def.FallbackCommand)) return primary;
+        if (primary.Ok || string.IsNullOrWhiteSpace(FallbackCommand)) return primary;
 
         if (primary.Status is TranslateStatus.NotFound or TranslateStatus.BadOutput)
         {
@@ -83,7 +84,7 @@ public sealed class ManifestCliBackend : ProcessTranslator
 
     private async Task<TranslationResult> RunFallbackAsync(string prompt, CancellationToken ct)
     {
-        var cmd = _def.FallbackCommand!;
+        var cmd = FallbackCommand!;
         var resolved = PathResolver.Resolve(cmd);
         if (resolved is null) return TranslationResult.Failure(TranslateStatus.NotFound, $"找不到回退命令 “{cmd}”。");
 

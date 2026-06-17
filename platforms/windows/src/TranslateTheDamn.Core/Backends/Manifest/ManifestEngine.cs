@@ -127,6 +127,7 @@ public static class ManifestEngine
             }
         }
 
-        return cur.ValueKind == JsonValueKind.String ? cur.GetString() : cur.GetRawText();
+        // Only a string is a valid translated value; anything else is a path miss -> null (fail cleanly).
+        return cur.ValueKind == JsonValueKind.String ? cur.GetString() : null;
     }
 }
