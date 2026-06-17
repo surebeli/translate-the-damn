@@ -1,0 +1,82 @@
+src/TranslateTheDamn.App/UI/AppIcon.cs
+  s_d25ce361606c9b::t_43384feaef8697 2-2
+  s_d25ce361606c9b::t_e64c2e134b52ab 56-95
+src/TranslateTheDamn.App/App.xaml.cs
+  s_d25ce361606c9b::t_78c660877d5f51 16-24
+src/TranslateTheDamn.App/TranslateTheDamn.App.csproj
+  s_d25ce361606c9b::t_e8aae07f188fab 17-17
+src/TranslateTheDamn.App/app.ico
+  0000019ed3863943 1-116
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "2df3aac88bc8b8ff0b66dc83db41c82c27d65458",
+  "prompts": {
+    "s_d25ce361606c9b::t_e64c2e134b52ab": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0a05337f-368d-4719-8efb-6d38379e816e",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 40,
+      "total_deletions": 0,
+      "accepted_lines": 40,
+      "overriden_lines": 0
+    },
+    "s_d25ce361606c9b::t_78c660877d5f51": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0a05337f-368d-4719-8efb-6d38379e816e",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 9,
+      "total_deletions": 0,
+      "accepted_lines": 9,
+      "overriden_lines": 0
+    },
+    "s_d25ce361606c9b::t_43384feaef8697": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0a05337f-368d-4719-8efb-6d38379e816e",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 0,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    },
+    "s_d25ce361606c9b::t_e8aae07f188fab": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0a05337f-368d-4719-8efb-6d38379e816e",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 0,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    },
+    "0000019ed3863943": {
+      "agent_id": {
+        "tool": "claude",
+        "model": "claude-opus-4-8",
+        "id": "ai-thread-claude-claude-opus-4-8-1781665249603"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 116,
+      "total_deletions": 0,
+      "accepted_lines": 116,
+      "overriden_lines": 0
+    }
+  }
+}
