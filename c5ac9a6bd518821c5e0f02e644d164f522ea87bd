@@ -1,0 +1,23 @@
+TranslateTheDamn.sln
+  0000019ed37bad1c 1-69
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "c5ac9a6bd518821c5e0f02e644d164f522ea87bd",
+  "prompts": {
+    "0000019ed37bad1c": {
+      "agent_id": {
+        "tool": "claude",
+        "model": "claude-opus-4-8",
+        "id": "ai-thread-claude-claude-opus-4-8-1781664558364"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 69,
+      "total_deletions": 0,
+      "accepted_lines": 69,
+      "overriden_lines": 0
+    }
+  }
+}
