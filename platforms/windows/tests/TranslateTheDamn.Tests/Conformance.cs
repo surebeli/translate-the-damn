@@ -1,7 +1,6 @@
 using System.Text.Json;
 using TranslateTheDamn.Core;
 using TranslateTheDamn.Core.Backends;
-using TranslateTheDamn.Core.Backends.Http;
 using TranslateTheDamn.Core.Config;
 using TranslateTheDamn.Core.Util;
 
@@ -88,9 +87,9 @@ public static class Conformance
         foreach (var c in vec.RootElement.GetProperty("cases").EnumerateArray())
         {
             var name = c.GetProperty("name").GetString() ?? "?";
-            var backend = c.GetProperty("backend").GetString();
+            var backend = c.GetProperty("backend").GetString()!;
             var bc = BackendFromConfig(c.GetProperty("config"));
-            HttpTranslator t = backend == "doubao" ? new DoubaoTranslator(bc) : new GoogleV2Translator(bc);
+            var t = Tb.Http(backend, bc);
             var call = t.BuildCall(c.GetProperty("text").GetString()!);
             var ex = c.GetProperty("expect");
 

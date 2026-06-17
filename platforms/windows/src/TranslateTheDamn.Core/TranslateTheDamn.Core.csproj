@@ -1,9 +1,15 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <!-- The canonical shared backend manifest (repo root) is embedded so the shipped exe carries it.
+         Single source: this links the root file, it is not copied. -->
+    <EmbeddedResource Include="..\..\..\..\spec\backends.json" LogicalName="backends.json" />
+  </ItemGroup>
 
 </Project>

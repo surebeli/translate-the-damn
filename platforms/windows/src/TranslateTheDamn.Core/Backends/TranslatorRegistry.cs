@@ -1,12 +1,13 @@
-using TranslateTheDamn.Core.Backends.Cli;
-using TranslateTheDamn.Core.Backends.Http;
+using TranslateTheDamn.Core.Backends.Manifest;
 using TranslateTheDamn.Core.Config;
 
 namespace TranslateTheDamn.Core.Backends;
 
 /// <summary>
-/// Static map of backend id → <see cref="ITranslator"/>, built from config (hopper's registry
-/// pattern). Adding a backend = add a class + one switch arm here. No dynamic discovery.
+/// Builds the backend id → <see cref="ITranslator"/> map by pairing the user's config with the
+/// embedded declarative manifest (Constitution Q2): each backend is a generic
+/// <see cref="ManifestCliBackend"/> / <see cref="ManifestHttpBackend"/> reading its definition from
+/// <c>spec/backends.json</c>. Adding a backend = add a manifest entry (+ a config entry); no new code.
 /// </summary>
 public sealed class TranslatorRegistry
 {
@@ -15,21 +16,21 @@ public sealed class TranslatorRegistry
     public static TranslatorRegistry Build(AppConfig cfg)
     {
         var reg = new TranslatorRegistry();
+        var manifest = BackendManifest.Load();
         var tmpl = cfg.Translation.PromptTemplate;
+
         foreach (var (id, bc) in cfg.Backends)
         {
-            ITranslator? t = id.ToLowerInvariant() switch
+            if (!manifest.Backends.TryGetValue(id, out var def)) continue;
+            ITranslator? t = def.Kind.ToLowerInvariant() switch
             {
-                "claude" => new ClaudeTranslator(bc, tmpl),
-                "codex" => new CodexTranslator(bc, tmpl),
-                "copilot" => new CopilotTranslator(bc, tmpl),
-                "agy" => new AgyTranslator(bc, tmpl),
-                "google-v2" => new GoogleV2Translator(bc),
-                "doubao" => new DoubaoTranslator(bc),
+                "http" => new ManifestHttpBackend(id, def, bc),
+                "cli" => new ManifestCliBackend(id, def, bc, tmpl),
                 _ => null
             };
             if (t is not null) reg._map[id] = t;
         }
+
         return reg;
     }
 

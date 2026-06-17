@@ -1,7 +1,6 @@
 using TranslateTheDamn.Core;
 using TranslateTheDamn.Core.Backends;
-using TranslateTheDamn.Core.Backends.Cli;
-using TranslateTheDamn.Core.Backends.Http;
+using TranslateTheDamn.Core.Backends.Manifest;
 using TranslateTheDamn.Core.Config;
 using TranslateTheDamn.Core.Util;
 using TranslateTheDamn.Tests;
@@ -120,7 +119,7 @@ Check.Section("CLI BuildInvocation");
 {
     const string tmpl = "T:{content}";
 
-    var claude = new ClaudeTranslator(new BackendConfig { Type = "cli", Command = "claude" }, tmpl);
+    var claude = Tb.Cli("claude", new BackendConfig { Type = "cli", Command = "claude" }, tmpl);
     var ci = claude.BuildInvocation("PROMPT", null);
     Check.SeqContains(ci.Args, "-p", "claude has -p");
     Check.SeqContains(ci.Args, "haiku", "claude default model haiku");
@@ -128,10 +127,10 @@ Check.Section("CLI BuildInvocation");
     Check.Eq(StdinMode.Pipe, ci.StdinMode, "claude pipes prompt via stdin");
     Check.Eq("PROMPT", ci.StdinText, "claude stdin text = prompt (avoids cmd.exe mangling)");
 
-    var claude2 = new ClaudeTranslator(new BackendConfig { Type = "cli", Command = "claude", Model = "sonnet" }, tmpl);
+    var claude2 = Tb.Cli("claude", new BackendConfig { Type = "cli", Command = "claude", Model = "sonnet" }, tmpl);
     Check.SeqContains(claude2.BuildInvocation("P", null).Args, "sonnet", "claude honours model override");
 
-    var codex = new CodexTranslator(new BackendConfig { Type = "cli", Command = "codex" }, tmpl);
+    var codex = Tb.Cli("codex", new BackendConfig { Type = "cli", Command = "codex" }, tmpl);
     var cx = codex.BuildInvocation("PROMPT", null);
     Check.Eq("exec", cx.Args[0], "codex subcommand exec");
     Check.SeqContains(cx.Args, "read-only", "codex sandbox read-only");
@@ -140,12 +139,12 @@ Check.Section("CLI BuildInvocation");
     Check.Eq(StdinMode.Pipe, cx.StdinMode, "codex pipes stdin");
     Check.Eq("PROMPT", cx.StdinText, "codex stdin text = prompt");
 
-    var copilot = new CopilotTranslator(new BackendConfig { Type = "cli", Command = "copilot" }, tmpl);
+    var copilot = Tb.Cli("copilot", new BackendConfig { Type = "cli", Command = "copilot" }, tmpl);
     var cp = copilot.BuildInvocation("P", null);
     Check.SeqContains(cp.Args, "-s", "copilot silent -s");
     Check.SeqContains(cp.Args, "--no-ask-user", "copilot --no-ask-user");
 
-    var agy = new AgyTranslator(new BackendConfig { Type = "cli", Command = "agy", FallbackCommand = "gemini" }, tmpl);
+    var agy = Tb.Cli("agy", new BackendConfig { Type = "cli", Command = "agy", FallbackCommand = "gemini" }, tmpl);
     var ay = agy.BuildInvocation("P", "C:\\tmp\\x.log");
     Check.True(ay.WantsLogFile, "agy wants log file");
     Check.SeqContains(ay.Args, "--log-file", "agy passes --log-file");
@@ -155,7 +154,7 @@ Check.Section("CLI BuildInvocation");
 // ---------------------------------------------------------------- HTTP calls + parsing
 Check.Section("HTTP BuildCall + ParseResponse");
 {
-    var g = new GoogleV2Translator(new BackendConfig { Type = "http", ApiKey = "K", Target = "zh-CN", Format = "text" });
+    var g = Tb.Http("google-v2", new BackendConfig { Type = "http", ApiKey = "K", Target = "zh-CN", Format = "text" });
     var gc = g.BuildCall("Hello");
     Check.Eq("POST", gc.Method, "google POST");
     Check.Contains(gc.Url, "translate/v2", "google v2 endpoint");
@@ -165,10 +164,10 @@ Check.Section("HTTP BuildCall + ParseResponse");
     Check.NotContains(gc.BodyJson, "source", "google omits source when empty (auto-detect)");
     Check.Eq("你好,世界", g.ParseResponse("{\"data\":{\"translations\":[{\"translatedText\":\"你好,世界\",\"detectedSourceLanguage\":\"en\"}]}}"), "google parses translatedText");
 
-    var gSrc = new GoogleV2Translator(new BackendConfig { Type = "http", ApiKey = "K", Source = "en" });
+    var gSrc = Tb.Http("google-v2", new BackendConfig { Type = "http", ApiKey = "K", Source = "en" });
     Check.Contains(gSrc.BuildCall("Hi").BodyJson, "\"source\":\"en\"", "google includes source when set");
 
-    var d = new DoubaoTranslator(new BackendConfig { Type = "http", ApiKey = "K", Model = "doubao-seed-translation-250915", TargetLanguage = "zh" });
+    var d = Tb.Http("doubao", new BackendConfig { Type = "http", ApiKey = "K", Model = "doubao-seed-translation-250915", TargetLanguage = "zh" });
     var dc = d.BuildCall("Hello");
     Check.Contains(dc.Url, "/responses", "doubao hits /responses (NOT chat/completions)");
     Check.NotContains(dc.Url, "chat/completions", "doubao avoids chat/completions");
@@ -183,7 +182,7 @@ Check.Section("HTTP BuildCall + ParseResponse");
 // ---------------------------------------------------------------- HTTP credential gating (no network)
 Check.Section("HTTP credential gating");
 {
-    var noKey = new GoogleV2Translator(new BackendConfig { Type = "http", ApiKey = "" });
+    var noKey = Tb.Http("google-v2", new BackendConfig { Type = "http", ApiKey = "" });
     var res = await noKey.TranslateAsync(new TranslationRequest("hi"), CancellationToken.None);
     Check.Eq(TranslateStatus.AuthFail, res.Status, "empty key -> AuthFail without hitting network");
 }
@@ -193,9 +192,9 @@ Check.Section("TranslatorRegistry");
 {
     var reg = TranslatorRegistry.Build(DefaultConfig.Create());
     Check.Eq(6, reg.Ids.Count, "registry builds 6 backends");
-    Check.True(reg.Get("claude") is ClaudeTranslator, "claude -> ClaudeTranslator");
-    Check.True(reg.Get("doubao") is DoubaoTranslator, "doubao -> DoubaoTranslator");
-    Check.True(reg.Get("CLAUDE") is ClaudeTranslator, "lookup is case-insensitive");
+    Check.True(reg.Get("claude") is ManifestCliBackend, "claude -> manifest CLI backend");
+    Check.True(reg.Get("doubao") is ManifestHttpBackend, "doubao -> manifest HTTP backend");
+    Check.True(reg.Get("CLAUDE") is ManifestCliBackend, "lookup is case-insensitive");
     Check.True(reg.Get("nope") is null, "unknown backend -> null");
 }
 

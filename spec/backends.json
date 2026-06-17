@@ -67,7 +67,7 @@
         "model": "{model}",
         "input": [ { "role": "user", "content": [ { "type": "input_text", "text": "{text}", "translation_options": { "source_language": "{sourceLanguage}", "target_language": "{targetLanguage}" } } ] } ]
       },
-      "omitWhenEmpty": ["input[0].content[0].translation_options.source_language"],
+      "omitWhenEmpty": ["source_language"],
       "responsePath": "output[type=message].content[type=output_text].text",
       "defaults": { "model": "doubao-seed-translation-250915", "targetLanguage": "zh" },
       "notes": "MUST be /responses (not /chat/completions); language goes in translation_options; ~4K in/3K out chars; per-character billing; confidence medium (official docs JS-rendered)."
