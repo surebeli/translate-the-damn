@@ -1,0 +1,23 @@
+docs/PORTING-macos.md
+  s_d25ce361606c9b::t_b698138efa8d54 1-94
+README.md
+  s_d25ce361606c9b::t_0be7fcdac4646b 85-93
+docs/PORTING-linux.md
+  s_d25ce361606c9b::t_38765a46843b9d 1-61
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "4597dc6ea75a7047d35ecd840ace48d64ff9bdda",
+  "prompts": {},
+  "sessions": {
+    "s_d25ce361606c9b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0a05337f-368d-4719-8efb-6d38379e816e",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
