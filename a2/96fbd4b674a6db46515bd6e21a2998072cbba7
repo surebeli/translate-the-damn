@@ -1,23 +1,19 @@
 CONSTITUTION.md
-  s_d25ce361606c9b::t_7e811009e7f0ce 1-75
+  s_d25ce361606c9b::t_7e811009e7f0ce 61-75
 ---
 {
   "schema_version": "authorship/3.0.0",
   "git_ai_version": "1.5.7",
   "base_commit_sha": "a296fbd4b674a6db46515bd6e21a2998072cbba7",
-  "prompts": {
-    "s_d25ce361606c9b::t_7e811009e7f0ce": {
+  "prompts": {},
+  "sessions": {
+    "s_d25ce361606c9b": {
       "agent_id": {
         "tool": "claude",
         "id": "0a05337f-368d-4719-8efb-6d38379e816e",
         "model": "claude-opus-4-8"
       },
-      "human_author": "litianyi <litianyi@corp.netease.com>",
-      "messages": [],
-      "total_additions": 75,
-      "total_deletions": 0,
-      "accepted_lines": 75,
-      "overriden_lines": 0
+      "human_author": "litianyi <litianyi@corp.netease.com>"
     }
   }
 }
