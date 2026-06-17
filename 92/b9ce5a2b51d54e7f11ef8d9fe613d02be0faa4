@@ -1,0 +1,33 @@
+conformance/README.md
+  s_d25ce361606c9b::t_d757a44676f5c2 32-34
+  s_d25ce361606c9b::t_91afe52b3a792f 36-37
+tests/TranslateTheDamn.Tests/Program.cs
+  s_d25ce361606c9b::t_f5efbd027b04b5 284
+tests/TranslateTheDamn.Tests/Conformance.cs
+  s_d25ce361606c9b::t_9b57106af09ea0 2-5,20,25,42-43,49-160,163-166,168-196
+conformance/pipeline-cache.json
+  s_d25ce361606c9b::t_8fbdb33619ac93 1-17
+conformance/backend-requests.json
+  s_d25ce361606c9b::t_2a5e6272db35e9 1-42
+conformance/config-defaults.json
+  s_d25ce361606c9b::t_017f283f967ec5 1-21
+PARITY.md
+  s_d25ce361606c9b::t_a4a7d686eae15c 37-39
+  s_d25ce361606c9b::t_bd197f5865f429 17-19
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "92b9ce5a2b51d54e7f11ef8d9fe613d02be0faa4",
+  "prompts": {},
+  "sessions": {
+    "s_d25ce361606c9b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0a05337f-368d-4719-8efb-6d38379e816e",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
