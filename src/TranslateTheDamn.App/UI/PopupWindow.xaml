@@ -20,8 +20,12 @@
             <TextBlock x:Name="SourceText" Foreground="#90AAAAAA" FontSize="12" TextWrapping="Wrap"
                        MaxHeight="84" TextTrimming="CharacterEllipsis" Margin="0,0,0,8"/>
             <Border Height="1" Background="#22FFFFFF" Margin="0,0,0,10"/>
-            <TextBlock x:Name="TranslationText" Foreground="#F2F2F2" FontSize="15" TextWrapping="Wrap"
-                       LineHeight="22" MaxHeight="300"/>
+            <ScrollViewer x:Name="TranslationScroll" MaxHeight="320"
+                          VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                          PreviewMouseWheel="TranslationScroll_PreviewMouseWheel">
+                <TextBlock x:Name="TranslationText" Foreground="#F2F2F2" FontSize="15" TextWrapping="Wrap"
+                           LineHeight="22" Margin="0,0,8,0"/>
+            </ScrollViewer>
 
             <DockPanel LastChildFill="False" Margin="0,12,0,0">
                 <Button x:Name="CopyButton" Content="复制译文" DockPanel.Dock="Right" Padding="12,5"

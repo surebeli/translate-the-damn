@@ -24,6 +24,14 @@ verified live (real translations). Google/Doubao request+parse unit-verified (ne
 - App: launches to tray, bootstraps `%USERPROFILE%\.translatethedamn\config.json` (clean, Chinese unescaped).
 - Live: `--live claude` and `--live codex` both return correct translations end-to-end.
 
+## Polish round (post-MVP, requested)
+
+- [x] Custom dark thin scrollbar (`UI/Theme.xaml`, app-wide ScrollBar ControlTemplate) replacing the
+      classic gray Win32 scrollbar — needed a custom template (no NuGet theme lib).
+- [x] Popup translation now scrollable (ScrollViewer + dark scrollbar + wheel handler that works
+      while the popup is non-focus-stealing).
+- [x] Settings window title-bar icon unified with the tray glyph (`UI/AppIcon.cs`, single source for both).
+
 ## Backend status (see README for detail)
 
 claude ✅live · codex ✅live · google-v2 ✅unit (needs key) · doubao ⚠️unit (confirm with real ARK key)

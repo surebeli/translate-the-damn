@@ -1,5 +1,6 @@
 using System.Drawing;
 using System.Windows.Forms;
+using TranslateTheDamn.App.UI;
 
 namespace TranslateTheDamn.App.Services;
 
@@ -24,7 +25,7 @@ internal sealed class TrayIconController : IDisposable
         menu.Items.Add(new ToolStripMenuItem("打开设置…", null, (_, _) => OpenSettingsRequested?.Invoke()));
         menu.Items.Add(new ToolStripMenuItem("退出", null, (_, _) => ExitRequested?.Invoke()));
 
-        _currentIcon = BuildIcon(true);
+        _currentIcon = AppIcon.Tray(true);
         _icon = new NotifyIcon
         {
             Text = "translate-the-damn",
@@ -39,7 +40,7 @@ internal sealed class TrayIconController : IDisposable
     {
         _toggleItem.Checked = on;
         var old = _currentIcon;
-        _currentIcon = BuildIcon(on);
+        _currentIcon = AppIcon.Tray(on);
         _icon.Icon = _currentIcon;
         old?.Dispose();
         _icon.Text = on ? "translate-the-damn(监听中)" : "translate-the-damn(已暂停)";
@@ -54,21 +55,6 @@ internal sealed class TrayIconController : IDisposable
             _icon.ShowBalloonTip(2500);
         }
         catch { /* balloon tips can fail silently on some configs */ }
-    }
-
-    private static Icon BuildIcon(bool on)
-    {
-        using var bmp = new Bitmap(16, 16);
-        using (var g = Graphics.FromImage(bmp))
-        {
-            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            using var bg = new SolidBrush(on ? Color.FromArgb(46, 160, 67) : Color.FromArgb(120, 120, 120));
-            g.FillEllipse(bg, 0, 0, 15, 15);
-            using var f = new Font("Segoe UI", 9, FontStyle.Bold, GraphicsUnit.Pixel);
-            g.DrawString("T", f, Brushes.White, 3, 2);
-        }
-        var hicon = bmp.GetHicon();
-        return Icon.FromHandle(hicon);
     }
 
     public void Dispose()

@@ -88,6 +88,7 @@ public partial class PopupWindow : Window
     {
         if (!IsVisible) Show();
         UpdateLayout();
+        TranslationScroll.ScrollToTop();
         PlaceTopCentre();
         Topmost = true;
     }
@@ -123,6 +124,14 @@ public partial class PopupWindow : Window
         if (string.IsNullOrEmpty(_translation)) return;
         CopyRequested?.Invoke(_translation);
         CopyButton.Content = "已复制 ✓";
+    }
+
+    // The popup never takes focus (WS_EX_NOACTIVATE), so route wheel events to the scroller
+    // ourselves whenever they arrive (Win11 "scroll inactive windows on hover" delivers them).
+    private void TranslationScroll_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+    {
+        TranslationScroll.ScrollToVerticalOffset(TranslationScroll.VerticalOffset - e.Delta);
+        e.Handled = true;
     }
 
     private static string Shorten(string s, int max) =>

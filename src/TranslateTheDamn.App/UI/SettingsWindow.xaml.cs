@@ -25,6 +25,7 @@ public partial class SettingsWindow : Window
         _svc = svc;
         _config = svc.LoadOrBootstrap();
         InitializeComponent();
+        Icon = AppIcon.Window();   // match the tray glyph
         PopulateGeneral();
         _loaded = true;
     }
