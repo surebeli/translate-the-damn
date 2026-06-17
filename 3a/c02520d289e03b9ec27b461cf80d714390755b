@@ -1,0 +1,22 @@
+src/TranslateTheDamn.App/TranslateTheDamn.App.csproj
+  s_d25ce361606c9b::t_cd134dad4b8bbc 18-19,21-23,25-30
+  s_d25ce361606c9b::t_8b6a50da96966f 24
+src/TranslateTheDamn.App/UI/SettingsWindow.xaml.cs
+  s_d25ce361606c9b::t_671d8e5711e48b 29-30
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "3ac02520d289e03b9ec27b461cf80d714390755b",
+  "prompts": {},
+  "sessions": {
+    "s_d25ce361606c9b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0a05337f-368d-4719-8efb-6d38379e816e",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
