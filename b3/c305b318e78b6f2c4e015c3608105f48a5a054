@@ -1,0 +1,45 @@
+README.md
+  s_d25ce361606c9b::t_af5b874edfa3f8 88-92
+conformance/prompt-builder.json
+  s_d25ce361606c9b::t_d1caf89ef6cd0d 1-10
+conformance/README.md
+  s_d25ce361606c9b::t_c7330045509b72 1-41
+conformance/hotkey-parser.json
+  s_d25ce361606c9b::t_27cd6cd0e1ad9c 1-12
+spec/backends.json
+  s_d25ce361606c9b::t_a057c35b843745 1-76
+CONSTITUTION.md
+  s_d25ce361606c9b::t_f233d0e6f0b5ed 1-60
+PARITY.md
+  s_d25ce361606c9b::t_0ad908bd9db8a2 1-41
+conformance/ansi-stripper.json
+  s_d25ce361606c9b::t_662d9fa0a7174f 3,5-6,9
+  s_d25ce361606c9b::t_4d084fcbdc37cb 1-2,4,7-8,10-11
+CLAUDE.md
+  s_d25ce361606c9b::t_b88382ed88ec32 1-17
+.github/PULL_REQUEST_TEMPLATE.md
+  s_d25ce361606c9b::t_b979458c888fef 1-19
+tests/TranslateTheDamn.Tests/Conformance.cs
+  s_d25ce361606c9b::t_0310adb3f745c0 1-13,16-52,54-75
+  s_d25ce361606c9b::t_bf32d873780361 14-15,53
+tests/TranslateTheDamn.Tests/Program.cs
+  s_d25ce361606c9b::t_fafff65ee2edb7 282-285
+strings/zh-CN.json
+  s_d25ce361606c9b::t_f5968518f3deed 1-46
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "b3c305b318e78b6f2c4e015c3608105f48a5a054",
+  "prompts": {},
+  "sessions": {
+    "s_d25ce361606c9b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0a05337f-368d-4719-8efb-6d38379e816e",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
