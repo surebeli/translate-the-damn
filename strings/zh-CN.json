@@ -1,0 +1,46 @@
+{
+  "doc": "Shared UI strings (i18n). All platforms read the same catalog so wording never drifts. {placeholders} are substituted by each platform. Sample extracted from the Windows build; add more keys as the macOS/Linux UI is built.",
+  "locale": "zh-CN",
+  "strings": {
+    "popup.header.translating": "翻译中…",
+    "popup.header.result": "翻译",
+    "popup.header.error": "翻译失败",
+    "popup.body.translating": "正在翻译,请稍候…",
+    "popup.button.copy": "复制译文",
+    "popup.button.copied": "已复制 ✓",
+    "popup.button.close": "关闭",
+
+    "tray.tooltip.listening": "translate-the-damn(监听中)",
+    "tray.tooltip.paused": "translate-the-damn(已暂停)",
+    "tray.menu.listen": "监听剪贴板",
+    "tray.menu.settings": "打开设置…",
+    "tray.menu.exit": "退出",
+
+    "settings.title": "translate-the-damn · 设置",
+    "settings.group.trigger": "监听与触发",
+    "settings.group.backend": "翻译后端",
+    "settings.group.popup": "浮窗展示",
+    "settings.group.general": "通用",
+    "settings.field.listen": "启用剪贴板监听(复制即翻译)",
+    "settings.field.hotkey": "翻译热键",
+    "settings.field.backend": "后端",
+    "settings.field.model": "模型",
+    "settings.field.apiKey": "API Key",
+    "settings.field.endpoint": "Endpoint",
+    "settings.field.target": "目标语言",
+    "settings.field.timeout": "超时(秒)",
+    "settings.field.style": "视觉风格",
+    "settings.field.autodismiss": "自动消失",
+    "settings.field.keephover": "鼠标悬停时保持不消失",
+    "settings.field.startup": "开机自启",
+    "settings.button.save": "保存",
+    "settings.button.close": "关闭",
+    "settings.status.saved": "已保存 ✓",
+
+    "error.auth": "认证失败,请在设置中登录或填写密钥。",
+    "error.timeout": "翻译超时({sec}s)",
+    "error.notfound": "找不到命令 “{command}”,请确认已安装并在 PATH 中。",
+    "error.badoutput": "没有返回译文(可能是该 CLI 在 Windows 下的已知输出问题)。",
+    "error.apikeyMissing": "请在设置中填写该后端的 API Key。"
+  }
+}

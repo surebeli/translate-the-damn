@@ -1,0 +1,76 @@
+{
+  "schema": 1,
+  "doc": "Declarative backend manifest — the single source of truth for HOW each backend is called (Constitution Law 6). Each platform implements ONE generic interpreter that reads this. Today the Windows adapters hardcode the same facts; refactoring them to read this file is a tracked PARITY task. Placeholders {model}/{text}/{apiKey}/... come from config.json. Verified live: claude + codex (CLI) translate end-to-end.",
+  "backends": {
+    "claude": {
+      "kind": "cli",
+      "command": "claude",
+      "promptVia": "stdin",
+      "args": ["-p", "--model", "{model}", "--output-format", "{outputFormat}"],
+      "defaults": { "model": "haiku", "outputFormat": "text", "timeoutSec": 60 },
+      "parse": { "mode": "stdout-clean", "jsonResultPath": "result" },
+      "auth": "claude.ai OAuth or ANTHROPIC_API_KEY",
+      "notes": "prompt via stdin avoids cmd.exe/shell arg mangling; spawn from a neutral CWD so it doesn't load the current project's context."
+    },
+    "codex": {
+      "kind": "cli",
+      "command": "codex",
+      "promptVia": "stdin-dash",
+      "args": ["exec", "--skip-git-repo-check", "--sandbox", "read-only", "--color", "never", "-m", "{model}", "-c", "model_reasoning_effort=\"{reasoning}\"", "-"],
+      "defaults": { "model": "gpt-5.4-mini", "reasoning": "low", "timeoutSec": 60 },
+      "parse": { "mode": "stdout-clean", "jsonEvent": "item.completed -> item.text" },
+      "auth": "ChatGPT login or CODEX_API_KEY",
+      "notes": "trailing '-' reads stdin (avoids the non-TTY hang); chrome goes to stderr."
+    },
+    "copilot": {
+      "kind": "cli",
+      "command": "copilot",
+      "promptVia": "arg",
+      "args": ["-p", "{prompt}", "-s", "--no-ask-user", "--model", "{model}"],
+      "defaults": { "model": "claude-haiku-4.5", "timeoutSec": 60 },
+      "parse": { "mode": "stdout-clean" },
+      "auth": "COPILOT_GITHUB_TOKEN (fine-grained PAT, Copilot Requests)",
+      "status": "best-effort",
+      "notes": "Windows -p no-output bug (github/copilot-cli #1181) — verify per version; prompt-as-arg may need shell-safe handling per platform."
+    },
+    "agy": {
+      "kind": "cli",
+      "command": "agy",
+      "promptVia": "arg",
+      "args": ["-p", "{prompt}", "--log-file", "{logFile}"],
+      "defaults": { "model": "gemini-3.5-flash", "timeoutSec": 60 },
+      "fallbackCommand": "gemini",
+      "fallbackArgs": ["-p", "{prompt}", "--output-format", "text"],
+      "knownInstallPaths": { "windows": ["%LOCALAPPDATA%\\agy\\bin\\agy.exe"] },
+      "parse": { "mode": "stdout-clean", "logDiagnosis": "exit0+empty-stdout+auth-error-in-log" },
+      "auth": "ANTIGRAVITY_API_KEY / OAuth (gemini fallback: GEMINI_API_KEY)",
+      "status": "best-effort",
+      "notes": "Windows -p no-stdout bug (gemini-cli #27466) -> fall back to gemini."
+    },
+    "google-v2": {
+      "kind": "http",
+      "method": "POST",
+      "endpoint": "https://translation.googleapis.com/language/translate/v2",
+      "headers": { "x-goog-api-key": "{apiKey}", "Content-Type": "application/json; charset=utf-8" },
+      "bodyTemplate": { "q": "{text}", "target": "{target}", "format": "{format}", "source": "{source}" },
+      "omitWhenEmpty": ["source"],
+      "responsePath": "data.translations[0].translatedText",
+      "defaults": { "target": "zh-CN", "format": "text" },
+      "notes": "v2 Basic is the only edition that accepts API keys; format defaults to html so always send text; omit empty source -> auto-detect."
+    },
+    "doubao": {
+      "kind": "http",
+      "method": "POST",
+      "endpoint": "https://ark.cn-beijing.volces.com/api/v3/responses",
+      "headers": { "Authorization": "Bearer {apiKey}", "Content-Type": "application/json" },
+      "bodyTemplate": {
+        "model": "{model}",
+        "input": [ { "role": "user", "content": [ { "type": "input_text", "text": "{text}", "translation_options": { "source_language": "{sourceLanguage}", "target_language": "{targetLanguage}" } } ] } ]
+      },
+      "omitWhenEmpty": ["input[0].content[0].translation_options.source_language"],
+      "responsePath": "output[type=message].content[type=output_text].text",
+      "defaults": { "model": "doubao-seed-translation-250915", "targetLanguage": "zh" },
+      "notes": "MUST be /responses (not /chat/completions); language goes in translation_options; ~4K in/3K out chars; per-character billing; confidence medium (official docs JS-rendered)."
+    }
+  }
+}

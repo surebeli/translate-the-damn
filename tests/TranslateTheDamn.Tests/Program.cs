@@ -279,4 +279,8 @@ Check.Section("TranslationPipeline cache");
     Check.Eq(2, failFake.Calls, "failed translations are not cached");
 }
 
+// ---------------------------------------------------------------- Conformance (shared vectors)
+Check.Section("Conformance (language-neutral vectors from /conformance)");
+Conformance.Run();
+
 return Check.Report();

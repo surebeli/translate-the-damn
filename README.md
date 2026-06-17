@@ -85,8 +85,11 @@ Design spec: `docs/superpowers/specs/2026-06-17-translate-the-damn-design.md`.
 
 ## Other platforms
 
-v1 is Windows 11. `Core` is platform‑agnostic and meant to be reused; only the `App` (OS‑facing)
-layer is rewritten per platform.
+v1 is Windows 11. Future macOS/Linux are **native per platform** (no shared UI/runtime code);
+consistency is enforced by shared contracts + conformance vectors + a parity matrix, all anchored by
+the repo's **[CONSTITUTION.md](./CONSTITUTION.md)** (the single entry point + pointer map). Cross-platform
+status lives in **[PARITY.md](./PARITY.md)**; shared logic is pinned by the vectors in `conformance/`
+(run on Windows today via `dotnet run --project tests/...`).
 
 - **macOS** — Apple Silicon (arm64) only for now. Porting guide: `docs/PORTING-macos.md`.
 - **Linux** — Ubuntu 24.04+ desktop only, tentative; **not started** — several Wayland/X11 questions

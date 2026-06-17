@@ -1,0 +1,11 @@
+{
+  "fn": "AnsiStripper.Strip",
+  "doc": "Remove ANSI escape sequences (CSI/SGR colour + OSC) and carriage returns from captured CLI output. Markers (printable, runners substitute before testing): <ESC> = 0x1B, <CR> = 0x0D.",
+  "cases": [
+    { "name": "strips SGR colour", "in": { "s": "<ESC>[31mhello<ESC>[0m" }, "out": "hello" },
+    { "name": "strips carriage return", "in": { "s": "a<CR>b" }, "out": "ab" },
+    { "name": "plain text untouched", "in": { "s": "plain" }, "out": "plain" },
+    { "name": "empty stays empty", "in": { "s": "" }, "out": "" },
+    { "name": "cursor move + clear stripped", "in": { "s": "<ESC>[2K<ESC>[1Gdone" }, "out": "done" }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "fn": "PromptBuilder.Build",
+  "doc": "Substitute the source text into the prompt template. {content} placeholder is replaced; if absent, the content is appended after the template.",
+  "cases": [
+    { "name": "placeholder substituted", "in": { "template": "rules: {content}", "content": "hello" }, "out": "rules: hello" },
+    { "name": "empty template returns content", "in": { "template": "", "content": "hello" }, "out": "hello" },
+    { "name": "no placeholder appends after rules", "in": { "template": "just rules", "content": "hello" }, "out": "just rules\n\nhello" },
+    { "name": "multiple placeholders not expected; first only spec'd", "in": { "template": "X {content}", "content": "你好" }, "out": "X 你好" }
+  ]
+}
