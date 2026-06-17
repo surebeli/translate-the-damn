@@ -44,8 +44,8 @@
 ## 三、平台与目录
 
 - 各平台的本地 `CLAUDE.md` 是"薄指针",内容只一句:遵守本宪法 + 本平台特有注意事项。
-- **Windows** 当前位于仓库根的 `src/`(Core + App)与 `tests/`。当 macOS / Linux 加入时,
-  约定目录为 `platforms/<os>/`(Windows 可一并迁到 `platforms/windows/`)。
+- **Windows** 位于 `platforms/windows/`(`src/` = Core + App、`tests/`、`TranslateTheDamn.sln`)。
+  macOS / Linux 同构落在 `platforms/<os>/`。各平台本地 `CLAUDE.md` 放各自目录下。
 - 共享层(`spec/`、`conformance/`、`strings/`、`PARITY.md`、本宪法)放仓库根,随 git 流转到每个开发环境。
 
 ---

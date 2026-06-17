@@ -33,8 +33,8 @@ non‑focus‑stealing acrylic popup.
 ## Build & run
 
 ```powershell
-dotnet build TranslateTheDamn.sln -c Release
-.\src\TranslateTheDamn.App\bin\Release\net9.0-windows\TranslateTheDamn.exe
+dotnet build platforms\windows\TranslateTheDamn.sln -c Release
+.\platforms\windows\src\TranslateTheDamn.App\bin\Release\net9.0-windows\TranslateTheDamn.exe
 ```
 
 The app has no main window — look for the tray icon (green = listening, grey = paused). Double‑click
@@ -71,11 +71,11 @@ Notes:
 
 ```powershell
 # offline unit tests (no network / no processes) — dependency-free harness
-dotnet run --project tests\TranslateTheDamn.Tests
+dotnet run --project platforms\windows\tests\TranslateTheDamn.Tests
 
 # opt-in live end-to-end against a real, logged-in CLI
-dotnet run --project tests\TranslateTheDamn.Tests -- --live claude
-dotnet run --project tests\TranslateTheDamn.Tests -- --live codex
+dotnet run --project platforms\windows\tests\TranslateTheDamn.Tests -- --live claude
+dotnet run --project platforms\windows\tests\TranslateTheDamn.Tests -- --live codex
 ```
 
 The solution is dependency‑free (no external NuGet): WPF + WinForms (tray) + framework JSON/HTTP +
@@ -89,7 +89,7 @@ v1 is Windows 11. Future macOS/Linux are **native per platform** (no shared UI/r
 consistency is enforced by shared contracts + conformance vectors + a parity matrix, all anchored by
 the repo's **[CONSTITUTION.md](./CONSTITUTION.md)** (the single entry point + pointer map). Cross-platform
 status lives in **[PARITY.md](./PARITY.md)**; shared logic is pinned by the vectors in `conformance/`
-(run on Windows today via `dotnet run --project tests/...`).
+(run on Windows today via `dotnet run --project platforms/windows/tests/...`).
 
 - **macOS** — Apple Silicon (arm64) only for now. Porting guide: `docs/PORTING-macos.md`.
 - **Linux** — Ubuntu 24.04+ desktop only, tentative; **not started** — several Wayland/X11 questions

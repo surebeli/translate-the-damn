@@ -33,12 +33,13 @@ runner asserts each present field (extra native fields are ignored), so vectors 
 | `backend-requests.json`| google-v2 / doubao HTTP request shape | `cases[]` with `config` + `text` + `expect` (method/url/headers/body) |
 | `pipeline-cache.json` | one-entry last-translation cache (stateful) | `scenarios[]` of `steps[]` with `expectModelCall` |
 
-All six run on Windows CI today (`dotnet run --project tests/...`, 150 assertions). Add a vector here
-before adding new shared logic, so every platform has a test to satisfy.
+All six run on Windows CI today (`dotnet run --project platforms/windows/tests/...`, 150 assertions).
+Add a vector here before adding new shared logic, so every platform has a test to satisfy.
 
 ## Runners
 
-- **Windows (C#)**: `tests/TranslateTheDamn.Tests/Conformance.cs`, run by `dotnet run --project tests/...`
-  (the harness walks up to find this `conformance/` dir). This is the reference runner.
+- **Windows (C#)**: `platforms/windows/tests/TranslateTheDamn.Tests/Conformance.cs`, run by
+  `dotnet run --project platforms/windows/tests/...` (the harness walks up to find this
+  `conformance/` dir). This is the reference runner.
 - **macOS (Swift)** / **Linux**: add a runner that loads the same JSON and asserts via the native
   impl; wire it into that platform's CI.

@@ -11,7 +11,8 @@ parity matrix (`PARITY.md`), the versioning rules, and the PR checklist.
 Native per platform, no shared UI/runtime code; consistency is enforced by shared contracts +
 conformance vectors + the parity matrix, not by sharing binaries.
 
-Per-platform notes live in each platform's local `CLAUDE.md`. **Windows** currently lives at
-`src/` (Core + App) and `tests/`; macOS/Linux land under `platforms/<os>/` when added.
+Per-platform notes live in each platform's local `CLAUDE.md`. **Windows** lives at
+`platforms/windows/` (`src/` = Core + App, `tests/`, the solution); macOS/Linux land under
+`platforms/<os>/`. Shared layer (`spec/`, `conformance/`, `strings/`, this file, `PARITY.md`) is at the repo root.
 
 Before changing behavior anywhere: update `/spec` and/or `/conformance` first (Constitution Law 1).
