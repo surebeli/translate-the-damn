@@ -82,3 +82,12 @@ The solution is dependency‑free (no external NuGet): WPF + WinForms (tray) + f
 Win32 P/Invoke only. Layout: `Core` (platform‑agnostic, unit‑tested logic) and `App` (WPF/Win32 UI).
 
 Design spec: `docs/superpowers/specs/2026-06-17-translate-the-damn-design.md`.
+
+## Other platforms
+
+v1 is Windows 11. `Core` is platform‑agnostic and meant to be reused; only the `App` (OS‑facing)
+layer is rewritten per platform.
+
+- **macOS** — Apple Silicon (arm64) only for now. Porting guide: `docs/PORTING-macos.md`.
+- **Linux** — Ubuntu 24.04+ desktop only, tentative; **not started** — several Wayland/X11 questions
+  must be confirmed first. Porting guide: `docs/PORTING-linux.md`.
