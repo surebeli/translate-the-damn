@@ -1,0 +1,212 @@
+CONSTITUTION.md
+  s_d25ce361606c9b::t_b1afc3996b548d 1-75
+CLAUDE.md
+  s_d25ce361606c9b::t_81501f38353392 1-18
+conformance/README.md
+  s_d25ce361606c9b::t_e57ae54c1be0c5 1-40,44-45
+  s_d25ce361606c9b::t_fb8d7dc9b8b71c 41-43
+README.md
+  s_d25ce361606c9b::t_8c8a27b1c30a3b 1-35,38-91,93-96
+  s_d25ce361606c9b::t_318b9775b1b046 36-37
+  s_d25ce361606c9b::t_8839401ffd9104 92-92
+platforms/windows/CLAUDE.md
+  s_d25ce361606c9b::t_689b143be9ce53 1-15
+platforms/windows/PROGRESS.md
+  0000019ed49c2730 1-52
+platforms/windows/TranslateTheDamn.sln
+  0000019ed49c2730 1-69
+platforms/windows/src/TranslateTheDamn.App/App.xaml
+  0000019ed49c2730 1-12
+platforms/windows/src/TranslateTheDamn.App/App.xaml.cs
+  0000019ed49c2730 1-41
+platforms/windows/src/TranslateTheDamn.App/AppController.cs
+  0000019ed49c2730 1-175
+platforms/windows/src/TranslateTheDamn.App/AssemblyInfo.cs
+  0000019ed49c2730 1-10
+platforms/windows/src/TranslateTheDamn.App/GlobalUsings.cs
+  0000019ed49c2730 1-7
+platforms/windows/src/TranslateTheDamn.App/Interop/NativeMethods.cs
+  0000019ed49c2730 1-96
+platforms/windows/src/TranslateTheDamn.App/Interop/WindowEffects.cs
+  0000019ed49c2730 1-50
+platforms/windows/src/TranslateTheDamn.App/Services/ClipboardListener.cs
+  0000019ed49c2730 1-63
+platforms/windows/src/TranslateTheDamn.App/Services/HotkeyService.cs
+  0000019ed49c2730 1-49
+platforms/windows/src/TranslateTheDamn.App/Services/NativeMessageWindow.cs
+  0000019ed49c2730 1-40
+platforms/windows/src/TranslateTheDamn.App/Services/StartupManager.cs
+  0000019ed49c2730 1-30
+platforms/windows/src/TranslateTheDamn.App/Services/TrayIconController.cs
+  0000019ed49c2730 1-66
+platforms/windows/src/TranslateTheDamn.App/TranslateTheDamn.App.csproj
+  0000019ed49c2730 1-35
+platforms/windows/src/TranslateTheDamn.App/UI/AppIcon.cs
+  0000019ed49c2730 1-96
+platforms/windows/src/TranslateTheDamn.App/UI/PopupWindow.xaml
+  0000019ed49c2730 1-42
+platforms/windows/src/TranslateTheDamn.App/UI/PopupWindow.xaml.cs
+  0000019ed49c2730 1-145
+platforms/windows/src/TranslateTheDamn.App/UI/SettingsWindow.xaml
+  0000019ed49c2730 1-195
+platforms/windows/src/TranslateTheDamn.App/UI/SettingsWindow.xaml.cs
+  0000019ed49c2730 1-184
+platforms/windows/src/TranslateTheDamn.App/UI/Theme.xaml
+  0000019ed49c2730 1-74
+platforms/windows/src/TranslateTheDamn.App/app.manifest
+  0000019ed49c2730 1-28
+platforms/windows/src/TranslateTheDamn.Core/Backends/Cli/AgyTranslator.cs
+  0000019ed49c2730 1-61
+platforms/windows/src/TranslateTheDamn.Core/Backends/Cli/ClaudeTranslator.cs
+  0000019ed49c2730 1-39
+platforms/windows/src/TranslateTheDamn.Core/Backends/Cli/CodexTranslator.cs
+  0000019ed49c2730 1-27
+platforms/windows/src/TranslateTheDamn.Core/Backends/Cli/CopilotTranslator.cs
+  0000019ed49c2730 1-18
+platforms/windows/src/TranslateTheDamn.Core/Backends/Http/DoubaoTranslator.cs
+  0000019ed49c2730 1-78
+platforms/windows/src/TranslateTheDamn.Core/Backends/Http/GoogleV2Translator.cs
+  0000019ed49c2730 1-50
+platforms/windows/src/TranslateTheDamn.Core/Backends/HttpTranslator.cs
+  0000019ed49c2730 1-79
+platforms/windows/src/TranslateTheDamn.Core/Backends/ITranslator.cs
+  0000019ed49c2730 1-19
+platforms/windows/src/TranslateTheDamn.Core/Backends/ProcessTranslator.cs
+  0000019ed49c2730 1-112
+platforms/windows/src/TranslateTheDamn.Core/Backends/TranslatorRegistry.cs
+  0000019ed49c2730 1-43
+platforms/windows/src/TranslateTheDamn.Core/Config/AppConfig.cs
+  0000019ed49c2730 1-81
+platforms/windows/src/TranslateTheDamn.Core/Config/ConfigService.cs
+  0000019ed49c2730 1-91
+platforms/windows/src/TranslateTheDamn.Core/Config/DefaultConfig.cs
+  0000019ed49c2730 1-47
+platforms/windows/src/TranslateTheDamn.Core/Models.cs
+  0000019ed49c2730 1-36
+platforms/windows/src/TranslateTheDamn.Core/TranslateTheDamn.Core.csproj
+  0000019ed49c2730 1-9
+platforms/windows/src/TranslateTheDamn.Core/TranslationPipeline.cs
+  0000019ed49c2730 1-119
+platforms/windows/src/TranslateTheDamn.Core/Util/AnsiStripper.cs
+  0000019ed49c2730 1-57
+platforms/windows/src/TranslateTheDamn.Core/Util/HotkeyParser.cs
+  0000019ed49c2730 1-90
+platforms/windows/src/TranslateTheDamn.Core/Util/PathResolver.cs
+  0000019ed49c2730 1-94
+platforms/windows/src/TranslateTheDamn.Core/Util/ProcessRunner.cs
+  0000019ed49c2730 1-127
+platforms/windows/src/TranslateTheDamn.Core/Util/PromptBuilder.cs
+  0000019ed49c2730 1-16
+platforms/windows/src/TranslateTheDamn.Core/Util/Sandbox.cs
+  0000019ed49c2730 1-26
+platforms/windows/tests/TranslateTheDamn.Tests/Check.cs
+  0000019ed49c2730 1-39
+platforms/windows/tests/TranslateTheDamn.Tests/Conformance.cs
+  0000019ed49c2730 1-218
+platforms/windows/tests/TranslateTheDamn.Tests/FakeTranslator.cs
+  0000019ed49c2730 1-28
+platforms/windows/tests/TranslateTheDamn.Tests/Program.cs
+  0000019ed49c2730 1-286
+platforms/windows/tests/TranslateTheDamn.Tests/TranslateTheDamn.Tests.csproj
+  0000019ed49c2730 1-14
+platforms/windows/src/TranslateTheDamn.App/app.ico
+  0000019ed49c2730 1-116
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "fc2bebe37d1e073c29aa03de49d857d2096a0ae1",
+  "prompts": {
+    "s_d25ce361606c9b::t_b1afc3996b548d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0a05337f-368d-4719-8efb-6d38379e816e",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 75,
+      "total_deletions": 0,
+      "accepted_lines": 75,
+      "overriden_lines": 0
+    },
+    "s_d25ce361606c9b::t_81501f38353392": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0a05337f-368d-4719-8efb-6d38379e816e",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 18,
+      "total_deletions": 0,
+      "accepted_lines": 18,
+      "overriden_lines": 0
+    },
+    "s_d25ce361606c9b::t_e57ae54c1be0c5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0a05337f-368d-4719-8efb-6d38379e816e",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 42,
+      "total_deletions": 0,
+      "accepted_lines": 42,
+      "overriden_lines": 0
+    },
+    "s_d25ce361606c9b::t_8c8a27b1c30a3b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0a05337f-368d-4719-8efb-6d38379e816e",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 93,
+      "total_deletions": 0,
+      "accepted_lines": 93,
+      "overriden_lines": 0
+    },
+    "s_d25ce361606c9b::t_689b143be9ce53": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0a05337f-368d-4719-8efb-6d38379e816e",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 15,
+      "total_deletions": 0,
+      "accepted_lines": 15,
+      "overriden_lines": 0
+    },
+    "s_0e38a2eed391a0::t_804d39a86bef8f": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781683463938798700",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "0000019ed49c2730": {
+      "agent_id": {
+        "tool": "claude",
+        "model": "claude-opus-4-8",
+        "id": "ai-thread-claude-claude-opus-4-8-1781683463984"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 3579,
+      "total_deletions": 0,
+      "accepted_lines": 3579,
+      "overriden_lines": 0
+    }
+  }
+}
