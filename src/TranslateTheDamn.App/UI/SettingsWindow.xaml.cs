@@ -26,6 +26,8 @@ public partial class SettingsWindow : Window
         _config = svc.LoadOrBootstrap();
         InitializeComponent();
         Icon = AppIcon.Window();   // match the tray glyph
+        var v = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+        if (v is not null) Title = $"translate-the-damn · 设置   v{v.Major}.{v.Minor}.{v.Build}";
         PopulateGeneral();
         _loaded = true;
     }

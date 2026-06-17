@@ -15,7 +15,19 @@
     <AssemblyName>TranslateTheDamn</AssemblyName>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>app.ico</ApplicationIcon>
+
+    <!-- Single source of truth for the version (shown in the exe properties + settings caption). -->
     <Version>0.1.0</Version>
+    <FileVersion>0.1.0.0</FileVersion>
+    <AssemblyVersion>0.1.0.0</AssemblyVersion>
+    <InformationalVersion>0.1.0</InformationalVersion>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+    <Product>translate-the-damn</Product>
+    <AssemblyTitle>translate-the-damn — 全局一键翻译</AssemblyTitle>
+    <Description>基于 LLM CLI / API 的全局一键翻译热键工具</Description>
+    <Company>litianyi</Company>
+    <Copyright>Copyright © 2026 litianyi</Copyright>
+
     <!-- WPF owns DPI via PerMonitorV2 in app.manifest; silence the WinForms-only DPI analyzer. -->
     <NoWarn>$(NoWarn);WFO0003</NoWarn>
   </PropertyGroup>
