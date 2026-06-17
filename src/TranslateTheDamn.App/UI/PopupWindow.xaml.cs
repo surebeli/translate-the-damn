@@ -126,6 +126,12 @@ public partial class PopupWindow : Window
         CopyButton.Content = "已复制 ✓";
     }
 
+    private void CloseButton_Click(object sender, RoutedEventArgs e)
+    {
+        _dismissTimer.Stop();
+        Hide();
+    }
+
     // The popup never takes focus (WS_EX_NOACTIVATE), so route wheel events to the scroller
     // ourselves whenever they arrive (Win11 "scroll inactive windows on hover" delivers them).
     private void TranslationScroll_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)

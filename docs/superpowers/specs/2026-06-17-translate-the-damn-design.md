@@ -227,3 +227,28 @@ Windows-broken at runtime it degrades gracefully (status error) without blocking
 
 Open items requiring the user (usage phase): fill google/doubao API keys; live smoke-test
 copilot/agy on this machine; confirm doubao request shape with a real key.
+
+## 12. Versioning (shared across all platforms)
+
+Two **independent** version numbers — do not conflate them:
+
+1. **App version** — `MAJOR.MINOR.PATCH` (SemVer), the product release version shown to users.
+   - **MAJOR**: breaking change to behaviour or config that isn't backward-compatible.
+   - **MINOR**: a new, backward-compatible feature (e.g. the translation cache, the popup close button).
+   - **PATCH**: backward-compatible fixes only.
+   - **Cross-platform rule:** the same `MAJOR.MINOR` denotes the **same feature set** on every
+     platform (Windows / macOS / Linux). A platform that hasn't shipped a feature yet stays on the
+     lower version; per-platform deltas are tracked in the parity matrix, never by diverging the
+     meaning of a version. Release notes/CHANGELOG are coordinated per `MAJOR.MINOR`.
+   - **Single source per platform, one value coordinated across them:** Windows = the `<Version>`
+     family in the App `.csproj` (drives the exe File/Product version + the settings-window caption,
+     read at runtime from the assembly); macOS = `CFBundleShortVersionString` (+ `CFBundleVersion`)
+     in `Info.plist`; Linux = the package version (`.deb`/AppImage). Each platform surfaces it in its
+     about/settings UI and its package metadata.
+
+2. **Config schema version** — the integer `version` field inside `config.json` (currently `1`).
+   This versions the **data format only**, is independent of the app version, and bumps **only** when
+   the config structure changes incompatibly. All platforms read/write the same schema version so a
+   config file is portable between them.
+
+Current app version: **0.2.0** (translation cache + popup close button). Config schema: **1**.
