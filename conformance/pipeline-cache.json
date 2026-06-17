@@ -1,0 +1,17 @@
+{
+  "fn": "TranslationPipeline.cache",
+  "doc": "Stateful: replay steps through a fresh pipeline + a fake translator. expectModelCall=true means the model is invoked (cache miss); false means served from the one-entry cache. Cache key = text + backend + model; only successful results are cached.",
+  "scenarios": [
+    {
+      "name": "same text+model hits; model/text change forces re-translate",
+      "backend": "fake",
+      "steps": [
+        { "text": "same", "model": "m1", "expectModelCall": true },
+        { "text": "same", "model": "m1", "expectModelCall": false },
+        { "text": "same", "model": "m2", "expectModelCall": true },
+        { "text": "other", "model": "m2", "expectModelCall": true },
+        { "text": "other", "model": "m2", "expectModelCall": false }
+      ]
+    }
+  ]
+}

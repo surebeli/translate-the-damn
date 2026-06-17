@@ -281,6 +281,6 @@ Check.Section("TranslationPipeline cache");
 
 // ---------------------------------------------------------------- Conformance (shared vectors)
 Check.Section("Conformance (language-neutral vectors from /conformance)");
-Conformance.Run();
+await Conformance.RunAsync();
 
 return Check.Report();

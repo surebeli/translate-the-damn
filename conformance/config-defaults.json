@@ -1,0 +1,21 @@
+{
+  "fn": "DefaultConfig",
+  "doc": "Assertions on the SERIALIZED first-run default config (camelCase keys; nulls omitted). Each platform serializes its own default config and must satisfy these. path is dot-separated; ops: equals | count | contains | containsItem.",
+  "assert": [
+    { "path": "version", "equals": 1 },
+    { "path": "general.activeBackend", "equals": "claude" },
+    { "path": "general.listenClipboard", "equals": true },
+    { "path": "hotkey.translate", "equals": "Ctrl+Alt+T" },
+    { "path": "popup.style", "equals": "acrylic" },
+    { "path": "popup.autoDismissSeconds", "equals": 6 },
+    { "path": "backends", "count": 6 },
+    { "path": "backends.claude.model", "equals": "haiku" },
+    { "path": "backends.codex.reasoning", "equals": "low" },
+    { "path": "backends.agy.fallbackCommand", "equals": "gemini" },
+    { "path": "backends.google-v2.endpoint", "equals": "https://translation.googleapis.com/language/translate/v2" },
+    { "path": "backends.doubao.endpoint", "equals": "https://ark.cn-beijing.volces.com/api/v3/responses" },
+    { "path": "backends.doubao.model", "equals": "doubao-seed-translation-250915" },
+    { "path": "translation.promptTemplate", "contains": "简体中文" },
+    { "path": "modelCatalog.claude", "containsItem": "haiku" }
+  ]
+}

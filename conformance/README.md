@@ -29,9 +29,12 @@ runner asserts each present field (extra native fields are ignored), so vectors 
 | `prompt-builder.json` | substitute source text into the prompt template | `out` = exact string |
 | `ansi-stripper.json`  | strip ANSI escapes + CR from CLI output | `in.s` uses `` for ESC |
 | `hotkey-parser.json`  | parse "Ctrl+Alt+T" → modifiers + virtual key | `out` asserts a subset of fields |
+| `config-defaults.json`| serialized first-run default config | `assert[]` of path + equals/count/contains/containsItem |
+| `backend-requests.json`| google-v2 / doubao HTTP request shape | `cases[]` with `config` + `text` + `expect` (method/url/headers/body) |
+| `pipeline-cache.json` | one-entry last-translation cache (stateful) | `scenarios[]` of `steps[]` with `expectModelCall` |
 
-TODO vectors (logic shipped on Windows, not yet extracted): last-translation cache, config
-bootstrap/round-trip, google-v2 / doubao request-body building (drive from `spec/backends.json`).
+All six run on Windows CI today (`dotnet run --project tests/...`, 150 assertions). Add a vector here
+before adding new shared logic, so every platform has a test to satisfy.
 
 ## Runners
 

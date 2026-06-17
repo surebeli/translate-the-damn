@@ -1,0 +1,42 @@
+{
+  "fn": "http-backend.buildCall",
+  "doc": "Build the HTTP request for the dedicated translation APIs from a backend config + text. Asserts method/url/headers and body substrings (the serialized JSON body). This pins the request shape every platform must produce.",
+  "cases": [
+    {
+      "name": "google-v2 basic zh-CN auto-detect",
+      "backend": "google-v2",
+      "config": { "apiKey": "K", "target": "zh-CN", "format": "text" },
+      "text": "Hello",
+      "expect": {
+        "method": "POST",
+        "urlContains": ["translate/v2"],
+        "headers": { "x-goog-api-key": "K" },
+        "bodyContains": ["\"q\":\"Hello\"", "\"target\":\"zh-CN\"", "\"format\":\"text\""],
+        "bodyNotContains": ["source"]
+      }
+    },
+    {
+      "name": "google-v2 with explicit source",
+      "backend": "google-v2",
+      "config": { "apiKey": "K", "source": "en" },
+      "text": "Hi",
+      "expect": {
+        "bodyContains": ["\"source\":\"en\""]
+      }
+    },
+    {
+      "name": "doubao default zh, auto source, Responses API",
+      "backend": "doubao",
+      "config": { "apiKey": "K", "model": "doubao-seed-translation-250915", "targetLanguage": "zh" },
+      "text": "Hello",
+      "expect": {
+        "method": "POST",
+        "urlContains": ["/responses"],
+        "urlNotContains": ["chat/completions"],
+        "headers": { "Authorization": "Bearer K" },
+        "bodyContains": ["input_text", "\"target_language\":\"zh\"", "\"model\":\"doubao-seed-translation-250915\""],
+        "bodyNotContains": ["source_language", "messages"]
+      }
+    }
+  ]
+}
