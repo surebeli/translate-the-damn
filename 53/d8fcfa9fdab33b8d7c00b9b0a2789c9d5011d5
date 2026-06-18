@@ -1,0 +1,31 @@
+platforms/macos/src/App/TranslationPopup.swift
+  s_e3fee5cb57ebc3::t_04bd052ea1d37c 1-412
+platforms/macos/src/Core/ProcessTranslator.swift
+  s_e3fee5cb57ebc3::t_04bd052ea1d37c 1-287
+platforms/macos/src/Core/TranslatorRegistry.swift
+  s_e3fee5cb57ebc3::t_04bd052ea1d37c 1-39
+platforms/macos/src/Core/ProcessRunner.swift
+  s_e3fee5cb57ebc3::t_04bd052ea1d37c 1-256
+platforms/macos/src/App/AppDelegate.swift
+  s_e3fee5cb57ebc3::t_04bd052ea1d37c 9,13-20,27-36,39-40,48-49,98,107-148,150-184,220-221,223,226-232
+platforms/macos/src/Core/ConfigService.swift
+  s_e3fee5cb57ebc3::t_04bd052ea1d37c 114-117,123
+platforms/macos/src/Core/HttpTranslator.swift
+  s_e3fee5cb57ebc3::t_04bd052ea1d37c 1-154
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "53d8fcfa9fdab33b8d7c00b9b0a2789c9d5011d5",
+  "prompts": {},
+  "sessions": {
+    "s_e3fee5cb57ebc3": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781767094039383000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
