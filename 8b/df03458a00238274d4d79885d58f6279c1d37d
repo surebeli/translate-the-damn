@@ -5,19 +5,15 @@
   "schema_version": "authorship/3.0.0",
   "git_ai_version": "1.5.8",
   "base_commit_sha": "8bdf03458a00238274d4d79885d58f6279c1d37d",
-  "prompts": {
-    "s_504749a16900fe::t_4ec946eb2048da": {
+  "prompts": {},
+  "sessions": {
+    "s_504749a16900fe": {
       "agent_id": {
         "tool": "mock_ai",
         "id": "ai-thread-1781781319721640000",
         "model": "unknown"
       },
-      "human_author": "litianyi <litianyi@corp.netease.com>",
-      "messages": [],
-      "total_additions": 160,
-      "total_deletions": 0,
-      "accepted_lines": 160,
-      "overriden_lines": 0
+      "human_author": "litianyi <litianyi@corp.netease.com>"
     }
   }
 }
