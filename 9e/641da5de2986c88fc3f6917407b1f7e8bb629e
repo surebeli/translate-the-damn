@@ -1,25 +1,21 @@
-AGENTS.md
-  s_500929ad17c956::t_b324e3d311dde1 1-109
 CLAUDE.md
   s_500929ad17c956::t_b324e3d311dde1 19-126
+AGENTS.md
+  s_500929ad17c956::t_b324e3d311dde1 1-109
 ---
 {
   "schema_version": "authorship/3.0.0",
   "git_ai_version": "1.5.8",
   "base_commit_sha": "9e641da5de2986c88fc3f6917407b1f7e8bb629e",
-  "prompts": {
-    "s_500929ad17c956::t_b324e3d311dde1": {
+  "prompts": {},
+  "sessions": {
+    "s_500929ad17c956": {
       "agent_id": {
         "tool": "mock_ai",
         "id": "ai-thread-1781749096314102000",
         "model": "unknown"
       },
-      "human_author": "litianyi <litianyi@corp.netease.com>",
-      "messages": [],
-      "total_additions": 217,
-      "total_deletions": 0,
-      "accepted_lines": 217,
-      "overriden_lines": 0
+      "human_author": "litianyi <litianyi@corp.netease.com>"
     }
   }
 }
