@@ -157,9 +157,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func openSettings() {
-        // Close any existing settings window, then create a fresh controller from the
-        // latest on-disk config so re-opening settings reflects prior saves.
-        settingsWindowController?.close()
+        // Create a fresh controller from the latest on-disk config so re-opening
+        // settings reflects prior saves (the previous controller is replaced).
         settingsWindowController = SettingsWindowController(
             config: ConfigService.load(from: configPath) ?? ConfigService.defaultConfig(),
             configPath: configPath,
