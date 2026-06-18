@@ -82,7 +82,7 @@ Implemented the macOS clipboard watcher per spec §4/§4.1. `ClipboardFilter` (C
 
 ## Commit
 
-`TODO` "[T-MAC-30] Implement macOS clipboard watcher with pure filter + polling timer"
+`22cc88f` "[T-MAC-30] Implement macOS clipboard watcher with pure filter + polling timer"
 
 ## Checks
 
