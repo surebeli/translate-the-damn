@@ -24,6 +24,7 @@ Every paid vendor dispatch appends a row. Subagent (Claude Code) work is noted b
 | 2026-06-18 | T-MAC-36 | opencode | tokenbox/deepseek-v4-pro | N/A | done (success) | PASS | 366.1s; cost=0 | Composition root (AppDelegate): wired all components + real registry (NoOpTranslator removed) + off-main pipeline + supersede (UUID token) + sandbox CWD. 116/116 green. Cross-reviewed (main). |
 | 2026-06-18 | T-MAC-40 | mimo | xiaomi/mimo-v2.5-pro | xhigh(→max) | failed (timeout) | — (no review) | 1800s | M3 adversarial review TIMED OUT at 30min review-tier floor (large scope ~15 files; session stalled). No coherent review. **Hopper issue**: mimo times out on large-scope reviews ⇒ use subagent or chunk scope. Fallback: subagent. |
 | 2026-06-18 | T-MAC-40F | opencode | tokenbox/deepseek-v4-pro | N/A | done (success) | PASS | 614.5s; cost=0 | Fixed 6 M3 review findings (P0-1 promptTemplate, P0-2 agy fallback, P1-1 supersede cancel, P1-2 idle timeout, P2-2 URL guard, P2-4 screen). 116/116 green. Re-reviewed (main). opencode committed `53d8fcf`. |
+| 2026-06-18 | T-MAC-51 | opencode | tokenbox/deepseek-v4-pro | N/A | done (success) | PASS | 261.1s; cost=0 | `.app` bundle script + `Info.plist` (0.2.0/LSUIElement/icon) + `sign-notarize.sh` (parameterized, no sandbox) + README. release build + 116 tests green. opencode `git add -A` but no commit (main session handles). Cross-reviewed (main). |
 
 ## Issues hit
 

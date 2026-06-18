@@ -1,5 +1,5 @@
 # Swift build artifacts
 .build/
 Package.resolved
-*.xcodeproj
+TranslateTheDamn.app
 DerivedData/

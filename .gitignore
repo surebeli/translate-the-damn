@@ -24,3 +24,6 @@ Thumbs.db
 ## App runtime artifacts (never commit user config / secrets)
 *.log
 local.config.json
+
+## Vendor tool artifacts (mimo plan files, etc.)
+.mimocode/

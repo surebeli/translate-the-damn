@@ -8,28 +8,28 @@ Legend: ✅ shipped · 🚧 in progress · ⬜ not started · ⚠️ partial/bes
 
 | Feature | Spec | Conformance | Win | macOS | Linux |
 |---|---|---|---|---|---|
-| Clipboard watch (toggle, self-write guard) | §4, §4.1 | — (UI/OS) | ✅ | ⬜ | ⬜ |
-| Global hotkey (configurable, conflict-detect) | §4 | `hotkey-parser` | ✅ | ⬜ | ⬜ |
-| Translation rules / prompt building | §5 | `prompt-builder` | ✅ | ⬜ | ⬜ |
-| ANSI output cleaning | §6 | `ansi-stripper` | ✅ | ⬜ | ⬜ |
-| Backends — claude, codex (CLI) | §6 | `spec/backends.json` | ✅ | ⬜ | ⬜ |
-| Backends — copilot, agy (CLI) | §6 | `spec/backends.json` | ⚠️ | ⬜ | ⬜ |
-| Backends — google-v2, doubao (HTTP) | §6.1/6.2 | `backend-requests` + `spec/backends.json` | ✅ | ⬜ | ⬜ |
-| Last-translation cache (text+backend+model) | §4.1 | `pipeline-cache` | ✅ | ⬜ | ⬜ |
-| config.json defaults / bootstrap | §7 | `config-defaults` | ✅ | ⬜ | ⬜ |
-| Acrylic popup (no-focus-steal, hover-keep, auto-dismiss, scroll) | §8 | — (UI) | ✅ | ⬜ | ⬜ |
-| Popup copy + close buttons | §8 | — (UI) | ✅ | ⬜ | ⬜ |
-| Settings window (backend/model, fields, live hotkey check) | §9 | — (UI) | ✅ | ⬜ | ⬜ |
-| Tray icon + global switch (persisted) | §3 | — (UI) | ✅ | ⬜ | ⬜ |
-| App icon = tray glyph (single source) | — | — (UI) | ✅ | ⬜ | ⬜ |
-| Dark scrollbar theme | — | — (UI) | ✅ | ⬜ | ⬜ |
+| Clipboard watch (toggle, self-write guard) | §4, §4.1 | — (UI/OS) | ✅ | 🚧 | ⬜ |
+| Global hotkey (configurable, conflict-detect) | §4 | `hotkey-parser` | ✅ | ✅ | ⬜ |
+| Translation rules / prompt building | §5 | `prompt-builder` | ✅ | ✅ | ⬜ |
+| ANSI output cleaning | §6 | `ansi-stripper` | ✅ | ✅ | ⬜ |
+| Backends — claude, codex (CLI) | §6 | `spec/backends.json` | ✅ | ✅ | ⬜ |
+| Backends — copilot, agy (CLI) | §6 | `spec/backends.json` | ⚠️ | ⚠️ | ⬜ |
+| Backends — google-v2, doubao (HTTP) | §6.1/6.2 | `backend-requests` + `spec/backends.json` | ✅ | ✅ | ⬜ |
+| Last-translation cache (text+backend+model) | §4.1 | `pipeline-cache` | ✅ | ✅ | ⬜ |
+| config.json defaults / bootstrap | §7 | `config-defaults` | ✅ | ✅ | ⬜ |
+| Acrylic popup (no-focus-steal, hover-keep, auto-dismiss, scroll) | §8 | — (UI) | ✅ | 🚧 | ⬜ |
+| Popup copy + close buttons | §8 | — (UI) | ✅ | 🚧 | ⬜ |
+| Settings window (backend/model, fields, live hotkey check) | §9 | — (UI) | ✅ | 🚧 | ⬜ |
+| Tray icon + global switch (persisted) | §3 | — (UI) | ✅ | 🚧 | ⬜ |
+| App icon = tray glyph (single source) | — | — (UI) | ✅ | 🚧 | ⬜ |
+| Dark scrollbar theme | — | — (UI) | ✅ | 🚧 | ⬜ |
 
 ## Version
 
 | | Win | macOS | Linux |
 |---|---|---|---|
-| App version | **0.2.0** | — | — |
-| config schema | 1 | — | — |
+| App version | **0.2.0** | **0.2.0** (target — `CFBundleShortVersionString` via T-MAC-51 Info.plist) | — |
+| config schema | 1 | 1 | — |
 
 ## Notes
 

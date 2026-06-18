@@ -856,3 +856,33 @@ Fix the must-fix findings from the T-MAC-40 subagent adversarial review of M3. A
 ### Constraints
 - Edit ONLY the listed files under `platforms/macos/`. Do NOT modify the conformance runner, `/spec`, `/conformance`, `CONSTITUTION.md`, or `platforms/windows/`.
 - Native Swift. Run `swift test`; report real output. Do not claim pass unless 116/116 green (T-MAC-40F).
+
+---
+
+## T-MAC-51
+
+**Task-type**: code-impl  **Vendor**: opencode (model `tokenbox/deepseek-v4-pro`; pass `--sandbox danger-full-access`)  **Deps**: T-MAC-41 (M3 acceptance done)
+
+### Goal
+M4 build/packaging: produce a proper `.app` bundle from the SwiftPM executable + `Info.plist` (`CFBundleIconFile`, `CFBundleShortVersionString`=0.2.0, arm64) + a build/bundle script + code-signing/notarization/hardened-runtime PREP (scripts; the actual signing needs the user's Developer ID — provide parameterized scripts + docs, don't require credentials). NO App Sandbox (must spawn CLIs). After this, `swift build -c release` produces the arm64 exe + a script wraps it into `TranslateTheDamn.app`.
+
+### Background (read; do not modify source)
+- spec §12 (versioning: macOS = `CFBundleShortVersionString`; arm64; sign+notarize+hardened runtime; NO App Sandbox).
+- `platforms/macos/Package.swift` (the `TranslateTheDamnApp` executable target).
+- `platforms/macos/Resources/app.icns` (T-MAC-35) + `scripts/build-icon.sh`.
+- `platforms/macos/CLAUDE.md` (arm64 only; macOS 14; no sandbox).
+
+### Acceptance
+- A bundle script `platforms/macos/scripts/build-app.sh` that: `swift build -c release` (arm64) → wraps the executable into `TranslateTheDamn.app/Contents/MacOS/TranslateTheDamn` + `Contents/Info.plist` + `Contents/Resources/app.icns` (+ bundle `strings/zh-CN.json` as a resource so `StringsLoader` finds it in the `.app`).
+- `Info.plist` (a template under `platforms/macos/Resources/`): `CFBundleName`=translate-the-damn, `CFBundleIdentifier`=com.surebeli.translate-the-damn, `CFBundleVersion`=1, `CFBundleShortVersionString`=0.2.0 (Law 3 — same MAJOR.MINOR as Windows), `CFBundleExecutable`=TranslateTheDamn, `CFBundleIconFile`=app.icns, `LSUIElement`=true (menu-bar app, no Dock), `LSMinimumSystemVersion`=14.0, `CFBundlePackageType`=APPL.
+- A signing/notarize prep script `platforms/macos/scripts/sign-notarize.sh` (+ short README): `codesign` with Developer ID + hardened runtime + `xcrun notarytool` — **PARAMETERIZED** (no hardcoded credentials; user supplies `DEVELOPER_ID` + notarization creds via env). NO App-Sandbox entitlement (must spawn CLIs).
+- `swift build -c release` succeeds (arm64). The bundle script produces a `.app` (verify with `ls`/`file`).
+- `swift test` stays green (no regression).
+
+### Return
+- New scripts (`build-app.sh`, `sign-notarize.sh`) + `Info.plist` template (+ README). EXACT `swift build -c release` + `swift test` output. `git diff --stat`.
+
+### Constraints
+- Add scripts + `Info.plist` under `platforms/macos/` (edit `Package.swift` only if needed for release). Do NOT modify Core/App source logic, `/spec`, `/conformance`, `CONSTITUTION.md`, or `platforms/windows/`.
+- arm64 only. NO App Sandbox. signing/notarize scripts PARAMETERIZED (no credentials hardcoded).
+- Run `swift build -c release` + `swift test`; report real output. Do not claim pass unless release build + tests green (T-MAC-51).
