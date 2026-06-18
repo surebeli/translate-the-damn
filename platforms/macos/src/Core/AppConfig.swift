@@ -41,7 +41,7 @@ public struct GeneralConfig: Codable {
     public var listenClipboard: Bool
     public var activeBackend: String
     public var startWithWindows: Bool
-    public var uiStyle: String?  // "ZP" (default) | "classic"; nil → "ZP" for backward compat
+    public var uiStyle: String?  // "O48" (default) | "ZP" | "classic"; nil → "O48". Field stays nil-by-default so the serialized config (conformance) is unchanged.
 
     public init(listenClipboard: Bool = true, activeBackend: String = "claude", startWithWindows: Bool = false, uiStyle: String? = nil) {
         self.listenClipboard = listenClipboard

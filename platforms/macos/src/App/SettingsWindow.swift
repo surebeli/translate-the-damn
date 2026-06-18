@@ -19,9 +19,13 @@ final class SettingsWindowController {
 
     @MainActor func show() {
         if window == nil {
-            let hostingView = NSHostingView(rootView: viewModel.uiStyle == "classic"
-                ? AnyView(SettingsView(vm: viewModel))
-                : AnyView(ZPSettingsView(vm: viewModel)))
+            let root: AnyView
+            switch viewModel.uiStyle {
+            case "classic": root = AnyView(SettingsView(vm: viewModel))
+            case "ZP":      root = AnyView(ZPSettingsView(vm: viewModel))
+            default:        root = AnyView(O48SettingsView(vm: viewModel))  // "O48" + unknown → default
+            }
+            let hostingView = NSHostingView(rootView: root)
             hostingView.frame.size = hostingView.fittingSize
 
             let win = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 560, height: 640),
@@ -70,7 +74,7 @@ final class SettingsViewModel: ObservableObject {
     @Published var autoDismissSeconds: Double
     @Published var keepOnHover: Bool
     @Published var startWithWindows: Bool
-    @Published var uiStyle: String = "ZP"
+    @Published var uiStyle: String = "O48"
 
     @Published var saveStatus: String = ""
     @Published var authHint: String = ""
@@ -131,7 +135,11 @@ final class SettingsViewModel: ObservableObject {
         autoDismissSeconds = Double(config.popup.autoDismissSeconds)
         keepOnHover = config.popup.keepOnHover
         startWithWindows = config.general.startWithWindows
-        uiStyle = config.general.uiStyle ?? "ZP"
+        uiStyle = config.general.uiStyle ?? "O48"
+        // Clamp unknown/hand-edited values so the segmented Picker always has a matching tag
+        // (mirrors the selectedBackendId clamp below). The picker can only emit valid tags, so this
+        // only normalizes config.json that was edited by hand to a stray value.
+        if !["O48", "ZP", "classic"].contains(uiStyle) { uiStyle = "O48" }
 
         if !backendIds.contains(selectedBackendId), let first = backendIds.first {
             selectedBackendId = first
@@ -567,8 +575,9 @@ struct SettingsView: View {
                 .padding(.bottom, 2)
 
             Picker("界面风格", selection: $vm.uiStyle) {
-                Text("ZP（新潮磨砂）").tag("ZP")
+                Text("ZP（磨砂）").tag("ZP")
                 Text("Classic（经典）").tag("classic")
+                Text("O48（聚焦）").tag("O48")
             }
             .pickerStyle(.segmented)
             .padding(.bottom, 8)

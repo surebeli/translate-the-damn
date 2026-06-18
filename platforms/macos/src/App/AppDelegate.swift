@@ -197,14 +197,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func createPopup(config: AppConfig) -> TranslationPopupUI {
-        let uiStyle = config.general.uiStyle ?? "ZP"
+        let uiStyle = config.general.uiStyle ?? "O48"
         let onCopy: (String) -> Void = { [weak self] text in
             self?.clipboardWatcher?.markSelfWrite(text)
         }
-        if uiStyle == "classic" {
+        switch uiStyle {
+        case "classic":
             return TranslationPopup(cfg: config.popup) { onCopy($0) }
+        case "ZP":
+            return ZPPopup(cfg: config.popup) { onCopy($0) }
+        default:  // "O48" + any unknown value → the new default style.
+            return O48Popup(cfg: config.popup) { onCopy($0) }
         }
-        return ZPPopup(cfg: config.popup) { onCopy($0) }
     }
 
     private func buildMainMenu() -> NSMenu {
