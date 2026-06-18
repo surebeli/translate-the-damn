@@ -1,0 +1,35 @@
+platforms/macos/src/App/ZPopup.swift
+  s_b2028d8c22aa60::t_0603b401549f63 1-516
+docs/ZP-UI-REDESIGN-PROMPT.md
+  s_b2028d8c22aa60::t_0603b401549f63 5,21,37,85,87,97,144,158,160,229-230,234-235
+platforms/macos/src/App/O48SettingsView.swift
+  s_b2028d8c22aa60::t_0603b401549f63 162-163
+platforms/macos/src/App/SettingsWindow.swift
+  s_b2028d8c22aa60::t_0603b401549f63 26,144,580
+platforms/macos/src/App/AppDelegate.swift
+  s_b2028d8c22aa60::t_0603b401549f63 209-210
+platforms/macos/src/Core/AppConfig.swift
+  s_b2028d8c22aa60::t_0603b401549f63 44
+platforms/macos/src/App/ZSettingsView.swift
+  s_b2028d8c22aa60::t_0603b401549f63 1-228
+platforms/macos/src/App/KMSettingsView.swift
+  s_b2028d8c22aa60::t_0603b401549f63 173-174
+platforms/macos/src/App/ZPSettingsView.swift
+  s_b2028d8c22aa60::t_0603b401549f63 132
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "af1a70a92aaa4b7ae3896a5e244fafa673072c4b",
+  "prompts": {},
+  "sessions": {
+    "s_b2028d8c22aa60": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781807061292829000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
