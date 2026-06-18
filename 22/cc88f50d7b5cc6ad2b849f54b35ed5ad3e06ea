@@ -1,0 +1,27 @@
+platforms/macos/src/Core/ClipboardFilter.swift
+  s_f47008118e1516::t_ee97b5abc4cf4c 1-88
+platforms/macos/src/App/ClipboardWatcher.swift
+  s_f47008118e1516::t_ee97b5abc4cf4c 1-69
+platforms/macos/src/App/AppDelegate.swift
+  s_f47008118e1516::t_ee97b5abc4cf4c 3,7-9,14-26,67-72
+platforms/macos/tests/ClipboardFilterTests.swift
+  s_f47008118e1516::t_ee97b5abc4cf4c 1-126
+.hopper/handoffs/T-MAC-30-output.md
+  s_f47008118e1516::t_ee97b5abc4cf4c 1-99
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "22cc88f50d7b5cc6ad2b849f54b35ed5ad3e06ea",
+  "prompts": {},
+  "sessions": {
+    "s_f47008118e1516": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781760777849600000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
