@@ -77,3 +77,25 @@
 - **A（@main）**: 已修复（`static func main()` 设 delegate）+ 已提交（`729e68d`）。✅
 - **B（设置不生效）**: 已修复（hotReload 重建 popup + openSettings 每次创建新 controller）。待验证 + 提交。
 - **C（UI 太丑）**: 待修复（UI polish：参考 macOS HIG 重做浮窗/设置/托盘的排版/字体/间距/控件样式）。
+
+---
+
+## 第二轮走查发现 (hotkey mapping, 2026-06-18)
+
+### D. 热键 "command" 映射为 ⌃ Control 而非 ⌘ Command → 热键不触发弹窗
+
+- **现象**: 用户设热键 "shift+command+c"，按 ⇧⌘C 不弹窗。诊断 (fputs stderr) 显示注册 modifiers=0x1200 (= ⇧⌃C = Shift+Control+C)，非 ⇧⌘C。按键不匹配 → 无回调 → 无弹窗。
+- **引入方**: 主 session（我）— commit c26b803 (Ctrl→⌘ / Win→⌃ 重映射)。把 hasWin("Win"/"Command"/"Cmd") 交换到 controlKey(⌃) 是错误的：macOS 用户输入 "command" 期望 ⌘。
+- **当时 review 方**: **无审核** — 用户报告问题后的直接修复，未走 vendor 交叉审核。T-MAC-REV 在此修改之前，没覆盖。
+- **根因分析**:
+  - **目标不清晰？** 部分 — macOS 修饰键映射约定 (Ctrl→⌘, Win→⌃) 是我做的设计决策，spec 没指定。套用"标准移植约定"但 Win/Command 映射搞反。
+  - **TDD 不清晰？** **是** — CarbonKeyMapTests 被更新了，但测的是**错误的映射**（我改测试匹配错误实现）。测试验证了实现，没验证**用户期望**（"command" → ⌘）。没有"command → cmdKey"的测试。
+  - **Fable governance？** 这次修改没走交叉审核（直接 hotfix）。governance 的 "cross-review" 没覆盖这个 hotfix。
+  - **诊断方法有效**: fputs(stderr) + 直接运行 executable 捕获输出 → 立刻定位到 modifiers=0x1200(⇧⌃C) 而非预期的 ⇧⌘C。→ **教训：运行时诊断（stderr print + direct launch）比 NSLog/system log 更可靠**。
+- **修复**: hasWin → cmdKey(⌘)，与 hasControl 相同。"Ctrl" 和 "Command" 都 → ⌘。commit bdcf578。
+
+### D 的改进措施
+
+7. **hotfix 也要交叉审核**: 即使是用户报告后的直接修复，也要走 vendor/subagent 交叉审核（至少一次）。
+8. **测试验证用户期望，不只是实现**: modifier 映射的测试应该断言 "command → ⌘"(用户期望)，而不是"hasWin → 0x1000"(实现细节)。
+9. **运行时诊断优先**: 遇到运行时行为问题，用 fputs(stderr) + 直接运行 executable 捕获输出，比 NSLog/system log 更快定位。
