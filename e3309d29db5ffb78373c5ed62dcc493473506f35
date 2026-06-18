@@ -1,0 +1,23 @@
+.hopper/handoffs/T-MAC-30-output.md
+  s_aec4aca359153c::t_d7c3de66dfa0a6 85-85
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "e3309d29db5ffb78373c5ed62dcc493473506f35",
+  "prompts": {
+    "s_aec4aca359153c::t_d7c3de66dfa0a6": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781760801125996000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 0,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    }
+  }
+}
