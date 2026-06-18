@@ -9,6 +9,7 @@ import TranslateTheDamnCore
 ///
 /// Non-focus-stealing: NSPanel(.nonactivatingPanel) + canBecomeKey/Main=false + .floating level.
 /// Common protocol for popup UI implementations (ZP modern + classic).
+@MainActor
 protocol TranslationPopupUI: AnyObject {
     func showLoading()
     func showResult(translation: String, source: String)
