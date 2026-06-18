@@ -23,6 +23,7 @@ final class SettingsWindowController {
             switch viewModel.uiStyle {
             case "classic": root = AnyView(SettingsView(vm: viewModel))
             case "ZP":      root = AnyView(ZPSettingsView(vm: viewModel))
+            case "Z":       root = AnyView(ZSettingsView(vm: viewModel))
             case "km":      root = AnyView(KMSettingsView(vm: viewModel))
             default:        root = AnyView(O48SettingsView(vm: viewModel))  // "O48" + unknown → default
             }
@@ -140,7 +141,7 @@ final class SettingsViewModel: ObservableObject {
         // Clamp unknown/hand-edited values so the segmented Picker always has a matching tag
         // (mirrors the selectedBackendId clamp below). The picker can only emit valid tags, so this
         // only normalizes config.json that was edited by hand to a stray value.
-        if !["O48", "ZP", "classic", "km"].contains(uiStyle) { uiStyle = "O48" }
+        if !["O48", "Z", "ZP", "km", "classic"].contains(uiStyle) { uiStyle = "O48" }
 
         if !backendIds.contains(selectedBackendId), let first = backendIds.first {
             selectedBackendId = first
@@ -576,6 +577,7 @@ struct SettingsView: View {
                 .padding(.bottom, 2)
 
             Picker("界面风格", selection: $vm.uiStyle) {
+                Text("Z（文档）").tag("Z")
                 Text("KM（侧栏）").tag("km")
                 Text("ZP（磨砂）").tag("ZP")
                 Text("Classic（经典）").tag("classic")
