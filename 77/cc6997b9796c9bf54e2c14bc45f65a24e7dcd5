@@ -1,0 +1,25 @@
+platforms/macos/src/App/TranslationPopup.swift
+  s_ed4a4a7e55f47c::t_bc2bbc1b5661da 93
+platforms/macos/src/Core/AppConfig.swift
+  s_ed4a4a7e55f47c::t_bc2bbc1b5661da 44,46,50
+platforms/macos/src/App/ZPPopup.swift
+  s_ed4a4a7e55f47c::t_bc2bbc1b5661da 1-293
+platforms/macos/src/App/AppDelegate.swift
+  s_ed4a4a7e55f47c::t_bc2bbc1b5661da 25,44,182,199-207
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "77cc6997b9796c9bf54e2c14bc45f65a24e7dcd5",
+  "prompts": {},
+  "sessions": {
+    "s_ed4a4a7e55f47c": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781779823857194000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
