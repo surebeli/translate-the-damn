@@ -1,0 +1,25 @@
+platforms/macos/src/Core/CarbonKeyMap.swift
+  s_7133571355891c::t_37fa8ddc744d99 39-46
+platforms/macos/tests/CarbonKeyMapTests.swift
+  s_7133571355891c::t_37fa8ddc744d99 114-114,129-129,134-134,139-139
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "c26b803bf126558dd77ffa3aa5d6cccd5539f535",
+  "prompts": {
+    "s_7133571355891c::t_37fa8ddc744d99": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781777986314571000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 12,
+      "total_deletions": 0,
+      "accepted_lines": 12,
+      "overriden_lines": 0
+    }
+  }
+}
