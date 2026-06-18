@@ -1,0 +1,27 @@
+platforms/macos/Package.swift
+  s_51bd7e24a88326::t_9ffda398ac7fd4 1-25
+platforms/macos/src/Core/PathResolver.swift
+  s_51bd7e24a88326::t_9ffda398ac7fd4 1-133
+platforms/macos/tests/PathResolverTests.swift
+  s_51bd7e24a88326::t_9ffda398ac7fd4 1-118
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "c1af0c85b4a8e0654e50ea7c7f3ebc9d03090f4c",
+  "prompts": {
+    "s_51bd7e24a88326::t_9ffda398ac7fd4": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781756895230848000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 276,
+      "total_deletions": 0,
+      "accepted_lines": 276,
+      "overriden_lines": 0
+    }
+  }
+}
