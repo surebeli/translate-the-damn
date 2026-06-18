@@ -111,7 +111,7 @@ final class CarbonKeyMapTests: XCTestCase {
 
     func testCarbonModifiersControlOnly() throws {
         let m = CarbonKeyMap.carbonModifiers(hasControl: true, hasAlt: false, hasShift: false, hasWin: false)
-        XCTAssertEqual(m, 0x1000)
+        XCTAssertEqual(m, 0x0100)
     }
 
     func testCarbonModifiersAltOnly() throws {
@@ -126,16 +126,16 @@ final class CarbonKeyMapTests: XCTestCase {
 
     func testCarbonModifiersWinOnly() throws {
         let m = CarbonKeyMap.carbonModifiers(hasControl: false, hasAlt: false, hasShift: false, hasWin: true)
-        XCTAssertEqual(m, 0x0100)
+        XCTAssertEqual(m, 0x1000)
     }
 
     func testCarbonModifiersCtrlAlt() throws {
         let m = CarbonKeyMap.carbonModifiers(hasControl: true, hasAlt: true, hasShift: false, hasWin: false)
-        XCTAssertEqual(m, 0x1800)
+        XCTAssertEqual(m, 0x0900)
     }
 
     func testCarbonModifiersWinShift() throws {
         let m = CarbonKeyMap.carbonModifiers(hasControl: false, hasAlt: false, hasShift: true, hasWin: true)
-        XCTAssertEqual(m, 0x0300)
+        XCTAssertEqual(m, 0x1200)
     }
 }

@@ -36,10 +36,14 @@ public enum CarbonKeyMap {
 
     public static func carbonModifiers(hasControl: Bool, hasAlt: Bool, hasShift: Bool, hasWin: Bool) -> UInt32 {
         var mods: UInt32 = 0
-        if hasControl { mods |= 0x1000 }
-        if hasAlt     { mods |= 0x0800 }
-        if hasShift   { mods |= 0x0200 }
-        if hasWin     { mods |= 0x0100 }
+        // macOS porting convention: Windows Ctrl → macOS ⌘ Command (0x0100);
+        // Windows Win → macOS ⌃ Control (0x1000). This makes "Ctrl+Alt+T" register as
+        // ⌘⌥T (Command+Option+T) — the Mac-appropriate hotkey — while the config/display
+        // string stays "Ctrl+Alt+T" (shared schema, Law 4).
+        if hasControl { mods |= 0x0100 }  // cmdKey (Ctrl→⌘)
+        if hasAlt     { mods |= 0x0800 }  // optionKey (Alt→⌥)
+        if hasShift   { mods |= 0x0200 }  // shiftKey (Shift→⇧)
+        if hasWin     { mods |= 0x1000 }  // controlKey (Win→⌃)
         return mods
     }
 }
