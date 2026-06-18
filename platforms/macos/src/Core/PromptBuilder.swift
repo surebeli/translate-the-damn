@@ -6,8 +6,6 @@ import Foundation
 /// - empty template ⇒ return content verbatim
 /// - template contains `{content}` ⇒ replace the placeholder
 /// - no placeholder ⇒ append the content after the rules, separated by `\n\n`
-///
-/// M1 STUB: returns `""` so the conformance vector is RED. M2 implements the real logic.
 public enum PromptBuilder {
     public static let placeholder = "{content}"
 

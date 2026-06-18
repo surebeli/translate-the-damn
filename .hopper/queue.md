@@ -1,0 +1,68 @@
+# Hopper Queue — translate-the-damn macOS port (v2 schema)
+
+Anchor: `.hopper/queue.md::root`
+
+- **Schema version**: 2 (Task-type column primary)
+- **Status values**: `pending` / `in-progress` / `done` / `failed` / `removed`
+- **Push privilege**: main session (CEO/CTO) only
+- **Vendor routing**: `.hopper/AGENTS.md` task-vendor-preference table; row-level `Vendor` override allowed
+- **Authority**: root `CONSTITUTION.md` (laws) + `docs/superpowers/specs/2026-06-17-translate-the-damn-design.md` (behaviour) + `conformance/` (vectors = done gate)
+- **Done gate**: a logic task is `done` only when its `conformance/` vector passes in the Swift runner; UI tasks verified against spec §3-9 + a manual check; every dev task is cross-reviewed by a DIFFERENT channel before `done`; P0/P1 fixes get a second reviewer.
+
+---
+
+## Tasks
+
+| ID | Task-type | Status | Depends | Priority | Brief | Vendor |
+|----|-----------|--------|---------|----------|-------|--------|
+| T-MAC-00 | spec-write | done | | high | M0: scaffold .hopper/ + charter methodology + platforms/macos/CLAUDE.md + fix PORTING-macos Avalonia→Swift drift + resolve stale hopper binary. Executed in main session. | subagent |
+| T-MAC-01 | code-impl | done | T-MAC-00 | high | SwiftPM scaffold: Package.swift (arm64, macOS 14+, modules Core + ConformanceTests), dir layout platforms/macos/src/{Core,App}, test entry. | subagent |
+| T-MAC-02 | code-impl | done | T-MAC-01 | high | Conformance runner harness: load conformance/*.json, replace `<ESC>`/`<CR>` markers → 0x1B/0x0D, feed Swift impls, assert (scalar / object-subset / assert-ops / stateful-scenarios), non-zero exit on fail. Wire `swift test`. | subagent |
+| T-MAC-10 | code-impl | done | T-MAC-02 | high | Models + ConfigService: read/write `~/.translatethedamn/config.json` (schema v1, camelCase, nulls omitted), bootstrap hardcoded default. → `config-defaults` green. | kimi |
+| T-MAC-11 | code-impl | done | T-MAC-02 | high | PromptBuilder: `{content}` subst; empty template → content; no placeholder → append `"\n\n"`+content. → `prompt-builder` green. | kimi |
+| T-MAC-12 | code-impl | done | T-MAC-02 | high | AnsiStripper: strip CSI/SGR/OSC + CR. → `ansi-stripper` green. | kimi |
+| T-MAC-13 | code-impl | done | T-MAC-02 | high | HotkeyParser: parse `"Ctrl+Alt+T"` → modifiers + **Win32 VK code** (T=84, F2=113, Space=32) for the vector; bare key / empty / unknown → invalid. Separate VK→macOS keycode map for Carbon registration (not vector-asserted). → `hotkey-parser` green. | opencode |
+| T-MAC-14 | code-impl | done | T-MAC-02 | high | BackendManifest interpreter: read `spec/backends.json`; placeholder `{model}`/`{text}`/`{apiKey}`/… subst; `bodyTemplate` + `omitWhenEmpty`; `responsePath` `a.b[0].c` and `arr[key=value].x`; google-v2 + doubao request shapes. → `backend-requests` green. | opencode |
+| T-MAC-15 | code-impl | done | T-MAC-02 | high | TranslationPipeline + one-entry cache (key = text+backend+model, success-only, settings-clears); supersede via CancellationToken-equivalent. → `pipeline-cache` green. | opencode |
+| T-MAC-16 | code-impl | done | T-MAC-10 | normal | PathResolver: POSIX resolve + execute-bit check; `knownInstallPaths` (`/opt/homebrew/bin`, `~/.nvm/versions/node/*/bin`, `~/.local/bin`, `~/.kimi-code/bin`, `~/.grok/bin`) + login-shell PATH (`zsh -ilc 'echo $PATH'`) once at startup; injectable per-OS. | kimi |
+| T-MAC-20 | code-review-adversarial | done | T-MAC-10,T-MAC-11,T-MAC-12,T-MAC-13,T-MAC-14,T-MAC-15,T-MAC-16 | high | Adversarial cross-review of M2 core logic: vector-faithfulness, edge cases vs Windows reference (`platforms/windows/src/`), Swift correctness, no hardcoded backends. Different channel than builders. | mimo |
+| T-MAC-20F | code-impl | done | T-MAC-20 | high | Fix mimo P0/P1 findings (F1-F5, F8, F14-16) | opencode |
+| T-MAC-30 | code-impl | pending | T-MAC-20 | normal | Clipboard poller: `NSPasteboard.general.changeCount` ~250ms; self-write guard (hash); skip non-text/empty/>maxChars; dedupe; debounce; supersede. | kimi |
+| T-MAC-31 | code-impl | pending | T-MAC-20 | normal | Carbon global hotkey: `RegisterEventHotKey` (no TCC); VK→macOS keycode map; registration-failure → conflict surface; configurable translate + toggle-listen. | opencode |
+| T-MAC-32 | code-impl | pending | T-MAC-20 | normal | Non-focus popup: `NSPanel` (nonactivatingPanel + floating level, `hidesOnDeactivate=false`) + `NSVisualEffectView`; source(muted)/translation(prominent)/复制译文/关闭; hover-keep; auto-dismiss (`autoDismissSeconds`); scrollable; states 翻译中…→result→error. Strings from `strings/zh-CN.json`. | opencode |
+| T-MAC-33 | code-impl | pending | T-MAC-20 | normal | Tray: `NSStatusItem` (tooltip listening/paused, menu 监听剪贴板/打开设置…/退出) + persisted global switch. | kimi |
+| T-MAC-34 | code-impl | pending | T-MAC-20 | normal | SwiftUI settings window: 监听与触发/翻译后端/浮窗展示/通用 groups; backend→`modelCatalog` editable; per-backend fields (apiKey/endpoint/target/timeout); live hotkey conflict check; writes `config.json` + hot-reloads pipeline. | opencode |
+| T-MAC-35 | code-impl | pending | T-MAC-20 | normal | `SMAppService` start-at-login (macOS 13+) + `.icns` via `iconutil` (single glyph source, unify tray+app icon). | kimi |
+| T-MAC-36 | code-impl | pending | T-MAC-30,T-MAC-31,T-MAC-32,T-MAC-33,T-MAC-34,T-MAC-35 | normal | App composition root: wire ConfigService→Pipeline→(Clipboard|Hotkey)→Popup + Tray + Settings; `@main` / `NSApplicationDelegate`; neutral sandbox CWD for CLI spawn; double timeout (idle+ceiling) + kill-tree. | opencode |
+| T-MAC-40 | code-review-adversarial | pending | T-MAC-30,T-MAC-31,T-MAC-32,T-MAC-33,T-MAC-34,T-MAC-35,T-MAC-36 | high | Adversarial cross-review of M3 native layer vs spec §3-9 + PORTING-macos: no-focus-steal correctness, Carbon hotkey no-TCC, self-write guard, vibrancy, PATH resolution, strings parity. | mimo |
+| T-MAC-41 | code-review-acceptance | pending | T-MAC-40 | high | Acceptance: manual flow walkthrough (copy→translate / hotkey / popup hover+dismiss+copy+scroll / settings backend+hotkey / tray toggle+exit); all 6 vectors still green; build clean. | subagent |
+| T-MAC-50 | sidecar-polish | pending | T-MAC-41 | normal | Update `PARITY.md` macOS column ⬜→✅ per shipped feature; set macOS app version `CFBundleShortVersionString` coordinated with Windows 0.2.0 MAJOR.MINOR; config schema 1. | subagent |
+| T-MAC-51 | code-impl | pending | T-MAC-41 | normal | arm64 Release build; code-signing + notarization + hardened-runtime prep; NO App Sandbox (must spawn CLIs); `Info.plist` (`CFBundleIconFile`, version strings). | opencode |
+
+---
+
+## Activity log
+
+- 2026-06-18 queue initialized by main session (CEO/CTO) — 22 tasks, v2 schema. Vendors verified live via the 0.12.0 dispatcher: opencode(`tokenbox/deepseek-v4-pro`), mimo(`xiaomi/mimo-v2.5-pro`, `--reasoning xhigh` → `--variant max`), kimi(default `kimi-code/kimi-for-coding`). Hopper stale-binary issue filed (`.hopper/ISSUE-stale-dispatch-binary.md`); shim repointed to 0.12.0. **Paid dispatch HELD pending user review of this queue + vendor routing.**
+
+- 2026-06-18 T-MAC-01 + T-MAC-02 **done** (subagent, in-session, no paid vendor): SwiftPM scaffold (Package.swift, arm64/macOS14, `TranslateTheDamnCore` + `TranslateTheDamnConformanceTests`, Foundation-only) + conformance runner (locates repo-root `conformance/`, `<ESC>`/`<CR>` marker subst, per-format asserts: scalar-exact / object-subset / assert-ops / stateful-scenarios). `swift test` RED by design. **Cross-review (main session) found P1**: `ConfigDefaultsTests.assertEquals` used `as? Bool` which coerces `NSNumber` int `1`→`true` ⇒ false-green risk for integer `equals` (`version`/`autoDismissSeconds`). Fixed via `CFBooleanGetTypeID` discriminator + soft collect-all-asserts. **Re-reviewed (second reviewer = main session)**: version failure now Int-based ("got 0"), all 15 config asserts evaluated, false-green proof (`version=2`→fails) passed, stub reverted. Gate correct. M2 unblocked.
+
+- 2026-06-18 T-MAC-11 **done** (kimi, default model, 84.8s, PASS): `prompt-builder` vector GREEN (4/4), other 5 RED (41 failures). Cross-reviewed by main session (different channel) — impl clean, not test-gaming. **Pilot validated the hopper end-to-end flow** (dispatch → vendor reads spec+files → implements → runs `swift test` → writes output.md → auto-commits `11e1b62`). M2 batch dispatch unblocked.
+
+- 2026-06-18 T-MAC-10 **done** (kimi, default model, 126.5s, PASS): `config-defaults` vector GREEN (15/15); prompt-builder still GREEN; 4 vectors RED (31 failures). `defaultConfig()` = full 6-backend spec §7 default + `load`/`save` (camelCase/sortedKeys/tilde). Cross-reviewed by main session (diff channel). Hopper notes: `--result` showed `Vendor: undefined` (cosmetic); kimi did NOT auto-commit this time (vs T-MAC-11) — left as working-tree change.
+
+- 2026-06-18 T-MAC-12 **done** (kimi, default model, 82.2s, PASS): `ansi-stripper` vector GREEN (5/5); prompt-builder + config-defaults still GREEN; 3 vectors RED (27 failures). Manual Unicode-scalar scanner (CSI/OSC/ESC + CR). Cross-reviewed by main session. **Gotcha**: dispatch auto-set `Sandbox: read-only` because the spec text mentioned "read-only" (re: Windows ref) — kimi ignores the sandbox flag so edits landed, but **opencode HONORS it** ⇒ for opencode code-impl, pass `--sandbox danger-full-access` explicitly. kimi did not auto-commit (cited AGENTS.md).
+
+- 2026-06-18 T-MAC-13 **done** (opencode / `tokenbox/deepseek-v4-pro`, 71.4s, PASS): `hotkey-parser` vector GREEN (6/6) — 4 of 6 vectors now green; 2 RED (16 failures: backend-requests + pipeline-cache). **First opencode dispatch validated** (deepseek-v4-pro via tokenbox). Hopper warned "no probed model cache for opencode" but proceeded; model worked (log: provider=tokenbox, model=deepseek-v4-pro, ~27k tokens/step, cost=0). opencode `--result` output.md was sparse (streaming notes, not kimi-style detailed table). Cross-reviewed by main session. opencode did not auto-commit.
+
+- 2026-06-18 T-MAC-14 **done** (opencode / deepseek-v4-pro, 254.4s, PASS): `backend-requests` vector GREEN (4/4) + 10 new `BackendManifestTests` (responsePath eval) green. 5/6 vectors green; only `pipeline-cache` RED. **Law-6 cross-verified (main session)**: `BackendManifest.load()` walks up to read `spec/backends.json` at runtime + caches; `HttpBackend.buildCall` drives method/url/headers/body from the manifest (placeholders, omitWhenEmpty, defaults) — nothing hardcoded. P2s noted for mimo review: `fatalError` on missing manifest (could graceful-fail); `nonisolated(unsafe)` cache (first-load race). opencode did not commit.
+
+- 2026-06-18 T-MAC-15 **done** (opencode / deepseek-v4-pro, 54.0s, PASS): `pipeline-cache` vector GREEN — **🎯 ALL 6 conformance vectors GREEN** (`swift test`: 16 tests, 0 failures, independently confirmed). One-entry cache: hit on (text,backend,model) ⇒ no translator call; miss ⇒ call + cache only on `result.ok`. Cross-reviewed (main session). **M2 core-logic gate achieved (6/6 vectors).** Remaining M2: T-MAC-16 PathResolver (no vector) + T-MAC-20 mimo adversarial review.
+
+- 2026-06-18 T-MAC-16 **done** (kimi, default model, ~280s, PASS): `PathResolver` + 6 unit tests (PATH/knownDirs/execute-bit/not-found/injection/precedence). `swift test`: 22 tests, 0 failures (16 conformance + 6 PathResolver). Injectable knownInstallPaths + login-shell PATH reader. kimi widened Package.swift test target `tests/Conformance`→`tests` (structural; all tests pass). kimi auto-committed `c1af0c8`. Cross-reviewed (main session). **All M2 code-impl done**; next: T-MAC-20 mimo adversarial review.
+
+- 2026-06-18 T-MAC-20 **done** (mimo / xiaomi/mimo-v2.5-pro, `--reasoning xhigh`→max, 373s, **PASS_WITH_CHANGES**): adversarial review of all 9 Core files; 21 findings (5 P0, 11 P1, 5 P2). **output.md permission-fail** — read-only sandbox + mimo's "shall I proceed?" gate ⇒ mimo couldn't write the file; findings extracted from the 2MB raw log. **Adjudication (main session)**: FIX now (T-MAC-20F) = F1 (fatalError→graceful), F2 (thread-safe cache), F3 (corrupt-config `.bak`+defaults), F4+F5 (PathResolver `Process` deadlock + zsh timeout — **real bug my per-task review missed**), F8 (EnsureDefaults on load), F14/15/16 (stale M1-STUB comments). DEFER M3/M4 = F6/F7/F10/F11/F12/F13. NOTE = F9 (single-replace matches vector case 4 "first-only spec'd"; verify Windows parity). REJECT = F17 (rename `startWithWindows` contradicts Law 4 shared schema). Dispatched T-MAC-20F → opencode.
+
+- 2026-06-18 T-MAC-20F **done** (opencode / deepseek-v4-pro, 260s, PASS): fixed all 8 must-fix mimo findings — F1 (fatalError→graceful+stderr), F2 (NSLock thread-safe cache), F3 (corrupt-config `.bak`+defaults), F8 (ensureDefaults deep-merge), F4 (concurrent stdout read — deadlock fixed), F5 (5s zsh timeout+terminate), F14/15/16 (stale comments). **Re-reviewed (main session, diff channel from opencode)**: all fixes correct (F4 deadlock genuinely fixed — read overlaps waitUntilExit; F2 NSLock on all return paths; F3 `.bak` preserves corrupt; F8 fills empty collections). `swift test`: 22/22 green. **🎯 M2 COMPLETE** — 6/6 conformance vectors green, mimo-adversarial-reviewed + fixed, Law-6 verified. Awaiting user green-light on M3 + commit cadence.
+
+> Each dispatch / done / failed appends a line (vendor, model, task, verdict, tokens/cost, quality notes) — mirrored into `COST-LOG.md`.

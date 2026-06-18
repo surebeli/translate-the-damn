@@ -101,7 +101,8 @@ public struct PathResolver {
 
     /// Reads the login shell PATH once. `zsh -ilc 'echo $PATH'` is used because zsh is the
     /// default macOS shell and `-i` sources user rc files where tools like Homebrew and nvm
-    /// are configured. Output noise is ignored; the last line is taken as the PATH value.
+    /// are configured. stdout is read concurrently with the child to avoid pipe-buffer deadlock.
+    /// A 5s timeout guards against stuck shells (broken .zshrc / interactive prompt).
     private static func defaultLoginShellPathProvider() -> [String] {
         let task = Process()
         task.executableURL = URL(fileURLWithPath: "/bin/zsh")
@@ -114,15 +115,35 @@ public struct PathResolver {
 
         do {
             try task.run()
-            task.waitUntilExit()
         } catch {
             return []
         }
 
-        let data = stdout.fileHandleForReading.readDataToEndOfFile()
-        guard let output = String(data: data, encoding: .utf8) else { return [] }
+        let outHandle = stdout.fileHandleForReading
+        final class DataBox { var data = Data() }
+        let box = DataBox()
+        let readDone = DispatchSemaphore(value: 0)
 
-        // The login shell may print welcome text; the PATH is the final line.
+        DispatchQueue.global().async { [box, outHandle] in
+            box.data = outHandle.readDataToEndOfFile()
+            readDone.signal()
+        }
+
+        let taskDone = DispatchSemaphore(value: 0)
+        DispatchQueue.global().async {
+            task.waitUntilExit()
+            taskDone.signal()
+        }
+
+        if taskDone.wait(timeout: .now() + 5.0) == .timedOut {
+            task.terminate()
+            return []
+        }
+
+        _ = readDone.wait(timeout: .now() + 1.0)
+
+        guard let output = String(data: box.data, encoding: .utf8) else { return [] }
+
         let lines = output.split(separator: "\n", omittingEmptySubsequences: false)
         guard let lastLine = lines.last?.trimmingCharacters(in: .whitespaces) else { return [] }
 

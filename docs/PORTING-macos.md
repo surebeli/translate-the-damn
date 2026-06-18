@@ -21,20 +21,24 @@ config.json) is unchanged — only the OS-facing layer is rewritten.
 - **Rewrite:** everything in `TranslateTheDamn.App` (WPF + WinForms + Win32 P/Invoke). This is the
   whole porting effort.
 
-## Strategy — two options
+## Strategy — native Swift (chosen)
 
-**Recommended: .NET 9 + Avalonia, reuse Core.** Keep `Core` untouched, build a new
-`TranslateTheDamn.App.Mac` (or a shared Avalonia app) for the UI. Rationale: maximal reuse (the
-backend layer is the bulk of the logic and it's done + tested), one language/codebase, `osx-arm64`
-RID. Costs: Avalonia has **no built-in global hotkey** (needs a tiny native interop, see below) and
-its window vibrancy/tray need platform-specific options.
+**Chosen: native Swift (SwiftUI + AppKit).** Mandated by `CONSTITUTION.md` line 7 (macOS = Swift)
+and the "same behaviour, each platform's native skin" principle (Law 5): best-fit permissions,
+materials and menu-bar ergonomics. The trade-off is re-implementing the backend layer in Swift
+(Process spawning, HTTP, config, the manifest interpreter) rather than reusing the .NET `Core` — but
+the backend layer is now **declarative data** (`spec/backends.json`) read by a generic Swift
+interpreter, so the re-implementation is "interpret the manifest + satisfy the `conformance/`
+vectors", not "re-derive 6 backends from scratch". The Windows `Core` stays the behavioural
+reference; the Swift port is verified against the same `conformance/` golden vectors (Law 2), not by
+sharing code.
 
-**Alternative: native Swift (SwiftUI + AppKit).** Best-fit permissions, materials and menu-bar
-ergonomics, but you rewrite the backend adapters too (Process spawning, HTTP, config) — discard
-Core and port the design from the spec. Choose only if a fully-native feel outweighs re-implementing
-~2.5k lines of tested Core.
-
-The rest of this doc assumes the recommended Avalonia path but the API mapping applies to native too.
+> Previously this section recommended .NET 9 + Avalonia (reuse `Core`). That drifted from the
+> Constitution's macOS = Swift declaration; corrected 2026-06-18. The Windows→macOS API mapping
+> table below applies regardless of language. (The "Core adaptation checklist" further down is
+> framed for the Avalonia/reuse path; its concepts — POSIX execute-bit, knownInstallPaths,
+> login-shell PATH, config path, neutral sandbox CWD — transfer to the Swift `PathResolver` /
+> `ProcessRunner` natively.)
 
 ## Platform boundary map (Windows → macOS)
 

@@ -107,3 +107,36 @@ mechanics, not weaken this constitution.
 
 The host agent's own system prompt and tool rules remain authoritative; fable overlays project governance and never asks you to ignore host instructions.
 <!-- FABLE-END -->
+
+<!-- TTD-ORCH-START -->
+## translate-the-damn 多端编排方法论
+
+跨平台开发采用 **主 session = CEO/CTO** 编排:主 session 只做 读契约 → 拆任务 → 调度 → 交叉审核 → 修复 → 必要时二次审核 → 记录;开发与审核委派给 **hopper vendors + Claude Code subagents**。本节适用于 macOS 移植(同模式可推 Linux)。详见 `.hopper/queue.md` + `.hopper/AGENTS.md` + `.hopper/MANIFEST.md`。
+
+### 角色与通道
+
+- **主 session (CEO/CTO)**:高上下文关键工作(一致性 runner、验收、parity)在主 session/subagent 内完成;其余开发/审核委派。
+- **hopper vendors**(经 `hopper-dispatch`):opencode / mimo / kimi(+ 其它就绪者)。
+- **subagents**(Claude Code Agent 工具):并行探索、读 Windows 参考实现、定点开发/审核。
+
+### Vendor 路由(实时校准;模型 ID 以 `hopper-dispatch --probe`/`--capabilities`/`--check`/`opencode models` 为准,不写死)
+
+| Vendor | Model | Reasoning | 角色 |
+|---|---|---|---|
+| opencode | `tokenbox/deepseek-v4-pro` | N/A(opencode 忽略 `--reasoning`) | 硬逻辑:manifest 解释器/热键/pipeline/浮窗/组合根;spec-write |
+| mimo | `xiaomi/mimo-v2.5-pro` | `--reasoning xhigh`→`--variant max` | 对抗审核(review 类加长超时);小逻辑。避免 bulk code-impl(180s 超时) |
+| kimi | 默认 `kimi-code/kimi-for-coding` | 配置驱动 | 批量 code-impl:脚手架/样板/机械编辑/sidecar-polish |
+
+### 不可违背(对齐宪法)
+
+1. **Spec-first**(Law 1):改共享行为先改 `/spec` + `/conformance`,再写平台代码。
+2. **向量即完成判据**(Law 2):逻辑任务 `done` ⇔ 其 `conformance/` 向量在 Swift runner 全绿。
+3. **交叉审核**:每个 dev 任务由**不同通道**审核后才 `done`;P0/P1 修复 → 第二审核者复审;禁止自审。
+4. **后端不写死**(Law 6):后端调用读 `spec/backends.json` 通用解释器。
+5. **同 MAJOR.MINOR = 同功能集**(Law 3);差异记 `PARITY.md`,每落地一功能该平台列 ⬜→✅。
+
+### 记录与 issue 纪律
+
+- `.hopper/queue.md`(WBS)、`.hopper/AGENTS.md`(vendor 绑定 + 路由 + 审核协议)、`.hopper/MANIFEST.md`(cursor)、`.hopper/COST-LOG.md`(每次付费 dispatch 一行 + 踩坑)、`.hopper/handoffs/<task-id>-output.md`(产物)、`.hopper/ISSUE-*.md`(hopper 问题/bug,及时提)。
+- vendor 超时/失败 → 改派 + 记 COST-LOG + 提 ISSUE。已知:PATH 上 `hopper-dispatch` 曾是过期 v0.6.1 shim → 已重指 0.12.0;macOS 无 `timeout`,长任务用 `--background` + `--progress`/`--result`。
+<!-- TTD-ORCH-END -->
