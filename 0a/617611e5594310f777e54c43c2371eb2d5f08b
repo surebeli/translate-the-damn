@@ -1,0 +1,19 @@
+docs/ZP-UI-REDESIGN-PROMPT.md
+  s_4d7cf35b165cc5::t_4b416ace094566 5,21,88,98,145,162,233,239
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "0a617611e5594310f777e54c43c2371eb2d5f08b",
+  "prompts": {},
+  "sessions": {
+    "s_4d7cf35b165cc5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a0e84ba8-cada-4cd7-b8f1-81f44d32ee1b",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
