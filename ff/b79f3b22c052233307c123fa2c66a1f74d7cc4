@@ -1,0 +1,39 @@
+.hopper/handoffs/T-MAC-51-output.md
+  s_cc7f6ae62a35f2::t_919f16badaa893 1-128
+PARITY.md
+  s_cc7f6ae62a35f2::t_919f16badaa893 11-25,31-32
+.hopper/handoffs/leader-tasklist.md
+  s_cc7f6ae62a35f2::t_919f16badaa893 859-888
+platforms/macos/.gitignore
+  s_cc7f6ae62a35f2::t_919f16badaa893 4
+.hopper/COST-LOG.md
+  s_cc7f6ae62a35f2::t_919f16badaa893 27
+.gitignore
+  s_cc7f6ae62a35f2::t_919f16badaa893 27-29
+platforms/macos/scripts/build-app.sh
+  s_cc7f6ae62a35f2::t_919f16badaa893 1-69
+platforms/macos/scripts/sign-notarize.sh
+  s_cc7f6ae62a35f2::t_919f16badaa893 1-49
+platforms/macos/Resources/Info.plist
+  s_cc7f6ae62a35f2::t_919f16badaa893 1-34
+.hopper/queue.md
+  s_cc7f6ae62a35f2::t_919f16badaa893 42-43,96-98
+platforms/macos/scripts/README-signing.md
+  s_cc7f6ae62a35f2::t_919f16badaa893 1-51
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "ffb79f3b22c052233307c123fa2c66a1f74d7cc4",
+  "prompts": {},
+  "sessions": {
+    "s_cc7f6ae62a35f2": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781769972844155000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
