@@ -6,28 +6,46 @@ import TranslateTheDamnCore
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private var pipeline: TranslationPipeline?
+    private var registry: TranslatorRegistry?
     private var clipboardWatcher: ClipboardWatcher?
     private var hotkeyService: HotkeyService?
     private var trayController: TrayController?
+    private var settingsWindowController: SettingsWindowController?
+    private var popup: TranslationPopup?
+    private let configPath = ConfigService.defaultConfigPath
+    private let loginService = LoginService.shared
+    private let translationQueue = DispatchQueue(label: "com.translatethedamn.translation", qos: .userInitiated)
+    private var currentTranslationId: UUID = UUID()
+    private let translationLock = NSLock()
+    private let processRunner = ProcessRunner()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         let app = NSApplication.shared
         app.setActivationPolicy(.accessory)
         app.mainMenu = buildMainMenu()
 
-        let config = ConfigService.defaultConfig()
-        pipeline = TranslationPipeline(backend: config.general.activeBackend, translator: NoOpTranslator())
+        ensureSandboxDirectory()
+
+        let config = ConfigService.load(from: configPath) ?? ConfigService.defaultConfig()
+
+        registry = TranslatorRegistry()
+        pipeline = buildPipeline(from: config, registry: registry!)
+
+        popup = TranslationPopup(cfg: config.popup) { [weak self] text in
+            self?.clipboardWatcher?.markSelfWrite(text)
+        }
 
         let filter = ClipboardFilter(maxChars: config.translation.maxChars)
-        let watcher = ClipboardWatcher(filter: filter) { [pipeline] text in
-            let model = config.backends[config.general.activeBackend]?.model ?? ""
-            _ = pipeline?.run(text: text, model: model)
+        let watcher = ClipboardWatcher(filter: filter) { [weak self] text in
+            self?.translate(text: text)
         }
         clipboardWatcher = watcher
 
         if config.general.listenClipboard {
             watcher.start()
         }
+
+        loginService.setEnabled(config.general.startWithWindows)
 
         trayController = TrayController(
             watcher: watcher,
@@ -73,15 +91,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func onTranslateHotkey() {
-        guard let pipeline = pipeline else { return }
         guard let text = NSPasteboard.general.string(forType: .string), !text.isEmpty else {
             NSLog("[AppDelegate] Translate hotkey: no text on clipboard")
             return
         }
-        let config = ConfigService.defaultConfig()
-        let model = config.backends[config.general.activeBackend]?.model ?? ""
-        let result = pipeline.run(text: text, model: model)
-        NSLog("[AppDelegate] Translate hotkey result: %@", result.text)
+        translate(text: text)
     }
 
     private func onToggleListenHotkey() {
@@ -90,15 +104,89 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         NSLog("[AppDelegate] Toggle listen: %@", tray.isListeningOn ? "started" : "stopped")
     }
 
+    private func translate(text: String) {
+        guard let currentPipeline = pipeline, let currentPopup = popup else { return }
+
+        processRunner.cancelCurrentProcess()
+
+        currentPopup.showLoading()
+
+        let id = UUID()
+        translationLock.lock()
+        currentTranslationId = id
+        translationLock.unlock()
+
+        let config = ConfigService.load(from: configPath) ?? ConfigService.defaultConfig()
+        let model = config.backends[config.general.activeBackend]?.model ?? ""
+
+        let runner = PipelineRunner(pipeline: currentPipeline)
+
+        translationQueue.async { [weak self] in
+            let result = runner.pipeline.run(text: text, model: model)
+            let ok = result.ok
+            let resultText = result.text
+            let resultStatus = result.status
+            let resultDetail = result.detail
+
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.translationLock.lock()
+                let isCurrent = self.currentTranslationId == id
+                self.translationLock.unlock()
+
+                guard isCurrent else { return }
+
+                let finalResult = TranslationResult(ok: ok, text: resultText, status: resultStatus, detail: resultDetail)
+                if finalResult.ok {
+                    self.popup?.showResult(translation: finalResult.text, source: text)
+                } else {
+                    self.popup?.showError(message: finalResult.text)
+                }
+            }
+        }
+    }
+
     private func openSettings() {
-        // Settings window lands in a later task; for now the tray callback is wired.
-        NSLog("[AppDelegate] Open settings requested")
+        if settingsWindowController == nil {
+            settingsWindowController = SettingsWindowController(
+                config: ConfigService.load(from: configPath) ?? ConfigService.defaultConfig(),
+                configPath: configPath,
+                onSave: { [weak self] config in
+                    self?.hotReload(config: config)
+                }
+            )
+        }
+        settingsWindowController?.show()
+    }
+
+    private func hotReload(config: AppConfig) {
+        loginService.setEnabled(config.general.startWithWindows)
+        reregisterHotkeys(config: config)
+        if config.general.listenClipboard {
+            clipboardWatcher?.start()
+        } else {
+            clipboardWatcher?.stop()
+        }
+        pipeline = buildPipeline(from: config, registry: registry!)
+    }
+
+    private func buildPipeline(from config: AppConfig, registry: TranslatorRegistry) -> TranslationPipeline {
+        let backendId = config.general.activeBackend
+        if let backendConfig = config.backends[backendId],
+           let translator = registry.translator(for: backendId, config: backendConfig, promptTemplate: config.translation.promptTemplate, runner: processRunner) {
+            return TranslationPipeline(backend: backendId, translator: translator)
+        }
+        return TranslationPipeline(backend: backendId, translator: MissingTranslator(backendId: backendId))
+    }
+
+    private func ensureSandboxDirectory() {
+        let sandboxPath = NSTemporaryDirectory() + "ttd-sandbox"
+        try? FileManager.default.createDirectory(atPath: sandboxPath, withIntermediateDirectories: true, attributes: nil)
     }
 
     private func buildMainMenu() -> NSMenu {
         let mainMenu = NSMenu(title: "MainMenu")
 
-        // App menu: About + Quit.
         let appMenu = NSMenu(title: "TranslateTheDamn")
         let appMenuItem = NSMenuItem(title: "TranslateTheDamn", action: nil, keyEquivalent: "")
         appMenuItem.submenu = appMenu
@@ -111,7 +199,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             )
         )
 
-        // Minimal Edit menu so text fields behave later.
         let editMenu = NSMenu(title: "Edit")
         let editMenuItem = NSMenuItem(title: "Edit", action: nil, keyEquivalent: "")
         editMenuItem.submenu = editMenu
@@ -130,10 +217,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 }
 
-// M3 stub: the real translator backends land in later tasks; for now the watcher wires into the
-// pipeline so the assembly and clipboard path compile and run end-to-end.
-private struct NoOpTranslator: Translator {
+private struct MissingTranslator: Translator {
+    let backendId: String
     func translate(text: String, model: String) -> TranslationResult {
-        .successful(text)
+        .failed(.notFound, "未找到后端 \(backendId) 的翻译器，请在设置中重选后端。")
     }
 }
+
+private struct PipelineRunner: @unchecked Sendable {
+    let pipeline: TranslationPipeline
+}
+
+extension TranslationPipeline: @unchecked Sendable {}
+extension TranslationResult: @unchecked Sendable {}

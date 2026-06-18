@@ -111,12 +111,16 @@ public enum ConfigService {
 
     private static func ensureDefaults(_ loaded: AppConfig) -> AppConfig {
         let defaults = defaultConfig()
+        var translation = loaded.translation
+        if translation.promptTemplate.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            translation.promptTemplate = defaultPromptTemplate
+        }
         return AppConfig(
             version: loaded.version,
             general: loaded.general,
             hotkey: loaded.hotkey,
             popup: loaded.popup,
-            translation: loaded.translation,
+            translation: translation,
             backends: loaded.backends.isEmpty ? defaults.backends : loaded.backends,
             modelCatalog: loaded.modelCatalog.isEmpty ? defaults.modelCatalog : loaded.modelCatalog
         )
