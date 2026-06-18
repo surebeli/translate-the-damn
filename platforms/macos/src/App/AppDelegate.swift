@@ -22,7 +22,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var hotkeyService: HotkeyService?
     private var trayController: TrayController?
     private var settingsWindowController: SettingsWindowController?
-    private var popup: TranslationPopup?
+    private var popup: TranslationPopupUI?
     private let configPath = ConfigService.defaultConfigPath
     private let loginService = LoginService.shared
     private let translationQueue = DispatchQueue(label: "com.translatethedamn.translation", qos: .userInitiated)
@@ -41,9 +41,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         registry = TranslatorRegistry()
         pipeline = buildPipeline(from: config, registry: registry!)
 
-        popup = TranslationPopup(cfg: config.popup) { [weak self] text in
-            self?.clipboardWatcher?.markSelfWrite(text)
-        }
+        popup = createPopup(config: config)
 
         let filter = ClipboardFilter(maxChars: config.translation.maxChars)
         let watcher = ClipboardWatcher(filter: filter) { [weak self] text in
@@ -181,9 +179,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         // Dismiss the old popup (if visible) to avoid a ghost window, then recreate it so
         // style/autoDismiss/keepOnHover changes take effect immediately.
         popup?.dismiss()
-        popup = TranslationPopup(cfg: config.popup) { [weak self] text in
-            self?.clipboardWatcher?.markSelfWrite(text)
-        }
+        popup = createPopup(config: config)
     }
 
     private func buildPipeline(from config: AppConfig, registry: TranslatorRegistry) -> TranslationPipeline {
@@ -198,6 +194,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private func ensureSandboxDirectory() {
         let sandboxPath = NSTemporaryDirectory() + "ttd-sandbox"
         try? FileManager.default.createDirectory(atPath: sandboxPath, withIntermediateDirectories: true, attributes: nil)
+    }
+
+    private func createPopup(config: AppConfig) -> TranslationPopupUI {
+        let uiStyle = config.general.uiStyle ?? "ZP"
+        let onCopy: (String) -> Void = { [weak self] text in
+            self?.clipboardWatcher?.markSelfWrite(text)
+        }
+        if uiStyle == "classic" {
+            return TranslationPopup(cfg: config.popup) { onCopy($0) }
+        }
+        return ZPPopup(cfg: config.popup) { onCopy($0) }
     }
 
     private func buildMainMenu() -> NSMenu {

@@ -41,11 +41,13 @@ public struct GeneralConfig: Codable {
     public var listenClipboard: Bool
     public var activeBackend: String
     public var startWithWindows: Bool
+    public var uiStyle: String?  // "ZP" (default) | "classic"; nil → "ZP" for backward compat
 
-    public init(listenClipboard: Bool = true, activeBackend: String = "claude", startWithWindows: Bool = false) {
+    public init(listenClipboard: Bool = true, activeBackend: String = "claude", startWithWindows: Bool = false, uiStyle: String? = nil) {
         self.listenClipboard = listenClipboard
         self.activeBackend = activeBackend
         self.startWithWindows = startWithWindows
+        self.uiStyle = uiStyle
     }
 }
 

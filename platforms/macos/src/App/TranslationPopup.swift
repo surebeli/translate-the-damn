@@ -90,7 +90,7 @@ enum StringsLoader {
     ]
 }
 
-final class TranslationPopup: NSPanel {
+final class TranslationPopup: NSPanel, TranslationPopupUI {
     private let cfg: PopupConfig
     private var dismissTimer: Timer?
     private var translation: String = ""
