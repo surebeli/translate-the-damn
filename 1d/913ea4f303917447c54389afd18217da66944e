@@ -1,0 +1,23 @@
+platforms/macos/src/App/AppDelegate.swift
+  s_a616fcd95166c4::t_a023be3632d48f 161-169,182-186
+platforms/macos/src/App/SettingsWindow.swift
+  s_a616fcd95166c4::t_a023be3632d48f 309,319,387,514,556,579,606-611
+.hopper/RETROSPECTIVE-2026-06-18-m3-walkthrough.md
+  s_a616fcd95166c4::t_a023be3632d48f 1-79
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "1d913ea4f303917447c54389afd18217da66944e",
+  "prompts": {},
+  "sessions": {
+    "s_a616fcd95166c4": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781775869496195000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
