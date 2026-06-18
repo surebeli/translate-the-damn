@@ -2,46 +2,57 @@ import SwiftUI
 import AppKit
 import TranslateTheDamnCore
 
-/// O48-style settings — a *paginated, System-Settings-style* window.
+/// KM-style settings — a *sidebar-driven System-Settings-style* window.
 ///
-/// Design identity (distinct from ZP's single grouped Form and Classic's custom cards):
-///   • A native macOS `TabView` splits settings into four switchable pages
-///     (触发 / 后端 / 浮窗 / 通用), each a grouped `Form` — the literal "设置页面切换".
-///   • A persistent bottom save bar stays put across pages.
-///   • System colors / fonts / controls only; no custom styling.
-///   • Reuses the exact same `SettingsViewModel` as the ZP and Classic views, so every
-///     field, binding, and conditional behaves identically — this view is purely a re-layout.
-struct O48SettingsView: View {
+/// Design identity (distinct from ZP's single grouped Form and O48's top TabView):
+///   • A left sidebar lists the four setting categories with SF Symbols.
+///   • The right pane shows the selected category as a grouped Form.
+///   • A persistent bottom save bar is always visible.
+///   • System colors, fonts, and controls only; no custom styling.
+///   • Reuses the same `SettingsViewModel` as the other views, so every binding behaves identically.
+struct KMSettingsView: View {
     @ObservedObject var vm: SettingsViewModel
-    @State private var tab: Int = 0
+    @State private var selectedTab: KMSettingsTab = .trigger
 
     var body: some View {
-        VStack(spacing: 0) {
-            TabView(selection: $tab) {
-                triggerPage
-                    .tabItem { Label(StringsLoader["settings.group.trigger"], systemImage: "keyboard") }
-                    .tag(0)
-                backendPage
-                    .tabItem { Label(StringsLoader["settings.group.backend"], systemImage: "cpu") }
-                    .tag(1)
-                popupPage
-                    .tabItem { Label(StringsLoader["settings.group.popup"], systemImage: "macwindow") }
-                    .tag(2)
-                generalPage
-                    .tabItem { Label(StringsLoader["settings.group.general"], systemImage: "gearshape") }
-                    .tag(3)
+        NavigationSplitView {
+            List(KMSettingsTab.allCases, selection: $selectedTab) { tab in
+                Label(tab.title, systemImage: tab.icon)
+                    .tag(tab)
             }
-            .padding([.horizontal, .top], 12)
+            .frame(minWidth: 160)
+            .navigationSplitViewColumnWidth(min: 160, ideal: 180, max: 220)
+        } detail: {
+            VStack(spacing: 0) {
+                ScrollView {
+                    detailForm
+                        .padding(16)
+                }
 
-            Divider()
-            bottomBar
+                Divider()
+                bottomBar
+            }
         }
-        .frame(minWidth: 520, minHeight: 560)
+        .frame(minWidth: 640, minHeight: 480)
     }
 
-    // MARK: - 触发
+    @ViewBuilder
+    private var detailForm: some View {
+        switch selectedTab {
+        case .trigger:
+            triggerForm
+        case .backend:
+            backendForm
+        case .popup:
+            popupForm
+        case .general:
+            generalForm
+        }
+    }
 
-    private var triggerPage: some View {
+    // MARK: - Trigger
+
+    private var triggerForm: some View {
         Form {
             Section(StringsLoader["settings.group.trigger"]) {
                 Toggle(StringsLoader["settings.field.listen"], isOn: $vm.listenClipboard)
@@ -79,9 +90,9 @@ struct O48SettingsView: View {
         }
     }
 
-    // MARK: - 后端
+    // MARK: - Backend
 
-    private var backendPage: some View {
+    private var backendForm: some View {
         Form {
             Section(StringsLoader["settings.group.backend"]) {
                 Picker(StringsLoader["settings.field.backend"], selection: Binding(
@@ -128,9 +139,9 @@ struct O48SettingsView: View {
         .formStyle(.grouped)
     }
 
-    // MARK: - 浮窗
+    // MARK: - Popup
 
-    private var popupPage: some View {
+    private var popupForm: some View {
         Form {
             Section(StringsLoader["settings.group.popup"]) {
                 Picker(StringsLoader["settings.field.style"], selection: $vm.popupStyle) {
@@ -153,9 +164,9 @@ struct O48SettingsView: View {
         .formStyle(.grouped)
     }
 
-    // MARK: - 通用
+    // MARK: - General
 
-    private var generalPage: some View {
+    private var generalForm: some View {
         Form {
             Section(StringsLoader["settings.group.general"]) {
                 Picker("界面风格", selection: $vm.uiStyle) {
@@ -192,5 +203,29 @@ struct O48SettingsView: View {
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 12)
+    }
+}
+
+private enum KMSettingsTab: String, CaseIterable, Identifiable {
+    case trigger, backend, popup, general
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .trigger: return StringsLoader["settings.group.trigger"]
+        case .backend: return StringsLoader["settings.group.backend"]
+        case .popup:   return StringsLoader["settings.group.popup"]
+        case .general: return StringsLoader["settings.group.general"]
+        }
+    }
+
+    var icon: String {
+        switch self {
+        case .trigger: return "keyboard"
+        case .backend: return "cpu"
+        case .popup:   return "macwindow"
+        case .general: return "gearshape"
+        }
     }
 }

@@ -129,6 +129,7 @@ struct ZPSettingsView: View {
     private var generalSection: some View {
         Section(StringsLoader["settings.group.general"]) {
             Picker("界面风格", selection: $vm.uiStyle) {
+                Text("KM（侧栏）").tag("km")
                 Text("ZP（磨砂）").tag("ZP")
                 Text("Classic（经典）").tag("classic")
                 Text("O48（聚焦）").tag("O48")

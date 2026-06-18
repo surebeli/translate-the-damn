@@ -206,7 +206,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             return TranslationPopup(cfg: config.popup) { onCopy($0) }
         case "ZP":
             return ZPPopup(cfg: config.popup) { onCopy($0) }
-        default:  // "O48" + any unknown value → the new default style.
+        case "km":
+            return KMPopup(cfg: config.popup) { onCopy($0) }
+        default:  // "O48" + any unknown value → O48 (current default).
             return O48Popup(cfg: config.popup) { onCopy($0) }
         }
     }
