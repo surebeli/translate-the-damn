@@ -1,5 +1,6 @@
 import AppKit
 import Foundation
+import TranslateTheDamnCore
 
 /// ZP-style translation popup — modern macOS design with frosted translucency.
 /// Uses system semantic colors (auto-adapts to light/dark + vibrancy → no contrast issues).
