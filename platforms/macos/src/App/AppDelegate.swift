@@ -3,9 +3,12 @@ import Foundation
 import TranslateTheDamnCore
 
 @main
+@MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private var pipeline: TranslationPipeline?
     private var clipboardWatcher: ClipboardWatcher?
+    private var hotkeyService: HotkeyService?
+    private var trayController: TrayController?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         let app = NSApplication.shared
@@ -16,18 +19,80 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         pipeline = TranslationPipeline(backend: config.general.activeBackend, translator: NoOpTranslator())
 
         let filter = ClipboardFilter(maxChars: config.translation.maxChars)
-        clipboardWatcher = ClipboardWatcher(filter: filter) { [pipeline] text in
+        let watcher = ClipboardWatcher(filter: filter) { [pipeline] text in
             let model = config.backends[config.general.activeBackend]?.model ?? ""
             _ = pipeline?.run(text: text, model: model)
         }
+        clipboardWatcher = watcher
 
         if config.general.listenClipboard {
-            clipboardWatcher?.start()
+            watcher.start()
         }
+
+        trayController = TrayController(
+            watcher: watcher,
+            initialListenState: config.general.listenClipboard,
+            openSettings: { [weak self] in self?.openSettings() }
+        )
+
+        hotkeyService = HotkeyService()
+        registerHotkeys(from: config)
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         return false
+    }
+
+    func applicationWillTerminate(_ notification: Notification) {
+        hotkeyService?.unregister()
+    }
+
+    func reregisterHotkeys(config: AppConfig) {
+        hotkeyService?.unregister()
+        hotkeyService = HotkeyService()
+        registerHotkeys(from: config)
+    }
+
+    private func registerHotkeys(from config: AppConfig) {
+        let translateResult = hotkeyService?.register(hotkeyString: config.hotkey.translate) { [weak self] in
+            self?.onTranslateHotkey()
+        }
+        if translateResult == false {
+            NSLog("[AppDelegate] Failed to register translate hotkey '%@'", config.hotkey.translate)
+        }
+
+        let toggleListen = config.hotkey.toggleListen
+        if !toggleListen.isEmpty {
+            let toggleResult = hotkeyService?.registerToggleListen(hotkeyString: toggleListen) { [weak self] in
+                self?.onToggleListenHotkey()
+            }
+            if toggleResult == false {
+                NSLog("[AppDelegate] Failed to register toggle-listen hotkey '%@'", toggleListen)
+            }
+        }
+    }
+
+    private func onTranslateHotkey() {
+        guard let pipeline = pipeline else { return }
+        guard let text = NSPasteboard.general.string(forType: .string), !text.isEmpty else {
+            NSLog("[AppDelegate] Translate hotkey: no text on clipboard")
+            return
+        }
+        let config = ConfigService.defaultConfig()
+        let model = config.backends[config.general.activeBackend]?.model ?? ""
+        let result = pipeline.run(text: text, model: model)
+        NSLog("[AppDelegate] Translate hotkey result: %@", result.text)
+    }
+
+    private func onToggleListenHotkey() {
+        guard let tray = trayController else { return }
+        tray.setListening(!tray.isListeningOn)
+        NSLog("[AppDelegate] Toggle listen: %@", tray.isListeningOn ? "started" : "stopped")
+    }
+
+    private func openSettings() {
+        // Settings window lands in a later task; for now the tray callback is wired.
+        NSLog("[AppDelegate] Open settings requested")
     }
 
     private func buildMainMenu() -> NSMenu {
