@@ -1,5 +1,5 @@
 platforms/macos/src/App/AppDelegate.swift
-  s_1dd717b8e67a21::t_0f4a3f78e04c3c 6-6,10-11,22-22,26-26,29-29,31-39,44-95
+  s_1dd717b8e67a21::t_0f4a3f78e04c3c 6,10-11,22,26,29,31-39,46-95
 platforms/macos/src/App/TrayController.swift
   s_1dd717b8e67a21::t_0f4a3f78e04c3c 1-138
 ---
@@ -7,19 +7,15 @@ platforms/macos/src/App/TrayController.swift
   "schema_version": "authorship/3.0.0",
   "git_ai_version": "1.5.8",
   "base_commit_sha": "5109e9afc740a113ca51a13fc51158dc70ed7a89",
-  "prompts": {
-    "s_1dd717b8e67a21::t_0f4a3f78e04c3c": {
+  "prompts": {},
+  "sessions": {
+    "s_1dd717b8e67a21": {
       "agent_id": {
         "tool": "mock_ai",
         "id": "ai-thread-1781761894733065000",
         "model": "unknown"
       },
-      "human_author": "litianyi <litianyi@corp.netease.com>",
-      "messages": [],
-      "total_additions": 205,
-      "total_deletions": 0,
-      "accepted_lines": 205,
-      "overriden_lines": 0
+      "human_author": "litianyi <litianyi@corp.netease.com>"
     }
   }
 }
