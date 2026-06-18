@@ -5,19 +5,15 @@ platforms/macos/src/Core/PromptBuilder.swift
   "schema_version": "authorship/3.0.0",
   "git_ai_version": "1.5.8",
   "base_commit_sha": "11e1b62cf23a686cd530f7eb9622fe8c135d7701",
-  "prompts": {
-    "s_ecdb1d642d0618::t_64286ef1ae8d0e": {
+  "prompts": {},
+  "sessions": {
+    "s_ecdb1d642d0618": {
       "agent_id": {
         "tool": "mock_ai",
         "id": "ai-thread-1781754627089692000",
         "model": "unknown"
       },
-      "human_author": "litianyi <litianyi@corp.netease.com>",
-      "messages": [],
-      "total_additions": 23,
-      "total_deletions": 0,
-      "accepted_lines": 23,
-      "overriden_lines": 0
+      "human_author": "litianyi <litianyi@corp.netease.com>"
     }
   }
 }
