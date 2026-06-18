@@ -1,0 +1,23 @@
+.hopper/RETROSPECTIVE-2026-06-18-m3-walkthrough.md
+  s_b436e16602520a::t_0f0747af097845 80-101
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "fecc3e1ab9663a12babc88059522e0499c11c817",
+  "prompts": {
+    "s_b436e16602520a::t_0f0747af097845": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781779213139779000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 22,
+      "total_deletions": 0,
+      "accepted_lines": 22,
+      "overriden_lines": 0
+    }
+  }
+}
