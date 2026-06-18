@@ -1,0 +1,31 @@
+.hopper/handoffs/T-MAC-33-output.md
+  s_3d2b527861d137::t_0252dc85bf5df4 1-84
+platforms/macos/src/App/TrayController.swift
+  s_1dd717b8e67a21::t_0f4a3f78e04c3c 1-138
+platforms/macos/src/App/AppDelegate.swift
+  s_1dd717b8e67a21::t_0f4a3f78e04c3c 6,10-11,22,26,29,31-39,46-95
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "b9b2ed9010dfcf9d962d4afd40b9547f42d32736",
+  "prompts": {},
+  "sessions": {
+    "s_1dd717b8e67a21": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781761894733065000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    },
+    "s_3d2b527861d137": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781762014297272000",
+        "model": "unknown"
+      },
+      "human_author": null
+    }
+  }
+}
