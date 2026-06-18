@@ -2,23 +2,12 @@ import SwiftUI
 import AppKit
 import TranslateTheDamnCore
 
-/// Z-style settings — a *document-style* single-page form with a live preview hero.
-///
-/// Design identity (distinct from Classic's custom cards, ZP's plain grouped Form, O48's
-/// TabView, and KM's sidebar split): a fixed preview hero at the top mirrors the Z popup
-/// (hairline border + status pill + sample source/translation) and reacts live to the chosen
-/// popup style — a "所见即所得" touch none of the other settings views have. Below it, the four
-/// standard sections in a native grouped Form. Same `SettingsViewModel` as every other view, so
-/// every field and binding behaves identically.
-struct ZSettingsView: View {
+/// MM-style settings — a minimal single-page grouped form.
+struct MMSettingsView: View {
     @ObservedObject var vm: SettingsViewModel
 
     var body: some View {
         VStack(spacing: 0) {
-            ZPreviewCard(style: vm.popupStyle)
-                .padding(.top, 16)
-                .padding(.horizontal, 16)
-
             Form {
                 triggerSection
                 backendSection
@@ -176,54 +165,5 @@ struct ZSettingsView: View {
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 12)
-    }
-}
-
-/// Live preview of the Z popup's look, reflecting the chosen popup style (acrylic / solid).
-/// Cosmetic only — mirrors the Z popup identity (hairline border + status pill + sample text)
-/// so the user sees the result of their style choice before saving.
-private struct ZPreviewCard: View {
-    let style: String
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack(spacing: 5) {
-                Circle()
-                    .fill(Color.accentColor)
-                    .frame(width: 6, height: 6)
-                Text(StringsLoader["popup.header.result"])
-                    .font(.system(size: 11, weight: .medium))
-                    .foregroundStyle(.primary)
-            }
-            .padding(.horizontal, 8)
-            .padding(.vertical, 3)
-            .background(Color.accentColor.opacity(0.12))
-            .clipShape(RoundedRectangle(cornerRadius: 7))
-
-            Text("Hello, world")
-                .font(.system(size: 11))
-                .foregroundStyle(.secondary)
-
-            Text("你好，世界")
-                .font(.system(size: 15))
-                .foregroundStyle(.primary)
-        }
-        .padding(14)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(background)
-        .overlay(
-            RoundedRectangle(cornerRadius: 14)
-                .stroke(Color(nsColor: .separatorColor), lineWidth: 1)
-        )
-        .clipShape(RoundedRectangle(cornerRadius: 14))
-    }
-
-    @ViewBuilder
-    private var background: some View {
-        if style == "solid" {
-            Color(nsColor: .controlBackgroundColor)
-        } else {
-            Color.clear.background(.ultraThinMaterial)
-        }
     }
 }

@@ -25,6 +25,7 @@ final class SettingsWindowController {
             case "ZP":      root = AnyView(ZPSettingsView(vm: viewModel))
             case "Z":       root = AnyView(ZSettingsView(vm: viewModel))
             case "km":      root = AnyView(KMSettingsView(vm: viewModel))
+            case "MM":      root = AnyView(MMSettingsView(vm: viewModel))
             default:        root = AnyView(O48SettingsView(vm: viewModel))  // "O48" + unknown → default
             }
             let hostingView = NSHostingView(rootView: root)
@@ -141,7 +142,7 @@ final class SettingsViewModel: ObservableObject {
         // Clamp unknown/hand-edited values so the segmented Picker always has a matching tag
         // (mirrors the selectedBackendId clamp below). The picker can only emit valid tags, so this
         // only normalizes config.json that was edited by hand to a stray value.
-        if !["O48", "Z", "ZP", "km", "classic"].contains(uiStyle) { uiStyle = "O48" }
+        if !["O48", "Z", "ZP", "km", "classic", "MM"].contains(uiStyle) { uiStyle = "O48" }
 
         if !backendIds.contains(selectedBackendId), let first = backendIds.first {
             selectedBackendId = first
@@ -582,6 +583,7 @@ struct SettingsView: View {
                 Text("ZP（磨砂）").tag("ZP")
                 Text("Classic（经典）").tag("classic")
                 Text("O48（聚焦）").tag("O48")
+                Text("MM（简洁）").tag("MM")
             }
             .pickerStyle(.segmented)
             .padding(.bottom, 8)

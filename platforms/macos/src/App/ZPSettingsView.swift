@@ -134,6 +134,7 @@ struct ZPSettingsView: View {
                 Text("ZP（磨砂）").tag("ZP")
                 Text("Classic（经典）").tag("classic")
                 Text("O48（聚焦）").tag("O48")
+                Text("MM（简洁）").tag("MM")
             }
             .pickerStyle(.segmented)
 

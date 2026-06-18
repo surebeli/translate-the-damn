@@ -169,13 +169,14 @@ struct KMSettingsView: View {
     private var generalForm: some View {
         Form {
             Section(StringsLoader["settings.group.general"]) {
-                Picker("界面风格", selection: $vm.uiStyle) {
-                    Text("Z（文档）").tag("Z")
+            Picker("界面风格", selection: $vm.uiStyle) {
+                Text("Z（文档）").tag("Z")
                 Text("KM（侧栏）").tag("km")
-                    Text("ZP（磨砂）").tag("ZP")
-                    Text("Classic（经典）").tag("classic")
-                    Text("O48（聚焦）").tag("O48")
-                }
+                Text("ZP（磨砂）").tag("ZP")
+                Text("Classic（经典）").tag("classic")
+                Text("O48（聚焦）").tag("O48")
+                Text("MM（简洁）").tag("MM")
+            }
                 .pickerStyle(.segmented)
 
                 Toggle(StringsLoader["settings.field.startup"], isOn: $vm.startWithWindows)
