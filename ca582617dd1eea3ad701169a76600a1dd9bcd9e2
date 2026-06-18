@@ -1,0 +1,23 @@
+platforms/macos/src/App/ZPPopup.swift
+  s_317c5643ed3a38::t_f094c9d55f874e 123-123,236-236,238-245,276-276
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "ca582617dd1eea3ad701169a76600a1dd9bcd9e2",
+  "prompts": {
+    "s_317c5643ed3a38::t_f094c9d55f874e": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781780386552857000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 11,
+      "total_deletions": 0,
+      "accepted_lines": 11,
+      "overriden_lines": 0
+    }
+  }
+}
