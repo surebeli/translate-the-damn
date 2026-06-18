@@ -1,0 +1,99 @@
+.hopper/handoffs/T-MAC-10-output.md
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-191
+.hopper/handoffs/T-MAC-12-output.md
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-167
+platforms/macos/src/Core/BackendManifest.swift
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-151
+.hopper/tasks/code-review-adversarial.md
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-46
+platforms/macos/tests/Conformance/ConfigDefaultsTests.swift
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-82
+.hopper/MANIFEST.md
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-31
+.hopper/handoffs/T-MAC-14-output.md
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-76
+platforms/macos/.gitignore
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-5
+platforms/macos/src/Core/PathResolver.swift
+  s_1a7d17c2acd1c8::t_b12f0bee636469 104-105,122-145
+platforms/macos/tests/Conformance/PureFunctionsTests.swift
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-79
+platforms/macos/src/Core/HotkeyParser.swift
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-105
+.hopper/COST-LOG.md
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-26
+.hopper/handoffs/T-MAC-11-output.md
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-132
+platforms/macos/tests/Conformance/PipelineCacheTests.swift
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-38
+CLAUDE.md
+  s_1a7d17c2acd1c8::t_b12f0bee636469 127-161
+.hopper/handoffs/T-MAC-20-output.md
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-48
+platforms/macos/src/Core/HttpBackend.swift
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-99
+.hopper/handoffs/leader-tasklist.md
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-479
+AGENTS.md
+  s_1a7d17c2acd1c8::t_b12f0bee636469 110-142
+platforms/macos/tests/Conformance/BackendRequestsTests.swift
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-58
+platforms/macos/CLAUDE.md
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-22
+.hopper/handoffs/T-MAC-20F-output.md
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-151
+.hopper/handoffs/T-MAC-13-output.md
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-49
+.hopper/tasks/code-impl.md
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-55
+.hopper/tasks/code-review-acceptance.md
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-53
+platforms/macos/src/Core/TranslationPipeline.swift
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-62
+.hopper/handoffs/T-MAC-15-output.md
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-61
+platforms/macos/tests/Conformance/ConformanceHarness.swift
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-86
+.hopper/tasks/sidecar-polish.md
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-56
+.hopper/queue.md
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-68
+platforms/macos/tests/Conformance/FakeTranslator.swift
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-14
+docs/PORTING-macos.md
+  s_1a7d17c2acd1c8::t_b12f0bee636469 24-41
+platforms/macos/tests/Conformance/BackendManifestTests.swift
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-102
+.hopper/AGENTS.md
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-42
+platforms/macos/src/Core/ConfigService.swift
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-137
+platforms/macos/src/Core/AppConfig.swift
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-155
+.hopper/handoffs/T-MAC-16-output.md
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-125
+.hopper/ISSUE-stale-dispatch-binary.md
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-60
+.hopper/tasks/spec-blindspot-hunt.md
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-51
+.hopper/tasks/spec-write.md
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-47
+platforms/macos/src/Core/AnsiStripper.swift
+  s_1a7d17c2acd1c8::t_b12f0bee636469 1-78
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "00b5473820b29c3d2a114805e3cb0585ce564422",
+  "prompts": {},
+  "sessions": {
+    "s_1a7d17c2acd1c8": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781760017640130000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
