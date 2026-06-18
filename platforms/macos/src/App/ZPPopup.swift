@@ -75,10 +75,15 @@ final class ZPPopup: NSPanel, TranslationPopupUI {
     }
 
     private func setUpContent() {
-        // Frosted translucent material — adapts to system light/dark appearance.
-        visualEffectView.material = .popover
+        // Material — acrylic (frosted translucent) vs solid (opaque, no vibrancy).
         visualEffectView.blendingMode = .behindWindow
-        visualEffectView.state = .active
+        if cfg.style == "solid" {
+            visualEffectView.material = .contentBackground
+            visualEffectView.state = .inactive
+        } else {
+            visualEffectView.material = .popover
+            visualEffectView.state = .active
+        }
         visualEffectView.wantsLayer = true
         visualEffectView.layer?.cornerRadius = 12
         visualEffectView.layer?.masksToBounds = true
