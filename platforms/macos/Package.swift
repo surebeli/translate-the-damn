@@ -13,6 +13,12 @@ let package = Package(
             name: "TranslateTheDamnCore",
             path: "src/Core"
         ),
+        // macOS menu-bar app shell (M3). AppKit/SwiftUI executable; plugs into Core.
+        .executableTarget(
+            name: "TranslateTheDamnApp",
+            dependencies: ["TranslateTheDamnCore"],
+            path: "src/App"
+        ),
         // Conformance runner: loads the repo-root /conformance vectors and feeds them through the
         // core stubs. This is the parity gate — every later milestone is "done" only when it goes
         // green here. RED in M1 by design (stubs).
