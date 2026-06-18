@@ -41,6 +41,7 @@ Anchor: `.hopper/queue.md::root`
 | T-MAC-41 | code-review-acceptance | done | T-MAC-40F | high | Acceptance: manual flow walkthrough (copy→translate / hotkey / popup hover+dismiss+copy+scroll / settings backend+hotkey / tray toggle+exit); all 6 vectors still green; build clean. | subagent |
 | T-MAC-50 | sidecar-polish | done | T-MAC-41 | normal | Update `PARITY.md` macOS column ⬜→✅ per shipped feature; set macOS app version `CFBundleShortVersionString` coordinated with Windows 0.2.0 MAJOR.MINOR; config schema 1. | subagent |
 | T-MAC-51 | code-impl | done | T-MAC-41 | normal | arm64 Release build; code-signing + notarization + hardened-runtime prep; NO App Sandbox (must spawn CLIs); `Info.plist` (`CFBundleIconFile`, version strings). | opencode |
+| T-MAC-REV | code-review-adversarial | done | | high | Review Fix #1+Fix #2 (hotReload popup + openSettings fresh controller + GroupBox + standard colors + auto height) — diff 1d913ea vs 729e68d. Check: settings save takes effect (all components hot-reloaded); GroupBox native styling; no regression (116 tests). **Verdict: PASS_WITH_CHANGES. F1 (P1): ghost popup on hotReload not dismissed. F2-F4 (P2): code hygiene.** | opencode |
 
 ---
 

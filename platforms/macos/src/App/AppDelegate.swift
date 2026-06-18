@@ -32,7 +32,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         let app = NSApplication.shared
-        app.setActivationPolicy(.accessory)
         app.mainMenu = buildMainMenu()
 
         ensureSandboxDirectory()
@@ -158,8 +157,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func openSettings() {
-        // Always create a fresh controller from the latest on-disk config so re-opening
-        // settings reflects prior saves (the previous controller held a stale VM).
+        // Close any existing settings window, then create a fresh controller from the
+        // latest on-disk config so re-opening settings reflects prior saves.
+        settingsWindowController?.close()
         settingsWindowController = SettingsWindowController(
             config: ConfigService.load(from: configPath) ?? ConfigService.defaultConfig(),
             configPath: configPath,
@@ -179,8 +179,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             clipboardWatcher?.stop()
         }
         pipeline = buildPipeline(from: config, registry: registry!)
-        // Recreate the popup so style/autoDismiss/keepOnHover changes take effect immediately
-        // (the popup is otherwise created once at launch and ignores later config edits).
+        // Dismiss the old popup (if visible) to avoid a ghost window, then recreate it so
+        // style/autoDismiss/keepOnHover changes take effect immediately.
+        popup?.dismiss()
         popup = TranslationPopup(cfg: config.popup) { [weak self] text in
             self?.clipboardWatcher?.markSelfWrite(text)
         }
