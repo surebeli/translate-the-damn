@@ -120,7 +120,7 @@ final class ZPPopup: NSPanel, TranslationPopupUI {
         translationScrollView.drawsBackground = false
         translationScrollView.autohidesScrollers = true
         translationScrollView.heightAnchor.constraint(equalToConstant: scrollHeight).isActive = true
-        translationScrollView.widthAnchor.constraint(equalToConstant: 340).isActive = true
+        translationScrollView.widthAnchor.constraint(equalToConstant: 320).isActive = true
 
         translationTextView.isEditable = false
         translationTextView.isSelectable = true
@@ -232,11 +232,18 @@ final class ZPPopup: NSPanel, TranslationPopupUI {
     // MARK: - Private
 
     private func showAndPlace() {
-        alphaValue = 1.0
         if !isVisible {
+            alphaValue = 0
             orderFrontRegardless()
+            positionTopCenter()
+            NSAnimationContext.runAnimationGroup { ctx in
+                ctx.duration = 0.2
+                self.animator().alphaValue = 1.0
+            }
+        } else {
+            alphaValue = 1.0
+            positionTopCenter()
         }
-        positionTopCenter()
     }
 
     private func positionTopCenter() {
@@ -266,7 +273,7 @@ final class ZPPopup: NSPanel, TranslationPopupUI {
 
     override func mouseEntered(with event: NSEvent) {
         isMouseOver = true
-        dismissTimer?.invalidate()
+        if cfg.keepOnHover { dismissTimer?.invalidate() }
     }
 
     override func mouseExited(with event: NSEvent) {
