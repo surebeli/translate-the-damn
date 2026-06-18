@@ -1,0 +1,27 @@
+.hopper/COST-LOG.md
+  s_37f507425344b7::t_64b2b9dbc8b214 20-20
+.hopper/handoffs/T-MAC-33-output.md
+  s_37f507425344b7::t_64b2b9dbc8b214 74-74
+.hopper/queue.md
+  s_37f507425344b7::t_64b2b9dbc8b214 78-78
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "6436ff91a4af985d26e8c14f446ce3c524aeaaf5",
+  "prompts": {
+    "s_37f507425344b7::t_64b2b9dbc8b214": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781762086768181000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 3,
+      "total_deletions": 0,
+      "accepted_lines": 3,
+      "overriden_lines": 0
+    }
+  }
+}
