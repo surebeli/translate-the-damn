@@ -1,0 +1,23 @@
+platforms/macos/src/App/SettingsWindow.swift
+  s_21d97df2acefe7::t_19725024433a6e 72-72,133-133,280-280,567-573
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "b08a0a0036bf350cd80a4b8adc7757714803b767",
+  "prompts": {
+    "s_21d97df2acefe7::t_19725024433a6e": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781780166099756000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 10,
+      "total_deletions": 0,
+      "accepted_lines": 10,
+      "overriden_lines": 0
+    }
+  }
+}
