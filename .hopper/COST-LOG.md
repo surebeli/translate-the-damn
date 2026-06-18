@@ -17,7 +17,7 @@ Every paid vendor dispatch appends a row. Subagent (Claude Code) work is noted b
 | 2026-06-18 | T-MAC-30 | kimi | kimi-code/kimi-for-coding (default) | — | done | PASS | 162.6s | `ClipboardFilter` (Core) + `ClipboardWatcher` (App) + 19 tests; 41/41 green. Supersede deferred (sync pipeline); NoOpTranslator stub ⇒ T-MAC-37 gap added. Cross-reviewed (main). |
 | 2026-06-18 | T-MAC-31 | opencode | tokenbox/deepseek-v4-pro | N/A | done (success) | PASS | 396.4s; ~78k tok/step; cost=0 | `CarbonKeyMap` (VK→Carbon keycode, verified T/F2/Space + modifiers) + `HotkeyService` (RegisterEventHotKey, no TCC) + 30 tests; 71/71 green. opencode self-fixed `EventHandlerUPP` build error. Cross-reviewed (main). |
 | 2026-06-18 | T-MAC-32 | opencode | tokenbox/deepseek-v4-pro | N/A | done (success) | PASS | 218.6s; cost=0 | `TranslationPopup` (NSPanel nonactivating+vibrancy+hover-keep+auto-dismiss+states+copy+StringsLoader). 71/71 green. StringsLoader fallback for unbundled SPM exe; onCopy callback (decoupled self-write). Cross-reviewed (main). |
-| 2026-06-18 | T-MAC-33 | kimi | kimi-code/kimi-for-coding (default) | — | done | PASS | 138s | `TrayController` (NSStatusItem + tooltip + menu + persisted switch + watcher control). 71/71 green. kimi committed `b9b2ed9`. Cross-reviewed (main). |
+| 2026-06-18 | T-MAC-33 | kimi | kimi-code/kimi-for-coding (default) | — | done | PASS | 138s | `TrayController` (NSStatusItem + tooltip + menu + persisted switch + watcher control). 71/71 green. kimi committed `d9925e0`. Cross-reviewed (main). |
 
 ## Issues hit
 

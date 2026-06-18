@@ -71,11 +71,11 @@ Implemented the macOS menu-bar tray (`NSStatusItem`) per spec §3. `TrayControll
 
 ## Commit
 
-`b9b2ed9` "[T-MAC-33] Implement macOS menu-bar tray with global listen switch"
+`d9925e0` "[T-MAC-33] Implement macOS menu-bar tray with global listen switch"
 
 ## Checks
 
-- `git diff --check 5109e9a^ 5109e9a -- platforms/macos/src/App/AppDelegate.swift platforms/macos/src/App/TrayController.swift` → clean (no whitespace errors).
+- `git diff --check d9925e0^ d9925e0 -- platforms/macos/src/App/AppDelegate.swift platforms/macos/src/App/TrayController.swift` → clean (no whitespace errors).
 - `swift build` → Build complete! (0.80s)
 - `swift test` → Executed 71 tests, with 0 failures
 
