@@ -1,0 +1,33 @@
+platforms/macos/src/App/AppDelegate.swift
+  s_4d7cf35b165cc5::t_e9cd012d0b1e66 213-214
+platforms/macos/src/App/MMPopup.swift
+  s_4d7cf35b165cc5::t_e9cd012d0b1e66 1-437
+platforms/macos/src/App/MMSettingsView.swift
+  s_4d7cf35b165cc5::t_e9cd012d0b1e66 1-169
+platforms/macos/src/App/O48SettingsView.swift
+  s_4d7cf35b165cc5::t_e9cd012d0b1e66 161-162,164-168
+platforms/macos/src/App/KMSettingsView.swift
+  s_4d7cf35b165cc5::t_e9cd012d0b1e66 172-173,175-179
+platforms/macos/src/App/ZPSettingsView.swift
+  s_4d7cf35b165cc5::t_e9cd012d0b1e66 137
+platforms/macos/src/App/SettingsWindow.swift
+  s_4d7cf35b165cc5::t_e9cd012d0b1e66 28,145,586
+platforms/macos/src/App/ZSettingsView.swift
+  s_4d7cf35b165cc5::t_e9cd012d0b1e66 151
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "fb061dc2ee122efe592e66f0c62799e7032b14f8",
+  "prompts": {},
+  "sessions": {
+    "s_4d7cf35b165cc5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a0e84ba8-cada-4cd7-b8f1-81f44d32ee1b",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
