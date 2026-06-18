@@ -159,6 +159,7 @@ struct O48SettingsView: View {
         Form {
             Section(StringsLoader["settings.group.general"]) {
             Picker("界面风格", selection: $vm.uiStyle) {
+                Text("DS（清晰）").tag("DS")
                 Text("Z（文档）").tag("Z")
                 Text("KM（侧栏）").tag("km")
                 Text("ZP（磨砂）").tag("ZP")

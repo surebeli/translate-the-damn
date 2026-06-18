@@ -2,14 +2,20 @@ import SwiftUI
 import AppKit
 import TranslateTheDamnCore
 
-/// ZP-style settings view — native macOS Form + Section layout.
-/// Uses system colors, fonts, and controls exclusively (no custom styling).
-/// Reuses the same SettingsViewModel as the classic SettingsView.
-struct ZPSettingsView: View {
+/// DS-style settings — a clean single-page grouped form with a distinctive header.
+///
+/// Design identity: no accent rails, no tabs, no sidebar — just a pure grouped Form
+/// with comfortable spacing and a subtle top-area summary of current style.
+struct DSSettingsView: View {
     @ObservedObject var vm: SettingsViewModel
 
     var body: some View {
         VStack(spacing: 0) {
+            // Subtle style indicator header.
+            styleHeader
+
+            Divider()
+
             Form {
                 triggerSection
                 backendSection
@@ -18,9 +24,25 @@ struct ZPSettingsView: View {
             }
             .formStyle(.grouped)
 
+            Divider()
             bottomBar
         }
-        .frame(minWidth: 480)
+        .frame(minWidth: 520, minHeight: 560)
+    }
+
+    // MARK: - Style header
+
+    private var styleHeader: some View {
+        HStack {
+            Image(systemName: "sparkles")
+                .foregroundStyle(.secondary)
+            Text("DS · 当前界面风格")
+                .font(.system(size: 11, weight: .medium))
+                .foregroundStyle(.secondary)
+            Spacer()
+        }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 8)
     }
 
     // MARK: - Trigger
@@ -36,6 +58,10 @@ struct ZPSettingsView: View {
                     .onChange(of: vm.hotkeyText) { _, _ in vm.checkHotkey() }
             }
             hotkeyStatus
+
+            Text("按下热键时翻译当前剪贴板内容。注册失败说明热键已被占用。")
+                .font(.caption)
+                .foregroundStyle(.secondary)
         }
     }
 
@@ -78,7 +104,7 @@ struct ZPSettingsView: View {
             }
 
             if vm.isHttp {
-                TextField(StringsLoader["settings.field.apiKey"], text: $vm.apiKeyText)
+                SecureField(StringsLoader["settings.field.apiKey"], text: $vm.apiKeyText)
                 TextField(StringsLoader["settings.field.endpoint"], text: $vm.endpointText)
 
                 if vm.isGoogleV2 {
@@ -140,6 +166,10 @@ struct ZPSettingsView: View {
             .pickerStyle(.segmented)
 
             Toggle(StringsLoader["settings.field.startup"], isOn: $vm.startWithWindows)
+
+            Text("配置保存在 ~/.translatethedamn/config.json，API Key 仅保存在本机。")
+                .font(.caption)
+                .foregroundStyle(.secondary)
         }
     }
 

@@ -212,6 +212,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             return KMPopup(cfg: config.popup) { onCopy($0) }
         case "MM":
             return MMPopup(cfg: config.popup) { onCopy($0) }
+        case "DS":
+            return DSPopup(cfg: config.popup) { onCopy($0) }
         default:  // "O48" + any unknown value → O48 (current default).
             return O48Popup(cfg: config.popup) { onCopy($0) }
         }
