@@ -1,27 +1,23 @@
-.hopper/handoffs/T-MAC-REV-output.md
-  s_8d85808083a99e::t_de1289373b028d 1-160
 .hopper/queue.md
-  s_8d85808083a99e::t_de1289373b028d 44-44
+  s_8d85808083a99e::t_de1289373b028d 44
 platforms/macos/src/App/AppDelegate.swift
   s_8d85808083a99e::t_de1289373b028d 160-162,182-184
+.hopper/handoffs/T-MAC-REV-output.md
+  s_8d85808083a99e::t_de1289373b028d 1-160
 ---
 {
   "schema_version": "authorship/3.0.0",
   "git_ai_version": "1.5.8",
   "base_commit_sha": "09f394279e32f938ca4f473f3056a1ff360aebe2",
-  "prompts": {
-    "s_8d85808083a99e::t_de1289373b028d": {
+  "prompts": {},
+  "sessions": {
+    "s_8d85808083a99e": {
       "agent_id": {
         "tool": "mock_ai",
         "id": "ai-thread-1781776738271582000",
         "model": "unknown"
       },
-      "human_author": "litianyi <litianyi@corp.netease.com>",
-      "messages": [],
-      "total_additions": 167,
-      "total_deletions": 0,
-      "accepted_lines": 167,
-      "overriden_lines": 0
+      "human_author": "litianyi <litianyi@corp.netease.com>"
     }
   }
 }
