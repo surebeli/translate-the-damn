@@ -1,0 +1,29 @@
+platforms/macos/scripts/build-app.sh
+  s_4a66d23dd7beed::t_31e17fa0202562 60-62
+platforms/macos/src/App/SettingsWindow.swift
+  s_4a66d23dd7beed::t_31e17fa0202562 216-221
+platforms/macos/src/App/TranslationPopup.swift
+  s_4a66d23dd7beed::t_31e17fa0202562 216-216,225-225,265-265
+platforms/macos/src/Core/BackendManifest.swift
+  s_4a66d23dd7beed::t_31e17fa0202562 14-24
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "7688ece9b294a9c2117bf7353e798f6836b543d9",
+  "prompts": {
+    "s_4a66d23dd7beed::t_31e17fa0202562": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781777363590806000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 23,
+      "total_deletions": 0,
+      "accepted_lines": 23,
+      "overriden_lines": 0
+    }
+  }
+}
