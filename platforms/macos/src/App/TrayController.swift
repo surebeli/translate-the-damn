@@ -59,8 +59,9 @@ final class TrayController {
         menu.addItem(exitMenuItem)
 
         statusItem.menu = menu
+        statusItem.button?.title = "译"
         statusItem.button?.image = TrayController.makeTemplateImage()
-        statusItem.button?.imagePosition = .imageOnly
+        statusItem.button?.imagePosition = .imageLeft
 
         updateState(to: initialListenState, persist: false)
     }

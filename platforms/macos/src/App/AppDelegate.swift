@@ -5,6 +5,17 @@ import TranslateTheDamnCore
 @main
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
+    // SwiftPM executable has no main.storyboard/nib, so @main's synthesized
+    // NSApplicationMain would run NSApplication WITHOUT setting this class as the
+    // delegate ⇒ applicationDidFinishLaunching would never fire (no tray/hotkey/etc.).
+    // Provide an explicit main() that wires the delegate + activation policy + run loop.
+    static func main() {
+        let app = NSApplication.shared
+        let delegate = AppDelegate()
+        app.delegate = delegate
+        app.setActivationPolicy(.accessory)
+        app.run()
+    }
     private var pipeline: TranslationPipeline?
     private var registry: TranslatorRegistry?
     private var clipboardWatcher: ClipboardWatcher?
