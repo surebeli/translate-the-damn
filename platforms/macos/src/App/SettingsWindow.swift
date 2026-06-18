@@ -19,8 +19,9 @@ final class SettingsWindowController {
 
     @MainActor func show() {
         if window == nil {
-            let view = SettingsView(vm: viewModel)
-            let hostingView = NSHostingView(rootView: view)
+            let hostingView = NSHostingView(rootView: viewModel.uiStyle == "classic"
+                ? AnyView(SettingsView(vm: viewModel))
+                : AnyView(ZPSettingsView(vm: viewModel)))
             hostingView.frame.size = hostingView.fittingSize
 
             let win = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 560, height: 640),
