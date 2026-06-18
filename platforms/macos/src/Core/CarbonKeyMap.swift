@@ -43,7 +43,7 @@ public enum CarbonKeyMap {
         if hasControl { mods |= 0x0100 }  // cmdKey (Ctrl→⌘)
         if hasAlt     { mods |= 0x0800 }  // optionKey (Alt→⌥)
         if hasShift   { mods |= 0x0200 }  // shiftKey (Shift→⇧)
-        if hasWin     { mods |= 0x1000 }  // controlKey (Win→⌃)
+        if hasWin     { mods |= 0x0100 }  // cmdKey (Win/Command→⌘)
         return mods
     }
 }

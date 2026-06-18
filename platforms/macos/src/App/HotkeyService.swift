@@ -28,8 +28,10 @@ private func hotkeyCallback(
     guard status == noErr else { return OSStatus(eventNotHandledErr) }
 
     if hotKeyID.id == 0 {
+        fputs("[HotkeyService] 🔥 Hotkey callback fired (translate, id=0)\n", stderr)
         service.translateAction?()
     } else if hotKeyID.id == 1 {
+        fputs("[HotkeyService] 🔥 Hotkey callback fired (toggleListen, id=1)\n", stderr)
         service.toggleListenAction?()
     }
     return noErr
@@ -100,6 +102,7 @@ final class HotkeyService {
 
         translateHotKeyRef = ref
         translateAction = action
+        fputs("[HotkeyService] ✅ Registered translate hotkey '\(hotkeyString)': keycode=0x\(String(format: "%02X", carbonKeyCode)), modifiers=0x\(String(format: "%04X", modifiers))\n", stderr)
         return true
     }
 
