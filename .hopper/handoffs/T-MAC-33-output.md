@@ -2,14 +2,14 @@
 task_id: T-MAC-33
 adapter: kimi
 model: (vendor default)
-status: done
+status: failed
 pid: null
 start_time: "2026-06-18T05:48:27.927Z"
-end_time: "2026-06-18T05:50:46.000Z"
+end_time: "2026-06-18T05:55:15.658Z"
 exit_code: 0
-duration_ms: 138000
+duration_ms: 407687
 mode: foreground
-phase: done
+phase: failed
 last_progress_at: "2026-06-18T05:50:46.000Z"
 last_progress: swift build + swift test passed (71 tests, 0 failures).
 progress_seq: 2
@@ -21,6 +21,9 @@ host_native: true
 session_id: null
 log: ./T-MAC-33-output.log
 started_by_pid: 51093
+signal: null
+timed_out: null
+adapter_status: permission-fail
 ---
 
 # T-MAC-33 — Menu-bar tray for macOS
@@ -82,3 +85,20 @@ Implemented the macOS menu-bar tray (`NSStatusItem`) per spec §3. `TrayControll
 ## Next recommendation
 
 Per MANIFEST.md cursor, the next macOS task is the settings window / popup polish (T-MAC-34 area). The tray's `openSettings` callback is already wired to `AppDelegate.openSettings()` as a stub ready for the settings window implementation.
+
+## Vendor output (parsed)
+
+_(vendor produced no parsed text; see `T-MAC-33-output.log` for the raw output stream.)_
+
+## Status (background completion)
+- queue_status: failed
+- adapter_status: permission-fail
+- exit_code: 0
+- duration_ms: 407687
+- end_time: 2026-06-18T05:55:15.658Z
+
+### Adapter error
+```
+kimi binary not found in PATH. Install: curl -fsSL https://code.kimi.com/kimi-code/install.sh | bash (Windows: irm https://code.kimi.com/kimi-code/install.ps1 | iex; Homebrew: brew install kimi-code).
+```
+- log: see `T-MAC-33-output.log` for raw output

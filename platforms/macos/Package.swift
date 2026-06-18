@@ -17,7 +17,11 @@ let package = Package(
         .executableTarget(
             name: "TranslateTheDamnApp",
             dependencies: ["TranslateTheDamnCore"],
-            path: "src/App"
+            path: "src/App",
+            linkerSettings: [
+                .linkedFramework("Carbon"),
+                .linkedFramework("ServiceManagement"),
+            ]
         ),
         // Conformance runner: loads the repo-root /conformance vectors and feeds them through the
         // core stubs. This is the parity gate — every later milestone is "done" only when it goes

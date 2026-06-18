@@ -8,17 +8,31 @@ public protocol Translator {
 }
 
 /// Outcome of one translation. Only successful results are cached (mirrors the Windows pipeline).
+public enum TranslateStatus: String, Equatable {
+    case success
+    case authFail
+    case timeout
+    case notFound
+    case badOutput
+    case unknownFail
+}
+
 public struct TranslationResult: Equatable {
     public var ok: Bool
     public var text: String
+    public var status: TranslateStatus
+    public var detail: String
 
-    public init(ok: Bool, text: String) {
+    public init(ok: Bool, text: String, status: TranslateStatus = .success, detail: String = "") {
         self.ok = ok
         self.text = text
+        self.status = status
+        self.detail = detail
     }
 
     public static func successful(_ text: String) -> TranslationResult { TranslationResult(ok: true, text: text) }
-    public static func failure(_ text: String) -> TranslationResult { TranslationResult(ok: false, text: text) }
+    public static func failure(_ text: String) -> TranslationResult { TranslationResult(ok: false, text: text, status: .unknownFail) }
+    public static func failed(_ status: TranslateStatus, _ detail: String) -> TranslationResult { TranslationResult(ok: false, text: detail, status: status, detail: detail) }
 }
 
 /// Orchestrates one translation with a one-entry "last successful translation" cache. Cache key =
