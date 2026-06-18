@@ -1,0 +1,32 @@
+.hopper/queue.md
+  s_37f507425344b7::t_64b2b9dbc8b214 78
+.hopper/handoffs/T-MAC-33-output.md
+  s_37f507425344b7::t_64b2b9dbc8b214 74
+  s_0c5d0cb81fdf43::t_c3f3922074ff07 78
+.hopper/COST-LOG.md
+  s_37f507425344b7::t_64b2b9dbc8b214 20
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "a42e87edcb9d1fd1014b3f2096c23103db80b3ad",
+  "prompts": {},
+  "sessions": {
+    "s_0c5d0cb81fdf43": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781762104445565000",
+        "model": "unknown"
+      },
+      "human_author": null
+    },
+    "s_37f507425344b7": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781762086768181000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
