@@ -1,13 +1,29 @@
 import AppKit
 import Foundation
+import TranslateTheDamnCore
 
 @main
 final class AppDelegate: NSObject, NSApplicationDelegate {
+    private var pipeline: TranslationPipeline?
+    private var clipboardWatcher: ClipboardWatcher?
+
     func applicationDidFinishLaunching(_ notification: Notification) {
         let app = NSApplication.shared
         app.setActivationPolicy(.accessory)
         app.mainMenu = buildMainMenu()
-        // M3: tray/hotkey/popup/settings will be wired here.
+
+        let config = ConfigService.defaultConfig()
+        pipeline = TranslationPipeline(backend: config.general.activeBackend, translator: NoOpTranslator())
+
+        let filter = ClipboardFilter(maxChars: config.translation.maxChars)
+        clipboardWatcher = ClipboardWatcher(filter: filter) { [pipeline] text in
+            let model = config.backends[config.general.activeBackend]?.model ?? ""
+            _ = pipeline?.run(text: text, model: model)
+        }
+
+        if config.general.listenClipboard {
+            clipboardWatcher?.start()
+        }
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
@@ -46,5 +62,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         mainMenu.addItem(appMenuItem)
         mainMenu.addItem(editMenuItem)
         return mainMenu
+    }
+}
+
+// M3 stub: the real translator backends land in later tasks; for now the watcher wires into the
+// pipeline so the assembly and clipboard path compile and run end-to-end.
+private struct NoOpTranslator: Translator {
+    func translate(text: String, model: String) -> TranslationResult {
+        .successful(text)
     }
 }
