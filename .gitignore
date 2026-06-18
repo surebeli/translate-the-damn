@@ -27,3 +27,6 @@ local.config.json
 
 ## Vendor tool artifacts (mimo plan files, etc.)
 .mimocode/
+
+## Local issue tracking (not tracked by repo)
+.local-issues/
