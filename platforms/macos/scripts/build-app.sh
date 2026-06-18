@@ -57,6 +57,9 @@ STRINGS_DST="${RESOURCES_DIR}/strings/zh-CN.json"
 mkdir -p "$(dirname "${STRINGS_DST}")"
 cp "${STRINGS_SRC}" "${STRINGS_DST}"
 
+BACKENDS_SRC="${REPO_ROOT}/spec/backends.json"
+cp "${BACKENDS_SRC}" "${RESOURCES_DIR}/backends.json"
+
 echo "=== Step 5/5: Copy Info.plist ==="
 cp "${PROJECT_DIR}/Resources/Info.plist" "${CONTENTS_DIR}/Info.plist"
 

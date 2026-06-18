@@ -213,7 +213,7 @@ final class TranslationPopup: NSPanel {
     }
 
     private func setUpContent() {
-        visualEffectView.material = .hudWindow
+        visualEffectView.material = .popover
         visualEffectView.blendingMode = .behindWindow
         visualEffectView.state = .active
         visualEffectView.wantsLayer = true
@@ -222,7 +222,7 @@ final class TranslationPopup: NSPanel {
 
         let darkScrim = NSView()
         darkScrim.wantsLayer = true
-        darkScrim.layer?.backgroundColor = NSColor(white: 0, alpha: 0.45).cgColor
+        darkScrim.layer?.backgroundColor = NSColor(white: 0, alpha: 0.15).cgColor
         visualEffectView.addSubview(darkScrim)
         darkScrim.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -262,7 +262,7 @@ final class TranslationPopup: NSPanel {
         sourceLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         contentStack.addArrangedSubview(sourceLabel)
 
-        let scrollSize = NSSize(width: 420, height: min(cfg.autoDismissSeconds > 0 ? 300 : 400, 400))
+        let scrollSize = NSSize(width: 360, height: min(cfg.autoDismissSeconds > 0 ? 300 : 400, 400))
         translationScrollView.translatesAutoresizingMaskIntoConstraints = false
         translationScrollView.setFrameSize(scrollSize)
         translationScrollView.hasVerticalScroller = true

@@ -11,6 +11,17 @@ public enum BackendManifest {
             return c
         }
 
+        // In a .app bundle, #file resolves to a short module path that doesn't walk up
+        // to the repo root. Try Bundle.main (the bundled backends.json resource) first.
+        if let bundleURL = Bundle.main.url(forResource: "backends", withExtension: "json"),
+           let data = try? Data(contentsOf: bundleURL),
+           let obj = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
+        {
+            _cachedManifest = obj
+            cacheLock.unlock()
+            return obj
+        }
+
         var url = URL(fileURLWithPath: #file).deletingLastPathComponent()
         while url.path != "/" {
             let candidate = url.appendingPathComponent("spec/backends.json")

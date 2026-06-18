@@ -213,6 +213,12 @@ final class SettingsViewModel: ObservableObject {
             hotkeyConflict = false
             return
         }
+        // Skip the conflict check if this is the currently-registered hotkey —
+        // the app already holds it, so tryRegisterHotkey would false-positive.
+        if trimmed.lowercased() == config.hotkey.translate.lowercased() {
+            hotkeyConflict = false
+            return
+        }
         hotkeyConflict = !Self.tryRegisterHotkey(result: result)
     }
 
