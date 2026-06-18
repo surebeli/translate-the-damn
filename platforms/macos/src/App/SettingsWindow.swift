@@ -69,6 +69,7 @@ final class SettingsViewModel: ObservableObject {
     @Published var autoDismissSeconds: Double
     @Published var keepOnHover: Bool
     @Published var startWithWindows: Bool
+    @Published var uiStyle: String = "ZP"
 
     @Published var saveStatus: String = ""
     @Published var authHint: String = ""
@@ -129,6 +130,7 @@ final class SettingsViewModel: ObservableObject {
         autoDismissSeconds = Double(config.popup.autoDismissSeconds)
         keepOnHover = config.popup.keepOnHover
         startWithWindows = config.general.startWithWindows
+        uiStyle = config.general.uiStyle ?? "ZP"
 
         if !backendIds.contains(selectedBackendId), let first = backendIds.first {
             selectedBackendId = first
@@ -275,6 +277,7 @@ final class SettingsViewModel: ObservableObject {
         config.general.listenClipboard = listenClipboard
         config.general.activeBackend = selectedBackendId
         config.general.startWithWindows = startWithWindows
+        config.general.uiStyle = uiStyle
         config.hotkey.translate = hotkeyText.trimmingCharacters(in: .whitespaces)
         config.popup.style = popupStyle
         config.popup.autoDismissSeconds = Int(autoDismissSeconds)
@@ -561,6 +564,13 @@ struct SettingsView: View {
                 .font(.system(size: 13, weight: .semibold))
                 .foregroundColor(.primary)
                 .padding(.bottom, 2)
+
+            Picker("界面风格", selection: $vm.uiStyle) {
+                Text("ZP（新潮磨砂）").tag("ZP")
+                Text("Classic（经典）").tag("classic")
+            }
+            .pickerStyle(.segmented)
+            .padding(.bottom, 8)
 
             Toggle(isOn: $vm.startWithWindows) {
                 Text(StringsLoader["settings.field.startup"])
