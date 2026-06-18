@@ -1,0 +1,23 @@
+docs/ZP-UI-REDESIGN-PROMPT.md
+  s_d0699dfd1d2357::t_1e154ebcf8e88a 96-96
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "57f4d28726f9c0b4e5758bafa30222ea42e03fb6",
+  "prompts": {
+    "s_d0699dfd1d2357::t_1e154ebcf8e88a": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781796196540469000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 0,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    }
+  }
+}
