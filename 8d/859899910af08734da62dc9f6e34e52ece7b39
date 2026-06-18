@@ -5,19 +5,15 @@ platforms/macos/src/App/AppDelegate.swift
   "schema_version": "authorship/3.0.0",
   "git_ai_version": "1.5.8",
   "base_commit_sha": "8d859899910af08734da62dc9f6e34e52ece7b39",
-  "prompts": {
-    "s_cbe25692d5e1bd::t_7ddaefae86e1bf": {
+  "prompts": {},
+  "sessions": {
+    "s_cbe25692d5e1bd": {
       "agent_id": {
         "tool": "mock_ai",
         "id": "ai-thread-1781777491809118000",
         "model": "unknown"
       },
-      "human_author": "litianyi <litianyi@corp.netease.com>",
-      "messages": [],
-      "total_additions": 2,
-      "total_deletions": 0,
-      "accepted_lines": 2,
-      "overriden_lines": 0
+      "human_author": "litianyi <litianyi@corp.netease.com>"
     }
   }
 }
