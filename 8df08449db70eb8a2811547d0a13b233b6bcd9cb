@@ -1,0 +1,27 @@
+.hopper/queue.md
+  s_3268dd5eb2b013::t_d54575482c39dc 30-31
+platforms/macos/Package.swift
+  s_3268dd5eb2b013::t_d54575482c39dc 16-21
+platforms/macos/src/App/AppDelegate.swift
+  s_3268dd5eb2b013::t_d54575482c39dc 1-50
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "8df08449db70eb8a2811547d0a13b233b6bcd9cb",
+  "prompts": {
+    "s_3268dd5eb2b013::t_d54575482c39dc": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781760413650812000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 58,
+      "total_deletions": 0,
+      "accepted_lines": 58,
+      "overriden_lines": 0
+    }
+  }
+}
