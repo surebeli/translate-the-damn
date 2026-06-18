@@ -158,15 +158,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func openSettings() {
-        if settingsWindowController == nil {
-            settingsWindowController = SettingsWindowController(
-                config: ConfigService.load(from: configPath) ?? ConfigService.defaultConfig(),
-                configPath: configPath,
-                onSave: { [weak self] config in
-                    self?.hotReload(config: config)
-                }
-            )
-        }
+        // Always create a fresh controller from the latest on-disk config so re-opening
+        // settings reflects prior saves (the previous controller held a stale VM).
+        settingsWindowController = SettingsWindowController(
+            config: ConfigService.load(from: configPath) ?? ConfigService.defaultConfig(),
+            configPath: configPath,
+            onSave: { [weak self] config in
+                self?.hotReload(config: config)
+            }
+        )
         settingsWindowController?.show()
     }
 
@@ -179,6 +179,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             clipboardWatcher?.stop()
         }
         pipeline = buildPipeline(from: config, registry: registry!)
+        // Recreate the popup so style/autoDismiss/keepOnHover changes take effect immediately
+        // (the popup is otherwise created once at launch and ignores later config edits).
+        popup = TranslationPopup(cfg: config.popup) { [weak self] text in
+            self?.clipboardWatcher?.markSelfWrite(text)
+        }
     }
 
     private func buildPipeline(from config: AppConfig, registry: TranslatorRegistry) -> TranslationPipeline {

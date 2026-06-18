@@ -306,7 +306,7 @@ struct SettingsView: View {
 
             bottomBar
         }
-        .frame(width: 560, height: 640)
+        .frame(width: 560)
         .background(Color(nsColor: .controlBackgroundColor))
     }
 
@@ -316,7 +316,7 @@ struct SettingsView: View {
         CardView {
             Text(StringsLoader["settings.group.trigger"])
                 .font(.system(size: 13, weight: .semibold))
-                .foregroundColor(Color(red: 0.56, green: 0.89, blue: 0.76))
+                .foregroundColor(.primary)
                 .padding(.bottom, 2)
 
             Toggle(isOn: $vm.listenClipboard) {
@@ -384,7 +384,7 @@ struct SettingsView: View {
         CardView {
             Text(StringsLoader["settings.group.backend"])
                 .font(.system(size: 13, weight: .semibold))
-                .foregroundColor(Color(red: 0.56, green: 0.89, blue: 0.76))
+                .foregroundColor(.primary)
                 .padding(.bottom, 2)
 
             HStack {
@@ -511,7 +511,7 @@ struct SettingsView: View {
         CardView {
             Text(StringsLoader["settings.group.popup"])
                 .font(.system(size: 13, weight: .semibold))
-                .foregroundColor(Color(red: 0.56, green: 0.89, blue: 0.76))
+                .foregroundColor(.primary)
                 .padding(.bottom, 2)
 
             HStack {
@@ -553,7 +553,7 @@ struct SettingsView: View {
         CardView {
             Text(StringsLoader["settings.group.general"])
                 .font(.system(size: 13, weight: .semibold))
-                .foregroundColor(Color(red: 0.56, green: 0.89, blue: 0.76))
+                .foregroundColor(.primary)
                 .padding(.bottom, 2)
 
             Toggle(isOn: $vm.startWithWindows) {
@@ -576,7 +576,7 @@ struct SettingsView: View {
             if !vm.saveStatus.isEmpty {
                 Text(vm.saveStatus)
                     .font(.system(size: 13))
-                    .foregroundColor(Color(red: 0.56, green: 0.89, blue: 0.76))
+                    .foregroundColor(.primary)
             }
             Spacer()
             Button(StringsLoader["settings.button.close"]) {
@@ -603,17 +603,12 @@ private struct CardView<Content: View>: View {
     @ViewBuilder let content: () -> Content
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            content()
+        GroupBox {
+            VStack(alignment: .leading, spacing: 8) {
+                content()
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.vertical, 4)
         }
-        .padding(16)
-        .background(
-            RoundedRectangle(cornerRadius: 10)
-                .fill(Color(nsColor: NSColor.controlBackgroundColor.blended(withFraction: 0.05, of: .white) ?? NSColor.controlBackgroundColor))
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(Color.white.opacity(0.08), lineWidth: 1)
-        )
     }
 }
