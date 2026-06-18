@@ -1,0 +1,25 @@
+platforms/macos/src/App/O48Popup.swift
+  s_46e3075570e55d::t_2e5035d06f5dce 414-461
+platforms/macos/src/App/SettingsWindow.swift
+  s_46e3075570e55d::t_2e5035d06f5dce 139-142
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "076301623335b52c735ffd14b81e5e3d0240133e",
+  "prompts": {
+    "s_46e3075570e55d::t_2e5035d06f5dce": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781786686392805000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 52,
+      "total_deletions": 0,
+      "accepted_lines": 52,
+      "overriden_lines": 0
+    }
+  }
+}
