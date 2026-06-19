@@ -16,7 +16,7 @@ Legend: ✅ shipped · 🚧 in progress · ⬜ not started · ⚠️ partial/bes
 | Backends — copilot, agy (CLI) | §6 | `spec/backends.json` | ⚠️ | ⚠️ | ⬜ |
 | Backends — google-v2, doubao (HTTP) | §6.1/6.2 | `backend-requests` + `spec/backends.json` | ✅ | ✅ | ⬜ |
 | Last-translation cache (text+backend+model) | §4.1 | `pipeline-cache` | ✅ | ✅ | ⬜ |
-| config.json defaults / bootstrap | §7 | `config-defaults` | ✅ | ✅ | ⬜ |
+| config.json defaults / bootstrap | §7 | `config-defaults` | ⚠️ | ✅ | ⬜ |
 | Acrylic popup (no-focus-steal, hover-keep, auto-dismiss, scroll) | §8 | — (UI) | ✅ | 🚧 | ⬜ |
 | Popup copy + close buttons | §8 | — (UI) | ✅ | 🚧 | ⬜ |
 | Settings window (backend/model, fields, live hotkey check) | §9 | — (UI) | ✅ | 🚧 | ⬜ |
@@ -40,3 +40,14 @@ Legend: ✅ shipped · 🚧 in progress · ⬜ not started · ⚠️ partial/bes
 - The Windows adapters currently **hardcode** the backend definitions that `spec/backends.json`
   declares; refactoring Windows to read the manifest is a tracked future task (keeps the manifest
   the single source for all platforms).
+- **Default popup style is now `solid`** (was `acrylic`): the shared `config-defaults` vector and the
+  design spec §7 default config were updated (Constitution Law 1). macOS already defaults to solid;
+  **Windows must change its default `popup.style` to `solid`** to keep `config-defaults` green —
+  hence Win is ⚠️ on that row until done. `acrylic` remains a user-selectable popup style on both
+  platforms (the 浮窗展示 · 视觉风格 toggle); only the first-run default changed.
+- **macOS UI consolidated to a single style.** The macOS port experimented with 7 swappable UI
+  styles (`uiStyle` switch); it has been consolidated to one finalized "clean" UI (single-page
+  grouped Form settings + clean glass-card popup with italic source). The `uiStyle` switch, picker,
+  and the other six style implementations were removed. This was macOS-only (never a shared feature),
+  so it is not a parity item; `config.general.uiStyle` stays in the schema (nil-default) for
+  back-compat. Decision rationale: the UI-style review on branch `expe/202606`.

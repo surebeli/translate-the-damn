@@ -197,26 +197,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func createPopup(config: AppConfig) -> TranslationPopupUI {
-        let uiStyle = config.general.uiStyle ?? "O48"
+        // Single finalized UI ("clean" style). The other six styles and the uiStyle switch
+        // were removed; config.general.uiStyle is retained (nil-default) only for back-compat.
         let onCopy: (String) -> Void = { [weak self] text in
             self?.clipboardWatcher?.markSelfWrite(text)
         }
-        switch uiStyle {
-        case "classic":
-            return TranslationPopup(cfg: config.popup) { onCopy($0) }
-        case "ZP":
-            return ZPPopup(cfg: config.popup) { onCopy($0) }
-        case "Z":
-            return ZPopup(cfg: config.popup) { onCopy($0) }
-        case "km":
-            return KMPopup(cfg: config.popup) { onCopy($0) }
-        case "MM":
-            return MMPopup(cfg: config.popup) { onCopy($0) }
-        case "DS":
-            return DSPopup(cfg: config.popup) { onCopy($0) }
-        default:  // "O48" + any unknown value → O48 (current default).
-            return O48Popup(cfg: config.popup) { onCopy($0) }
-        }
+        return DSPopup(cfg: config.popup) { onCopy($0) }
     }
 
     private func buildMainMenu() -> NSMenu {

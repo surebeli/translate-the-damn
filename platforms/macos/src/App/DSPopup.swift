@@ -17,6 +17,18 @@ import TranslateTheDamnCore
 ///
 /// Non-focus-stealing: NSPanel(.nonactivatingPanel) + canBecomeKey/Main = false + .floating.
 /// Honors every PopupConfig field (style, autoDismissSeconds, keepOnHover).
+/// Common protocol for the translation popup (kept after consolidating to a single UI;
+/// originally declared in the now-removed ZPPopup.swift).
+@MainActor
+protocol TranslationPopupUI: AnyObject {
+    func showLoading()
+    func showResult(translation: String, source: String)
+    func showError(message: String)
+    func show(source: String, translation: String)
+    func update(translation: String)
+    func dismiss()
+}
+
 final class DSPopup: NSPanel, TranslationPopupUI {
     private let cfg: PopupConfig
     private let onCopy: (String) -> Void
