@@ -34,6 +34,12 @@ public static class Conformance
             Check.Eq(expected.GetString(), AnsiStripper.Strip(s), $"conformance ansi-stripper [{name}]");
         });
 
+        Each(dir, "popup-sizing.json", (name, input, expected) =>
+        {
+            var cls = PopupSizing.SizeClass(input.GetProperty("sourceChars").GetInt32());
+            Check.Eq(expected.GetString(), cls, $"conformance popup-sizing [{name}]");
+        });
+
         Each(dir, "hotkey-parser.json", (name, input, expected) =>
         {
             var spec = HotkeyParser.Parse(input.GetProperty("text").GetString());

@@ -217,6 +217,11 @@ of the **primary** monitor's work area. Mouse hover pauses the dismiss timer; ot
   prev/older ◀ and next/newer ▶ controls, showing **one entry at a time** — the just-queried result
   first (= newest), with an "index / total" indicator. Controls disable at the ends; navigating
   re-renders from cache and **never re-invokes the model**. Size is recomputed per displayed entry.
+- **Drag to reposition** (shared rule): the popup can be moved by dragging its **card background**
+  (anywhere except the action buttons). Dragging a no-focus-steal window must **not** activate it or
+  steal focus from the foreground app. While dragging, the auto-dismiss timer pauses and restarts on
+  drop. The position is **session-sticky**: once the user moves it, subsequent popups appear at that
+  position (clamped to the primary work area) until the app restarts, when it returns to top-center.
 
 ## 9. Settings window
 
@@ -225,6 +230,12 @@ hotkey capture w/ live conflict check), 翻译后端 (backend combobox → edita
 `modelCatalog`, auth lamp + "去登录/设密钥", per-backend fields incl. google/doubao apiKey), 浮窗展示
 (style acrylic/solid, autoDismiss slider, keep-on-hover), 通用 (start with Windows). Writes config.json;
 hot-reloads the running pipeline.
+
+- **Secret entry** (shared rule): the **API Key field is a masked/secure entry** — the key is never
+  rendered in plaintext (Windows `PasswordBox`, macOS `SecureField`, etc.). No reveal control in v1.
+- **Single instance** (shared rule): the settings window is **single-instance** — re-invoking "open
+  settings" (tray menu or tray double-click) surfaces/refocuses the **existing** window (restoring it
+  if minimized) instead of opening a second one.
 
 ## 10. Non-functional / risks
 
