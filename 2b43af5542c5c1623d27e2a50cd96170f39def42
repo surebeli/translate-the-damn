@@ -1,0 +1,38 @@
+docs/superpowers/specs/2026-06-17-translate-the-damn-design.md
+  0000019ee004fa26 1-269
+platforms/macos/src/App/DSPopup.swift
+  0000019ee004fa26 1-563
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "2b43af5542c5c1623d27e2a50cd96170f39def42",
+  "prompts": {
+    "s_5a434b5dd6089c::t_ae4998e009b106": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781874882719083000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "0000019ee004fa26": {
+      "agent_id": {
+        "tool": "claude",
+        "model": "claude-opus-4-8",
+        "id": "ai-thread-claude-claude-opus-4-8-1781874883110"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 832,
+      "total_deletions": 0,
+      "accepted_lines": 832,
+      "overriden_lines": 0
+    }
+  }
+}
