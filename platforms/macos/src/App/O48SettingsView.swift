@@ -13,7 +13,12 @@ import TranslateTheDamnCore
 ///     field, binding, and conditional behaves identically — this view is purely a re-layout.
 struct O48SettingsView: View {
     @ObservedObject var vm: SettingsViewModel
-    @State private var tab: Int = 0
+    @State private var tab: Int
+
+    init(vm: SettingsViewModel, initialTab: Int = 0) {
+        _vm = ObservedObject(wrappedValue: vm)
+        _tab = State(initialValue: initialTab)
+    }
 
     var body: some View {
         VStack(spacing: 0) {

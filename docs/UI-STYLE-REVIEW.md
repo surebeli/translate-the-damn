@@ -54,12 +54,12 @@ platforms/macos/src/App/DSSettingsView.swift
 
 为可复现且不依赖手动点击托盘菜单，新增了一个 **dev-only 截屏 harness**：
 
-- `platforms/macos/src/App/ScreenshotHarness.swift`：仅当环境变量 `TTD_SHOT_KIND` 存在时激活（正常启动完全不走它，生产行为不变）。它按给定 `uiStyle` 渲染**一个**设置窗口或一个浮窗，把窗口号写入就绪文件，再保持存活。
-- 设置窗口会被撑高到内容自然高度，以便一张图展示全部分区（真实运行时默认窗口约 560×640pt，单页表单会溢出滚动——见各风格点评）。
-- 浮窗用样例文本（英文原文 + 中文译文），保留默认配置（`autoDismissSeconds=6`，截屏发生在启动后约 1.4s，远早于消失）。
-- 外部用 `screencapture -l<windowNumber> -o` 抓取**真实合成窗口**（含标题栏、红绿灯、真实 vibrancy）。
+- `platforms/macos/src/App/ScreenshotHarness.swift`：仅当环境变量 `TTD_SHOT_KIND` 存在时激活（正常启动完全不走它，生产行为不变）。按 `TTD_SHOT_STYLE` / `TTD_SHOT_POPUP_STYLE`(acrylic|solid) / `TTD_SHOT_APPEARANCE`(light|dark，用 `NSApp.appearance` 强制) / `TTD_SHOT_PAGE`(O48 标签页 / KM 侧栏页) 渲染**一个**设置窗口或浮窗，把窗口号写入就绪文件后保持存活。
+- 设置窗口撑高到内容自然高度，一张图展示全部分区（真实默认窗口约 560×640pt，单页表单会溢出滚动——见各风格点评）。浮窗用样例文本，保留默认配置（`autoDismissSeconds=6`，截屏在启动后约 1.4s、远早于消失）。
+- `platforms/macos/scripts/screenshot-ui.sh` 驱动：`swift build` 后一键生成**完整矩阵共 54 张**——每风格设置窗（浅+深）、O48/KM 全部分页（浅+深）、每风格浮窗 acrylic/solid × 浅/深。
+- 外部用 `screencapture -l<windowNumber> -o` 抓取**真实合成窗口**（含标题栏、红绿灯、真实 vibrancy）；明/暗由 `NSApp.appearance` 强制，不依赖宿主系统外观。
 
-全部截屏位于 `docs/ui-review/shots/`。
+全部截屏位于 `docs/ui-review/shots/`（54 张）。
 
 ---
 
@@ -663,32 +663,55 @@ platforms/macos/src/App/DSSettingsView.swift
 
 ---
 
-## 5. 附录 A — 7 种风格浮窗一览（acrylic）
+## 5. 附录 — 截屏全集（材质 × 明暗 × 分页）
 
-各风格浮窗在相同样例文本下的真实外观：
+> 完整截屏矩阵共 **54 张**，全部由 `screenshot-ui.sh` 一键生成：每风格浮窗在 acrylic/solid × 浅/深 各一张；每风格设置窗的深色版（与 Part 1 浅色对照）；O48/KM 全部分页的浅+深。一句话特征与详评见 Part 1 各节。
 
-| 风格 | 浮窗 |
+### 5.1 浮窗全集（7 风格 × acrylic/solid × 浅/深）
+
+| 风格 | acrylic · 浅 | solid · 浅 | acrylic · 深 | solid · 深 |
+|---|---|---|---|---|
+| **Classic** | ![](ui-review/shots/popup-classic-acrylic.png) | ![](ui-review/shots/popup-classic-solid.png) | ![](ui-review/shots/popup-classic-acrylic-dark.png) | ![](ui-review/shots/popup-classic-solid-dark.png) |
+| **ZP** | ![](ui-review/shots/popup-ZP-acrylic.png) | ![](ui-review/shots/popup-ZP-solid.png) | ![](ui-review/shots/popup-ZP-acrylic-dark.png) | ![](ui-review/shots/popup-ZP-solid-dark.png) |
+| **KM** | ![](ui-review/shots/popup-km-acrylic.png) | ![](ui-review/shots/popup-km-solid.png) | ![](ui-review/shots/popup-km-acrylic-dark.png) | ![](ui-review/shots/popup-km-solid-dark.png) |
+| **O48（默认）** | ![](ui-review/shots/popup-O48-acrylic.png) | ![](ui-review/shots/popup-O48-solid.png) | ![](ui-review/shots/popup-O48-acrylic-dark.png) | ![](ui-review/shots/popup-O48-solid-dark.png) |
+| **Z** | ![](ui-review/shots/popup-Z-acrylic.png) | ![](ui-review/shots/popup-Z-solid.png) | ![](ui-review/shots/popup-Z-acrylic-dark.png) | ![](ui-review/shots/popup-Z-solid-dark.png) |
+| **MM** | ![](ui-review/shots/popup-MM-acrylic.png) | ![](ui-review/shots/popup-MM-solid.png) | ![](ui-review/shots/popup-MM-acrylic-dark.png) | ![](ui-review/shots/popup-MM-solid-dark.png) |
+| **DS** | ![](ui-review/shots/popup-DS-acrylic.png) | ![](ui-review/shots/popup-DS-solid.png) | ![](ui-review/shots/popup-DS-acrylic-dark.png) | ![](ui-review/shots/popup-DS-solid-dark.png) |
+
+> 观察：O48 的 acrylic 钉死深色 HUD，浅/深两栏外观几乎一致；其余风格 acrylic/solid 都随系统明暗翻转。Classic 深色下（见 acrylic·深）标题被裁、文字与背景几乎同色——对比度问题在深色下更明显。Classic/ZP 的按钮在左下且非强调，其余在右下且强调态。
+
+### 5.2 设置窗口 · 深色（对照 Part 1 浅色）
+
+| 风格 | 设置窗口（深色） |
 |---|---|
-| Classic | ![](ui-review/shots/popup-classic-acrylic.png) |
-| ZP | ![](ui-review/shots/popup-ZP-acrylic.png) |
-| KM | ![](ui-review/shots/popup-km-acrylic.png) |
-| O48（默认） | ![](ui-review/shots/popup-O48-acrylic.png) |
-| Z | ![](ui-review/shots/popup-Z-acrylic.png) |
-| MM | ![](ui-review/shots/popup-MM-acrylic.png) |
-| DS | ![](ui-review/shots/popup-DS-acrylic.png) |
+| **Classic** | ![](ui-review/shots/settings-classic-dark.png) |
+| **ZP** | ![](ui-review/shots/settings-ZP-dark.png) |
+| **KM** · 首个分页 | ![](ui-review/shots/settings-km-dark.png) |
+| **O48（默认）** · 首个分页 | ![](ui-review/shots/settings-O48-dark.png) |
+| **Z** | ![](ui-review/shots/settings-Z-dark.png) |
+| **MM** | ![](ui-review/shots/settings-MM-dark.png) |
+| **DS** | ![](ui-review/shots/settings-DS-dark.png) |
 
-各浮窗一句话特征（详评见 Part 1 各节）：
+### 5.3 O48 四个标签页（浅 / 深）
 
-- **Classic**：NSPanel(nonactivatingPanel + floating)做无边框浮窗，顶部居中弹出，圆角 12，有阴影，淡入淡出 0.2s，符合『不抢焦点的浮层』定位
-- **ZP**：使用真正的 NSVisualEffectView 磨砂材质：acrylic 用 .popover material + .behindWindow + .active state，solid 用 .contentBackground + .inactive，没有 darkScrim/硬编码底色，背景透出真实毛玻璃
-- **KM**：真实 NSVisualEffectView 磨砂：acrylic 用 .popover 材质 state=.active，solid 用 .contentBackground state=.inactive，blendingMode=.behindWindow，无 darkScrim/硬编码底色
-- **O48（默认）**：真正的原生材质:NSVisualEffectView,acrylic 走 .hudWindow + .vibrantDark、solid 走 .windowBackground 自适应,不是硬编码 darkScrim;cornerRadius 16,圆角 + 系统阴影。
-- **Z**：NSPanel(.nonactivatingPanel)+floating+canBecomeKey/Main=false，正确做到不抢焦点的浮窗;对称 0.2s 淡入淡出，克制。
-- **MM**：真正使用 NSVisualEffectView 磨砂材质:acrylic=.popover/.active/.behindWindow,solid=.contentBackground/.inactive,而非硬编码色或 darkScrim
-- **DS**：真正的原生材质：NSVisualEffectView + .behindWindow，acrylic 用 .popover/.active、solid 用 .contentBackground/.inactive，12pt 圆角 + 系统阴影，不是硬编码色或 darkScrim
+| 标签页 | 浅色 | 深色 |
+|---|---|---|
+| 监听与触发 | ![](ui-review/shots/settings-O48.png) | ![](ui-review/shots/settings-O48-dark.png) |
+| 翻译后端 | ![](ui-review/shots/settings-O48-tab1.png) | ![](ui-review/shots/settings-O48-tab1-dark.png) |
+| 浮窗展示 | ![](ui-review/shots/settings-O48-tab2.png) | ![](ui-review/shots/settings-O48-tab2-dark.png) |
+| 通用 | ![](ui-review/shots/settings-O48-tab3.png) | ![](ui-review/shots/settings-O48-tab3-dark.png) |
+
+### 5.4 KM 四个侧栏页（浅 / 深）
+
+| 侧栏页 | 浅色 | 深色 |
+|---|---|---|
+| 监听与触发 | ![](ui-review/shots/settings-km.png) | ![](ui-review/shots/settings-km-dark.png) |
+| 翻译后端 | ![](ui-review/shots/settings-km-tab1.png) | ![](ui-review/shots/settings-km-tab1-dark.png) |
+| 浮窗展示 | ![](ui-review/shots/settings-km-tab2.png) | ![](ui-review/shots/settings-km-tab2-dark.png) |
+| 通用 | ![](ui-review/shots/settings-km-tab3.png) | ![](ui-review/shots/settings-km-tab3-dark.png) |
 
 ---
-
 ## 6. 跨风格一致性与综合排名
 
 > 本节由跨风格评审 agent 产出，作者已**对照源码逐条核对并修正了其中两处事实错误**：原稿误把 O48 当作"单页 Form + hello-world 预览卡"（实际 O48 是分页 `TabView`，预览卡属于 Z），并误判 ZP/Z/MM/DS 的"保存"为非强调态（实际仅 **Classic** 的保存按钮非强调，其余 6 个均为 `.borderedProminent` 蓝色强调态——已用 `grep borderedProminent` 在源码确认）。下文为修正后的结论。
@@ -733,13 +756,18 @@ platforms/macos/src/App/DSSettingsView.swift
 - **为同形风格注入真实差异或合并**：ZP/MM/DS（及 Z）若定位为独立风格，至少在布局结构（行密度 / 卡片圆角与材质 / 是否带预览）上拉开；否则考虑合并冗余风格，减少"换皮不换形"。
 - **清理装饰残留**：DS 顶部"DS·当前界面风格"指示行、ZP 浮窗顶部蓝条等疑似调试/品牌残留元素，需评估去留并规范化。
 
-### 6.5 本次评审的局限 / 待补
+### 6.5 本次评审的覆盖与仍待补
 
-- **缺深色模式截图**：本批截屏均为系统浅色外观；评判标准要求明暗双模均达标，Classic/ZP 的低对比灰在深色下可能更糟，需补深色截图。
-- **浮窗材质覆盖不全**：已补了 O48 的 acrylic 与 solid 两种（见 Part 2），但其余 6 风格浮窗只截了 acrylic，未截各自 solid，需补齐以验证另一材质下的对比度与一致性。
-- **设置窗口仅截默认/首个分区**：KM（侧栏）只截到"监听与触发"页、O48（TabView）只截到首个 tab；"翻译后端 / 浮窗展示 / 通用"其余分页未单独截图（单页表单已在 Part 1 完整展示）。需补 KM/O48 其余分页以核对控件一致性。
-- **未覆盖交互/异常态**：热键聚焦态、热键冲突（注册失败红字）、后端未检测/认证失败、按钮 hover/pressed/disabled 等状态均无截图，无法评估状态色与可供性是否跨风格一致。
-- **长文 / 缩放 / 本地化压力未测**：示例文本较短，未覆盖超长译文滚动、最小窗口尺寸、更长中英文标签的截断/换行表现。
+**已补齐（见 §5 截屏全集，共 54 张）：**
+
+- ✅ **深色模式**：7 风格设置窗 + 全部浮窗均补了深色版（§5.1–5.4）。验证结论：Classic 的低对比问题在深色下更明显（标题被裁、文字近背景色）；其余风格深色下对比度自洽。
+- ✅ **浮窗材质全覆盖**：7 风格 × acrylic/solid × 浅/深 全部截齐（§5.1），不再只有 O48 的 solid。
+- ✅ **O48 / KM 全部分页**：O48 四个标签页、KM 四个侧栏页的浅+深均已截（§5.3 / §5.4）。
+
+**仍待补（建议下一轮）：**
+
+- **交互/异常态**：热键聚焦态、热键冲突（注册失败红字）、后端未检测/认证失败、按钮 hover/pressed/disabled 等状态均无截图，无法评估状态色与可供性是否跨风格一致。
+- **长文 / 缩放 / 本地化压力**：示例文本较短，未覆盖超长译文滚动、最小窗口尺寸、更长中英文标签的截断/换行表现。
 
 
 ---

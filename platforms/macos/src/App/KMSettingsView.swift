@@ -12,7 +12,13 @@ import TranslateTheDamnCore
 ///   • Reuses the same `SettingsViewModel` as the other views, so every binding behaves identically.
 struct KMSettingsView: View {
     @ObservedObject var vm: SettingsViewModel
-    @State private var selectedTab: KMSettingsTab = .trigger
+    @State private var selectedTab: KMSettingsTab
+
+    init(vm: SettingsViewModel, initialPage: Int = 0) {
+        _vm = ObservedObject(wrappedValue: vm)
+        let pages = KMSettingsTab.allCases
+        _selectedTab = State(initialValue: pages[min(max(initialPage, 0), pages.count - 1)])
+    }
 
     var body: some View {
         NavigationSplitView {
