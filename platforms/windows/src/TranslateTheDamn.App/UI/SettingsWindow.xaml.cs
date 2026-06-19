@@ -101,7 +101,7 @@ public partial class SettingsWindow : Window
         CmbModel.Text = bc.Model ?? string.Empty;
 
         TxtEndpoint.Text = bc.Endpoint ?? string.Empty;
-        TxtApiKey.Text = bc.ApiKey ?? string.Empty;
+        TxtApiKey.Password = bc.ApiKey ?? string.Empty;   // masked (PasswordBox)
         TxtTarget.Text = isGoogle ? (bc.Target ?? string.Empty) : (bc.TargetLanguage ?? string.Empty);
         TxtReasoning.Text = bc.Reasoning ?? string.Empty;
         TxtFallback.Text = bc.FallbackCommand ?? string.Empty;
@@ -120,7 +120,7 @@ public partial class SettingsWindow : Window
         if (http)
         {
             bc.Endpoint = NullIfEmpty(TxtEndpoint.Text);
-            bc.ApiKey = TxtApiKey.Text ?? string.Empty;
+            bc.ApiKey = TxtApiKey.Password;   // PasswordBox.Password is never null
             if (isGoogle) bc.Target = NullIfEmpty(TxtTarget.Text);
             else bc.TargetLanguage = NullIfEmpty(TxtTarget.Text);
         }

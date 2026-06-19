@@ -86,7 +86,9 @@ internal sealed class AppController : IDisposable
         if (id != _requestSeq) return;       // superseded by a newer trigger
         if (result is null) return;           // filtered / canceled
 
-        if (result.Ok) popup.ShowResult(text, result.Text, backend);
+        // Feed the recent-translation history (newest first) so the popup offers ◀ ▶ navigation
+        // over the cache; index 0 = the just-queried entry. Navigation never re-invokes the model.
+        if (result.Ok) popup.ShowResults(_pipeline.RecentHistory(), 0, backend);
         else popup.ShowError(text, result.Error ?? "翻译失败", backend);
     }
 
@@ -138,8 +140,21 @@ internal sealed class AppController : IDisposable
     {
         if (_settings is not null)
         {
-            _settings.Activate();
-            return;
+            // Single instance: surface the existing settings window instead of opening a second one.
+            try
+            {
+                if (_settings.WindowState == WindowState.Minimized)
+                    _settings.WindowState = WindowState.Normal;   // Activate() won't un-minimize
+                _settings.Activate();
+                _settings.Topmost = true;    // win the foreground race from a tray-only app,
+                _settings.Topmost = false;   // then drop topmost so it stays a normal window
+                _settings.Focus();
+                return;
+            }
+            catch
+            {
+                _settings = null;   // stale reference (window already gone) -> recreate below
+            }
         }
         _settings = new SettingsWindow(_configService);
         _settings.Saved += OnSettingsSaved;

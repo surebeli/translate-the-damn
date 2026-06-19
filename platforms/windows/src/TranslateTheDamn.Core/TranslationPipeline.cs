@@ -7,17 +7,21 @@ public enum TriggerSource { Clipboard, Hotkey }
 
 /// <summary>
 /// Orchestrates one translation: applies filters (empty / max-length / clipboard dedupe), serves a
-/// one-entry "last translation" cache, resolves the active backend, and supersedes any in-flight
-/// translation (a newer trigger cancels the older one). UI concerns live in the App layer.
+/// recent-translation cache (up to 5 entries, most-recently-used order), resolves the active backend,
+/// and supersedes any in-flight translation (a newer trigger cancels the older one). UI concerns live
+/// in the App layer.
 /// </summary>
 public sealed class TranslationPipeline
 {
+    private const int CacheCapacity = 5;
+
     private readonly object _gate = new();
     private AppConfig _cfg;
     private TranslatorRegistry _registry;
     private string? _lastClipboardText;
     private CancellationTokenSource? _inflight;
-    private CacheEntry? _cache;
+    // Recent successful translations, newest first; key = text + backend + model. Guarded by _gate.
+    private readonly List<CacheEntry> _cache = new();
 
     public TranslationPipeline(AppConfig cfg, TranslatorRegistry registry)
     {
@@ -28,7 +32,7 @@ public sealed class TranslationPipeline
     /// <summary>Swap config + registry after the user edits settings (hot reload). Clears the cache.</summary>
     public void Update(AppConfig cfg, TranslatorRegistry registry)
     {
-        lock (_gate) { _cfg = cfg; _registry = registry; _cache = null; }
+        lock (_gate) { _cfg = cfg; _registry = registry; _cache.Clear(); }
     }
 
     public string ActiveBackendId => _cfg.General.ActiveBackend;
@@ -53,8 +57,9 @@ public sealed class TranslationPipeline
     public void NoteClipboardText(string? text) => _lastClipboardText = text;
 
     /// <summary>
-    /// Runs a translation with supersession and a one-entry cache. Returns null if the trigger was
-    /// filtered out or superseded; otherwise the backend's (or cached) <see cref="TranslationResult"/>.
+    /// Runs a translation with supersession and the recent-translation cache. Returns null if the
+    /// trigger was filtered out or superseded; otherwise the backend's (or cached)
+    /// <see cref="TranslationResult"/>.
     /// </summary>
     public async Task<TranslationResult?> RunAsync(string? rawText, TriggerSource source)
     {
@@ -71,15 +76,20 @@ public sealed class TranslationPipeline
             translator = _registry.Get(backendId);
             model = ResolveModel(backendId);
 
-            // Cache hit: identical source text under the SAME backend + model as the last successful
+            // Cache hit: identical source text under the SAME backend + model as a recent successful
             // translation returns instantly without calling the model (e.g. repeated hotkey on
             // unchanged clipboard content). A different backend/model is a different key -> re-translate.
-            if (_cache is not null && _cache.Result.Ok
-                && string.Equals(_cache.Text, text, StringComparison.Ordinal)
-                && string.Equals(_cache.BackendId, backendId, StringComparison.OrdinalIgnoreCase)
-                && string.Equals(_cache.Model, model, StringComparison.Ordinal))
+            // A hit promotes its entry to the front, refreshing its recency (MRU order).
+            var hit = _cache.FindIndex(e =>
+                string.Equals(e.Text, text, StringComparison.Ordinal)
+                && string.Equals(e.BackendId, backendId, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(e.Model, model, StringComparison.Ordinal));
+            if (hit >= 0)
             {
-                return _cache.Result;
+                var entry = _cache[hit];
+                _cache.RemoveAt(hit);
+                _cache.Insert(0, entry);
+                return entry.Result;
             }
         }
 
@@ -97,7 +107,24 @@ public sealed class TranslationPipeline
         {
             var result = await translator.TranslateAsync(new TranslationRequest(text), cts.Token);
             if (result.Ok)
-                lock (_gate) { _cache = new CacheEntry(text, backendId, model, result); }
+                lock (_gate)
+                {
+                    // Only the still-current request populates the cache: a request superseded while
+                    // in flight must not write, even if its backend ignored cancellation and completed
+                    // anyway (otherwise a stale result could clobber the newer one at the front).
+                    if (_inflight == cts)
+                    {
+                        // Keep keys unique under the lock: drop any existing entry for this key (a
+                        // concurrent run could have inserted it) before inserting at the front (most
+                        // recent), then evict the least-recently-used entry past capacity.
+                        _cache.RemoveAll(e =>
+                            string.Equals(e.Text, text, StringComparison.Ordinal)
+                            && string.Equals(e.BackendId, backendId, StringComparison.OrdinalIgnoreCase)
+                            && string.Equals(e.Model, model, StringComparison.Ordinal));
+                        _cache.Insert(0, new CacheEntry(text, backendId, model, result));
+                        if (_cache.Count > CacheCapacity) _cache.RemoveAt(_cache.Count - 1);
+                    }
+                }
             return result;
         }
         catch (OperationCanceledException)
@@ -114,6 +141,16 @@ public sealed class TranslationPipeline
     private string ResolveModel(string backendId) =>
         _cfg.Backends.TryGetValue(backendId, out var bc) ? (bc.Model ?? string.Empty) : string.Empty;
 
-    /// <summary>The single most-recent successful translation, keyed by source text + backend + model.</summary>
+    /// <summary>
+    /// Snapshot of recently translated entries as (source, translation) pairs, newest first, for the
+    /// popup's history navigation. Reading never re-invokes the model.
+    /// </summary>
+    public IReadOnlyList<(string Source, string Translation)> RecentHistory()
+    {
+        lock (_gate)
+            return _cache.Select(e => (e.Text, e.Result.Text)).ToList();
+    }
+
+    /// <summary>A recent successful translation, keyed by source text + backend + model.</summary>
     private sealed record CacheEntry(string Text, string BackendId, string Model, TranslationResult Result);
 }

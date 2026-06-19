@@ -301,6 +301,34 @@ Check.Section("TranslationPipeline cache");
     Check.Eq(2, failFake.Calls, "failed translations are not cached");
 }
 
+// ---------------------------------------------------------------- TranslationPipeline cache supersession
+Check.Section("TranslationPipeline cache supersession");
+{
+    var cfg = DefaultConfig.Create();
+    cfg.General.ActiveBackend = "fake";
+    cfg.Backends["fake"] = new BackendConfig { Type = "http", Model = "m1" };
+    var reg = TranslatorRegistry.Build(new AppConfig());
+
+    // Backend that deliberately IGNORES the cancellation token: a superseded in-flight request
+    // still completes successfully (mirrors a CLI/HTTP backend that doesn't observe cancellation).
+    var release = new TaskCompletionSource();
+    var fake = new FakeTranslator("fake", async (req, _) =>
+    {
+        await release.Task;
+        return TranslationResult.Successful("T:" + req.Text);
+    });
+    reg.Add(fake);
+    var pipe = new TranslationPipeline(cfg, reg);
+
+    var a = pipe.RunAsync("same", TriggerSource.Hotkey);   // in-flight
+    var b = pipe.RunAsync("same", TriggerSource.Hotkey);   // supersedes A (cancels A's token)
+    release.SetResult();                                    // both complete (A ignored cancellation)
+    await Task.WhenAll(a, b);
+
+    Check.Eq(2, fake.Calls, "both overlapping requests invoked the model");
+    Check.Eq(1, pipe.RecentHistory().Count, "same key cached once despite a superseded overlapping run (no duplicate)");
+}
+
 // ---------------------------------------------------------------- Conformance (shared vectors)
 Check.Section("Conformance (language-neutral vectors from /conformance)");
 await Conformance.RunAsync();
