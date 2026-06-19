@@ -19,6 +19,24 @@
           }
         ]
       }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "shell": "bash",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/scripts/parity-drift.py\" --hook-act 2>/dev/null || true",
+            "timeout": 20
+          },
+          {
+            "type": "command",
+            "shell": "powershell",
+            "command": "$ErrorActionPreference='SilentlyContinue'; python \"$env:CLAUDE_PROJECT_DIR\\scripts\\parity-drift.py\" --hook-act 2>$null",
+            "timeout": 20
+          }
+        ]
+      }
     ]
   }
 }
