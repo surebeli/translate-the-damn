@@ -1,4 +1,5 @@
 {
+  "_comment": "Platform-NEUTRAL hooks (committed/team file): a single shell:bash entry per hook with a python3→python interpreter fallback. Claude Code provides bash on every supported platform (macOS/Linux + Windows Git Bash), so this works everywhere without carrying any OS-specific shell config. If a machine has NO bash for hooks (e.g. Windows without Git Bash), add a powershell entry to your per-machine .claude/settings.local.json (gitignored) — do NOT put OS-specific config here.",
   "hooks": {
     "SessionStart": [
       {
@@ -6,14 +7,7 @@
           {
             "type": "command",
             "shell": "bash",
-            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/scripts/parity-drift.py\" --hook 2>/dev/null || true",
-            "timeout": 20,
-            "statusMessage": "Checking cross-platform parity drift…"
-          },
-          {
-            "type": "command",
-            "shell": "powershell",
-            "command": "$ErrorActionPreference='SilentlyContinue'; python \"$env:CLAUDE_PROJECT_DIR\\scripts\\parity-drift.py\" --hook 2>$null",
+            "command": "p=\"$(command -v python3 || command -v python)\"; [ -n \"$p\" ] && \"$p\" \"${CLAUDE_PROJECT_DIR:-.}/scripts/parity-drift.py\" --hook 2>/dev/null || true",
             "timeout": 20,
             "statusMessage": "Checking cross-platform parity drift…"
           }
@@ -26,13 +20,7 @@
           {
             "type": "command",
             "shell": "bash",
-            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/scripts/parity-drift.py\" --hook-act 2>/dev/null || true",
-            "timeout": 20
-          },
-          {
-            "type": "command",
-            "shell": "powershell",
-            "command": "$ErrorActionPreference='SilentlyContinue'; python \"$env:CLAUDE_PROJECT_DIR\\scripts\\parity-drift.py\" --hook-act 2>$null",
+            "command": "p=\"$(command -v python3 || command -v python)\"; [ -n \"$p\" ] && \"$p\" \"${CLAUDE_PROJECT_DIR:-.}/scripts/parity-drift.py\" --hook-act 2>/dev/null || true",
             "timeout": 20
           }
         ]

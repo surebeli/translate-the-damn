@@ -1,11 +1,10 @@
 {
   "fn": "DefaultConfig",
-  "doc": "Assertions on the SERIALIZED first-run default config (camelCase keys; nulls omitted). Each platform serializes its own default config and must satisfy these. path is dot-separated; ops: equals | count | contains | containsItem.",
+  "doc": "Assertions on the SERIALIZED first-run default config (camelCase keys; nulls omitted). Each platform serializes its own default config and must satisfy these. path is dot-separated; ops: equals | count | contains | containsItem. NOTE: hotkey.translate is intentionally NOT asserted here — the default translate hotkey is a per-platform choice (Win: Shift+Alt+C; macOS: its own), tracked in PARITY, not a shared contract. Do not re-pin it.",
   "assert": [
     { "path": "version", "equals": 1 },
     { "path": "general.activeBackend", "equals": "claude" },
     { "path": "general.listenClipboard", "equals": true },
-    { "path": "hotkey.translate", "equals": "Ctrl+Alt+T" },
     { "path": "popup.style", "equals": "acrylic" },
     { "path": "popup.autoDismissSeconds", "equals": 6 },
     { "path": "backends", "count": 6 },

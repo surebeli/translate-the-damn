@@ -174,7 +174,7 @@ later it may be replaced by a remote/dynamic catalog.
 {
   "version": 1,
   "general": { "listenClipboard": true, "activeBackend": "claude", "startWithWindows": false },
-  "hotkey":  { "translate": "Ctrl+Alt+T", "toggleListen": "" },
+  "hotkey":  { "translate": "Shift+Alt+C", "toggleListen": "" },
   "popup":   { "style": "acrylic", "autoDismissSeconds": 6, "keepOnHover": true, "position": "top-center" },
   "translation": { "targetLanguageDefault": "zh-CN", "maxChars": 8000,
     "promptTemplate": "源语言为英文则术语保留英文、其余译为简体中文;非英文则全部译为简体中文;代码块保持原样;只输出译文。\n\n内容:\n{content}" },
@@ -198,6 +198,12 @@ later it may be replaced by a remote/dynamic catalog.
 ```
 
 Secrets (`apiKey`) are never committed; they stay only in the user's local config.json.
+
+**Default translate hotkey is per-platform** (not a shared contract). The value above (`Shift+Alt+C`)
+is the **Windows** default; macOS picks its own platform-appropriate default (e.g. a ⌘-based one),
+tracked in `PARITY.md`. Therefore `hotkey.translate` is **not** asserted by the shared
+`conformance/config-defaults` vector — each platform owns its default and verifies it with a
+platform-local test. All other default-config fields remain shared and vector-pinned.
 
 ## 8. Popup UX
 
