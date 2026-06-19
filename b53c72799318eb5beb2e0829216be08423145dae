@@ -1,0 +1,144 @@
+docs/UI-STYLE-REVIEW.md
+  0000019edf6e8d81 1-813
+docs/ui-review/shots/popup-DS-acrylic-dark.png
+  0000019edf6e8d81 1-188
+docs/ui-review/shots/popup-DS-acrylic.png
+  0000019edf6e8d81 1-244
+docs/ui-review/shots/popup-DS-solid-dark.png
+  0000019edf6e8d81 1-265
+docs/ui-review/shots/popup-DS-solid.png
+  0000019edf6e8d81 1-372
+docs/ui-review/shots/popup-MM-acrylic-dark.png
+  0000019edf6e8d81 1-199
+docs/ui-review/shots/popup-MM-acrylic.png
+  0000019edf6e8d81 1-216
+docs/ui-review/shots/popup-MM-solid-dark.png
+  0000019edf6e8d81 1-212
+docs/ui-review/shots/popup-MM-solid.png
+  0000019edf6e8d81 1-172
+docs/ui-review/shots/popup-O48-acrylic-dark.png
+  0000019edf6e8d81 1-206
+docs/ui-review/shots/popup-O48-acrylic.png
+  0000019edf6e8d81 1-206
+docs/ui-review/shots/popup-O48-solid-dark.png
+  0000019edf6e8d81 1-183
+docs/ui-review/shots/popup-O48-solid.png
+  0000019edf6e8d81 1-159
+docs/ui-review/shots/popup-Z-acrylic-dark.png
+  0000019edf6e8d81 1-174
+docs/ui-review/shots/popup-Z-acrylic.png
+  0000019edf6e8d81 1-171
+docs/ui-review/shots/popup-Z-solid-dark.png
+  0000019edf6e8d81 1-155
+docs/ui-review/shots/popup-Z-solid.png
+  0000019edf6e8d81 1-186
+docs/ui-review/shots/popup-ZP-acrylic-dark.png
+  0000019edf6e8d81 1-211
+docs/ui-review/shots/popup-ZP-acrylic.png
+  0000019edf6e8d81 1-158
+docs/ui-review/shots/popup-ZP-solid-dark.png
+  0000019edf6e8d81 1-186
+docs/ui-review/shots/popup-ZP-solid.png
+  0000019edf6e8d81 1-141
+docs/ui-review/shots/popup-classic-acrylic-dark.png
+  0000019edf6e8d81 1-379
+docs/ui-review/shots/popup-classic-acrylic.png
+  0000019edf6e8d81 1-421
+docs/ui-review/shots/popup-classic-solid-dark.png
+  0000019edf6e8d81 1-379
+docs/ui-review/shots/popup-classic-solid.png
+  0000019edf6e8d81 1-421
+docs/ui-review/shots/popup-km-acrylic-dark.png
+  0000019edf6e8d81 1-239
+docs/ui-review/shots/popup-km-acrylic.png
+  0000019edf6e8d81 1-159
+docs/ui-review/shots/popup-km-solid-dark.png
+  0000019edf6e8d81 1-196
+docs/ui-review/shots/popup-km-solid.png
+  0000019edf6e8d81 1-180
+docs/ui-review/shots/settings-DS-dark.png
+  0000019edf6e8d81 1-729
+docs/ui-review/shots/settings-DS.png
+  0000019edf6e8d81 1-1004
+docs/ui-review/shots/settings-MM-dark.png
+  0000019edf6e8d81 1-745
+docs/ui-review/shots/settings-MM.png
+  0000019edf6e8d81 1-661
+docs/ui-review/shots/settings-O48-dark.png
+  0000019edf6e8d81 1-411
+docs/ui-review/shots/settings-O48-tab1-dark.png
+  0000019edf6e8d81 1-436
+docs/ui-review/shots/settings-O48-tab1.png
+  0000019edf6e8d81 1-774
+docs/ui-review/shots/settings-O48-tab2-dark.png
+  0000019edf6e8d81 1-365
+docs/ui-review/shots/settings-O48-tab2.png
+  0000019edf6e8d81 1-259
+docs/ui-review/shots/settings-O48-tab3-dark.png
+  0000019edf6e8d81 1-712
+docs/ui-review/shots/settings-O48-tab3.png
+  0000019edf6e8d81 1-386
+docs/ui-review/shots/settings-O48.png
+  0000019edf6e8d81 1-318
+docs/ui-review/shots/settings-Z-dark.png
+  0000019edf6e8d81 1-950
+docs/ui-review/shots/settings-Z.png
+  0000019edf6e8d81 1-1180
+docs/ui-review/shots/settings-ZP-dark.png
+  0000019edf6e8d81 1-519
+docs/ui-review/shots/settings-ZP.png
+  0000019edf6e8d81 1-938
+docs/ui-review/shots/settings-classic-dark.png
+  0000019edf6e8d81 1-782
+docs/ui-review/shots/settings-classic.png
+  0000019edf6e8d81 1-672
+docs/ui-review/shots/settings-km-dark.png
+  0000019edf6e8d81 1-568
+docs/ui-review/shots/settings-km-tab1-dark.png
+  0000019edf6e8d81 1-515
+docs/ui-review/shots/settings-km-tab1.png
+  0000019edf6e8d81 1-527
+docs/ui-review/shots/settings-km-tab2-dark.png
+  0000019edf6e8d81 1-397
+docs/ui-review/shots/settings-km-tab2.png
+  0000019edf6e8d81 1-494
+docs/ui-review/shots/settings-km-tab3-dark.png
+  0000019edf6e8d81 1-434
+docs/ui-review/shots/settings-km-tab3.png
+  0000019edf6e8d81 1-323
+docs/ui-review/shots/settings-km.png
+  0000019edf6e8d81 1-436
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "b53c72799318eb5beb2e0829216be08423145dae",
+  "prompts": {
+    "s_fc250eeaee8be0::t_baa922d7098623": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781865024502876000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "0000019edf6e8d81": {
+      "agent_id": {
+        "tool": "claude",
+        "model": "claude-opus-4-8",
+        "id": "ai-thread-claude-claude-opus-4-8-1781865024897"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 22726,
+      "total_deletions": 0,
+      "accepted_lines": 22726,
+      "overriden_lines": 0
+    }
+  }
+}
