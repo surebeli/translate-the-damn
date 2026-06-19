@@ -207,9 +207,12 @@ Shows source text (muted) + translation (prominent) + a **复制译文** button.
 of the **primary** monitor's work area. Mouse hover pauses the dismiss timer; otherwise fades after
 `autoDismissSeconds`. States: loading ("翻译中…") → result, or → error (from status taxonomy).
 
-- **Adaptive size** (shared rule): two fixed sizes — *normal*, and *large* = **2× the normal width
-  × 1.5× the normal height**. The popup uses *large* when the **currently displayed entry's source
-  text length is > 500 characters**, otherwise *normal* (pure decision: `PopupSizing.sizeClass`).
+- **Adaptive size** (shared rule): **exactly two fixed window specs** — *normal*, and *large* =
+  **2× the normal width × 1.5× the normal height**. The popup uses *large* when the **currently
+  displayed entry's source text length is > 500 characters**, otherwise *normal* (pure decision:
+  `PopupSizing.sizeClass`). The window snaps to one of the two specs — source is capped at 2 lines
+  and the translation **scrolls inside**, so different content lengths never produce an in-between
+  size; navigating ◀ ▶ only ever switches between normal and large.
 - **History navigation** (shared rule): the popup can browse the recent-translation cache (§4.1) via
   prev/older ◀ and next/newer ▶ controls, showing **one entry at a time** — the just-queried result
   first (= newest), with an "index / total" indicator. Controls disable at the ends; navigating
