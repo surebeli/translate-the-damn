@@ -91,6 +91,10 @@ the repo's **[CONSTITUTION.md](./CONSTITUTION.md)** (the single entry point + po
 status lives in **[PARITY.md](./PARITY.md)**; shared logic is pinned by the vectors in `conformance/`
 (run on Windows today via `dotnet run --project platforms/windows/tests/...`).
 
+How drift is **auto-surfaced** (one-command `scripts/parity-drift.py` report + session-start auto-TODO),
+how to **align a feature across platforms**, and why this matters for native-per-platform development is
+documented in **[docs/CROSS-PLATFORM-PARITY.md](./docs/CROSS-PLATFORM-PARITY.md)**.
+
 - **macOS** — Apple Silicon (arm64) only for now. Porting guide: `docs/PORTING-macos.md`.
 - **Linux** — Ubuntu 24.04+ desktop only, tentative; **not started** — several Wayland/X11 questions
   must be confirmed first. Porting guide: `docs/PORTING-linux.md`.
