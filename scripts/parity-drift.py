@@ -425,6 +425,8 @@ def main(argv=None):
     ap.add_argument("--root", type=Path, default=None, help="repo root (auto-detected if omitted)")
     ap.add_argument("--json", action="store_true", help="emit machine-readable JSON")
     ap.add_argument("--digest", action="store_true", help="compact session-start summary of pending tasks")
+    ap.add_argument("--hook", action="store_true",
+                    help="emit Claude Code SessionStart hook JSON (systemMessage + additionalContext) when drift")
     ap.add_argument("--fail-on-drift", action="store_true", help="exit 1 if drift is detected")
     ap.add_argument("--strict", action="store_true", help="also gate on orphan vectors + shipped-without-spec")
     args = ap.parse_args(argv)
@@ -433,6 +435,22 @@ def main(argv=None):
     r = compute(root)
     drift = has_drift(r, args.strict)
 
+    if args.hook:
+        # SessionStart hook output: `systemMessage` is shown to the USER (the visible prompt);
+        # `additionalContext` is injected into the model so it can act per the CLAUDE.md ritual.
+        # Stay silent on aligned sessions (no noise).
+        if drift:
+            digest = render_digest(r)
+            payload = {
+                "systemMessage": digest,
+                "hookSpecificOutput": {
+                    "hookEventName": "SessionStart",
+                    "additionalContext": digest + "\n(Per the CLAUDE.md/AGENTS.md session-start "
+                    "ritual: create TODO tasks for the current platform's behind items and tell the user.)",
+                },
+            }
+            print(json.dumps(payload, ensure_ascii=False))
+        return 0
     if args.digest:
         print(render_digest(r))
         return 0
