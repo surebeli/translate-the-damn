@@ -28,7 +28,7 @@ public enum ConfigService {
                 toggleListen: ""
             ),
             popup: PopupConfig(
-                style: "acrylic",
+                style: "solid",
                 autoDismissSeconds: 6,
                 keepOnHover: true,
                 position: "top-center"

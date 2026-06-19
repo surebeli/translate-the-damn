@@ -41,7 +41,7 @@ public struct GeneralConfig: Codable {
     public var listenClipboard: Bool
     public var activeBackend: String
     public var startWithWindows: Bool
-    public var uiStyle: String?  // "O48" (default) | "Z" | "ZP" | "km" | "classic"; nil → "O48". Field stays nil-by-default so the serialized config (conformance) is unchanged.
+    public var uiStyle: String?  // Vestigial: the macOS port consolidated to a single UI, so this is no longer read. Kept (nil-by-default) only for back-compat with older config.json — serialized config (conformance) stays unchanged.
 
     public init(listenClipboard: Bool = true, activeBackend: String = "claude", startWithWindows: Bool = false, uiStyle: String? = nil) {
         self.listenClipboard = listenClipboard
@@ -67,7 +67,7 @@ public struct PopupConfig: Codable {
     public var keepOnHover: Bool
     public var position: String
 
-    public init(style: String = "acrylic", autoDismissSeconds: Int = 6, keepOnHover: Bool = true, position: String = "top-center") {
+    public init(style: String = "solid", autoDismissSeconds: Int = 6, keepOnHover: Bool = true, position: String = "top-center") {
         self.style = style
         self.autoDismissSeconds = autoDismissSeconds
         self.keepOnHover = keepOnHover

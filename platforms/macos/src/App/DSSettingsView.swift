@@ -2,20 +2,15 @@ import SwiftUI
 import AppKit
 import TranslateTheDamnCore
 
-/// DS-style settings — a clean single-page grouped form with a distinctive header.
+/// The app's settings window — a clean single-page grouped Form (the finalized "clean" UI).
 ///
-/// Design identity: no accent rails, no tabs, no sidebar — just a pure grouped Form
-/// with comfortable spacing and a subtle top-area summary of current style.
+/// Pure native `Form` + `Section`, comfortable spacing, no accent rails / tabs / sidebar.
+/// (Originally the "DS" style; kept as the single UI after consolidating away the other six.)
 struct DSSettingsView: View {
     @ObservedObject var vm: SettingsViewModel
 
     var body: some View {
         VStack(spacing: 0) {
-            // Subtle style indicator header.
-            styleHeader
-
-            Divider()
-
             Form {
                 triggerSection
                 backendSection
@@ -28,21 +23,6 @@ struct DSSettingsView: View {
             bottomBar
         }
         .frame(minWidth: 520, minHeight: 560)
-    }
-
-    // MARK: - Style header
-
-    private var styleHeader: some View {
-        HStack {
-            Image(systemName: "sparkles")
-                .foregroundStyle(.secondary)
-            Text("DS · 当前界面风格")
-                .font(.system(size: 11, weight: .medium))
-                .foregroundStyle(.secondary)
-            Spacer()
-        }
-        .padding(.horizontal, 20)
-        .padding(.vertical, 8)
     }
 
     // MARK: - Trigger
@@ -154,17 +134,6 @@ struct DSSettingsView: View {
 
     private var generalSection: some View {
         Section(StringsLoader["settings.group.general"]) {
-            Picker("界面风格", selection: $vm.uiStyle) {
-                Text("DS（清晰）").tag("DS")
-                Text("Z（文档）").tag("Z")
-                Text("KM（侧栏）").tag("km")
-                Text("ZP（磨砂）").tag("ZP")
-                Text("Classic（经典）").tag("classic")
-                Text("O48（聚焦）").tag("O48")
-                Text("MM（简洁）").tag("MM")
-            }
-            .pickerStyle(.segmented)
-
             Toggle(StringsLoader["settings.field.startup"], isOn: $vm.startWithWindows)
 
             Text("配置保存在 ~/.translatethedamn/config.json，API Key 仅保存在本机。")
