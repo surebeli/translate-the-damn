@@ -21,6 +21,7 @@ Legend: ✅ shipped · 🚧 in progress · ⬜ not started · ⚠️ partial/bes
 | Backends — google-v2, doubao (HTTP) | §6.1/6.2 | `backend-requests` + `spec/backends.json` | ✅ | ✅ | ⬜ |
 | Recent-translation cache (5 entries, MRU + recency refresh) | §4.1 | `pipeline-cache` | ✅ | ✅ | ⬜ |
 | config.json defaults / bootstrap | §7 | `config-defaults` | ✅ | ✅ | ⬜ |
+| Default translate hotkey (per-platform default) | §7 | — (per-platform) | ✅ | ⬜ | ⬜ |
 | Acrylic popup (no-focus-steal, hover-keep, auto-dismiss, scroll) | §8 | — (UI) | ✅ | 🚧 | ⬜ |
 | Popup copy + close buttons | §8 | — (UI) | ✅ | 🚧 | ⬜ |
 | Popup adaptive size (source >500 chars → large) + history nav ◀▶ | §8 | `popup-sizing` | 🚧 | ✅ | ⬜ |
@@ -60,3 +61,11 @@ Legend: ✅ shipped · 🚧 in progress · ⬜ not started · ⚠️ partial/bes
   the row is ✅/✅/⬜ — exactly the forcing function closing (Law 2). The separate `popup-sizing` vector
   (spec §8: source > 500 chars → large size) + popup history navigation remains macOS-only (Win ⬜,
   tracked task). Run `python3 scripts/parity-drift.py` for current status.
+- **Default translate hotkey is now per-platform (un-pinned from the shared vector).** Previously
+  `hotkey.translate` was a single shared default (`Ctrl+Alt+T`) pinned by `config-defaults`. By
+  decision it is now **each platform's own choice**: the assertion was removed from
+  `conformance/config-defaults.json` (see its `doc` note) and each platform verifies its default with
+  a **platform-local** test. **Windows = `Shift+Alt+C`** (`HotkeyConfig.DefaultTranslate`, local test
+  green). **macOS = ⬜** — to pick its own platform-appropriate default (likely a ⌘-based one); until
+  then it still carries the legacy `Ctrl+Alt+T`. This is a deliberate same-version different-*default*
+  case (the hotkey schema/feature is identical across platforms; only the bootstrap default differs).

@@ -27,7 +27,15 @@ public sealed class GeneralConfig
 
 public sealed class HotkeyConfig
 {
-    public string Translate { get; set; } = "Ctrl+Alt+T";
+    /// <summary>
+    /// Windows per-platform default translate hotkey (spec §7). Deliberately NOT a shared contract:
+    /// the default hotkey is each platform's own choice (macOS picks its own), so it is un-pinned from
+    /// the shared <c>config-defaults</c> vector. Single source for both the deserialization fallback
+    /// below and <see cref="DefaultConfig"/>.
+    /// </summary>
+    public const string DefaultTranslate = "Shift+Alt+C";
+
+    public string Translate { get; set; } = DefaultTranslate;
     public string ToggleListen { get; set; } = "";
 }
 

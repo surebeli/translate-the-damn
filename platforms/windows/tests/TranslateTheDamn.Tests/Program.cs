@@ -42,6 +42,7 @@ Check.Section("ConfigService");
         Check.True(cfg.Backends.ContainsKey("agy"), "default has agy backend");
         Check.True(cfg.ModelCatalog.ContainsKey("claude"), "default has claude model catalog");
         Check.Eq("claude", cfg.General.ActiveBackend, "default active backend = claude");
+        Check.Eq("Shift+Alt+C", cfg.Hotkey.Translate, "Windows default translate hotkey = Shift+Alt+C (per-platform default; un-pinned from shared config-defaults vector)");
 
         var raw = File.ReadAllText(svc.FilePath);
         Check.Contains(raw, "简体中文", "prompt template Chinese stored unescaped");

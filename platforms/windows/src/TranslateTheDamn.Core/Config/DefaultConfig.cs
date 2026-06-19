@@ -17,7 +17,7 @@ public static class DefaultConfig
     {
         Version = 1,
         General = new GeneralConfig { ListenClipboard = true, ActiveBackend = "claude", StartWithWindows = false },
-        Hotkey = new HotkeyConfig { Translate = "Ctrl+Alt+T", ToggleListen = "" },
+        Hotkey = new HotkeyConfig { Translate = HotkeyConfig.DefaultTranslate, ToggleListen = "" },
         Popup = new PopupConfig { Style = "acrylic", AutoDismissSeconds = 6, KeepOnHover = true, Position = "top-center" },
         Translation = new TranslationConfig
         {
