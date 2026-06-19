@@ -1,0 +1,36 @@
+scripts/parity-drift.py
+  0000019ee03dac07 1-503
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "ac425ec937e299337f2d60d867c155e963173b79",
+  "prompts": {
+    "s_29d330a523cefb::t_a63d2387a879c7": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781878598319435000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "0000019ee03dac07": {
+      "agent_id": {
+        "tool": "claude",
+        "model": "claude-opus-4-8",
+        "id": "ai-thread-claude-claude-opus-4-8-1781878598663"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 503,
+      "total_deletions": 0,
+      "accepted_lines": 503,
+      "overriden_lines": 0
+    }
+  }
+}
