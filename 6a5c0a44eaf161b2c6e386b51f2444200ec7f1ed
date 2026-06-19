@@ -1,0 +1,40 @@
+.hopper/RETROSPECTIVE-2026-06-20-parity-mechanism.md
+  0000019ee186c0a8 1-75
+PARITY.md
+  0000019ee186c0a8 1-77
+docs/CROSS-PLATFORM-PARITY.md
+  0000019ee186c0a8 1-152
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "6a5c0a44eaf161b2c6e386b51f2444200ec7f1ed",
+  "prompts": {
+    "s_d698cea3c6c2bb::t_ffec5ebb68cbc9": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781900164871887000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "0000019ee186c0a8": {
+      "agent_id": {
+        "tool": "claude",
+        "model": "claude-opus-4-8",
+        "id": "ai-thread-claude-claude-opus-4-8-1781900165288"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 304,
+      "total_deletions": 0,
+      "accepted_lines": 304,
+      "overriden_lines": 0
+    }
+  }
+}
