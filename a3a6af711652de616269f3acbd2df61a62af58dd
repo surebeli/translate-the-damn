@@ -1,0 +1,38 @@
+.claude/settings.json
+  0000019ee04d7f69 1-42
+scripts/parity-drift.py
+  0000019ee04d7f69 1-519
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "a3a6af711652de616269f3acbd2df61a62af58dd",
+  "prompts": {
+    "s_e36801e145ae7e::t_c90681f97b5711": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781879635468332000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "0000019ee04d7f69": {
+      "agent_id": {
+        "tool": "claude",
+        "model": "claude-opus-4-8",
+        "id": "ai-thread-claude-claude-opus-4-8-1781879635817"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 561,
+      "total_deletions": 0,
+      "accepted_lines": 561,
+      "overriden_lines": 0
+    }
+  }
+}
