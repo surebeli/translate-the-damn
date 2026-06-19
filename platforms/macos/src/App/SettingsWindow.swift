@@ -28,7 +28,11 @@ final class SettingsWindowController {
                                styleMask: [.titled, .closable, .miniaturizable],
                                backing: .buffered,
                                defer: false)
-            win.title = StringsLoader["settings.title"]
+            // Caption shows the app version, aligned with Windows (SettingsWindow.xaml.cs:
+            // "translate-the-damn · 设置   v{Major}.{Minor}.{Build}"). Version is single-sourced from
+            // the bundle's CFBundleShortVersionString (Info.plist), matching the Windows csproj <Version>.
+            let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.2.0"
+            win.title = StringsLoader["settings.title"] + "   v" + version
             win.contentView = hostingView
             win.center()
             win.isReleasedWhenClosed = false

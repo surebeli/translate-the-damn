@@ -1,5 +1,6 @@
 #!/bin/bash
-# Builds platforms/macos/Resources/app.icns from a single "文" glyph.
+# Builds platforms/macos/Resources/app.icns from the shared app glyph: a bold white "T" in a filled
+# green circle (#2EA043) — aligned with the Windows app icon (platforms/windows/.../UI/AppIcon.cs).
 # Uses AppKit/Swift to render each resolution, then iconutil to assemble the .icns.
 set -euo pipefail
 
@@ -22,15 +23,16 @@ let size = Int(arguments[1])!
 let output = arguments[2]
 let scale = CGFloat(size)
 let image = NSImage(size: NSSize(width: scale, height: scale), flipped: false) { rect in
-    NSColor.black.setFill()
-    rect.fill()
-    let fontSize = scale * 0.62
-    let font = NSFont.systemFont(ofSize: fontSize, weight: .medium)
+    // Match the Windows app glyph (UI/AppIcon.cs Draw(on:true)): bold white "T" in a green circle.
+    NSColor(srgbRed: 46.0 / 255, green: 160.0 / 255, blue: 67.0 / 255, alpha: 1).setFill()
+    NSBezierPath(ovalIn: rect).fill()
+    let fontSize = scale * 0.6
+    let font = NSFont.systemFont(ofSize: fontSize, weight: .bold)
     let attrs: [NSAttributedString.Key: Any] = [
         .font: font,
         .foregroundColor: NSColor.white
     ]
-    let str = NSAttributedString(string: "文", attributes: attrs)
+    let str = NSAttributedString(string: "T", attributes: attrs)
     let strSize = str.size()
     let point = NSPoint(
         x: (rect.width - strSize.width) / 2,
