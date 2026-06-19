@@ -1,0 +1,63 @@
+platforms/windows/src/TranslateTheDamn.App/UI/SettingsWindow.xaml.cs
+  s_aa5b50d395b0a0::t_412c8fd3d10fd9 104
+  s_aa5b50d395b0a0::t_fc31e069aa5fc0 123
+platforms/windows/src/TranslateTheDamn.App/UI/SettingsWindow.xaml
+  s_aa5b50d395b0a0::t_5a6017d547f5c1 105
+PARITY.md
+  s_aa5b50d395b0a0::t_53e12f8e719fd4 31-32
+  s_aa5b50d395b0a0::t_96763d0c237d91 22
+  s_aa5b50d395b0a0::t_6d4f89d24b63a4 26
+  s_aa5b50d395b0a0::t_a464cade814f90 56-62
+platforms/windows/tests/TranslateTheDamn.Tests/Conformance.cs
+  s_aa5b50d395b0a0::t_775d82cd7c8375 37-42
+platforms/windows/src/TranslateTheDamn.App/AppController.cs
+  s_aa5b50d395b0a0::t_df56424a12a11e 89-91
+  s_aa5b50d395b0a0::t_76935136ae5450 143-157
+platforms/windows/src/TranslateTheDamn.App/UI/PopupWindow.xaml.cs
+  s_aa5b50d395b0a0::t_ad26483d9e692d 20-29
+  s_aa5b50d395b0a0::t_919522918a48e3 185-204,206,211
+  s_aa5b50d395b0a0::t_842434a13483aa 62-63,71-72,77-86,88-93,99-100,108-131,133-169
+  s_aa5b50d395b0a0::t_8d18175471a5b3 30-33
+  s_aa5b50d395b0a0::t_b7b9b10e5f69e4 205,207-210
+platforms/windows/src/TranslateTheDamn.App/UI/PopupWindow.xaml
+  s_aa5b50d395b0a0::t_98567ee82d1793 6,9-11,18-27,32-38,45-56,66
+  s_aa5b50d395b0a0::t_525d8b136f71a5 13-14
+.hopper/COST-LOG.md
+  s_aa5b50d395b0a0::t_b3739d71dac5df 28
+  s_aa5b50d395b0a0::t_1d20824872123c 29
+  s_aa5b50d395b0a0::t_9dac5a0e317e07 42-44
+platforms/windows/src/TranslateTheDamn.Core/TranslationPipeline.cs
+  s_aa5b50d395b0a0::t_6d505f97cce8b6 60-62
+  s_aa5b50d395b0a0::t_ad46ae7e237c85 110-111,127
+  s_aa5b50d395b0a0::t_9024b61c6186c2 35
+  s_aa5b50d395b0a0::t_d2f7091eab8776 112-126
+  s_aa5b50d395b0a0::t_1c5902ea95cfb9 144-154
+  s_aa5b50d395b0a0::t_f3ef984edead3e 10-12,16-17,23-24
+  s_aa5b50d395b0a0::t_b9626609501a9a 79,82-87,89-92
+platforms/windows/tests/TranslateTheDamn.Tests/Program.cs
+  s_aa5b50d395b0a0::t_74aed9d2cda69e 304-331
+docs/superpowers/specs/2026-06-17-translate-the-damn-design.md
+  s_aa5b50d395b0a0::t_a33497c5f20f8d 220-224
+  s_aa5b50d395b0a0::t_a8b919ffa571ce 234-235,239
+  s_aa5b50d395b0a0::t_28602fff674213 236-238
+platforms/windows/src/TranslateTheDamn.Core/PopupSizing.cs
+  s_aa5b50d395b0a0::t_ba70e1e836c39b 1-26
+docs/superpowers/specs/2026-06-20-windows-popup-drag-and-masked-apikey-design.md
+  s_aa5b50d395b0a0::t_e930cc8a8feacc 1-39
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "72cea1070746628608c688e66dc1857b53429760",
+  "prompts": {},
+  "sessions": {
+    "s_aa5b50d395b0a0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "fa525b59-03ad-4f0e-bc1b-d5b0b5eca96f",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
