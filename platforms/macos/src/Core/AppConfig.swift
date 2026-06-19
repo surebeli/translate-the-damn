@@ -67,7 +67,7 @@ public struct PopupConfig: Codable {
     public var keepOnHover: Bool
     public var position: String
 
-    public init(style: String = "solid", autoDismissSeconds: Int = 6, keepOnHover: Bool = true, position: String = "top-center") {
+    public init(style: String = "acrylic", autoDismissSeconds: Int = 6, keepOnHover: Bool = true, position: String = "top-center") {
         self.style = style
         self.autoDismissSeconds = autoDismissSeconds
         self.keepOnHover = keepOnHover

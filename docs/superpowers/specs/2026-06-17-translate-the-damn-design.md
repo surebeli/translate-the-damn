@@ -171,7 +171,7 @@ later it may be replaced by a remote/dynamic catalog.
   "version": 1,
   "general": { "listenClipboard": true, "activeBackend": "claude", "startWithWindows": false },
   "hotkey":  { "translate": "Ctrl+Alt+T", "toggleListen": "" },
-  "popup":   { "style": "solid", "autoDismissSeconds": 6, "keepOnHover": true, "position": "top-center" },
+  "popup":   { "style": "acrylic", "autoDismissSeconds": 6, "keepOnHover": true, "position": "top-center" },
   "translation": { "targetLanguageDefault": "zh-CN", "maxChars": 8000,
     "promptTemplate": "源语言为英文则术语保留英文、其余译为简体中文;非英文则全部译为简体中文;代码块保持原样;只输出译文。\n\n内容:\n{content}" },
   "backends": {

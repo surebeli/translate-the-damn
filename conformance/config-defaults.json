@@ -6,7 +6,7 @@
     { "path": "general.activeBackend", "equals": "claude" },
     { "path": "general.listenClipboard", "equals": true },
     { "path": "hotkey.translate", "equals": "Ctrl+Alt+T" },
-    { "path": "popup.style", "equals": "solid" },
+    { "path": "popup.style", "equals": "acrylic" },
     { "path": "popup.autoDismissSeconds", "equals": 6 },
     { "path": "backends", "count": 6 },
     { "path": "backends.claude.model", "equals": "haiku" },
