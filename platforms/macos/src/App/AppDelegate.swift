@@ -135,6 +135,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             let resultText = result.text
             let resultStatus = result.status
             let resultDetail = result.detail
+            // Snapshot the recent-translation cache (newest first) on this serial queue, so the
+            // popup can offer ◀ ▶ history navigation (spec §4.1/§8).
+            let history = runner.pipeline.recentHistory()
 
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
@@ -146,7 +149,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
                 let finalResult = TranslationResult(ok: ok, text: resultText, status: resultStatus, detail: resultDetail)
                 if finalResult.ok {
-                    self.popup?.showResult(translation: finalResult.text, source: text)
+                    let entries = history.map { PopupHistoryEntry(source: $0.source, translation: $0.translation) }
+                    self.popup?.showResults(entries, index: 0)
                 } else {
                     self.popup?.showError(message: finalResult.text)
                 }

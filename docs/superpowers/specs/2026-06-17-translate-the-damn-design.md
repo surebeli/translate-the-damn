@@ -95,11 +95,15 @@ the per-vendor argv/body building and output parsing.
 - **Dedupe** consecutive identical clipboard content (clipboard path only; hotkey always runs).
 - **Debounce** rapid clipboard bursts.
 - **Supersede**: a new trigger cancels an in-flight translation (CancellationToken).
-- **Last-translation cache** (one entry): before calling the model, if the source text matches the
-  last successful translation **and** the active backend + model are unchanged, return the cached
-  result instantly (skip the model). Main case: repeated hotkey on unchanged clipboard content.
+- **Recent-translation cache** (up to **5 entries**, most-recently-used order): before calling the
+  model, search **all** cached entries; if the source text matches a cached **successful** result
+  **and** the active backend + model are unchanged, return that entry instantly (skip the model) and
+  promote it to most-recent. On a miss, call the model and, on success, insert the new result at the
+  front; when the cache exceeds 5 entries the **least-recently-used** entry is evicted. A re-query of
+  a cached entry counts as a hit **and** refreshes its recency (so it survives later evictions).
   Switching backend or model changes the key ⇒ forced re-translate. Only successful results are
-  cached; settings changes clear it.
+  cached; settings changes clear the whole cache. The popup browses these entries newest→oldest
+  (see §8). Main case: repeated hotkey on unchanged clipboard content + quick recall of recent ones.
 - Show a "翻译中…" popup immediately, then update in place with the result.
 
 ## 5. Translation rules / prompt
@@ -202,6 +206,14 @@ Acrylic backdrop (DWM `DWMSBT_TRANSIENTWINDOW`) + rounded corners; dark scrim so
 Shows source text (muted) + translation (prominent) + a **复制译文** button. Floats out top-center
 of the **primary** monitor's work area. Mouse hover pauses the dismiss timer; otherwise fades after
 `autoDismissSeconds`. States: loading ("翻译中…") → result, or → error (from status taxonomy).
+
+- **Adaptive size** (shared rule): two fixed sizes — *normal*, and *large* = **2× the normal width
+  × 1.5× the normal height**. The popup uses *large* when the **currently displayed entry's source
+  text length is > 500 characters**, otherwise *normal* (pure decision: `PopupSizing.sizeClass`).
+- **History navigation** (shared rule): the popup can browse the recent-translation cache (§4.1) via
+  prev/older ◀ and next/newer ▶ controls, showing **one entry at a time** — the just-queried result
+  first (= newest), with an "index / total" indicator. Controls disable at the ends; navigating
+  re-renders from cache and **never re-invokes the model**. Size is recomputed per displayed entry.
 
 ## 9. Settings window
 

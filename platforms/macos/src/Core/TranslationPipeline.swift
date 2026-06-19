@@ -35,36 +35,49 @@ public struct TranslationResult: Equatable {
     public static func failed(_ status: TranslateStatus, _ detail: String) -> TranslationResult { TranslationResult(ok: false, text: detail, status: status, detail: detail) }
 }
 
-/// Orchestrates one translation with a one-entry "last successful translation" cache. Cache key =
-/// text + backend + model; a hit returns the cached result without invoking the model. A different
-/// backend/model is a different key ⇒ re-translate. Only successful results are cached (failures
-/// never populate the cache, so a retry always hits the model).
+/// Orchestrates one translation with a **recent-translation cache** (up to 5 entries, spec §4.1).
+/// Cache key = text + backend + model. On a hit the cached result is returned without invoking the
+/// model and the entry is promoted to most-recent (recency refresh). On a miss the model runs and a
+/// successful result is inserted at the front; when the cache exceeds `cacheCapacity` the
+/// least-recently-used entry is evicted. Only successful results are cached (failures never
+/// populate it, so a retry always hits the model). `recentHistory()` exposes the entries
+/// newest→oldest for the popup's history navigation (§8).
 public final class TranslationPipeline {
+    /// Max recent successful translations retained.
+    public static let cacheCapacity = 5
+
     private let backend: String
     private let translator: Translator
-    private var cache: CacheEntry?
+    private var cache: [CacheEntry] = []   // most-recently-used first
 
     public init(backend: String, translator: Translator) {
         self.backend = backend
         self.translator = translator
-        self.cache = nil
     }
 
-    /// Look up the one-entry cache; if it matches (text + backend + model), return the cached
-    /// result without calling the translator. Otherwise invoke the translator and, on success,
-    /// populate the cache.
+    /// Search the recent-translation cache; on a hit (text + backend + model) return the cached
+    /// result without calling the translator and promote it to most-recent. On a miss invoke the
+    /// translator and, on success, insert at the front, evicting the least-recently-used entry when
+    /// the cache exceeds `cacheCapacity`.
     public func run(text: String, model: String) -> TranslationResult {
-        if let cache = cache,
-           cache.text == text,
-           cache.backend == backend,
-           cache.model == model {
-            return cache.result
+        if let idx = cache.firstIndex(where: { $0.text == text && $0.backend == backend && $0.model == model }) {
+            let entry = cache.remove(at: idx)
+            cache.insert(entry, at: 0)   // refresh recency
+            return entry.result
         }
         let result = translator.translate(text: text, model: model)
         if result.ok {
-            cache = CacheEntry(text: text, backend: backend, model: model, result: result)
+            cache.insert(CacheEntry(text: text, backend: backend, model: model, result: result), at: 0)
+            if cache.count > Self.cacheCapacity {
+                cache.removeLast()
+            }
         }
         return result
+    }
+
+    /// Recent successful translations, newest → oldest (drives the popup's history navigation).
+    public func recentHistory() -> [(source: String, translation: String)] {
+        cache.map { ($0.text, $0.result.text) }
     }
 
     private struct CacheEntry {
