@@ -1,0 +1,54 @@
+PARITY.md
+  0000019edf4abacc 1-53
+conformance/config-defaults.json
+  0000019edf4abacc 1-21
+docs/superpowers/specs/2026-06-17-translate-the-damn-design.md
+  0000019edf4abacc 1-254
+platforms/macos/src/App/AppDelegate.swift
+  0000019edf4abacc 1-253
+platforms/macos/src/App/DSPopup.swift
+  0000019edf4abacc 1-439
+platforms/macos/src/App/DSSettingsView.swift
+  0000019edf4abacc 1-162
+platforms/macos/src/App/SettingsWindow.swift
+  0000019edf4abacc 1-294
+platforms/macos/src/App/StringsLoader.swift
+  0000019edf4abacc 1-94
+platforms/macos/src/Core/AppConfig.swift
+  0000019edf4abacc 1-157
+platforms/macos/src/Core/ConfigService.swift
+  0000019edf4abacc 1-141
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "fbba09b0a83d37d8a1dbce145c6b34ec523296e4",
+  "prompts": {
+    "s_607451b09328fc::t_5eb480b293ec2c": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781862676808797000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "0000019edf4abacc": {
+      "agent_id": {
+        "tool": "claude",
+        "model": "claude-opus-4-8",
+        "id": "ai-thread-claude-claude-opus-4-8-1781862677196"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 1868,
+      "total_deletions": 0,
+      "accepted_lines": 1868,
+      "overriden_lines": 0
+    }
+  }
+}
