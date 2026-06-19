@@ -472,8 +472,15 @@ def main(argv=None):
                 "systemMessage": digest,
                 "hookSpecificOutput": {
                     "hookEventName": "SessionStart",
-                    "additionalContext": digest + "\n(Per the CLAUDE.md/AGENTS.md session-start "
-                    "ritual: create TODO tasks for the current platform's behind items and tell the user.)",
+                    "additionalContext": digest + "\n\n[REQUIRED FIRST ACTION — do this NOW, before "
+                    "replying to the user about anything else, and without waiting to be asked]: For "
+                    "the platform being worked on (the one under platforms/<os>/ the user is in; if "
+                    "unclear, ask in one line), call TaskCreate once per that platform's 'behind' item "
+                    "listed above — subject = the item name, description = its action (`make "
+                    "conformance/<vector>.json pass` for logic items, or the spec §/UI step; see "
+                    "docs/PARITY-HANDOFF-*.md if present). Then OPEN your reply with one line stating "
+                    "how many cross-platform alignment TODOs you just created. This is the "
+                    "CLAUDE.md/AGENTS.md session-start ritual; do not skip it.",
                 },
             }
             print(json.dumps(payload, ensure_ascii=False))
