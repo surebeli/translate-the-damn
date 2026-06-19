@@ -1,0 +1,42 @@
+platforms/macos/scripts/build-icon.sh
+  0000019edf88ef31 1-84
+platforms/macos/src/App/SettingsWindow.swift
+  0000019edf88ef31 1-298
+platforms/macos/src/App/TrayController.swift
+  0000019edf88ef31 1-135
+platforms/macos/Resources/app.icns
+  0000019edf88ef31 1-414
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "9ba38bd45c7438eed900470e13f404f115adf129",
+  "prompts": {
+    "s_789acb90e02233::t_794ebffa587da5": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781866753541248000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "0000019edf88ef31": {
+      "agent_id": {
+        "tool": "claude",
+        "model": "claude-opus-4-8",
+        "id": "ai-thread-claude-claude-opus-4-8-1781866753841"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 931,
+      "total_deletions": 0,
+      "accepted_lines": 931,
+      "overriden_lines": 0
+    }
+  }
+}
