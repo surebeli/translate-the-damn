@@ -6,6 +6,10 @@ UI/interaction items are verified against the interaction spec + a per-platform 
 
 Legend: ✅ shipped · 🚧 in progress · ⬜ not started · ⚠️ partial/best-effort · — n/a
 
+> **Drift report:** `python3 scripts/parity-drift.py` (`--fail-on-drift` for a CI gate, `--json` for
+> machine output). It reads the declarations below — it is **not** a test run; per Law 2 each
+> platform's CI vectors remain the truth. "DECLARED-ALIGNED" means the board is self-consistent.
+
 | Feature | Spec | Conformance | Win | macOS | Linux |
 |---|---|---|---|---|---|
 | Clipboard watch (toggle, self-write guard) | §4, §4.1 | — (UI/OS) | ✅ | 🚧 | ⬜ |
