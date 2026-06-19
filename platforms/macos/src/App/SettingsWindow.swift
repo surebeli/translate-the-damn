@@ -587,7 +587,7 @@ struct SettingsView: View {
                 Text("O48（聚焦）").tag("O48")
                 Text("MM（简洁）").tag("MM")
             }
-            .pickerStyle(.segmented)
+            .pickerStyle(.menu)
             .padding(.bottom, 8)
 
             Toggle(isOn: $vm.startWithWindows) {

@@ -137,7 +137,7 @@ struct ZPSettingsView: View {
                 Text("O48（聚焦）").tag("O48")
                 Text("MM（简洁）").tag("MM")
             }
-            .pickerStyle(.segmented)
+            .pickerStyle(.menu)
 
             Toggle(StringsLoader["settings.field.startup"], isOn: $vm.startWithWindows)
         }

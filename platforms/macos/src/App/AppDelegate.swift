@@ -10,6 +10,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     // delegate ⇒ applicationDidFinishLaunching would never fire (no tray/hotkey/etc.).
     // Provide an explicit main() that wires the delegate + activation policy + run loop.
     static func main() {
+        // Dev-only: when TTD_SHOT_KIND is set, run the screenshot harness instead of the
+        // normal menu-bar app (see ScreenshotHarness). Inert without the env var.
+        if ScreenshotHarness.runIfRequested() { return }
         let app = NSApplication.shared
         let delegate = AppDelegate()
         app.delegate = delegate
