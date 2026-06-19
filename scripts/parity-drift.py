@@ -44,8 +44,10 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import os
 import re
 import sys
+import tempfile
 from pathlib import Path
 
 # The report/digest contain CJK + emoji; Windows consoles often default to a non-UTF-8 code page
@@ -420,6 +422,31 @@ def render_digest(r) -> str:
     return "\n".join(out)
 
 
+def _claim_hook_once() -> bool:
+    """Emit-once guard for --hook. Both SessionStart entries (bash + powershell) can fire on the same
+    machine (e.g. Windows with Git Bash AND PowerShell). Read the hook's `session_id` from stdin and
+    atomically claim a per-session marker so only the first entry emits. Falls back to emitting when
+    there is no session id (manual run / piped without one)."""
+    sid = None
+    try:
+        if not sys.stdin.isatty():
+            data = sys.stdin.read()
+            if data.strip():
+                sid = (json.loads(data) or {}).get("session_id")
+    except Exception:
+        sid = None
+    if not sid:
+        return True
+    marker = Path(tempfile.gettempdir()) / f"ttd-parity-hook-{sid}"
+    try:
+        os.close(os.open(str(marker), os.O_CREAT | os.O_EXCL | os.O_WRONLY))
+        return True   # we created it first → emit
+    except FileExistsError:
+        return False  # another SessionStart entry already emitted this session
+    except Exception:
+        return True
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description="Cross-platform parity drift report (reads PARITY.md declarations).")
     ap.add_argument("--root", type=Path, default=None, help="repo root (auto-detected if omitted)")
@@ -439,7 +466,7 @@ def main(argv=None):
         # SessionStart hook output: `systemMessage` is shown to the USER (the visible prompt);
         # `additionalContext` is injected into the model so it can act per the CLAUDE.md ritual.
         # Stay silent on aligned sessions (no noise).
-        if drift:
+        if drift and _claim_hook_once():
             digest = render_digest(r)
             payload = {
                 "systemMessage": digest,
