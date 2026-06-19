@@ -1,0 +1,38 @@
+AGENTS.md
+  0000019ee01fc8c3 1-152
+CLAUDE.md
+  0000019ee01fc8c3 1-171
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "961ca363bcb3486b78ec23f35269fd6ba0caca24",
+  "prompts": {
+    "s_bce90b83b8db5d::t_eee2080943143f": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781876639593426000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "0000019ee01fc8c3": {
+      "agent_id": {
+        "tool": "claude",
+        "model": "claude-opus-4-8",
+        "id": "ai-thread-claude-claude-opus-4-8-1781876639939"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 323,
+      "total_deletions": 0,
+      "accepted_lines": 323,
+      "overriden_lines": 0
+    }
+  }
+}
