@@ -59,9 +59,8 @@ final class TrayController {
         menu.addItem(exitMenuItem)
 
         statusItem.menu = menu
-        statusItem.button?.title = "译"
-        statusItem.button?.image = TrayController.makeTemplateImage()
-        statusItem.button?.imagePosition = .imageLeft
+        // Colored "T" circle (green = listening / grey = paused), set per-state in updateState —
+        // matches the Windows tray/app glyph (UI/AppIcon.cs).
 
         updateState(to: initialListenState, persist: false)
     }
@@ -78,6 +77,7 @@ final class TrayController {
         statusItem.button?.toolTip = on
             ? StringsLoader["tray.tooltip.listening"]
             : StringsLoader["tray.tooltip.paused"]
+        statusItem.button?.image = TrayController.makeTrayImage(listening: on)
 
         if on {
             watcher.start()
@@ -108,32 +108,28 @@ final class TrayController {
         NSApp.terminate(sender)
     }
 
-    private static func makeTemplateImage() -> NSImage {
-        if #available(macOS 11.0, *) {
-            if let image = NSImage(
-                systemSymbolName: "character",
-                accessibilityDescription: StringsLoader["tray.menu.listen"]
-            ) {
-                image.isTemplate = true
-                return image
-            }
-        }
+    /// Tray glyph aligned with Windows (UI/AppIcon.cs `AppIcon.Tray`): a bold white "T" in a filled
+    /// circle — green (#2EA043) when listening, grey (#787878) when paused. Colored (non-template)
+    /// so the green/grey state reads the same as on Windows.
+    private static func makeTrayImage(listening: Bool) -> NSImage {
+        let size: CGFloat = 18
+        let image = NSImage(size: NSSize(width: size, height: size), flipped: false) { rect in
+            let fill = listening
+                ? NSColor(srgbRed: 46.0 / 255, green: 160.0 / 255, blue: 67.0 / 255, alpha: 1)
+                : NSColor(srgbRed: 120.0 / 255, green: 120.0 / 255, blue: 120.0 / 255, alpha: 1)
+            fill.setFill()
+            NSBezierPath(ovalIn: rect.insetBy(dx: 0.5, dy: 0.5)).fill()
 
-        let image = NSImage(size: NSSize(width: 18, height: 18), flipped: false) { rect in
             let attrs: [NSAttributedString.Key: Any] = [
-                .font: NSFont.systemFont(ofSize: 13, weight: .medium),
-                .foregroundColor: NSColor.labelColor
+                .font: NSFont.systemFont(ofSize: size * 0.6, weight: .bold),
+                .foregroundColor: NSColor.white,
             ]
-            let str = NSAttributedString(string: "文", attributes: attrs)
-            let size = str.size()
-            let point = NSPoint(
-                x: (rect.width - size.width) / 2,
-                y: (rect.height - size.height) / 2
-            )
-            str.draw(at: point)
+            let str = NSAttributedString(string: "T", attributes: attrs)
+            let s = str.size()
+            str.draw(at: NSPoint(x: (rect.width - s.width) / 2, y: (rect.height - s.height) / 2))
             return true
         }
-        image.isTemplate = true
+        image.isTemplate = false  // colored green/grey like Windows, not a monochrome menu-bar template
         return image
     }
 }
