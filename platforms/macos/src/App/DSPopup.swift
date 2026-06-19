@@ -66,12 +66,22 @@ final class DSPopup: NSPanel, TranslationPopupUI {
     private var history: [PopupHistoryEntry] = []
     private var currentIndex = 0
 
-    // Adaptive size (spec §8): normal, or large = 2× width × 1.5× height when source > 500 chars.
-    private let normalScrollWidth: CGFloat = 350
-    private var normalScrollHeight: CGFloat { min(cfg.autoDismissSeconds > 0 ? 200 : 280, 280) }
+    // Adaptive size (spec §8): EXACTLY two fixed window specs — normal, and large = 2× width ×
+    // 1.5× height. The window always snaps to one of these two; the source (≤2 lines) and the
+    // scrollable translation adapt INSIDE, so different source lengths never make a third size.
+    private let normalWindowSize = NSSize(width: 390, height: 340)
+    private var largeWindowSize: NSSize {
+        NSSize(width: normalWindowSize.width * CGFloat(PopupSizing.largeWidthFactor),
+               height: normalWindowSize.height * CGFloat(PopupSizing.largeHeightFactor))
+    }
+    private let contentInsetX: CGFloat = 40   // contentStack left(20) + right(20) insets
+    private var isLargeSize = false
     private var scrollWidthConstraint: NSLayoutConstraint!
-    private var scrollHeightConstraint: NSLayoutConstraint!
     private var sourceWidthConstraint: NSLayoutConstraint!
+
+    private func innerWidth(forLarge large: Bool) -> CGFloat {
+        (large ? largeWindowSize.width : normalWindowSize.width) - contentInsetX
+    }
 
     init(cfg: PopupConfig, onCopy: @escaping (String) -> Void) {
         self.cfg = cfg
@@ -127,6 +137,7 @@ final class DSPopup: NSPanel, TranslationPopupUI {
         // Content stack — no accent rail, the card stands on its own.
         contentStack.orientation = .vertical
         contentStack.alignment = .leading
+        contentStack.distribution = .fill   // the scroll view (lowest hugging) absorbs vertical slack
         contentStack.spacing = 10
         contentStack.edgeInsets = NSEdgeInsets(top: 18, left: 20, bottom: 14, right: 20)
         contentStack.translatesAutoresizingMaskIntoConstraints = false
@@ -160,23 +171,24 @@ final class DSPopup: NSPanel, TranslationPopupUI {
         sourceLabel.textColor = .secondaryLabelColor
         sourceLabel.maximumNumberOfLines = 2
         sourceLabel.lineBreakMode = .byTruncatingTail
-        sourceLabel.preferredMaxLayoutWidth = normalScrollWidth
+        sourceLabel.preferredMaxLayoutWidth = innerWidth(forLarge: false)
         sourceLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        sourceWidthConstraint = sourceLabel.widthAnchor.constraint(lessThanOrEqualToConstant: normalScrollWidth)
+        sourceWidthConstraint = sourceLabel.widthAnchor.constraint(lessThanOrEqualToConstant: innerWidth(forLarge: false))
         sourceWidthConstraint.isActive = true
         contentStack.addArrangedSubview(sourceLabel)
 
-        // Translation (scrollable, 14pt, 3pt line spacing). Width/height constraints are stored so
-        // applySize() can switch between normal and large per the displayed entry's source length.
+        // Translation (scrollable, 14pt, 3pt line spacing). FIXED width per size class but FLEXIBLE
+        // height (lowest hugging) — it absorbs all vertical slack so the window stays exactly the
+        // fixed spec; source/translation length only changes how much scroll area there is.
         translationScrollView.translatesAutoresizingMaskIntoConstraints = false
         translationScrollView.hasVerticalScroller = true
         translationScrollView.hasHorizontalScroller = false
         translationScrollView.borderType = .noBorder
         translationScrollView.drawsBackground = false
         translationScrollView.autohidesScrollers = true
-        scrollHeightConstraint = translationScrollView.heightAnchor.constraint(equalToConstant: normalScrollHeight)
-        scrollWidthConstraint = translationScrollView.widthAnchor.constraint(equalToConstant: normalScrollWidth)
-        scrollHeightConstraint.isActive = true
+        translationScrollView.setContentHuggingPriority(.defaultLow, for: .vertical)
+        translationScrollView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        scrollWidthConstraint = translationScrollView.widthAnchor.constraint(equalToConstant: innerWidth(forLarge: false))
         scrollWidthConstraint.isActive = true
 
         translationTextView.isEditable = false
@@ -303,13 +315,12 @@ final class DSPopup: NSPanel, TranslationPopupUI {
         historyIndicator.isHidden = true
     }
 
-    /// Switch the popup between normal and large size based on the displayed source length (§8).
+    /// Pick one of the two fixed size specs from the displayed entry's source length (§8). Only the
+    /// inner WIDTH is constrained here; the window snaps to the exact spec in showAndPlace().
     private func applySize(sourceChars: Int) {
-        let large = PopupSizing.sizeClass(sourceChars: sourceChars) == "large"
-        let w = large ? normalScrollWidth * CGFloat(PopupSizing.largeWidthFactor) : normalScrollWidth
-        let h = large ? normalScrollHeight * CGFloat(PopupSizing.largeHeightFactor) : normalScrollHeight
+        isLargeSize = PopupSizing.sizeClass(sourceChars: sourceChars) == "large"
+        let w = innerWidth(forLarge: isLargeSize)
         scrollWidthConstraint.constant = w
-        scrollHeightConstraint.constant = h
         sourceWidthConstraint.constant = w
         sourceLabel.preferredMaxLayoutWidth = w
     }
@@ -428,8 +439,10 @@ final class DSPopup: NSPanel, TranslationPopupUI {
     // MARK: - Placement / animation
 
     private func showAndPlace() {
+        // Snap to exactly ONE of the two fixed specs (NOT fittingSize) so different source lengths
+        // and ◀▶ navigation only ever switch between normal ↔ large — never an in-between size.
+        setContentSize(isLargeSize ? largeWindowSize : normalWindowSize)
         visualEffectView.layoutSubtreeIfNeeded()
-        setContentSize(visualEffectView.fittingSize)
 
         let target = topCenterOrigin()
         if !isVisible {
