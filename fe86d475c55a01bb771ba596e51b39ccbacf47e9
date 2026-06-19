@@ -1,0 +1,36 @@
+.claude/settings.json
+  0000019ee1325fc6 1-30
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "fe86d475c55a01bb771ba596e51b39ccbacf47e9",
+  "prompts": {
+    "s_df78379e449855::t_a6dbc894a2d594": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781894635070472000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "0000019ee1325fc6": {
+      "agent_id": {
+        "tool": "claude",
+        "model": "claude-opus-4-8",
+        "id": "ai-thread-claude-claude-opus-4-8-1781894635462"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 30,
+      "total_deletions": 0,
+      "accepted_lines": 30,
+      "overriden_lines": 0
+    }
+  }
+}
