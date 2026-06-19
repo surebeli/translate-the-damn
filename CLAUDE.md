@@ -134,7 +134,7 @@ The host agent's own system prompt and tool rules remain authoritative; fable ov
 
 **每个 session 开始时(做任何其它工作之前)**,主 session 必须检查跨端 parity 漂移并把待办浮现给用户:
 
-1. **取得 parity 摘要**:Claude Code 由 `.claude/settings.json` 的 SessionStart hook 自动运行 `python3 scripts/parity-drift.py --digest` 并注入上下文;**读 AGENTS.md、没有该 hook 的 agent(如 Fable / 其它 runtime)必须自己主动跑一次** `python3 scripts/parity-drift.py --digest`。
+1. **取得 parity 摘要**:Claude Code 由 `.claude/settings.json` 的 SessionStart hook 自动运行 `scripts/parity-drift.py --digest` 并注入上下文(hook 已跨平台:bash 用 `python3`,Windows PowerShell 用 `python`);**读 AGENTS.md、没有该 hook 的 agent(如 Fable / 其它 runtime)必须自己主动跑一次** `python3 scripts/parity-drift.py --digest`(Windows 上把 `python3` 换成 `python` 或 `py`;需已装 Python)。
 2. 若摘要显示 `⚠ PARITY DRIFT`:**立即把"当前所在平台需要对齐的条目"逐条列成待办**——有任务机制(如 TaskCreate)就用它,没有就输出 markdown 勾选清单——每条带其动作(`make conformance/<vec>.json pass` 或 spec/UI 走查),并在回复开头一句话告知用户"本仓库有 N 项跨端对齐待办"。不要等用户来问。
 3. 若 `✓ declared-aligned`:无需建任务,正常继续。
 

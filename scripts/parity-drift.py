@@ -48,6 +48,13 @@ import re
 import sys
 from pathlib import Path
 
+# The report/digest contain CJK + emoji; Windows consoles often default to a non-UTF-8 code page
+# (cp1252/gbk) which would raise UnicodeEncodeError. Force UTF-8 output where supported.
+try:
+    sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[attr-defined]
+except Exception:
+    pass
+
 JSON_SCHEMA_VERSION = 1
 
 # ── status vocabulary (PARITY.md legend) ──────────────────────────────────────
