@@ -130,6 +130,16 @@ The host agent's own system prompt and tool rules remain authoritative; fable ov
 
 跨平台开发采用 **主 session = CEO/CTO** 编排:主 session 只做 读契约 → 拆任务 → 调度 → 交叉审核 → 修复 → 必要时二次审核 → 记录;开发与审核委派给 **hopper vendors + Claude Code subagents**。本节适用于 macOS 移植(同模式可推 Linux)。
 
+### 会话启动仪式:自动浮现跨端待办(无需手动跑脚本)
+
+**每个 session 开始时(在做任何其它工作之前)**,主 session 必须检查跨端 parity 漂移并把待办浮现给用户:
+
+1. 读 `<session-start>` 注入的 parity 摘要(由 `.claude/settings.json` 的 SessionStart hook 自动运行 `python3 scripts/parity-drift.py --digest` 注入);若没有注入(非 Claude Code 运行环境,如 Fable),则主动跑一次该命令。
+2. 若摘要显示 `⚠ PARITY DRIFT`:**立即用 TaskCreate 把"当前所在平台需要对齐的条目"逐条建成 TODO 任务**(每个 behind 条目一条,带其 `make conformance/<vec>.json pass` 或 spec/UI 动作),并在回复开头一句话告知用户"本仓库有 N 项跨端对齐待办"。不要等用户来问。
+3. 若摘要为 `✓ declared-aligned`:无需建任务,正常继续。
+
+判断"当前平台":看用户在哪个 `platforms/<os>/` 工作(或用户明示);默认聚焦该平台的 behind 列,其余平台的待办列为参考。这样用户启动 agent 即被告知待办,无需自己记着跑脚本。
+
 ### 角色与通道
 
 - **主 session (CEO/CTO)**:高上下文关键工作(一致性 runner、验收、parity)在主 session/subagent 内完成;其余开发/审核委派。

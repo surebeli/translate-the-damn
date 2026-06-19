@@ -390,10 +390,34 @@ def render_text(r, strict=False) -> str:
     return "\n".join(o)
 
 
+def render_digest(r) -> str:
+    """One compact block for session-start surfacing: what cross-platform alignment is pending."""
+    P = r["platforms"]
+    behind = r["behind"]
+    total = sum(len(v) for v in behind.values())
+    if not has_drift(r):
+        return "PARITY ✓ declared-aligned — no pending cross-platform alignment tasks."
+    out = [f"⚠ PARITY DRIFT — {total} pending cross-platform alignment item(s) "
+           "(declared in PARITY.md; run `python3 scripts/parity-drift.py` for detail + per-item actions):"]
+    for p in P:
+        items = behind[p]
+        if not items:
+            continue
+        names = [it["feature"] for it in items]
+        shown = "; ".join(names[:3]) + (f"  (+{len(names) - 3} more)" if len(names) > 3 else "")
+        out.append(f"  • {p}: {len(items)} behind a shipped peer — {shown}")
+    if r["law3_violations"]:
+        out.append(f"  • Law-3: {len(r['law3_violations'])} same-version / different-feature-set violation(s)")
+    out.append("  → Per the Constitution, package the items for the platform you are working on into "
+               "TODO tasks and surface them before other work.")
+    return "\n".join(out)
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description="Cross-platform parity drift report (reads PARITY.md declarations).")
     ap.add_argument("--root", type=Path, default=None, help="repo root (auto-detected if omitted)")
     ap.add_argument("--json", action="store_true", help="emit machine-readable JSON")
+    ap.add_argument("--digest", action="store_true", help="compact session-start summary of pending tasks")
     ap.add_argument("--fail-on-drift", action="store_true", help="exit 1 if drift is detected")
     ap.add_argument("--strict", action="store_true", help="also gate on orphan vectors + shipped-without-spec")
     args = ap.parse_args(argv)
@@ -402,6 +426,9 @@ def main(argv=None):
     r = compute(root)
     drift = has_drift(r, args.strict)
 
+    if args.digest:
+        print(render_digest(r))
+        return 0
     if args.json:
         out = dict(r)
         out["has_drift"] = drift
