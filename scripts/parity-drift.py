@@ -422,11 +422,12 @@ def render_digest(r) -> str:
     return "\n".join(out)
 
 
-def _claim_hook_once() -> bool:
-    """Emit-once guard for --hook. Both SessionStart entries (bash + powershell) can fire on the same
-    machine (e.g. Windows with Git Bash AND PowerShell). Read the hook's `session_id` from stdin and
-    atomically claim a per-session marker so only the first entry emits. Falls back to emitting when
-    there is no session id (manual run / piped without one)."""
+def _claim_hook_once(tag: str) -> bool:
+    """Emit-once guard for the hook modes. The bash + powershell entries can BOTH fire on one machine
+    (e.g. Windows with Git Bash AND PowerShell). Read the hook's `session_id` from stdin and atomically
+    claim a per-(session, tag) marker so only the first entry of that tag emits. `tag` separates the
+    SessionStart banner from the UserPromptSubmit action so each fires once per session independently.
+    Falls back to emitting when there is no session id (manual run / piped without one)."""
     sid = None
     try:
         if not sys.stdin.isatty():
@@ -437,12 +438,12 @@ def _claim_hook_once() -> bool:
         sid = None
     if not sid:
         return True
-    marker = Path(tempfile.gettempdir()) / f"ttd-parity-hook-{sid}"
+    marker = Path(tempfile.gettempdir()) / f"ttd-parity-hook-{tag}-{sid}"
     try:
         os.close(os.open(str(marker), os.O_CREAT | os.O_EXCL | os.O_WRONLY))
         return True   # we created it first → emit
     except FileExistsError:
-        return False  # another SessionStart entry already emitted this session
+        return False  # another entry of this tag already emitted this session
     except Exception:
         return True
 
@@ -453,7 +454,9 @@ def main(argv=None):
     ap.add_argument("--json", action="store_true", help="emit machine-readable JSON")
     ap.add_argument("--digest", action="store_true", help="compact session-start summary of pending tasks")
     ap.add_argument("--hook", action="store_true",
-                    help="emit Claude Code SessionStart hook JSON (systemMessage + additionalContext) when drift")
+                    help="SessionStart banner: emit hook JSON with systemMessage (shown to user) when drift")
+    ap.add_argument("--hook-act", action="store_true",
+                    help="UserPromptSubmit: emit hook JSON whose additionalContext mandates auto-creating TODOs")
     ap.add_argument("--fail-on-drift", action="store_true", help="exit 1 if drift is detected")
     ap.add_argument("--strict", action="store_true", help="also gate on orphan vectors + shipped-without-spec")
     args = ap.parse_args(argv)
@@ -462,28 +465,34 @@ def main(argv=None):
     r = compute(root)
     drift = has_drift(r, args.strict)
 
-    if args.hook:
-        # SessionStart hook output: `systemMessage` is shown to the USER (the visible prompt);
-        # `additionalContext` is injected into the model so it can act per the CLAUDE.md ritual.
-        # Stay silent on aligned sessions (no noise).
-        if drift and _claim_hook_once():
-            digest = render_digest(r)
-            payload = {
-                "systemMessage": digest,
-                "hookSpecificOutput": {
-                    "hookEventName": "SessionStart",
-                    "additionalContext": digest + "\n\n[REQUIRED FIRST ACTION — do this NOW, before "
-                    "replying to the user about anything else, and without waiting to be asked]: For "
-                    "the platform being worked on (the one under platforms/<os>/ the user is in; if "
-                    "unclear, ask in one line), call TaskCreate once per that platform's 'behind' item "
-                    "listed above — subject = the item name, description = its action (`make "
-                    "conformance/<vector>.json pass` for logic items, or the spec §/UI step; see "
-                    "docs/PARITY-HANDOFF-*.md if present). Then OPEN your reply with one line stating "
-                    "how many cross-platform alignment TODOs you just created. This is the "
-                    "CLAUDE.md/AGENTS.md session-start ritual; do not skip it.",
-                },
-            }
-            print(json.dumps(payload, ensure_ascii=False))
+    if args.hook or args.hook_act:
+        # A hook can SHOW a message + PRELOAD context, but CANNOT force a tool call. So we split:
+        #  --hook      (SessionStart):     systemMessage reliably DISPLAYS the pending list to the user.
+        #  --hook-act  (UserPromptSubmit): additionalContext injects an imperative on the user's FIRST
+        #                                  real turn — where models actually act — to auto-create TODOs.
+        # Stay silent on aligned sessions; dedup per (session, tag) so bash+powershell don't double-fire.
+        if not drift:
+            return 0
+        digest = render_digest(r)
+        if args.hook_act and _claim_hook_once("act"):
+            imperative = (
+                "[REQUIRED FIRST ACTION — do this NOW, before addressing the user's message, and "
+                "without waiting to be asked]: cross-platform parity drift exists (see list below). For "
+                "the platform being worked on (the one under platforms/<os>/ the user is in; if unclear, "
+                "ask in one line), call TaskCreate ONCE PER that platform's 'behind' item — subject = the "
+                "item name, description = its action (`make conformance/<vector>.json pass` for logic "
+                "items, or the spec §/UI step; see docs/PARITY-HANDOFF-*.md if present). Then open your "
+                "reply with one line stating how many alignment TODOs you created. This is the "
+                "CLAUDE.md/AGENTS.md session-start ritual; do not skip it.\n\n" + digest
+            )
+            print(json.dumps({"hookSpecificOutput": {"hookEventName": "UserPromptSubmit",
+                                                     "additionalContext": imperative}}, ensure_ascii=False))
+        elif args.hook and _claim_hook_once("banner"):
+            print(json.dumps({
+                "systemMessage": digest + "\n→ 让我建成可跟踪任务?对我说一句「建TODO」即可"
+                                          "(或重开后,首条消息会自动建)。",
+                "hookSpecificOutput": {"hookEventName": "SessionStart", "additionalContext": digest},
+            }, ensure_ascii=False))
         return 0
     if args.digest:
         print(render_digest(r))
