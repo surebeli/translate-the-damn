@@ -1,0 +1,33 @@
+docs/superpowers/specs/2026-06-17-translate-the-damn-design.md
+  s_aa5b50d395b0a0::t_602839857216cd 177
+  s_aa5b50d395b0a0::t_bfbd11394a694b 202-207
+platforms/windows/src/TranslateTheDamn.Core/Config/DefaultConfig.cs
+  s_aa5b50d395b0a0::t_2e7645fe5e381c 20
+PARITY.md
+  s_aa5b50d395b0a0::t_93adeb781f38ea 24
+  s_aa5b50d395b0a0::t_c505992a465bd3 64-71
+.hopper/COST-LOG.md
+  s_aa5b50d395b0a0::t_bba0c3b89353c5 30
+platforms/windows/src/TranslateTheDamn.Core/Config/AppConfig.cs
+  s_aa5b50d395b0a0::t_27224e6bf0e429 30-38
+conformance/config-defaults.json
+  s_aa5b50d395b0a0::t_2fed3f83b8ca0e 3
+platforms/windows/tests/TranslateTheDamn.Tests/Program.cs
+  s_aa5b50d395b0a0::t_adec0b70c7f9a8 45
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "b79373e4d080865a29bea31e91a4142790ebbf97",
+  "prompts": {},
+  "sessions": {
+    "s_aa5b50d395b0a0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "fa525b59-03ad-4f0e-bc1b-d5b0b5eca96f",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
