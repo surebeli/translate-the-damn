@@ -17,12 +17,21 @@ import TranslateTheDamnCore
 ///
 /// Non-focus-stealing: NSPanel(.nonactivatingPanel) + canBecomeKey/Main = false + .floating.
 /// Honors every PopupConfig field (style, autoDismissSeconds, keepOnHover).
+/// One entry in the popup's recent-translation history (source + its translation).
+struct PopupHistoryEntry {
+    let source: String
+    let translation: String
+}
+
 /// Common protocol for the translation popup (kept after consolidating to a single UI;
 /// originally declared in the now-removed ZPPopup.swift).
 @MainActor
 protocol TranslationPopupUI: AnyObject {
     func showLoading()
     func showResult(translation: String, source: String)
+    /// Show a result with browsable history (newest first); `index` is the entry to display
+    /// (0 = newest = just-queried). The popup adds ◀ ▶ navigation when history has >1 entry.
+    func showResults(_ history: [PopupHistoryEntry], index: Int)
     func showError(message: String)
     func show(source: String, translation: String)
     func update(translation: String)
@@ -50,7 +59,19 @@ final class DSPopup: NSPanel, TranslationPopupUI {
     private var isMouseOver = false
     private var currentTranslation = ""
 
-    private let scrollWidth: CGFloat = 350
+    // History navigation (spec §4.1 / §8): browse the recent-translation cache, one entry at a time.
+    private let prevButton = NSButton(title: "", target: nil, action: nil)   // ◀ older
+    private let nextButton = NSButton(title: "", target: nil, action: nil)   // ▶ newer
+    private let historyIndicator = NSTextField(labelWithString: "")
+    private var history: [PopupHistoryEntry] = []
+    private var currentIndex = 0
+
+    // Adaptive size (spec §8): normal, or large = 2× width × 1.5× height when source > 500 chars.
+    private let normalScrollWidth: CGFloat = 350
+    private var normalScrollHeight: CGFloat { min(cfg.autoDismissSeconds > 0 ? 200 : 280, 280) }
+    private var scrollWidthConstraint: NSLayoutConstraint!
+    private var scrollHeightConstraint: NSLayoutConstraint!
+    private var sourceWidthConstraint: NSLayoutConstraint!
 
     init(cfg: PopupConfig, onCopy: @escaping (String) -> Void) {
         self.cfg = cfg
@@ -139,21 +160,24 @@ final class DSPopup: NSPanel, TranslationPopupUI {
         sourceLabel.textColor = .secondaryLabelColor
         sourceLabel.maximumNumberOfLines = 2
         sourceLabel.lineBreakMode = .byTruncatingTail
-        sourceLabel.preferredMaxLayoutWidth = scrollWidth
+        sourceLabel.preferredMaxLayoutWidth = normalScrollWidth
         sourceLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        sourceLabel.widthAnchor.constraint(lessThanOrEqualToConstant: scrollWidth).isActive = true
+        sourceWidthConstraint = sourceLabel.widthAnchor.constraint(lessThanOrEqualToConstant: normalScrollWidth)
+        sourceWidthConstraint.isActive = true
         contentStack.addArrangedSubview(sourceLabel)
 
-        // Translation (scrollable, 14pt, 3pt line spacing).
-        let scrollHeight: CGFloat = min(cfg.autoDismissSeconds > 0 ? 200 : 280, 280)
+        // Translation (scrollable, 14pt, 3pt line spacing). Width/height constraints are stored so
+        // applySize() can switch between normal and large per the displayed entry's source length.
         translationScrollView.translatesAutoresizingMaskIntoConstraints = false
         translationScrollView.hasVerticalScroller = true
         translationScrollView.hasHorizontalScroller = false
         translationScrollView.borderType = .noBorder
         translationScrollView.drawsBackground = false
         translationScrollView.autohidesScrollers = true
-        translationScrollView.heightAnchor.constraint(equalToConstant: scrollHeight).isActive = true
-        translationScrollView.widthAnchor.constraint(equalToConstant: scrollWidth).isActive = true
+        scrollHeightConstraint = translationScrollView.heightAnchor.constraint(equalToConstant: normalScrollHeight)
+        scrollWidthConstraint = translationScrollView.widthAnchor.constraint(equalToConstant: normalScrollWidth)
+        scrollHeightConstraint.isActive = true
+        scrollWidthConstraint.isActive = true
 
         translationTextView.isEditable = false
         translationTextView.isSelectable = true
@@ -171,6 +195,18 @@ final class DSPopup: NSPanel, TranslationPopupUI {
         buttonStack.distribution = .fill
         contentStack.addArrangedSubview(buttonStack)
         buttonStack.widthAnchor.constraint(equalTo: translationScrollView.widthAnchor).isActive = true
+
+        // History nav (left side): ◀ older · "i / n" · ▶ newer. Hidden unless >1 cached entry.
+        configureNavButton(prevButton, symbol: "chevron.left", tip: StringsLoader["popup.nav.older"], action: #selector(onPrev))
+        configureNavButton(nextButton, symbol: "chevron.right", tip: StringsLoader["popup.nav.newer"], action: #selector(onNext))
+        historyIndicator.font = NSFont.monospacedDigitSystemFont(ofSize: 11, weight: .regular)
+        historyIndicator.textColor = .secondaryLabelColor
+        prevButton.isHidden = true
+        nextButton.isHidden = true
+        historyIndicator.isHidden = true
+        buttonStack.addArrangedSubview(prevButton)
+        buttonStack.addArrangedSubview(historyIndicator)
+        buttonStack.addArrangedSubview(nextButton)
 
         let spacer = NSView()
         spacer.translatesAutoresizingMaskIntoConstraints = false
@@ -211,22 +247,94 @@ final class DSPopup: NSPanel, TranslationPopupUI {
         setBody(StringsLoader["popup.body.translating"], color: .tertiaryLabelColor)
         copyButton.isHidden = true
         copyButton.attributedTitle = accentTitle(StringsLoader["popup.button.copy"])
+        history = []
+        setHistoryControlsHidden()
+        applySize(sourceChars: 0)
         dismissTimer?.invalidate()
         dismissTimer = nil
         showAndPlace()
     }
 
     func showResult(translation: String, source: String) {
-        currentTranslation = translation
+        showResults([PopupHistoryEntry(source: source, translation: translation)], index: 0)
+    }
+
+    func showResults(_ history: [PopupHistoryEntry], index: Int) {
+        self.history = history
+        self.currentIndex = index
+        renderCurrent()
+        if !isMouseOver { restartDismiss() }
+    }
+
+    /// Render the currently selected history entry: source + translation, nav controls, and size
+    /// (large when this entry's source > 500 chars). Reused by showResults and ◀/▶ navigation.
+    private func renderCurrent() {
+        guard !history.isEmpty else { return }
+        currentIndex = min(max(currentIndex, 0), history.count - 1)
+        let entry = history[currentIndex]
+        currentTranslation = entry.translation
         setHeader(title: StringsLoader["popup.header.result"], loading: false)
-        let trimmedSource = truncate(source, max: 400)
+        let trimmedSource = truncate(entry.source, max: 400)
         sourceLabel.attributedStringValue = italicString(trimmedSource)
         sourceLabel.isHidden = trimmedSource.isEmpty
-        setBody(translation, color: .labelColor)
+        setBody(entry.translation, color: .labelColor)
         copyButton.attributedTitle = accentTitle(StringsLoader["popup.button.copy"])
         copyButton.isHidden = false
+        updateHistoryControls()
+        applySize(sourceChars: entry.source.count)
         translationScrollView.contentView.scroll(to: .zero)
         showAndPlace()
+    }
+
+    private func updateHistoryControls() {
+        let multi = history.count > 1
+        prevButton.isHidden = !multi
+        nextButton.isHidden = !multi
+        historyIndicator.isHidden = !multi
+        guard multi else { return }
+        historyIndicator.stringValue = "\(currentIndex + 1) / \(history.count)"
+        prevButton.isEnabled = currentIndex < history.count - 1   // an older entry exists
+        nextButton.isEnabled = currentIndex > 0                   // a newer entry exists
+    }
+
+    private func setHistoryControlsHidden() {
+        prevButton.isHidden = true
+        nextButton.isHidden = true
+        historyIndicator.isHidden = true
+    }
+
+    /// Switch the popup between normal and large size based on the displayed source length (§8).
+    private func applySize(sourceChars: Int) {
+        let large = PopupSizing.sizeClass(sourceChars: sourceChars) == "large"
+        let w = large ? normalScrollWidth * CGFloat(PopupSizing.largeWidthFactor) : normalScrollWidth
+        let h = large ? normalScrollHeight * CGFloat(PopupSizing.largeHeightFactor) : normalScrollHeight
+        scrollWidthConstraint.constant = w
+        scrollHeightConstraint.constant = h
+        sourceWidthConstraint.constant = w
+        sourceLabel.preferredMaxLayoutWidth = w
+    }
+
+    private func configureNavButton(_ b: NSButton, symbol: String, tip: String, action: Selector) {
+        b.bezelStyle = .rounded
+        b.controlSize = .small
+        b.imagePosition = .imageOnly
+        b.image = NSImage(systemSymbolName: symbol, accessibilityDescription: tip)
+        b.toolTip = tip
+        b.target = self
+        b.action = action
+    }
+
+    @objc private func onPrev() {   // ◀ older
+        guard currentIndex < history.count - 1 else { return }
+        currentIndex += 1
+        renderCurrent()
+        if !isMouseOver { restartDismiss() }
+    }
+
+    @objc private func onNext() {   // ▶ newer
+        guard currentIndex > 0 else { return }
+        currentIndex -= 1
+        renderCurrent()
         if !isMouseOver { restartDismiss() }
     }
 
@@ -236,6 +344,9 @@ final class DSPopup: NSPanel, TranslationPopupUI {
         sourceLabel.isHidden = true
         setBody(message, color: .systemOrange)
         copyButton.isHidden = true
+        history = []
+        setHistoryControlsHidden()
+        applySize(sourceChars: 0)
         showAndPlace()
         if !isMouseOver { restartDismiss() }
     }

@@ -9,6 +9,8 @@
     "popup.button.copy": "复制译文",
     "popup.button.copied": "已复制 ✓",
     "popup.button.close": "关闭",
+    "popup.nav.older": "上一条(更早)",
+    "popup.nav.newer": "下一条(更新)",
 
     "tray.tooltip.listening": "translate-the-damn(监听中)",
     "tray.tooltip.paused": "translate-the-damn(已暂停)",

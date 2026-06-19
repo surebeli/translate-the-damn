@@ -1,0 +1,12 @@
+{
+  "fn": "PopupSizing.sizeClass",
+  "doc": "Pure decision for the translation popup's fixed size. The popup uses the 'large' size (= 2x the normal width, 1.5x the normal height) when the currently displayed entry's SOURCE text length is > 500 characters; otherwise 'normal'. in.sourceChars = source character count; out = size class string.",
+  "cases": [
+    { "name": "empty source", "in": { "sourceChars": 0 }, "out": "normal" },
+    { "name": "short source", "in": { "sourceChars": 120 }, "out": "normal" },
+    { "name": "just below threshold", "in": { "sourceChars": 499 }, "out": "normal" },
+    { "name": "exactly 500 is still normal (strict > 500)", "in": { "sourceChars": 500 }, "out": "normal" },
+    { "name": "just over threshold", "in": { "sourceChars": 501 }, "out": "large" },
+    { "name": "long source", "in": { "sourceChars": 2000 }, "out": "large" }
+  ]
+}

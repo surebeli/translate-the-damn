@@ -19,10 +19,11 @@ Legend: ✅ shipped · 🚧 in progress · ⬜ not started · ⚠️ partial/bes
 | Backends — claude, codex (CLI) | §6 | `spec/backends.json` | ✅ | ✅ | ⬜ |
 | Backends — copilot, agy (CLI) | §6 | `spec/backends.json` | ⚠️ | ⚠️ | ⬜ |
 | Backends — google-v2, doubao (HTTP) | §6.1/6.2 | `backend-requests` + `spec/backends.json` | ✅ | ✅ | ⬜ |
-| Last-translation cache (text+backend+model) | §4.1 | `pipeline-cache` | ✅ | ✅ | ⬜ |
+| Recent-translation cache (5 entries, MRU + recency refresh) | §4.1 | `pipeline-cache` | 🚧 | ✅ | ⬜ |
 | config.json defaults / bootstrap | §7 | `config-defaults` | ✅ | ✅ | ⬜ |
 | Acrylic popup (no-focus-steal, hover-keep, auto-dismiss, scroll) | §8 | — (UI) | ✅ | 🚧 | ⬜ |
 | Popup copy + close buttons | §8 | — (UI) | ✅ | 🚧 | ⬜ |
+| Popup adaptive size (source >500 chars → large) + history nav ◀▶ | §8 | `popup-sizing` | ⬜ | ✅ | ⬜ |
 | Settings window (backend/model, fields, live hotkey check) | §9 | — (UI) | ✅ | 🚧 | ⬜ |
 | Tray icon + global switch (persisted) | §3 | — (UI) | ✅ | 🚧 | ⬜ |
 | App icon = tray glyph (single source) | — | — (UI) | ✅ | 🚧 | ⬜ |
@@ -50,3 +51,9 @@ Legend: ✅ shipped · 🚧 in progress · ⬜ not started · ⚠️ partial/bes
   and the other six style implementations were removed. This was macOS-only (never a shared feature),
   so it is not a parity item; `config.general.uiStyle` stays in the schema (nil-default) for
   back-compat. Decision rationale: the UI-style review on branch `expe/202606`.
+- **Recent-translation cache extended 1→5 (macOS-first).** The `pipeline-cache` vector was extended
+  (spec §4.1) to pin a 5-entry MRU cache with recency-refresh + LRU eviction; macOS implements it
+  (vector green). **Windows' existing 1-entry cache now fails the updated vector → Win is 🚧 (behind)
+  on that row** until updated — exactly the forcing function (Law 2). Added a new `popup-sizing`
+  vector (spec §8: source > 500 chars → large size) + popup history navigation; macOS-only so far
+  (Win ⬜). Run `python3 scripts/parity-drift.py` to see Windows flagged behind on both.
