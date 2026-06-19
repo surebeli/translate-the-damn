@@ -12,7 +12,7 @@ Legend: ✅ shipped · 🚧 in progress · ⬜ not started · ⚠️ partial/bes
 
 | Feature | Spec | Conformance | Win | macOS | Linux |
 |---|---|---|---|---|---|
-| Clipboard watch (toggle, self-write guard) | §4, §4.1 | — (UI/OS) | ✅ | 🚧 | ⬜ |
+| Clipboard watch (toggle, self-write guard) | §4, §4.1 | — (UI/OS) | ✅ | ✅ | ⬜ |
 | Global hotkey (configurable, conflict-detect) | §4 | `hotkey-parser` | ✅ | ✅ | ⬜ |
 | Translation rules / prompt building | §5 | `prompt-builder` | ✅ | ✅ | ⬜ |
 | ANSI output cleaning | §6 | `ansi-stripper` | ✅ | ✅ | ⬜ |
@@ -22,13 +22,13 @@ Legend: ✅ shipped · 🚧 in progress · ⬜ not started · ⚠️ partial/bes
 | Recent-translation cache (5 entries, MRU + recency refresh) | §4.1 | `pipeline-cache` | ✅ | ✅ | ⬜ |
 | config.json defaults / bootstrap | §7 | `config-defaults` | ✅ | ✅ | ⬜ |
 | Default translate hotkey (per-platform default) | §7 | — (per-platform) | ✅ | ⬜ | ⬜ |
-| Acrylic popup (no-focus-steal, hover-keep, auto-dismiss, scroll) | §8 | — (UI) | ✅ | 🚧 | ⬜ |
-| Popup copy + close buttons | §8 | — (UI) | ✅ | 🚧 | ⬜ |
-| Popup adaptive size (source >500 chars → large) + history nav ◀▶ | §8 | `popup-sizing` | 🚧 | ✅ | ⬜ |
-| Settings window (backend/model, fields, live hotkey check) | §9 | — (UI) | ✅ | 🚧 | ⬜ |
-| Tray icon + global switch (persisted) | §3 | — (UI) | ✅ | 🚧 | ⬜ |
-| App icon = tray glyph (single source) | — | — (UI) | ✅ | 🚧 | ⬜ |
-| Dark scrollbar theme | — | — (UI) | ✅ | 🚧 | ⬜ |
+| Acrylic popup (no-focus-steal, hover-keep, auto-dismiss, scroll) | §8 | — (UI) | ✅ | ✅ | ⬜ |
+| Popup copy + close buttons | §8 | — (UI) | ✅ | ✅ | ⬜ |
+| Popup adaptive size (source >500 chars → large) + history nav ◀▶ | §8 | `popup-sizing` | ✅ | ✅ | ⬜ |
+| Settings window (backend/model, fields, live hotkey check) | §9 | — (UI) | ✅ | ✅ | ⬜ |
+| Tray icon + global switch (persisted) | §3 | — (UI) | ✅ | ✅ | ⬜ |
+| App icon = tray glyph (single source) | — | — (UI) | ✅ | ✅ | ⬜ |
+| Dark scrollbar theme | — | — (UI) | ✅ | — | ⬜ |
 | API Key field masked (secure entry) | §9 | — (UI) | ⬜ | ✅ | ⬜ |
 | Popup drag-to-reposition (session-sticky) | §8 | — (UI) | ⬜ | ⬜ | ⬜ |
 
@@ -48,6 +48,12 @@ Legend: ✅ shipped · 🚧 in progress · ⬜ not started · ⚠️ partial/bes
 - The Windows adapters currently **hardcode** the backend definitions that `spec/backends.json`
   declares; refactoring Windows to read the manifest is a tracked future task (keeps the manifest
   the single source for all platforms).
+- **PARITY 卫生(2026-06-20,蜂巢复核后止血)**:macOS 的 Clipboard watch / Acrylic popup /
+  Popup copy+close / Settings window / Tray icon / App icon 六行此前**虚标 🚧**——本会话已实现并经源码
+  核实,翻 ✅;Win 的 *Popup adaptive size + history nav* 行同为**反向虚标**(`popup-sizing` 向量已绿、
+  `PopupWindow` 两固定尺寸+◀▶历史已实现),翻 ✅。`Dark scrollbar theme` 的 macOS 列改标 `—`(n/a:macOS
+  overlay scrollers 随系统明暗自适应,无需显式实现;Windows 因 WPF 才需显式 theming),**不翻 ✅**。复盘与
+  剩余路线见 `.hopper/RETROSPECTIVE-2026-06-20-parity-mechanism.md`。
 - **macOS UI consolidated to a single style.** The macOS port experimented with 7 swappable UI
   styles (`uiStyle` switch); it has been consolidated to one finalized "clean" UI (single-page
   grouped Form settings + clean glass-card popup with italic source). The `uiStyle` switch, picker,
