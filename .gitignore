@@ -30,3 +30,7 @@ local.config.json
 
 ## Local issue tracking (not tracked by repo)
 .local-issues/
+
+# Python bytecode
+__pycache__/
+*.pyc
