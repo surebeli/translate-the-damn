@@ -1,0 +1,27 @@
+platforms/macos/src/App/KMSettingsView.swift
+  s_f6ead4b131ecab::t_835076e84baad3 15-21
+platforms/macos/scripts/screenshot-ui.sh
+  s_f6ead4b131ecab::t_835076e84baad3 2-5,7-9,11,15-18,27-28,31-32,40,45-46,50-74,76
+platforms/macos/src/App/O48SettingsView.swift
+  s_f6ead4b131ecab::t_835076e84baad3 16-21
+docs/UI-STYLE-REVIEW.md
+  s_f6ead4b131ecab::t_835076e84baad3 759-767,769-770
+platforms/macos/src/App/ScreenshotHarness.swift
+  s_f6ead4b131ecab::t_835076e84baad3 2,18-19,26-27,29,35,39-40,53-54,64-66,80,93,101-140
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "c6f9f53b375c5327dfd6ae612bd9130f05dc2f7b",
+  "prompts": {},
+  "sessions": {
+    "s_f6ead4b131ecab": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781860003638672000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
