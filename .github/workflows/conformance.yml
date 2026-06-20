@@ -1,0 +1,58 @@
+# Law 2 forcing function — make the contract real.
+#
+# The language-neutral conformance vectors in conformance/*.json are the single source of truth for
+# shared behaviour (Constitution Law 2). Until now they were "run on CI" only in prose: there was NO
+# CI, development went straight to main, and a vector regression on a lagging platform turned nothing
+# red — alignment relied on a human remembering to run the runner. The 2026-06-20 retrospective
+# (.hopper/RETROSPECTIVE-2026-06-20-parity-mechanism.md #2) flagged this as the P0 gap.
+#
+# This workflow runs each platform's native runner over the SAME conformance/ JSON on every push and
+# PR. A vector that regresses on macOS or Windows now fails its job. That is the forcing function.
+name: conformance
+
+on:
+  push:
+  pull_request:
+
+# A newer push to the same ref cancels the older in-flight run (saves runner minutes).
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  macos:
+    name: conformance — macOS (swift)
+    runs-on: macos-15 # Xcode 16 / Swift 6 (Package.swift is swift-tools 6.0)
+    defaults:
+      run:
+        working-directory: platforms/macos
+    steps:
+      - uses: actions/checkout@v4
+      - name: toolchain
+        run: swift --version
+      - name: swift test (conformance vectors — Law 2)
+        run: swift test
+
+  windows:
+    name: conformance — Windows (dotnet)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "9.0.x"
+      # Dependency-free offline harness (no network / no spawned CLIs). Same JSON as macOS.
+      - name: offline conformance harness (Law 2)
+        run: dotnet run --project platforms/windows/tests/TranslateTheDamn.Tests
+
+  parity:
+    name: parity drift (visibility)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # NOT a hard gate yet — the Linux column is intentionally un-started and the mid-port Law-3
+      # deltas would make --fail-on-drift permanently red. This surfaces the report in the PR's
+      # checks so reviewers see pending alignment. Hard gating is tracked as retrospective #7
+      # (PARITY semi-generation + a baseline that distinguishes "Linux not started" from "new drift").
+      - name: parity drift report
+        run: python3 scripts/parity-drift.py
