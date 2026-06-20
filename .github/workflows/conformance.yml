@@ -56,3 +56,21 @@ jobs:
       # (PARITY semi-generation + a baseline that distinguishes "Linux not started" from "new drift").
       - name: parity drift report
         run: python3 scripts/parity-drift.py
+
+  parity-gate:
+    name: PARITY coupling gate
+    runs-on: ubuntu-latest
+    # Only meaningful with a base to diff against — i.e. on PRs. This is also the nudge toward PR
+    # flow (retrospective: "走 PR"): the gate can't bite on direct-to-main pushes. Catches the
+    # "shipped platform/<os>/src/** with NO PARITY.md edit" case; row-level correctness (a row
+    # mis-marked despite a green vector) is a separate mechanism — retrospective #5/#7.
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # need both base + head commits present to diff
+      - name: platform src ⇒ PARITY.md coupling
+        run: >-
+          python3 scripts/parity-gate.py
+          --base "${{ github.event.pull_request.base.sha }}"
+          --head "${{ github.event.pull_request.head.sha }}"
