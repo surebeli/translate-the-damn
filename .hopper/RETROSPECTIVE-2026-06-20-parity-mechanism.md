@@ -73,3 +73,21 @@ stale,真正第一优先是**建 CI + 走 PR**,`--verify-vectors` 降级。
 - 止血前:total 27 / macOS 8 / Win 2 / Law-3 10。
 - 止血后:total 19 / macOS 1(Default hotkey)/ Win 1(API Key masked)/ Law-3 2 / Linux 17(未开工)。
 - 复核工件:`scripts/parity-retro-hive-review-*.js`(4 agents,294k tokens)。
+
+## 8. 执行进展(同会话后续)
+
+按用户"继续推进 完善机制",在止血之后顺路线落地了 forcing function 地基:
+
+- **路线 #2(P0)建最小 CI**:`.github/workflows/conformance.yml` — `macos`(`swift test`,本地实测
+  **117 tests 全绿**)/ `windows`(`dotnet run` 离线 harness)各跑同一份 `conformance/` JSON,某端向量
+  回归即红;`parity` job 跑报表(仅可见性)。**Law 2 第一次有真 forcing function。** 顺手修了 PARITY/README
+  里"run on Windows CI"的自身 stale(彼时根本没 CI)。⚠ 本机 `gh` 未登录,GitHub 上首次 run 结果我看不到,
+  需人工瞄一眼 Actions 页(或 `gh auth login` 后我来核)。
+- **路线 #3(P1)path-coupled gate**:`scripts/parity-gate.py` + workflow `parity-gate` job(仅 PR)——
+  改 `platforms/<os>/src/**` 没动 `PARITY.md` 即 PR 失败,逃生口 `parity:n/a <理由>`。本地用真实历史验证:
+  fail 路径 exit 1 命中 `9ba38bd`(纯改 macOS src 无 PARITY),`--warn` 降级 exit 0,逃生正则 OK。
+  **诚实修正**:原以为它能抓住 `72cea10` 的 Win popup stale——**抓不到**:`72cea10` *动了* PARITY(翻了
+  cache 行),只是 popup 行没翻 ✅。`parity-gate` 只抓"完全忘改 PARITY",抓不到"改了但标错行";后者仍要
+  路线 #5/#7(逻辑行 ✅ 从向量真值派生)。这条限制已写进 `docs/CROSS-PLATFORM-PARITY.md §4.5`,不过度宣称。
+- **仍欠**:#5(`--verify-vectors` / 逻辑行派生)、#7(PARITY 半生成化 + 噪声 baseline 让 `--fail-on-drift`
+  能上 CI)、以及真正"走 PR"的习惯(gate 只在 PR 触发)。任务 #5/#6/#9 + 这两项继续。

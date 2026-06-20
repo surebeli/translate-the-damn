@@ -123,6 +123,27 @@ Windows 加 powershell 条——放各机 `.claude/settings.local.json`(gitignor
 ```
 交接简报示例见 `docs/PARITY-HANDOFF-windows-cache5-popup.md`(逐文件 + 验收门禁)。
 
+### 4.5 CI:把契约从"叙事"变成"强制"(2026-06-20)
+
+这套机制曾有个被 2026-06-20 蜂巢复核戳穿的空洞:**仓库没有任何 CI、开发直推 main**——Law 2 的"向量在
+各端 CI 跑绿、某端回归就变红"只是文档里的话,真正靠人自觉跑 runner。现已落地最小 CI
+(`.github/workflows/conformance.yml`),每次 push/PR 跑:
+
+- **`macos` / `windows` job**:各端原生 runner(`swift test` / `dotnet run` 离线 harness)跑**同一份**
+  `conformance/` JSON。某端向量回归 → 该 job 红。**这就是 Law 2 缺失已久的 forcing function。**
+- **`parity` job**:`parity-drift.py` 报表(仅可见性,不硬门禁——Linux 整列未开工 + 移植期 Law-3 delta
+  会让 `--fail-on-drift` 永红;硬门禁见路线 #7)。
+- **`parity-gate` job(仅 PR)**:`scripts/parity-gate.py`——改了 `platforms/<os>/src/**` 却没动
+  `PARITY.md`,**该 PR 失败**(替代早已被证伪的 PR checkbox)。行为中性改动(重构/注释)用 commit
+  message 写一行 `parity:n/a <理由>` 放行,**逼一次有意识判断**而非无脑勾选。
+
+> 边界(据实,别过度宣称):`parity-gate` 只抓"**完全忘了改 PARITY**"(历史里真有,如纯改 macOS src 的
+> 提交);它**抓不到**"改了 PARITY 但某行标错"——例如向量已绿、行却还是 🚧(`72cea10` 正是如此)。后者
+> 要靠"逻辑行 ✅ 从向量真值派生"(路线 #5/#7),尚未落地。
+>
+> 另:`parity-gate` 只在 **PR** 上触发——直推 main 不受约束,所以"走 PR"是这道门生效的前提(也是复核建议)。
+> 本端合并前可手动 `python3 scripts/parity-gate.py` 自查。
+
 ---
 
 ## 5. 意义:为什么这对原生开发有帮助
