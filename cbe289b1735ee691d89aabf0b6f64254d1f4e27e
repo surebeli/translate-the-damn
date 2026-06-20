@@ -1,0 +1,44 @@
+.github/PULL_REQUEST_TEMPLATE.md
+  0000019ee4afa62f 1-22
+.github/workflows/conformance.yml
+  0000019ee4afa62f 1-76
+.hopper/RETROSPECTIVE-2026-06-20-parity-mechanism.md
+  0000019ee4afa62f 1-93
+docs/CROSS-PLATFORM-PARITY.md
+  0000019ee4afa62f 1-173
+scripts/parity-gate.py
+  0000019ee4afa62f 1-77
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "cbe289b1735ee691d89aabf0b6f64254d1f4e27e",
+  "prompts": {
+    "s_830e50db85adc8::t_80517ee56bdc14": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781953176802535000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "0000019ee4afa62f": {
+      "agent_id": {
+        "tool": "claude",
+        "model": "claude-opus-4-8",
+        "id": "ai-thread-claude-claude-opus-4-8-1781953177135"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 441,
+      "total_deletions": 0,
+      "accepted_lines": 441,
+      "overriden_lines": 0
+    }
+  }
+}
