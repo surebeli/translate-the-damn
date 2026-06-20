@@ -1,0 +1,40 @@
+.github/workflows/conformance.yml
+  0000019ee4aa31d8 1-58
+PARITY.md
+  0000019ee4aa31d8 1-80
+README.md
+  0000019ee4aa31d8 1-103
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "d50f5464ae3e8479389293c3e9e7f68b00443530",
+  "prompts": {
+    "s_04acd4382e3d6e::t_9a69ba08aa3a80": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1781952819262351000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "0000019ee4aa31d8": {
+      "agent_id": {
+        "tool": "claude",
+        "model": "claude-opus-4-8",
+        "id": "ai-thread-claude-claude-opus-4-8-1781952819672"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 241,
+      "total_deletions": 0,
+      "accepted_lines": 241,
+      "overriden_lines": 0
+    }
+  }
+}
