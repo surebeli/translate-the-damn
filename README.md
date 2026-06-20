@@ -1,5 +1,7 @@
 # translate-the-damn
 
+[![conformance](https://github.com/surebeli/translate-the-damn/actions/workflows/conformance.yml/badge.svg)](https://github.com/surebeli/translate-the-damn/actions/workflows/conformance.yml)
+
 A lightweight **Windows 11** "copy / hotkey → translate" tool for heavy LLM users. It watches the
 clipboard (toggleable) and a configurable global hotkey, runs the text through a pluggable backend —
 an **agent CLI** you already have logged in, or a **translation API** — and shows the result in a
@@ -88,8 +90,9 @@ Design spec: `docs/superpowers/specs/2026-06-17-translate-the-damn-design.md`.
 v1 is Windows 11. Future macOS/Linux are **native per platform** (no shared UI/runtime code);
 consistency is enforced by shared contracts + conformance vectors + a parity matrix, all anchored by
 the repo's **[CONSTITUTION.md](./CONSTITUTION.md)** (the single entry point + pointer map). Cross-platform
-status lives in **[PARITY.md](./PARITY.md)**; shared logic is pinned by the vectors in `conformance/`
-(run on Windows today via `dotnet run --project platforms/windows/tests/...`).
+status lives in **[PARITY.md](./PARITY.md)**; shared logic is pinned by the vectors in `conformance/`,
+which run in **CI on every push/PR** by each platform's native runner over the same JSON — Windows
+`dotnet run`, macOS `swift test` — see `.github/workflows/conformance.yml` (the Law 2 forcing function).
 
 How drift is **auto-surfaced** (one-command `scripts/parity-drift.py` report + session-start auto-TODO),
 how to **align a feature across platforms**, and why this matters for native-per-platform development is
