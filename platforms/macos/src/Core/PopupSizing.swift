@@ -19,3 +19,5 @@ public enum PopupSizing {
         sourceChars > largeSourceCharThreshold ? "large" : "normal"
     }
 }
+
+// parity-gate live proof: touching platform src with no PARITY edit (expected to FAIL the gate).
