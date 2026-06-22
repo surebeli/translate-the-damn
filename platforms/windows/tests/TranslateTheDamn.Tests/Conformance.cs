@@ -70,6 +70,7 @@ public static class Conformance
     // --- per-vendor effort tiers declared in the manifest ---
     private static void RunEffortTiers(string dir)
     {
+        Check.Vector("effort-tiers");
         var path = Path.Combine(dir, "effort-tiers.json");
         if (!File.Exists(path)) { Check.True(false, "conformance file exists: effort-tiers.json"); return; }
 
@@ -87,6 +88,7 @@ public static class Conformance
     // --- per-vendor doctor probe argv/kind declared in the manifest ---
     private static void RunDoctorProbe(string dir)
     {
+        Check.Vector("doctor-probe");
         var path = Path.Combine(dir, "doctor-probe.json");
         if (!File.Exists(path)) { Check.True(false, "conformance file exists: doctor-probe.json"); return; }
 
@@ -125,6 +127,7 @@ public static class Conformance
     // --- generic auth/connectivity classifier (success-wins; agy transient regression) ---
     private static void RunDoctorClassify(string dir)
     {
+        Check.Vector("doctor-classify");
         var path = Path.Combine(dir, "doctor-classify.json");
         if (!File.Exists(path)) { Check.True(false, "conformance file exists: doctor-classify.json"); return; }
 
@@ -228,6 +231,7 @@ public static class Conformance
     // --- credential auto-discovery: the static-key/OAuth import boundary ---
     private static void RunCredentialDiscovery(string dir)
     {
+        Check.Vector("credential-discovery");
         var path = Path.Combine(dir, "credential-discovery.json");
         if (!File.Exists(path)) { Check.True(false, "conformance file exists: credential-discovery.json"); return; }
 

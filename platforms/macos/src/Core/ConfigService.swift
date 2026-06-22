@@ -87,6 +87,25 @@ public enum ConfigService {
                     model: "doubao-seed-translation-250915",
                     endpoint: "https://ark.cn-beijing.volces.com/api/v3/responses",
                     targetLanguage: "zh"
+                ),
+                "opencode": BackendConfig(
+                    type: "cli",
+                    command: "opencode",
+                    model: "deepseek/deepseek-chat",
+                    timeoutSec: 60
+                ),
+                "kimi": BackendConfig(
+                    type: "cli",
+                    command: "kimi",
+                    model: "kimi-code/kimi-for-coding",
+                    outputFormat: "stream-json",
+                    timeoutSec: 90
+                ),
+                "mimo": BackendConfig(
+                    type: "cli",
+                    command: "mimo",
+                    model: "xiaomi/mimo-v2.5-pro",
+                    timeoutSec: 90
                 )
             ],
             modelCatalog: [
@@ -95,7 +114,10 @@ public enum ConfigService {
                 "copilot": ["claude-haiku-4.5", "claude-sonnet-4.6", "gpt-5.4", "gemini-3.5-flash"],
                 "agy": ["gemini-3.5-flash", "gemini-3.1-pro"],
                 "google-v2": ["nmt"],
-                "doubao": ["doubao-seed-translation-250915"]
+                "doubao": ["doubao-seed-translation-250915"],
+                "opencode": ["deepseek/deepseek-chat", "deepseek/deepseek-reasoner", "deepseek/deepseek-v4-pro", "tokenbox/glm-5.2", "tokenbox/kimi-k2.6", "xiaomi-token-plan-cn/mimo-v2.5-pro"],
+                "kimi": ["kimi-code/kimi-for-coding"],
+                "mimo": ["mimo/mimo-auto", "xiaomi/mimo-v2-flash", "xiaomi/mimo-v2-pro", "xiaomi/mimo-v2.5", "xiaomi/mimo-v2.5-pro"]
             ]
         )
     }

@@ -40,6 +40,9 @@
     "Popup drag-to-reposition": {
       "Win": [{ "path": "platforms/windows/src/TranslateTheDamn.App/UI/PopupWindow.xaml.cs", "symbol": "DragMove" }],
       "macOS": [{ "path": "platforms/macos/src/App/DSPopup.swift", "symbol": "sessionOrigin" }]
+    },
+    "Custom provider": {
+      "Win": [{ "path": "platforms/windows/src/TranslateTheDamn.App/UI/SettingsWindow.xaml.cs", "symbol": "BtnAddProvider_Click" }]
     }
   }
 }
