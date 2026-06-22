@@ -45,7 +45,7 @@ Legend: ✅ shipped · 🚧 in progress · ⬜ not started · ⚠️ partial/bes
 
 | | Win | macOS | Linux |
 |---|---|---|---|
-| App version | **0.3.0** | **0.3.0** (`CFBundleShortVersionString` via Info.plist) | — |
+| App version | **0.3.1** | **0.3.1** (`CFBundleShortVersionString` via Info.plist) | — |
 | config schema | 1 | 1 | — |
 
 ## Notes

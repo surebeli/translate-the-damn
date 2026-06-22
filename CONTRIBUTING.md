@@ -151,9 +151,10 @@ Law 2 forcing function doing its job — the lagging platform owes the alignment
 User configuration and secrets live **only** in the local `config.json`
 (`~/.translatethedamn/config.json`, or `%USERPROFILE%\.translatethedamn\config.json` on Windows),
 which is created on first run. The `apiKey` field and any other credential live there and **must
-never be committed**. `.gitignore` already excludes `local.config.json`, `*.log`, and similar
-artifacts — do not add real keys to fixtures, tests, vectors, or docs. Conformance vectors use
-placeholder values only.
+never be committed** — never copy your real `config.json` into the repo. `.gitignore` excludes the
+secret filenames (`config.json`, `local.config.json`, `**/.translatethedamn/`, `*.bak`, `*.log`) as a
+backstop, but the first line of defense is you: do not add real keys to fixtures, tests, vectors, or
+docs. Conformance vectors use placeholder values only.
 
 See `SECURITY.md` for how to report a vulnerability.
 
