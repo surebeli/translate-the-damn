@@ -1,0 +1,24 @@
+{
+  "fn": "BackendManifest.collectJsonl(raw, jsonlTypePath, jsonlType, jsonlTextPath)",
+  "doc": "CLI stdout extraction for stream-json / NDJSON backends (spec/backends.json parse.jsonl). For each newline-delimited line that parses as a JSON object/array, recursively collect every object whose <jsonlTypePath> string field equals <jsonlType>, read <jsonlTextPath> (dotted path; string leaf only) off that object, and CONCATENATE matches in stream order. Non-JSON 'chrome' lines (not starting with { or [) are skipped. Returns the concatenated text, or \"\" when nothing matches (the caller then falls back to raw stdout). jsonlTypePath defaults to \"type\" when absent in the manifest. This is the contract opencode/mimo (type==text -> part.text) and kimi (role==assistant -> content) share; it was previously UNVECTORED, which let macOS ship with no jsonl branch and the kimi spec wrong on both platforms.",
+  "cases": [
+    { "name": "opencode/mimo: type==text -> part.text",
+      "in": { "raw": "{\"type\":\"step_start\",\"part\":{\"id\":\"a\"}}\n{\"type\":\"text\",\"part\":{\"text\":\"你好,世界。\"}}\n{\"type\":\"step_finish\",\"part\":{}}", "jsonlTypePath": "type", "jsonlType": "text", "jsonlTextPath": "part.text" },
+      "out": "你好,世界。" },
+    { "name": "multiple text events concatenate in order",
+      "in": { "raw": "{\"type\":\"text\",\"part\":{\"text\":\"你好,\"}}\n{\"type\":\"text\",\"part\":{\"text\":\"世界。\"}}", "jsonlTypePath": "type", "jsonlType": "text", "jsonlTextPath": "part.text" },
+      "out": "你好,世界。" },
+    { "name": "kimi: role==assistant -> content, meta line ignored",
+      "in": { "raw": "{\"role\":\"assistant\",\"content\":\"你好,世界。\"}\n{\"role\":\"meta\",\"type\":\"session.resume_hint\",\"content\":\"To resume: kimi -r x\"}", "jsonlTypePath": "role", "jsonlType": "assistant", "jsonlTextPath": "content" },
+      "out": "你好,世界。" },
+    { "name": "no matching line -> empty (caller falls back to raw)",
+      "in": { "raw": "{\"type\":\"step_start\"}\n{\"type\":\"step_finish\"}", "jsonlTypePath": "type", "jsonlType": "text", "jsonlTextPath": "part.text" },
+      "out": "" },
+    { "name": "non-JSON chrome line skipped",
+      "in": { "raw": "> build · model\n{\"type\":\"text\",\"part\":{\"text\":\"hi\"}}", "jsonlTypePath": "type", "jsonlType": "text", "jsonlTextPath": "part.text" },
+      "out": "hi" },
+    { "name": "default discriminator field is 'type' when jsonlTypePath omitted",
+      "in": { "raw": "{\"type\":\"text\",\"part\":{\"text\":\"x\"}}", "jsonlType": "text", "jsonlTextPath": "part.text" },
+      "out": "x" }
+  ]
+}

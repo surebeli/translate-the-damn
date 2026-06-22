@@ -57,6 +57,16 @@ public static class Conformance
             if (Flag(expected, "hasWin")) Check.True((spec.Modifiers & HotkeyParser.MOD_WIN) != 0, $"conformance hotkey [{name}]: Win");
         });
 
+        Check.Vector("cli-output-parse");
+        Each(dir, "cli-output-parse.json", (name, input, expected) =>
+        {
+            var raw = input.GetProperty("raw").GetString()!;
+            var typeField = input.TryGetProperty("jsonlTypePath", out var tp) ? tp.GetString()! : "type";
+            var type = input.GetProperty("jsonlType").GetString()!;
+            var textPath = input.GetProperty("jsonlTextPath").GetString()!;
+            Check.Eq(expected.GetString(), ManifestCliBackend.CollectJsonl(raw, typeField, type, textPath), $"conformance cli-output-parse [{name}]");
+        });
+
         RunConfigDefaults(dir);
         RunBackendRequests(dir);
         await RunCacheScenariosAsync(dir);

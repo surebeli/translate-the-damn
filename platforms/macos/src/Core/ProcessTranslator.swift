@@ -217,6 +217,16 @@ public final class ProcessTranslator: Translator {
             return parseJsonEvent(raw: raw, eventPath: jsonEventPath)
         }
 
+        // stream-json / NDJSON (opencode, mimo, kimi): collect <jsonlTextPath> from lines whose
+        // <jsonlTypePath> (default "type") == <jsonlType>. Falls back to raw if nothing matched.
+        if parseDef?["jsonl"] as? Bool == true {
+            let typeField = parseDef?["jsonlTypePath"] as? String ?? "type"
+            let typeValue = parseDef?["jsonlType"] as? String ?? "text"
+            let textPath = parseDef?["jsonlTextPath"] as? String ?? "text"
+            let collected = BackendManifest.collectJsonl(raw, typeField: typeField, typeValue: typeValue, textPath: textPath)
+            return collected.isEmpty ? raw : collected
+        }
+
         return raw
     }
 

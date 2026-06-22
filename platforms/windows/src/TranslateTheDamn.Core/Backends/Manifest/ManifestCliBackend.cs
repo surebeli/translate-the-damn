@@ -67,21 +67,12 @@ public sealed class ManifestCliBackend : ProcessTranslator
         var raw = AnsiStripper.Strip(r.Stdout).Trim();
         if (raw.Length == 0) return raw;
 
-        // JSONL / stream-json (opencode, kimi): each line is a JSON object; collect every
-        // type==JsonlType object's JsonlTextPath, concatenated. Falls back to raw if nothing matched.
+        // JSONL / stream-json (opencode, mimo, kimi): collect text from lines whose discriminator
+        // field == JsonlType. Falls back to raw if nothing matched.
         if (_def.Parse?.Jsonl == true)
         {
-            var sb = new System.Text.StringBuilder();
-            var type = _def.Parse.JsonlType ?? "text";
-            var textPath = _def.Parse.JsonlTextPath ?? "text";
-            foreach (var line in raw.Split('\n'))
-            {
-                var t = line.Trim();
-                if (t.Length == 0 || (t[0] != '{' && t[0] != '[')) continue;
-                try { using var doc = JsonDocument.Parse(t); CollectJsonlText(doc.RootElement, type, textPath, sb); }
-                catch { /* not a JSON line (chrome) — skip */ }
-            }
-            var collected = sb.ToString().Trim();
+            var collected = CollectJsonl(raw, _def.Parse.JsonlTypePath ?? "type",
+                                         _def.Parse.JsonlType ?? "text", _def.Parse.JsonlTextPath ?? "text");
             return collected.Length > 0 ? collected : raw;
         }
 
@@ -98,22 +89,40 @@ public sealed class ManifestCliBackend : ProcessTranslator
         return raw;
     }
 
-    /// <summary>Recursively collect the text of every object whose <c>type</c> == <paramref name="type"/>,
-    /// read via <paramref name="textPath"/> (handles flat events like opencode and content-part arrays like kimi).</summary>
-    private static void CollectJsonlText(JsonElement el, string type, string textPath, System.Text.StringBuilder sb)
+    /// <summary>Pure stream-json/NDJSON extractor (mirrors macOS BackendManifest.collectJsonl; pinned by
+    /// conformance/cli-output-parse.json): collect every object whose <paramref name="typeField"/> string ==
+    /// <paramref name="type"/>, read <paramref name="textPath"/>, concatenated in order. Returns "" when
+    /// nothing matches (CleanOutput then falls back to raw). Non-JSON lines are skipped.</summary>
+    public static string CollectJsonl(string raw, string typeField, string type, string textPath)
+    {
+        var sb = new System.Text.StringBuilder();
+        foreach (var line in raw.Split('\n'))
+        {
+            var t = line.Trim();
+            if (t.Length == 0 || (t[0] != '{' && t[0] != '[')) continue;
+            try { using var doc = JsonDocument.Parse(t); CollectJsonlText(doc.RootElement, typeField, type, textPath, sb); }
+            catch { /* not a JSON line (chrome) — skip */ }
+        }
+        return sb.ToString().Trim();
+    }
+
+    /// <summary>Recursively collect the text of every object whose <paramref name="typeField"/> ==
+    /// <paramref name="type"/>, read via <paramref name="textPath"/> (flat events like opencode/mimo, or
+    /// kimi's role==assistant -> content).</summary>
+    private static void CollectJsonlText(JsonElement el, string typeField, string type, string textPath, System.Text.StringBuilder sb)
     {
         switch (el.ValueKind)
         {
             case JsonValueKind.Object:
-                if (el.TryGetProperty("type", out var tEl) && tEl.ValueKind == JsonValueKind.String && tEl.GetString() == type)
+                if (el.TryGetProperty(typeField, out var tEl) && tEl.ValueKind == JsonValueKind.String && tEl.GetString() == type)
                 {
                     var txt = ManifestEngine.Eval(el, textPath);
                     if (!string.IsNullOrEmpty(txt)) sb.Append(txt);
                 }
-                foreach (var p in el.EnumerateObject()) CollectJsonlText(p.Value, type, textPath, sb);
+                foreach (var p in el.EnumerateObject()) CollectJsonlText(p.Value, typeField, type, textPath, sb);
                 break;
             case JsonValueKind.Array:
-                foreach (var item in el.EnumerateArray()) CollectJsonlText(item, type, textPath, sb);
+                foreach (var item in el.EnumerateArray()) CollectJsonlText(item, typeField, type, textPath, sb);
                 break;
         }
     }
