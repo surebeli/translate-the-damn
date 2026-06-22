@@ -4,8 +4,17 @@ import Foundation
 /// when the file is absent the app writes this exact shape and thereafter the settings UI only
 /// reads/writes the file.
 public enum ConfigService {
-    /// The hardcoded default prompt template (spec §5).
+    /// The hardcoded default prompt template (spec §5). `{target}` is resolved once (in the app /
+    /// TranslatorRegistry caller) from `translation.targetLanguage`; `{content}` per request.
     public static let defaultPromptTemplate =
+        "源语言为英文时,专业术语/技术名词保留英文,其余描述性内容译为{target}。\n" +
+        "源语言为非英文时,全部译为{target}(含代码注释、变量名解释)。\n" +
+        "代码块、命令行、配置示例保持原样,仅翻译其中说明性文字。只输出译文,不要任何前后缀。\n\n" +
+        "内容:\n{content}"
+
+    /// The pre-`{target}` default. Existing configs still carrying it are auto-upgraded on load so the
+    /// unified target language takes effect. Mirrors the Windows `DefaultConfig.OldPromptTemplate`.
+    public static let oldPromptTemplate =
         "源语言为英文时,专业术语/技术名词保留英文,其余描述性内容译为简体中文。\n" +
         "源语言为非英文时,全部译为简体中文(含代码注释、变量名解释)。\n" +
         "代码块、命令行、配置示例保持原样,仅翻译其中说明性文字。只输出译文,不要任何前后缀。\n\n" +
@@ -34,6 +43,7 @@ public enum ConfigService {
                 position: "top-center"
             ),
             translation: TranslationConfig(
+                targetLanguage: "简体中文",
                 targetLanguageDefault: "zh-CN",
                 maxChars: 8000,
                 promptTemplate: defaultPromptTemplate
@@ -114,6 +124,11 @@ public enum ConfigService {
         var translation = loaded.translation
         if translation.promptTemplate.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             translation.promptTemplate = defaultPromptTemplate
+        } else if translation.promptTemplate == oldPromptTemplate {
+            translation.promptTemplate = defaultPromptTemplate   // auto-upgrade the pre-{target} default
+        }
+        if translation.targetLanguage.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            translation.targetLanguage = "简体中文"
         }
         return AppConfig(
             version: loaded.version,

@@ -1,5 +1,25 @@
 # macOS handoff — generic HTTP backend (`{prompt}`) + custom provider + protocol select
 
+## STATUS (2026-06-22): vector-gated Core MIRRORED on this branch (CI validates); macOS app/UI finish remains
+
+**DONE here (turns the shared vectors GREEN on macOS `swift test` — the Law-2 contract):**
+- `PromptBuilder.withTarget`; `TranslationConfig.targetLanguage` (+default 简体中文); `ConfigService` default template now uses `{target}` + auto-upgrades the old default + ensures `targetLanguage` → satisfies `config-defaults`.
+- `HttpBackend.buildCall(…, promptTemplate:)` adds the `{prompt}` var, prefers `config.endpoint`, and `chatPath`-normalizes a base endpoint; `BackendRequestsTests` threads `promptTemplate` → satisfies the new `backend-requests` cases (openai-http/anthropic-http/base-normalization).
+- `CredentialClassifier.swift` (pure, mirrors Windows) + `CredentialDiscoveryTests.swift` → satisfies `credential-discovery`.
+- `BackendConfig.protocol` field (Law-4 schema sync; backticked; JSON key "protocol").
+
+**REMAINING (macOS-native, needs a Mac to build/verify — NOT vector-gated, so CI stays green but the app is incomplete; PARITY rows stay macOS ⬜ until done):**
+1. **Runtime HTTP for openai-http/anthropic-http + custom ids.** `HttpTranslator.init` must take a `promptTemplate` and pass it to `buildCall`; and BOTH `buildCall` (via `id`) and `HttpTranslator.parseResponse` look up the def by `id` — for a CUSTOM id absent from the manifest they must resolve the def by `config.protocol` (openai→openai-http, anthropic→anthropic-http). Add a shared `resolveDef(id, config)` helper. Without this, custom providers translate with an empty prompt / fail parse.
+2. **Target resolution at the call site.** Whoever builds translators must pass `PromptBuilder.withTarget(config.translation.promptTemplate, config.translation.targetLanguage)` (the registry param), as Windows does in `TranslatorRegistry.Build`.
+3. **`TranslatorRegistry.translator(for:)` protocol fallback** (mirror Windows) so a custom id resolves a template by `config.protocol`.
+4. **Live `/models` enumeration** (port `ModelEnumerator`: multi-candidate path + multi-shape parse) for the model dropdown.
+5. **Credential scanner** (`CredentialDiscovery.Scan`: env + opencode `auth.json`/`opencode.json` + codex `config.toml`; cc-switch deferred) + the consent-checklist UI.
+6. **Settings UI (SwiftUI):** global 目标语言 picker; custom-provider add/delete + OpenAI/Anthropic protocol selector; 检测已有密钥 button; CLI/API dropdown tags + reorder; hide per-backend target for generic API.
+
+Original handoff detail below.
+
+
+
 **Why:** Windows landed `openai-http` / `anthropic-http` (spec/backends.json) + the `{prompt}` body var +
 the custom-provider protocol fallback. The shared vector `conformance/backend-requests.json` gained two
 cases (`openai-http /chat/completions`, `anthropic-http /messages`). **These run on the macOS `swift test`

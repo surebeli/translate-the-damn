@@ -76,11 +76,16 @@ public struct PopupConfig: Codable {
 }
 
 public struct TranslationConfig: Codable {
-    public var targetLanguageDefault: String
+    /// Unified target language (display name, e.g. "简体中文"/"English") injected into the prompt via the
+    /// `{target}` placeholder for ALL prompt-driven backends (CLI + openai-http/anthropic-http). google-v2/
+    /// doubao use their own Target/TargetLanguage code fields instead. Mirrors Windows TranslationConfig.
+    public var targetLanguage: String
+    public var targetLanguageDefault: String   // legacy; unused by the prompt path
     public var maxChars: Int
     public var promptTemplate: String
 
-    public init(targetLanguageDefault: String = "zh-CN", maxChars: Int = 8000, promptTemplate: String = "") {
+    public init(targetLanguage: String = "简体中文", targetLanguageDefault: String = "zh-CN", maxChars: Int = 8000, promptTemplate: String = "") {
+        self.targetLanguage = targetLanguage
         self.targetLanguageDefault = targetLanguageDefault
         self.maxChars = maxChars
         self.promptTemplate = promptTemplate
@@ -104,6 +109,10 @@ public struct BackendConfig: Codable {
     // --- http ---
     public var endpoint: String?
     public var apiKey: String?
+    /// Custom-provider protocol selector ("openai" -> /chat/completions, "anthropic" -> /messages) for an
+    /// id absent from the manifest. Null/empty for built-ins. `protocol` is a Swift keyword -> backticked;
+    /// the JSON key is "protocol", matching Windows BackendConfig.Protocol (Law-4 schema sync).
+    public var `protocol`: String?
     public var target: String?              // google-v2
     public var source: String?              // google-v2
     public var format: String?              // google-v2
@@ -120,6 +129,7 @@ public struct BackendConfig: Codable {
         timeoutSec: Int? = nil,
         endpoint: String? = nil,
         apiKey: String? = nil,
+        protocol protocolValue: String? = nil,
         target: String? = nil,
         source: String? = nil,
         format: String? = nil,
@@ -135,6 +145,7 @@ public struct BackendConfig: Codable {
         self.timeoutSec = timeoutSec
         self.endpoint = endpoint
         self.apiKey = apiKey
+        self.`protocol` = protocolValue
         self.target = target
         self.source = source
         self.format = format

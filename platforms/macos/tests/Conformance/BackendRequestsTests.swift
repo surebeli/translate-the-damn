@@ -22,8 +22,9 @@ final class BackendRequestsTests: XCTestCase {
             // Decode the per-case config slice into the typed BackendTestConfig.
             let configData = try JSONSerialization.data(withJSONObject: configDict)
             let config = try JSONDecoder().decode(BackendTestConfig.self, from: configData)
+            let promptTemplate = (c["promptTemplate"] as? String) ?? ""
 
-            let call = HttpBackend.buildCall(backend: backend, config: config, text: text)
+            let call = HttpBackend.buildCall(backend: backend, config: config, text: text, promptTemplate: promptTemplate)
 
             if let m = expect["method"] as? String {
                 XCTAssertEqual(call.method, m, "backend-req [\(name)] method")

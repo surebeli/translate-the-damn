@@ -59,13 +59,16 @@ public struct BackendTestConfig: Codable {
 /// from config. `omitWhenEmpty` keys with empty values are dropped. Config values that are nil or
 /// empty fall back to manifest `defaults`.
 public enum HttpBackend {
-    public static func buildCall(backend: String, config: BackendTestConfig, text: String) -> HttpCall {
+    public static func buildCall(backend: String, config: BackendTestConfig, text: String, promptTemplate: String = "") -> HttpCall {
         guard let def = BackendManifest.backendDef(backend) else {
             return HttpCall()
         }
 
         let vars: [String: String] = [
             "text": text,
+            // {prompt} = the full built translation prompt (rules + text), as the CLI backends send.
+            // Distinct from PromptBuilder's own {content} placeholder. Unused by google-v2/doubao.
+            "prompt": PromptBuilder.build(template: promptTemplate, content: text),
             "apiKey": config.apiKey ?? "",
             "model": pick(cfg: config.model, key: "model", def: def),
             "target": pick(cfg: config.target, key: "target", def: def),
@@ -76,7 +79,14 @@ public enum HttpBackend {
         ]
 
         let method = def["method"] as? String ?? "POST"
-        let url = def["endpoint"] as? String ?? ""
+        // Prefer the config endpoint over the manifest's (empty for openai-http/anthropic-http); then
+        // chatPath-normalize a BASE endpoint (e.g. .../v1 -> .../v1/chat/completions), matching the
+        // @ai-sdk/openai-compatible convention. Mirrors Windows ManifestHttpBackend.Endpoint.
+        var url = (config.endpoint?.isEmpty == false) ? config.endpoint! : (def["endpoint"] as? String ?? "")
+        if let chatPath = def["chatPath"] as? String, !chatPath.isEmpty, !url.isEmpty {
+            let trimmed = url.hasSuffix("/") ? String(url.dropLast()) : url
+            if !trimmed.lowercased().hasSuffix(chatPath.lowercased()) { url = trimmed + chatPath }
+        }
 
         var headers: [String: String] = [:]
         if let manifestHeaders = def["headers"] as? [String: String] {
