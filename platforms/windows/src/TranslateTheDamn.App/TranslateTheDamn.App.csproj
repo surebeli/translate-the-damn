@@ -17,10 +17,10 @@
     <ApplicationIcon>app.ico</ApplicationIcon>
 
     <!-- Single source of truth for the version (shown in the exe properties + settings caption). -->
-    <Version>0.2.0</Version>
-    <FileVersion>0.2.0.0</FileVersion>
-    <AssemblyVersion>0.2.0.0</AssemblyVersion>
-    <InformationalVersion>0.2.0</InformationalVersion>
+    <Version>0.3.0</Version>
+    <FileVersion>0.3.0.0</FileVersion>
+    <AssemblyVersion>0.3.0.0</AssemblyVersion>
+    <InformationalVersion>0.3.0</InformationalVersion>
     <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
     <Product>translate-the-damn</Product>
     <AssemblyTitle>translate-the-damn — 全局一键翻译</AssemblyTitle>
