@@ -86,10 +86,12 @@ public enum HotkeyParser {
             return HotkeyResult()
         }
 
+        // Display order Ctrl, Shift, Alt, Win (Shift before Alt) so a "Shift+Alt+…" hotkey reads the same
+        // everywhere. Pinned in conformance/hotkey-parser.json; the Windows HotkeyParser mirrors this order.
         var mods: [String] = []
         if hasControl { mods.append("Ctrl") }
-        if hasAlt     { mods.append("Alt") }
         if hasShift   { mods.append("Shift") }
+        if hasAlt     { mods.append("Alt") }
         if hasWin     { mods.append("Win") }
 
         let display = (mods + [displayKey]).joined(separator: "+")

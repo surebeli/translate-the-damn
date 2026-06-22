@@ -132,6 +132,11 @@ internal static class ScreenshotHarness
         var svc = new ConfigService(dir);
         svc.Save(cfg);
         var win = new SettingsWindow(svc);
+        // Size the shot to match the macOS settings window: 573 DIP wide = mac's 1146px @2x logical width
+        // (the script upscales the 150%-DPI capture to 1146px so the README pair lines up), and as tall as
+        // the work area allows so the full form shows like mac. Shot-only; the real app window is unchanged.
+        win.Width = 573;
+        win.Height = SystemParameters.WorkArea.Height;
 
         // Doctor lamp states (claude = CLI, so the doctor row is visible). Detail text matches macOS.
         switch (kind)

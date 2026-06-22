@@ -80,9 +80,26 @@ foreach ($kind in $kinds) {
         $cropRect = [System.Drawing.Rectangle]::Intersect($cropRect, (New-Object System.Drawing.Rectangle(0, 0, $full.Width, $full.Height)))
         $crop = $full.Clone($cropRect, $full.PixelFormat)
         $dest = Join-Path $Out "$kind-windows.png"
-        $crop.Save($dest, [System.Drawing.Imaging.ImageFormat]::Png)
+        if ($kind -like 'settings-*') {
+          # Align with the macOS settings shots (all 1146px wide). The window is rendered at mac's logical
+          # width (573 DIP); upscale the 150%-DPI capture to 1146px (≈1.33x) so content scale matches mac
+          # and the README pair lines up. HighQualityBicubic keeps text legible.
+          $tw = 1146
+          $th = [int][Math]::Round($crop.Height * ($tw / [double]$crop.Width))
+          $scaled = New-Object System.Drawing.Bitmap($tw, $th)
+          $sg = [System.Drawing.Graphics]::FromImage($scaled)
+          $sg.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
+          $sg.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality
+          $sg.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::HighQuality
+          $sg.DrawImage($crop, 0, 0, $tw, $th)
+          $scaled.Save($dest, [System.Drawing.Imaging.ImageFormat]::Png)
+          $sg.Dispose(); $scaled.Dispose()
+          Write-Host ("captured {0,-22} {1}x{2} -> {3}x{4} (aligned to mac width)" -f $kind, $w, $ht, $tw, $th)
+        } else {
+          $crop.Save($dest, [System.Drawing.Imaging.ImageFormat]::Png)
+          Write-Host ("captured {0,-22} {1}x{2} @ {3},{4}" -f $kind, $w, $ht, $r.Left, $r.Top)
+        }
         $fg.Dispose(); $full.Dispose(); $crop.Dispose()
-        Write-Host ("captured {0,-22} {1}x{2} @ {3},{4}" -f $kind, $w, $ht, $r.Left, $r.Top)
       } else { Write-Host ("bad rect for {0}: {1}x{2}" -f $kind, $w, $ht) }
     } catch { Write-Host ("capture error for {0}: {1}" -f $kind, $_.Exception.Message) }
   } else { Write-Host "no hwnd for $kind" }

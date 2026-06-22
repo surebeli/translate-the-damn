@@ -3,6 +3,7 @@
   "doc": "Parse a hotkey string into RegisterHotKey modifier flags + a virtual key. out asserts a subset of fields; virtualKey is the Win32 VK code (e.g. 'T'=84, F2=113).",
   "cases": [
     { "name": "ctrl alt t", "in": { "text": "Ctrl+Alt+T" }, "out": { "isValid": true, "hasControl": true, "hasAlt": true, "virtualKey": 84, "display": "Ctrl+Alt+T" } },
+    { "name": "display order is ctrl shift alt win (alt+shift -> shift+alt)", "in": { "text": "Alt+Shift+C" }, "out": { "isValid": true, "hasAlt": true, "hasShift": true, "virtualKey": 67, "display": "Shift+Alt+C" } },
     { "name": "ctrl f2 virtual key", "in": { "text": "Ctrl+F2" }, "out": { "isValid": true, "virtualKey": 113 } },
     { "name": "win shift space", "in": { "text": "Win+Shift+Space" }, "out": { "isValid": true, "hasWin": true, "hasShift": true, "virtualKey": 32 } },
     { "name": "bare key without modifier is invalid", "in": { "text": "T" }, "out": { "isValid": false } },

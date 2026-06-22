@@ -77,9 +77,12 @@ public static class HotkeyParser
     private static string BuildDisplay(uint mods, string key)
     {
         var sb = new StringBuilder();
+        // Display order Ctrl, Shift, Alt, Win (Shift before Alt) so the default "Shift+Alt+C" reads the
+        // same everywhere — input box, example hint, and this normalized status line. Pinned in
+        // conformance/hotkey-parser.json; the macOS HotkeyParser mirrors this order.
         if ((mods & MOD_CONTROL) != 0) sb.Append("Ctrl+");
-        if ((mods & MOD_ALT) != 0) sb.Append("Alt+");
         if ((mods & MOD_SHIFT) != 0) sb.Append("Shift+");
+        if ((mods & MOD_ALT) != 0) sb.Append("Alt+");
         if ((mods & MOD_WIN) != 0) sb.Append("Win+");
         sb.Append(key.Length == 1 ? char.ToUpperInvariant(key[0]).ToString() : Capitalize(key));
         return sb.ToString();
