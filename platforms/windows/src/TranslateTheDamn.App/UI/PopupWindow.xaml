@@ -11,12 +11,16 @@
     <!-- Exactly two fixed sizes (spec §8): normal 440x360, large = 2x width x 1.5x height. The window
          snaps to one of the two in code (ApplySize); the source is capped at ~2 lines and the
          translation scrolls inside, so different content lengths never produce a third size. -->
-    <Border x:Name="Root" CornerRadius="12" Background="#E61C1C1C" Padding="16" Margin="10"
-            BorderBrush="#33FFFFFF" BorderThickness="1"
+    <!-- Single rounded border. The card fills the whole window (Margin=0), so the acrylic frost shows
+         only THROUGH the translucent card — there is no transparent margin for the acrylic to fill, hence
+         no separate frosted ring / second rounded edge. CornerRadius matches the DWM window rounding
+         (DWMWCP_ROUND) so the card edge and the window edge coincide. Card is ~50% opaque so the frost
+         reads through it; the acrylic tint supplies the dark base for text readability.
+         (No WPF drop shadow here: it would require a transparent margin, which is exactly what produced
+         the second edge the popup used to show.) -->
+    <Border x:Name="Root" CornerRadius="8" Background="#801C1C1C" Padding="16" Margin="0"
+            BorderBrush="#40FFFFFF" BorderThickness="1"
             MouseLeftButtonDown="Root_MouseLeftButtonDown">
-        <Border.Effect>
-            <DropShadowEffect BlurRadius="20" ShadowDepth="0" Opacity="0.55" Color="Black"/>
-        </Border.Effect>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>   <!-- header -->

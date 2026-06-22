@@ -14,8 +14,10 @@ internal static class WindowEffects
         SetWindowLongPtr(hwnd, GWL_EXSTYLE, new IntPtr(ex));
     }
 
-    /// <summary>Acrylic (frosted-glass) blur behind a layered window. Tint is 0xAABBGGRR.</summary>
-    public static void EnableAcrylic(IntPtr hwnd, uint tintAbgr = 0xCC1A1A1A)
+    /// <summary>Acrylic (frosted-glass) blur behind a layered window. Tint is 0xAABBGGRR. The alpha
+    /// (high byte) sets tint strength: LOWER alpha = more of the blurred backdrop shows = stronger frost.
+    /// 0x88 (~53%) lets the blur read clearly while the translucent card + this tint keep text legible.</summary>
+    public static void EnableAcrylic(IntPtr hwnd, uint tintAbgr = 0x88161616)
     {
         var accent = new AccentPolicy
         {

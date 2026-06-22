@@ -22,6 +22,19 @@ public partial class App : System.Windows.Application
             return;
         }
 
+        // Dev affordance for UI/visual walkthrough: show the popup with sample content and stay alive
+        // (no tray, no backend). TranslateTheDamn.exe --demo-popup [error]
+        if (e.Args.Length >= 1 && e.Args[0] == "--demo-popup")
+        {
+            var cfg = new Core.Config.PopupConfig { Style = "acrylic", AutoDismissSeconds = 0, KeepOnHover = true, Position = "top-center" };
+            var popup = new UI.PopupWindow(cfg);
+            const string src = "Hello world — this is a sample source sentence used to inspect the popup chrome: rounded corners, the single border, and the frosted-glass backdrop.";
+            const string zh = "你好世界——这是一段用于检查浮窗外观的示例文本:圆角、单层边框,以及毛玻璃背景质感。译文长度适中,方便观察排版与对比度。";
+            if (e.Args.Length >= 2 && e.Args[1] == "error") popup.ShowError(src, "示例错误:后端不可用(演示用)", "claude · 演示");
+            else popup.ShowResult(src, zh, "claude · 演示");
+            return;
+        }
+
         try
         {
             _controller = new AppController();
