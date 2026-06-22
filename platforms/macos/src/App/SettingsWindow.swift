@@ -87,10 +87,31 @@ final class SettingsViewModel: ObservableObject {
     @Published var doctorRunning: Bool = false
     private let doctor = DoctorService()
 
+    /// Display order (mirrors Windows OrderedBackendIds): doubao(API), google(API), other API, CLI, then 暂不支持(agy).
     var backendIds: [String] {
-        let builtin = backendOrder.filter { config.backends[$0] != nil }
-        let custom = config.backends.keys.filter { !backendOrder.contains($0) }.sorted()
-        return builtin + custom
+        func rank(_ id: String) -> Int {
+            if id == "agy" { return 4 }                                  // 暂不支持 last
+            if id == "doubao" { return 0 }
+            if id == "google-v2" { return 1 }
+            return (config.backends[id]?.isHttp ?? false) ? 2 : 3        // other API, then CLI
+        }
+        func orderIdx(_ id: String) -> Int { backendOrder.firstIndex(of: id) ?? Int.max }
+        return config.backends.keys.sorted { a, b in
+            let (ra, rb) = (rank(a), rank(b))
+            if ra != rb { return ra < rb }
+            let (oa, ob) = (orderIdx(a), orderIdx(b))
+            if oa != ob { return oa < ob }
+            return a < b
+        }
+    }
+
+    /// Dropdown label: backend name (without the cosmetic "-http" suffix) + a CLI/API tag (+ agy's note).
+    /// Mirrors Windows BackendDisplay.
+    func backendDisplay(_ id: String) -> String {
+        let kind = (config.backends[id]?.isHttp ?? false) ? "API" : "CLI"
+        let note = id == "agy" ? " · 暂不支持" : ""
+        let name = id.hasSuffix("-http") ? String(id.dropLast(5)) : id
+        return "\(name)  ·  \(kind)\(note)"
     }
 
     /// A user-added generic HTTP provider (id not in the manifest/backendOrder): protocol is

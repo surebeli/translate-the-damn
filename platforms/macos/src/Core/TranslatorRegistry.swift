@@ -13,8 +13,22 @@ public final class TranslatorRegistry {
         let key = backend.lowercased()
         if let existing = map[key] { return existing }
 
-        guard let def = BackendManifest.backendDef(backend) else { return nil }
-        let kind = def["kind"] as? String ?? ""
+        // Built-in backends resolve by id. A CUSTOM provider (id absent from the manifest) resolves a
+        // generic HTTP template by its declared protocol — so user-typed base_url+key providers work with
+        // no per-vendor manifest entry and no switch(id) (Constitution Law 6). Mirrors Windows.
+        var def = BackendManifest.backendDef(backend)
+        var defId = backend
+        if def == nil {
+            let tmplId: String?
+            switch (config.`protocol` ?? "").trimmingCharacters(in: .whitespaces).lowercased() {
+            case "anthropic": tmplId = "anthropic-http"
+            case "openai": tmplId = "openai-http"
+            default: tmplId = nil
+            }
+            if let t = tmplId { def = BackendManifest.backendDef(t); defId = t }
+        }
+        guard let resolvedDef = def else { return nil }
+        let kind = resolvedDef["kind"] as? String ?? ""
 
         let translator: Translator?
 
@@ -22,7 +36,7 @@ public final class TranslatorRegistry {
         case "cli":
             translator = ProcessTranslator(id: backend, config: config, promptTemplate: promptTemplate, runner: runner)
         case "http":
-            translator = HttpTranslator(id: backend, config: config)
+            translator = HttpTranslator(id: backend, config: config, defId: defId, promptTemplate: promptTemplate)
         default:
             translator = nil
         }

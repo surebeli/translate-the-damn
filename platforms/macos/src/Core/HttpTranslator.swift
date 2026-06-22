@@ -2,7 +2,9 @@ import Foundation
 
 public final class HttpTranslator: Translator {
     private let id: String
+    private let defId: String          // manifest def to interpret: = id for built-ins, openai-http/anthropic-http for a custom provider
     private let config: BackendConfig
+    private let promptTemplate: String
 
     private static func session(timeout: Int) -> URLSession {
         let t = max(timeout, 1)
@@ -52,13 +54,15 @@ public final class HttpTranslator: Translator {
         }
     }
 
-    public init(id: String, config: BackendConfig) {
+    public init(id: String, config: BackendConfig, defId: String? = nil, promptTemplate: String = "") {
         self.id = id
+        self.defId = defId ?? id
         self.config = config
+        self.promptTemplate = promptTemplate
     }
 
     public func translate(text: String, model: String) -> TranslationResult {
-        let call = HttpBackend.buildCall(backend: id, config: backendTestConfig, text: text)
+        let call = HttpBackend.buildCall(backend: defId, config: backendTestConfig, text: text, promptTemplate: promptTemplate)
 
         guard !call.url.isEmpty else {
             return .failed(.unknownFail, "后端配置缺少 endpoint。")
@@ -141,7 +145,7 @@ public final class HttpTranslator: Translator {
     }
 
     private func parseResponse(data: Data) -> String? {
-        guard let def = BackendManifest.backendDef(id) else { return nil }
+        guard let def = BackendManifest.backendDef(defId) else { return nil }
         guard let responsePath = def["responsePath"] as? String else { return nil }
         guard let obj = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else { return nil }
         return BackendManifest.eval(root: obj, path: responsePath)

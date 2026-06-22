@@ -81,7 +81,7 @@ struct DSSettingsView: View {
                 get: { vm.selectedBackendId },
                 set: { vm.onBackendChange($0) }
             )) {
-                ForEach(vm.backendIds, id: \.self) { Text($0).tag($0) }
+                ForEach(vm.backendIds, id: \.self) { Text(vm.backendDisplay($0)).tag($0) }
             }
 
             if !vm.authHint.isEmpty {

@@ -188,8 +188,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func buildPipeline(from config: AppConfig, registry: TranslatorRegistry) -> TranslationPipeline {
         let backendId = config.general.activeBackend
+        // Resolve the unified target language ONCE ({target} -> translation.targetLanguage) before the
+        // template reaches the translators — mirrors Windows TranslatorRegistry.Build. Without this the
+        // prompt would contain a literal "{target}".
+        let resolvedTemplate = PromptBuilder.withTarget(config.translation.promptTemplate, config.translation.targetLanguage)
         if let backendConfig = config.backends[backendId],
-           let translator = registry.translator(for: backendId, config: backendConfig, promptTemplate: config.translation.promptTemplate, runner: processRunner) {
+           let translator = registry.translator(for: backendId, config: backendConfig, promptTemplate: resolvedTemplate, runner: processRunner) {
             return TranslationPipeline(backend: backendId, translator: translator)
         }
         return TranslationPipeline(backend: backendId, translator: MissingTranslator(backendId: backendId))
