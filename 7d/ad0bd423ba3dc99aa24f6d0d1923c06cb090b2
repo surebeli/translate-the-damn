@@ -1,0 +1,27 @@
+platforms/macos/src/Core/ConfigService.swift
+  s_aa5b50d395b0a0::t_0da9b1b10ba7eb 11
+  s_aa5b50d395b0a0::t_958967af359d97 7-8,10
+  s_aa5b50d395b0a0::t_4bea67effafdb6 12-16
+docs/PARITY-HANDOFF-macos-http-backend.md
+  s_aa5b50d395b0a0::t_8d2e986fb557b7 3-22
+platforms/macos/tests/Conformance/CredentialDiscoveryTests.swift
+  s_aa5b50d395b0a0::t_b0c359cbb19f1a 1-31
+platforms/macos/src/Core/CredentialClassifier.swift
+  s_aa5b50d395b0a0::t_9492dced57ffa5 1-84
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "7dad0bd423ba3dc99aa24f6d0d1923c06cb090b2",
+  "prompts": {},
+  "sessions": {
+    "s_aa5b50d395b0a0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "fa525b59-03ad-4f0e-bc1b-d5b0b5eca96f",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
