@@ -1,0 +1,135 @@
+docs/PARITY-HANDOFF-macos-http-backend.md
+  s_aa5b50d395b0a0::t_e2849b63fb8945 57-67,69
+  s_aa5b50d395b0a0::t_a4ecbc709c84e9 1-44
+  s_aa5b50d395b0a0::t_acd0040a6d4569 45-56,68
+platforms/windows/src/TranslateTheDamn.Core/Backends/Manifest/ManifestCliBackend.cs
+  s_aa5b50d395b0a0::t_8eb80eee178ec4 52-53
+  s_aa5b50d395b0a0::t_14df04ec136484 35-37,50-51
+.hopper/RESEARCH-model-vendor-doctor-2026-06-22.md
+  s_aa5b50d395b0a0::t_2e38b2d8cdddc5 1-172
+platforms/windows/src/TranslateTheDamn.Core/Backends/ProbeClassifier.cs
+  s_aa5b50d395b0a0::t_6e7cc644eddde1 24,27-34
+  s_aa5b50d395b0a0::t_3ab4f7baab1954 1-23,25-26,35-61
+platforms/windows/tests/TranslateTheDamn.Tests/Program.cs
+  s_aa5b50d395b0a0::t_b4108f9719e469 10
+  s_aa5b50d395b0a0::t_ca87f01b5e7d07 11-12
+  s_aa5b50d395b0a0::t_89b1faf331b969 15-19,24-25
+  s_aa5b50d395b0a0::t_0ff2eaaeef8bf9 13
+  s_aa5b50d395b0a0::t_aee278c51486c8 14
+  s_aa5b50d395b0a0::t_830e1ae181f7f2 52
+  s_aa5b50d395b0a0::t_e44e8012dbd8cc 73
+platforms/windows/src/TranslateTheDamn.Core/Config/DefaultConfig.cs
+  s_aa5b50d395b0a0::t_5798a1644be8d8 10
+  s_aa5b50d395b0a0::t_2f64963debead1 11
+  s_aa5b50d395b0a0::t_971d49e48aba63 17
+  s_aa5b50d395b0a0::t_aec478a7e389a5 18-20
+  s_aa5b50d395b0a0::t_03a65decf52210 13-16
+platforms/windows/src/TranslateTheDamn.Core/Backends/DoctorService.cs
+  s_aa5b50d395b0a0::t_f9332e73ca087d 100-103,106-111,113-115,117-123,125,129,131-134,136
+  s_aa5b50d395b0a0::t_fbf29852ea7e22 68-71
+  s_aa5b50d395b0a0::t_c1700232e9f2c6 86-87
+  s_aa5b50d395b0a0::t_8ff6b94f9126f5 89
+  s_aa5b50d395b0a0::t_870f5ec6873fba 1-48,51-67,72-85,88,90-93,96-99,104-105,112,116,135,137-146
+  s_aa5b50d395b0a0::t_221577b5cf4838 124,126,130
+  s_aa5b50d395b0a0::t_bcd58bba47b1b0 94-95
+  s_aa5b50d395b0a0::t_06f2dab4039896 49-50
+  s_aa5b50d395b0a0::t_1345f679382055 127-128
+conformance/doctor-classify.json
+  s_aa5b50d395b0a0::t_b2df215d405cbc 1-10,14-16
+  s_aa5b50d395b0a0::t_ac023b1af43d42 12-13
+  s_aa5b50d395b0a0::t_60563f046aebd5 11
+platforms/windows/src/TranslateTheDamn.App/UI/SettingsWindow.xaml.cs
+  s_aa5b50d395b0a0::t_ffa5e3a31f4ae0 204-211,222-223,225,228-230,234,317,342,348,361,367,384,401,414
+  s_aa5b50d395b0a0::t_443a9f2173cbd9 74-77
+  s_aa5b50d395b0a0::t_40b4e25f1cee8b 140
+  s_aa5b50d395b0a0::t_1e24625d974618 156-160,163-173,175,180
+  s_aa5b50d395b0a0::t_d3207611a164ea 80,82,86-87
+  s_aa5b50d395b0a0::t_20589dbaf4f16f 98-100,108,116-134
+  s_aa5b50d395b0a0::t_aeac3227bb3dc4 16,22-23,46-53,373
+  s_aa5b50d395b0a0::t_d74f9c20b2f56a 78-79,83
+  s_aa5b50d395b0a0::t_347a330f92c7e5 1,54
+  s_aa5b50d395b0a0::t_2f6b0383108196 95-97,101-107,109-115,135
+  s_aa5b50d395b0a0::t_aa610fcee12e46 92-94
+  s_aa5b50d395b0a0::t_f23fdc6a2ee284 7-8
+  s_aa5b50d395b0a0::t_e83c3c018a5b38 150-151,185-187,194-197
+  s_aa5b50d395b0a0::t_543b6b76025e3b 198-203,212-221,224,226-227,231-233,235,248-249,253,308,322,335,339,345,352,366,385,389,392,396,398,400,404,420,428
+spec/backends.json
+  s_aa5b50d395b0a0::t_87acf217525966 82,97,110,125,137
+  s_aa5b50d395b0a0::t_8bef57bae482d4 13
+  s_aa5b50d395b0a0::t_e782067fdf66b0 16,24-25,28,34-37,41,47,52,56
+  s_aa5b50d395b0a0::t_f53c31d9ff2782 10,12
+conformance/credential-discovery.json
+  s_aa5b50d395b0a0::t_9bbafb1fb2cada 1-16
+.hopper/RESEARCH-meta-cli-vs-vendor-2026-06-22.md
+  s_aa5b50d395b0a0::t_6bcd7cb32a670d 1-112
+conformance/effort-tiers.json
+  s_aa5b50d395b0a0::t_1e07ac3a481800 8-11
+  s_aa5b50d395b0a0::t_b8faec13984647 1-7,12-13
+.hopper/RESEARCH-new-vendors-2026-06-22.md
+  s_aa5b50d395b0a0::t_df6c93a6a01ec0 1-192
+platforms/windows/src/TranslateTheDamn.App/UI/CredentialImportDialog.cs
+  s_aa5b50d395b0a0::t_c7a31c3c5bedf0 1-68
+platforms/windows/tests/TranslateTheDamn.Tests/Conformance.cs
+  s_aa5b50d395b0a0::t_f2e7c629cacbe2 86-87
+  s_aa5b50d395b0a0::t_51658de3a01138 88
+  s_aa5b50d395b0a0::t_bc2b32ccfe6099 89-111,126-128,136,227-229,236,240
+  s_aa5b50d395b0a0::t_05384bb453ee18 4,60-76,79-85,117-118,122,142,223,241-242
+  s_aa5b50d395b0a0::t_abc5674dcdad46 59
+  s_aa5b50d395b0a0::t_e40b6c4e2bbefb 77-78
+platforms/windows/src/TranslateTheDamn.Core/Backends/ModelEnumerator.cs
+  s_aa5b50d395b0a0::t_2051b724fed340 3-18,21-23,29-62,157
+  s_aa5b50d395b0a0::t_8435d499de04bc 1-2
+  s_aa5b50d395b0a0::t_db4e486a22fab4 97-101,107-122,126-128,133-144,148-152
+  s_aa5b50d395b0a0::t_4d0657401a4a03 129
+  s_aa5b50d395b0a0::t_3260c1ba1aa55a 70-72,74-75,77-87,89,91,94-96,102,104-106,123
+  s_aa5b50d395b0a0::t_06efe29ae9c52a 63-69,73,76,88,90,92-93,103,124-125,130-132,145-147,153-156
+  s_aa5b50d395b0a0::t_205963860c79f4 19-20,24-28
+conformance/doctor-probe.json
+  s_aa5b50d395b0a0::t_1f42a8858a3a71 8-11
+  s_aa5b50d395b0a0::t_d51471c9adf266 1-4,7,12-13
+  s_aa5b50d395b0a0::t_e9d7e0669a3186 5-6
+docs/PARITY-HANDOFF-macos-effort-doctor.md
+  s_aa5b50d395b0a0::t_54bc3b16ffa219 1-78
+docs/superpowers/specs/2026-06-22-model-vendor-doctor-design.md
+  s_aa5b50d395b0a0::t_daf73ff1593fc4 1-132
+docs/superpowers/specs/2026-06-22-http-backend-custom-provider-autodiscovery.md
+  s_aa5b50d395b0a0::t_83400e933e0b1f 103-122
+  s_aa5b50d395b0a0::t_a1c993317d8439 1-87,89-102
+  s_aa5b50d395b0a0::t_d828f9233e1238 88
+platforms/windows/src/TranslateTheDamn.Core/Backends/Manifest/ManifestHttpBackend.cs
+  s_aa5b50d395b0a0::t_3399ffcfbd474d 22
+  s_aa5b50d395b0a0::t_eebee5772a5666 3
+  s_aa5b50d395b0a0::t_194ea7c797c74f 16,18
+docs/REQUIREMENTS-CHANGELOG.md
+  s_aa5b50d395b0a0::t_fe127bde085c9f 91-98
+  s_aa5b50d395b0a0::t_499d955c2c9f80 30-39
+  s_aa5b50d395b0a0::t_5a1c94541d9305 40-47
+  s_aa5b50d395b0a0::t_3e9894f0ca83c5 57-68
+  s_aa5b50d395b0a0::t_9bf6c78b394600 73-88
+  s_aa5b50d395b0a0::t_73498ff5f2adff 29
+  s_aa5b50d395b0a0::t_4439bc3efec32b 48-56
+  s_aa5b50d395b0a0::t_7fa58b76c59997 1-28,69-72,89-90
+platforms/windows/src/TranslateTheDamn.Core/Backends/TranslatorRegistry.cs
+  s_aa5b50d395b0a0::t_f49578913a9935 3
+platforms/windows/src/TranslateTheDamn.App/UI/InputBox.cs
+  s_aa5b50d395b0a0::t_1b08499fb79c8e 14-57
+  s_aa5b50d395b0a0::t_6081b6e875ce18 1-13
+platforms/windows/src/TranslateTheDamn.Core/Config/CredentialDiscovery.cs
+  s_aa5b50d395b0a0::t_bb2cf5f781dd6d 1-236
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "ff341d2bef271741a3e0c6fa94e19a7176d0ba13",
+  "prompts": {},
+  "sessions": {
+    "s_aa5b50d395b0a0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "fa525b59-03ad-4f0e-bc1b-d5b0b5eca96f",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
