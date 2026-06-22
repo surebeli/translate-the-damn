@@ -162,14 +162,26 @@ public enum ConfigService {
         if translation.targetLanguage.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             translation.targetLanguage = "简体中文"
         }
+        // Merge in backends introduced AFTER this config file was written (e.g. the built-in API providers
+        // deepseek-http / mimo-http / kimi-http) WITHOUT overwriting the user's existing per-backend
+        // settings (API keys, chosen models). Mirrors Windows ConfigService.EnsureDefaults (TryAdd):
+        // start from the loaded backends and add only keys that aren't already present. An empty loaded
+        // set therefore takes every default.
+        var backends = loaded.backends
+        for (key, value) in defaults.backends where backends[key] == nil {
+            backends[key] = value
+        }
         return AppConfig(
             version: loaded.version,
             general: loaded.general,
             hotkey: loaded.hotkey,
             popup: loaded.popup,
             translation: translation,
-            backends: loaded.backends.isEmpty ? defaults.backends : loaded.backends,
-            modelCatalog: loaded.modelCatalog.isEmpty ? defaults.modelCatalog : loaded.modelCatalog
+            backends: backends,
+            // The model catalog is a built-in (materialized) list, NOT user data — always refresh it from
+            // defaults so new models / new backends reach existing configs (mirrors Windows). The user's
+            // chosen model (backends.<id>.model) is preserved by the merge above.
+            modelCatalog: defaults.modelCatalog
         )
     }
 
