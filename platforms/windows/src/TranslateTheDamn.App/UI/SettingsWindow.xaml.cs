@@ -56,6 +56,9 @@ public partial class SettingsWindow : Window
     {
         ChkListen.IsChecked = _config.General.ListenClipboard;
         TxtHotkey.Text = _config.Hotkey.Translate;
+        // Derive the example from the actual default so it never drifts; the occupied-key note is shown
+        // only on the live status line (LblHotkeyStatus), so it isn't repeated here.
+        LblHotkeyExample.Text = $"例:{HotkeyConfig.DefaultTranslate}。按下热键翻译当前剪贴板内容。";
         TxtHotkey.TextChanged += (_, _) => ValidateHotkey();
         ValidateHotkey();
 

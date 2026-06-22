@@ -63,7 +63,10 @@
                             <TextBox x:Name="TxtHotkey" Grid.Column="1" Height="28" VerticalContentAlignment="Center"/>
                         </Grid>
                         <TextBlock x:Name="LblHotkeyStatus" Style="{StaticResource Hint}" Margin="0,8,0,2" Text=""/>
-                        <TextBlock Style="{StaticResource Hint}" Text="例:Ctrl+Alt+T。按下热键时翻译当前剪贴板内容。注册失败说明热键被占用。"/>
+                        <!-- Example text is set in code from HotkeyConfig.DefaultTranslate so it can't drift
+                             from the actual default. The "occupied" warning lives only on the live status
+                             line above (LblHotkeyStatus) — not duplicated here. -->
+                        <TextBlock x:Name="LblHotkeyExample" Style="{StaticResource Hint}" Text=""/>
                     </StackPanel>
                 </Border>
 
