@@ -67,6 +67,15 @@ public static class Conformance
             Check.Eq(expected.GetString(), ManifestCliBackend.CollectJsonl(raw, typeField, type, textPath), $"conformance cli-output-parse [{name}]");
         });
 
+        Check.Vector("models-list-parse");
+        Each(dir, "models-list-parse.json", (name, input, expected) =>
+        {
+            var stdout = Markers(input.GetProperty("stdout").GetString());
+            var want = string.Join("|", expected.EnumerateArray().Select(x => x.GetString()));
+            var got = string.Join("|", ModelEnumerator.ParseModels(stdout));
+            Check.Eq(want, got, $"conformance models-list-parse [{name}]");
+        });
+
         RunConfigDefaults(dir);
         RunBackendRequests(dir);
         await RunCacheScenariosAsync(dir);

@@ -69,6 +69,43 @@ public enum ModelEnumerator {
         return urls
     }
 
+    /// Live-enumerate a CLI backend's models by running its manifest `modelsCmd` (e.g. `mimo models`,
+    /// `opencode models`) from the neutral sandbox and parsing provider/name lines. Returns [] on ANY
+    /// failure (no `modelsCmd`, unresolved binary, non-zero exit, timeout) — the caller falls back to
+    /// the static catalog. Mirrors the Windows `ModelEnumerator` CLI branch (Constitution Law 6: the
+    /// subcommand is manifest-declared, no per-vendor code).
+    public static func enumerateCli(backendId: String, command: String?,
+                                    runner: ProcessRunner = ProcessRunner(),
+                                    pathResolver: PathResolver = PathResolver(), timeoutSec: Int = 15) -> [String] {
+        guard let def = BackendManifest.backendDef(backendId),
+              let modelsCmd = (def["modelsCmd"] as? [Any])?.compactMap({ $0 as? String }), !modelsCmd.isEmpty
+        else { return [] }
+        let cmd = (command?.isEmpty == false) ? command! : (def["command"] as? String ?? backendId)
+        guard let executable = pathResolver.resolve(cmd) else { return [] }
+        // Cap at 15s (ceiling, not floor) — enumeration must never hang the settings dialog.
+        let ceiling = min(max(timeoutSec * 1000, 3000), 15000)
+        let r = runner.run(executable: executable, args: modelsCmd, stdinMode: .empty, stdinText: nil,
+                           ceilingMs: ceiling, idleMs: 15000, extraEnv: nil,
+                           workingDirectory: NSTemporaryDirectory() + "ttd-sandbox", shouldCancel: nil)
+        guard r.exitCode == 0, !r.timedOut, !r.notFound else { return [] }
+        return parseModelsList(r.stdout)
+    }
+
+    /// Parse a CLI `models` subcommand's stdout: one model id per line, keep `provider/name` ids, drop
+    /// blanks, spaced lines, and chrome (no slash). ANSI-stripped, deduped, original order preserved.
+    /// Pure + public for tests; mirrors Windows `ModelEnumerator.ParseModels`. Pinned by
+    /// `conformance/models-list-parse.json`.
+    public static func parseModelsList(_ stdout: String) -> [String] {
+        var seen = Set<String>()
+        var models: [String] = []
+        for line in AnsiStripper.strip(stdout).components(separatedBy: .newlines) {
+            let t = line.trimmingCharacters(in: .whitespaces)
+            if t.isEmpty || t.contains(" ") || !t.contains("/") { continue }  // ids are "provider/name", never spaced
+            if seen.insert(t).inserted { models.append(t) }
+        }
+        return models
+    }
+
     /// Parse a models-list response across the common shapes: OpenAI/Anthropic `{ "data":[{"id"}] }`,
     /// Ollama `{ "models":[{"name"}] }`, or a bare array of strings/objects. Deduped, order-preserved.
     public static func parseModelsJson(_ data: Data) -> [String] {

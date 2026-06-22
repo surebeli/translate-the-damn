@@ -130,8 +130,16 @@ struct DSSettingsView: View {
                         }
                     }
                 } else {
-                    Picker(StringsLoader["settings.field.model"], selection: $vm.modelText) {
-                        ForEach(vm.availableModels, id: \.self) { Text($0).tag($0) }
+                    // CLI backends: pick from the catalog, plus a live "刷新模型" for those that declare
+                    // a manifest modelsCmd (mimo/opencode) — runs the subcommand and merges the result.
+                    HStack {
+                        Picker(StringsLoader["settings.field.model"], selection: $vm.modelText) {
+                            ForEach(vm.availableModels, id: \.self) { Text($0).tag($0) }
+                        }
+                        if vm.canRefreshModels {
+                            Button(vm.modelsFetching ? "拉取中…" : "刷新模型") { vm.refreshModels() }
+                                .disabled(vm.modelsFetching)
+                        }
                     }
                 }
             }

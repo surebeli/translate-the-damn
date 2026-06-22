@@ -132,6 +132,16 @@ final class SettingsViewModel: ObservableObject {
         fetchedModels.isEmpty ? (config.modelCatalog[selectedBackendId] ?? []) : fetchedModels
     }
 
+    /// A live "刷新模型" is available for HTTP backends (GET /models) AND for CLI backends that declare
+    /// a `modelsCmd` in the manifest (e.g. mimo/opencode `models`). Mirrors Windows, which enumerates
+    /// both kinds; macOS previously enumerated HTTP only.
+    var canRefreshModels: Bool {
+        if isHttp { return true }
+        if let def = BackendManifest.backendDef(selectedBackendId),
+           let mc = def["modelsCmd"] as? [Any], !mc.isEmpty { return true }
+        return false
+    }
+
     static let commonTargetLanguages = ["简体中文", "繁體中文", "English", "日本語", "한국어", "Français", "Deutsch", "Español", "Русский", "Português"]
     /// Picker options always include the stored value so a custom target stays selectable.
     var targetLanguageOptions: [String] {
@@ -209,16 +219,22 @@ final class SettingsViewModel: ObservableObject {
     /// Fetch the selected HTTP backend's models live from <baseURL>/models (current unsaved endpoint+key),
     /// off the main actor. Best-effort: empty result keeps the static catalog. Mirrors Windows RefreshModelsAsync.
     func refreshModels() {
-        guard isHttp, !modelsFetching else { return }
-        let ep = endpointText, key = apiKeyText, proto = protocolText
+        guard canRefreshModels, !modelsFetching else { return }
         modelsFetching = true
+        let http = isHttp
+        let ep = endpointText, key = apiKeyText, proto = protocolText
+        let id = selectedBackendId, cmd = currentBackend?.command
         Task { @MainActor in
             let models = await Task.detached(priority: .userInitiated) {
-                ModelEnumerator.enumerate(endpoint: ep, apiKey: key, protocolName: proto)
+                http ? ModelEnumerator.enumerate(endpoint: ep, apiKey: key, protocolName: proto)
+                     : ModelEnumerator.enumerateCli(backendId: id, command: cmd)
             }.value
             self.fetchedModels = models
             self.modelsFetching = false
-            if models.isEmpty { self.saveStatus = "未拉取到模型(检查 Endpoint/Key)" }
+            if models.isEmpty {
+                self.saveStatus = http ? "未拉取到模型(检查 Endpoint/Key)"
+                                       : "未枚举到模型(该 CLI 可能不支持 models 子命令或未登录)"
+            }
         }
     }
 

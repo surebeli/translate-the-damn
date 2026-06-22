@@ -1,0 +1,21 @@
+{
+  "fn": "ModelEnumerator.parseModelsList(stdout)",
+  "doc": "CLI live model enumeration: parse the stdout of a backend's manifest `modelsCmd` (e.g. `mimo models`, `opencode models`). One model id per line; keep `provider/name` ids; drop blank lines, spaced lines, and chrome (any line without a slash, e.g. banners/headers/usage). ANSI escape codes are stripped first. Deduped, original order preserved. This is what lets CLI backends (mimo/opencode) show live models in Settings instead of a static catalog; macOS previously had no CLI enumeration path at all (refreshModels was gated on isHttp), so this pins the shared parser cross-platform.",
+  "cases": [
+    { "name": "mimo models: provider/name lines kept in order",
+      "in": { "stdout": "mimo/mimo-auto\nxiaomi/mimo-v2-flash\nxiaomi/mimo-v2.5-pro\n" },
+      "out": ["mimo/mimo-auto", "xiaomi/mimo-v2-flash", "xiaomi/mimo-v2.5-pro"] },
+    { "name": "drop chrome (no slash), blanks, and spaced lines",
+      "in": { "stdout": "Available models:\n\ndeepseek/deepseek-chat\n  using provider deepseek\nopencode/big-pickle\n" },
+      "out": ["deepseek/deepseek-chat", "opencode/big-pickle"] },
+    { "name": "dedupe, original order preserved",
+      "in": { "stdout": "xiaomi/mimo-v2.5-pro\nxiaomi/mimo-v2.5-pro\nmimo/mimo-auto\n" },
+      "out": ["xiaomi/mimo-v2.5-pro", "mimo/mimo-auto"] },
+    { "name": "ANSI escape codes stripped before matching",
+      "in": { "stdout": "<ESC>[32mdeepseek/deepseek-reasoner<ESC>[0m\n" },
+      "out": ["deepseek/deepseek-reasoner"] },
+    { "name": "empty / chrome-only stdout -> no models",
+      "in": { "stdout": "No models found.\n> build · model\n" },
+      "out": [] }
+  ]
+}
