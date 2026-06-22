@@ -30,7 +30,7 @@ Legend: ✅ shipped · 🚧 in progress · ⬜ not started · ⚠️ partial/bes
 | App icon = tray glyph (single source) | — | — (UI) | ✅ | ✅ | ⬜ |
 | Dark scrollbar theme | — | — (UI) | ✅ | — | ⬜ |
 | API Key field masked (secure entry) | §9 | — (UI) | ✅ | ✅ | ⬜ |
-| Popup drag-to-reposition (session-sticky) | §8 | — (UI) | ⬜ | ⬜ | ⬜ |
+| Popup drag-to-reposition (session-sticky) | §8 | — (UI) | ✅ | ✅ | ⬜ |
 
 ## Version
 
