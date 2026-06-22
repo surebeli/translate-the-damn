@@ -24,7 +24,7 @@ public enum ConfigService {
                 startWithWindows: false
             ),
             hotkey: HotkeyConfig(
-                translate: "Ctrl+Alt+T",
+                translate: "Ctrl+Shift+C",
                 toggleListen: ""
             ),
             popup: PopupConfig(

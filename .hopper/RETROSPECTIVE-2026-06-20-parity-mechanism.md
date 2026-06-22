@@ -105,5 +105,10 @@ stale,真正第一优先是**建 CI + 走 PR**,`--verify-vectors` 降级。
   fail 路径(悬空指针)exit 1、`--warn` exit 0 均验证。据实边界:证据指针让 ✅ 可从 diff 审计、防指针腐烂,
   但**不证明行为**(文件在≠功能对);真能机器证明的 UI 交互应下沉成向量(`popup-dismiss` 决策逻辑是下一候选,
   但 CI 不构建视图层,"视图是否真调用"仍需本端构建核对)。
+- **路线 #5(真功能)macOS per-platform 默认热键**:spec-first/TDD 落地——先写 RED `tests/PlatformDefaultsTests`
+  钉 macOS 默认 = `Ctrl+Shift+C`(经 `CarbonKeyMap` 映射 Ctrl→⌘、Shift→⇧,用户实按 **⇧⌘C / Shift+Command+C**,
+  与 Win 同助记字母 C、原生 ⌘ 手感;用户拍板),再改 `ConfigService`/`AppConfig` 默认值转 GREEN,更 spec §7 +
+  设置占位符。本机 `swift test` 119 全绿、`swift build`(含视图层)通过。PARITY macOS 该行 ⬜→✅,并按 #4 加
+  macOS 证据指针(`parity-evidence` 强制:17 ✅ UI 声明全部有源)。drift:macOS 1→0 behind(仅剩 Linux 整列未开工)。
 - **仍欠**:#4 的"下沉向量"另一半(`popup-dismiss` 决策→向量,受限于 CI 不构建视图层)、#7(PARITY 半生成化
-  + 噪声 baseline 让 `--fail-on-drift` 能上 CI)、真功能欠账 #5。`--verify-vectors` 已被 #9 实质实现,降级归档。
+  + 噪声 baseline 让 `--fail-on-drift` 能上 CI)、Linux 整列移植。`--verify-vectors` 已被 #9 实质实现,降级归档。

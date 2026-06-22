@@ -21,7 +21,7 @@ Legend: ✅ shipped · 🚧 in progress · ⬜ not started · ⚠️ partial/bes
 | Backends — google-v2, doubao (HTTP) | §6.1/6.2 | `backend-requests` + `spec/backends.json` | ✅ | ✅ | ⬜ |
 | Recent-translation cache (5 entries, MRU + recency refresh) | §4.1 | `pipeline-cache` | ✅ | ✅ | ⬜ |
 | config.json defaults / bootstrap | §7 | `config-defaults` | ✅ | ✅ | ⬜ |
-| Default translate hotkey (per-platform default) | §7 | — (per-platform) | ✅ | ⬜ | ⬜ |
+| Default translate hotkey (per-platform default) | §7 | — (per-platform) | ✅ | ✅ | ⬜ |
 | Acrylic popup (no-focus-steal, hover-keep, auto-dismiss, scroll) | §8 | — (UI) | ✅ | ✅ | ⬜ |
 | Popup copy + close buttons | §8 | — (UI) | ✅ | ✅ | ⬜ |
 | Popup adaptive size (source >500 chars → large) + history nav ◀▶ | §8 | `popup-sizing` | ✅ | ✅ | ⬜ |
