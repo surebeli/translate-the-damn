@@ -8,13 +8,15 @@
 - `CredentialClassifier.swift` (pure, mirrors Windows) + `CredentialDiscoveryTests.swift` → satisfies `credential-discovery`.
 - `BackendConfig.protocol` field (Law-4 schema sync; backticked; JSON key "protocol").
 
-**REMAINING (macOS-native, needs a Mac to build/verify — NOT vector-gated, so CI stays green but the app is incomplete; PARITY rows stay macOS ⬜ until done):**
-1. **Runtime HTTP for openai-http/anthropic-http + custom ids.** `HttpTranslator.init` must take a `promptTemplate` and pass it to `buildCall`; and BOTH `buildCall` (via `id`) and `HttpTranslator.parseResponse` look up the def by `id` — for a CUSTOM id absent from the manifest they must resolve the def by `config.protocol` (openai→openai-http, anthropic→anthropic-http). Add a shared `resolveDef(id, config)` helper. Without this, custom providers translate with an empty prompt / fail parse.
-2. **Target resolution at the call site.** Whoever builds translators must pass `PromptBuilder.withTarget(config.translation.promptTemplate, config.translation.targetLanguage)` (the registry param), as Windows does in `TranslatorRegistry.Build`.
-3. **`TranslatorRegistry.translator(for:)` protocol fallback** (mirror Windows) so a custom id resolves a template by `config.protocol`.
-4. **Live `/models` enumeration** (port `ModelEnumerator`: multi-candidate path + multi-shape parse) for the model dropdown.
-5. **Credential scanner** (`CredentialDiscovery.Scan`: env + opencode `auth.json`/`opencode.json` + codex `config.toml`; cc-switch deferred) + the consent-checklist UI.
-6. **Settings UI (SwiftUI):** global 目标语言 picker; custom-provider add/delete + OpenAI/Anthropic protocol selector; 检测已有密钥 button; CLI/API dropdown tags + reorder; hide per-backend target for generic API.
+**REMAINING — ALL DONE (branch `feat/macos-ui-runtime-mirror`, CI-green; behavior pending a Mac walkthrough):**
+1. ✅ Runtime HTTP — `HttpTranslator` gained `defId` + `promptTemplate`; `TranslatorRegistry` resolves a custom id's def by `config.protocol` (openai→openai-http, anthropic→anthropic-http).
+2. ✅ Target resolution at the call site — `AppDelegate.buildPipeline` now passes `PromptBuilder.withTarget(promptTemplate, targetLanguage)` (fixed a literal `{target}` leak).
+3. ✅ Registry protocol fallback — done (item 1).
+4. ✅ Live `/models` — `ModelEnumerator.swift` (multi-candidate path + multi-shape parse) + `ModelEnumeratorTests`; DSSettingsView 刷新模型 button for API backends.
+5. ✅ Credential scanner — `CredentialDiscovery.scan` (env + opencode + codex) + the 🔍 检测已有密钥 consent sheet.
+6. ✅ Settings UI — 目标语言 picker; custom-provider add/delete + protocol selector (macOS team); 检测已有密钥 button; CLI/API dropdown tags + reorder (`backendDisplay`/`backendIds`); per-backend target already hidden for generic API.
+
+**NOTE for a Mac reviewer:** CI validates *compile + the shared vectors + ModelEnumerator unit tests*, NOT SwiftUI interaction. Please walk through: target-language switch, 刷新模型 on a custom API provider, the 检测已有密钥 sheet + import, dropdown order/tags.
 
 Original handoff detail below.
 
