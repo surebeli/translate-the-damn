@@ -77,6 +77,11 @@ struct DSSettingsView: View {
 
     private var backendSection: some View {
         Section(StringsLoader["settings.group.backend"]) {
+            // Unified target language — drives every prompt-based backend (CLI + API) via {target}.
+            Picker("目标语言", selection: $vm.targetLanguage) {
+                ForEach(vm.targetLanguageOptions, id: \.self) { Text($0).tag($0) }
+            }
+
             Picker(StringsLoader["settings.field.backend"], selection: Binding(
                 get: { vm.selectedBackendId },
                 set: { vm.onBackendChange($0) }
@@ -105,8 +110,22 @@ struct DSSettingsView: View {
             }
 
             if vm.showModel {
-                Picker(StringsLoader["settings.field.model"], selection: $vm.modelText) {
-                    ForEach(vm.availableModels, id: \.self) { Text($0).tag($0) }
+                if vm.isHttp {
+                    // API backends: free-entry model + live /models fetch (Picker can't be edited).
+                    HStack {
+                        TextField(StringsLoader["settings.field.model"], text: $vm.modelText)
+                        Button(vm.modelsFetching ? "拉取中…" : "刷新模型") { vm.refreshModels() }
+                            .disabled(vm.modelsFetching)
+                    }
+                    if !vm.fetchedModels.isEmpty {
+                        Picker("可选模型", selection: $vm.modelText) {
+                            ForEach(vm.fetchedModels, id: \.self) { Text($0).tag($0) }
+                        }
+                    }
+                } else {
+                    Picker(StringsLoader["settings.field.model"], selection: $vm.modelText) {
+                        ForEach(vm.availableModels, id: \.self) { Text($0).tag($0) }
+                    }
                 }
             }
 

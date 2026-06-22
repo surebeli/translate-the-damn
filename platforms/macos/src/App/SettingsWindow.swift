@@ -63,6 +63,10 @@ final class SettingsViewModel: ObservableObject {
 
     @Published var selectedBackendId: String
 
+    @Published var targetLanguage: String     // unified target language (drives every prompt-based backend via {target})
+    @Published var fetchedModels: [String] = []   // live /models result for the selected HTTP backend
+    @Published var modelsFetching: Bool = false
+
     @Published var modelText: String = ""
     @Published var apiKeyText: String = ""
     @Published var endpointText: String = ""
@@ -121,7 +125,13 @@ final class SettingsViewModel: ObservableObject {
     }
 
     var availableModels: [String] {
-        config.modelCatalog[selectedBackendId] ?? []
+        fetchedModels.isEmpty ? (config.modelCatalog[selectedBackendId] ?? []) : fetchedModels
+    }
+
+    static let commonTargetLanguages = ["简体中文", "繁體中文", "English", "日本語", "한국어", "Français", "Deutsch", "Español", "Русский", "Português"]
+    /// Picker options always include the stored value so a custom target stays selectable.
+    var targetLanguageOptions: [String] {
+        Self.commonTargetLanguages.contains(targetLanguage) ? Self.commonTargetLanguages : [targetLanguage] + Self.commonTargetLanguages
     }
 
     var currentBackend: BackendConfig? {
@@ -167,6 +177,7 @@ final class SettingsViewModel: ObservableObject {
 
         listenClipboard = config.general.listenClipboard
         hotkeyText = config.hotkey.translate
+        targetLanguage = config.translation.targetLanguage.isEmpty ? "简体中文" : config.translation.targetLanguage
         selectedBackendId = config.general.activeBackend
         popupStyle = config.popup.style
         autoDismissSeconds = Double(config.popup.autoDismissSeconds)
@@ -187,7 +198,24 @@ final class SettingsViewModel: ObservableObject {
         flushBackend()
         selectedBackendId = newId
         doctorStatus = nil; doctorDetail = ""   // verdict is per-backend — clear on switch
+        fetchedModels = []                      // live /models is per-backend — clear on switch
         loadBackend(newId)
+    }
+
+    /// Fetch the selected HTTP backend's models live from <baseURL>/models (current unsaved endpoint+key),
+    /// off the main actor. Best-effort: empty result keeps the static catalog. Mirrors Windows RefreshModelsAsync.
+    func refreshModels() {
+        guard isHttp, !modelsFetching else { return }
+        let ep = endpointText, key = apiKeyText, proto = protocolText
+        modelsFetching = true
+        Task { @MainActor in
+            let models = await Task.detached(priority: .userInitiated) {
+                ModelEnumerator.enumerate(endpoint: ep, apiKey: key, protocolName: proto)
+            }.value
+            self.fetchedModels = models
+            self.modelsFetching = false
+            if models.isEmpty { self.saveStatus = "未拉取到模型(检查 Endpoint/Key)" }
+        }
     }
 
     /// Run the manifest-driven doctor for the selected backend off the main thread (it may spawn a
@@ -368,6 +396,7 @@ final class SettingsViewModel: ObservableObject {
         config.general.listenClipboard = listenClipboard
         config.general.activeBackend = selectedBackendId
         config.general.startWithWindows = startWithWindows
+        config.translation.targetLanguage = targetLanguage.trimmingCharacters(in: .whitespaces).isEmpty ? "简体中文" : targetLanguage
         config.hotkey.translate = hotkeyText.trimmingCharacters(in: .whitespaces)
         config.popup.style = popupStyle
         config.popup.autoDismissSeconds = Int(autoDismissSeconds)
