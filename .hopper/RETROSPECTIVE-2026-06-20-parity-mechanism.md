@@ -117,10 +117,13 @@ stale,真正第一优先是**建 CI + 走 PR**,`--verify-vectors` 降级。
   夹屏),`swift build` + 119 测试通过后翻 macOS ✅,两端各加证据指针。**至此 Win↔macOS 仅剩 Dark scrollbar
   (macOS 据实 n/a)不同,其余全对齐。**
   > ⚠ 暴露 `parity-evidence` 的一处**残余盲区**:它只在"证据条目存在但行非 ✅"时 WARN;而 popup-drag 当时
-  > **既没翻 ✅、也没证据条目**(⬜⬜),所以**没报警**——这处 stale 是靠**用户口头告知**才发现的。结论:
-  > "功能已实现、但 PARITY 既无 ✅ 又无证据条目"仍逃得过所有自动闸。要根治需让 evidence 条目本身有"应覆盖
-  > 哪些 feature 行"的完整性校验,或 UI 行也强制声明证据(即便 ⬜)。记入路线,暂未做。
-- **仍欠**:#4 的"下沉向量"另一半(`popup-dismiss` 决策→向量,受限于 CI 不构建视图层)、上述 evidence 完整性
-  校验、#7(PARITY 半生成化 + 噪声 baseline 让 `--fail-on-drift` 能上 CI)、Linux 整列移植、popup-drag 的
-  **运行时拖拽手势**仍需本端手动走查(视图层无向量、CI 不构建、headless 无法模拟真实拖拽)。`--verify-vectors`
-  已被 #9 实质实现,降级归档。
+  > **既没翻 ✅、也没证据条目**(⬜⬜),所以**没报警**——这处 stale 是靠**用户口头告知**才发现的。
+  > **(已补)** 随后给 `parity-evidence` 加了**完整性校验**(见下),关掉这一类静默遗漏的洞。
+- **evidence 完整性校验(已补)**:`parity-evidence` 现强制 `ui-evidence.json` ⇄ PARITY UI 行**双向锁步**——
+  (1) 每个 UI 行必须有证据条目(全 ⬜ 也要空 `{}`),否则 fail;(2) 每个 key 必须命中真实 UI 行,否则 fail
+  (防前缀匹配的拼错 key 静默不命中)。本机实测:现状通过(10 UI 行 0 问题);删 popup-drag 条目→精确报
+  "NO entry";加 orphan key→报"matches no UI row";均 exit 1。**这关掉了 popup-drag 暴露的"⬜⬜ 且无条目→
+  静默遗漏"洞。** 据实残余:仍抓不到"代码已实现、PARITY 无 ✅ 且 evidence 无任何引用"的纯隐藏实现(要反向
+  扫码,不做);popup-drag 运行时拖拽手势已由**用户本端亲验**确认。
+- **仍欠**:#4 的"下沉向量"另一半(`popup-dismiss` 决策→向量,受限于 CI 不构建视图层)、#7(PARITY 半生成化
+  + 噪声 baseline 让 `--fail-on-drift` 能上 CI)、Linux 整列移植。`--verify-vectors` 已被 #9 实质实现,降级归档。

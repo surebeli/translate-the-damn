@@ -81,11 +81,20 @@ def main():
     keys = list(ev.keys())
 
     fails, warns, ok = [], [], 0
-    for f in parsed["features"]:
-        if f["kind"] != "ui":
-            continue  # logic/backend rows are covered by parity-verify / the manifest
+    ui_features = [f for f in parsed["features"] if f["kind"] == "ui"]
+    used_keys = set()
+    for f in ui_features:
         key = row_key_for(f["feature"], keys)
         entry = ev.get(key, {}) if key else {}
+        # COMPLETENESS (1): every UI row must be accounted for by an evidence key — even if the row is
+        # ⬜ everywhere (then the entry is just `{}`). This is the hole the popup-drag stale slipped
+        # through: it was ⬜/⬜ with NO entry, so the gate never looked at it. Forcing a key makes every
+        # UI row a conscious "what implements this, per platform?" checkpoint.
+        if key is None:
+            fails.append(f"UI row `{f['feature']}` has NO entry in ui-evidence.json — add one "
+                         f"(use `{{}}` if genuinely unbuilt on every platform).")
+            continue
+        used_keys.add(key)
         for platform, status in f["status"].items():
             pointers = entry.get(platform, [])
             if status == pd.SHIPPED:
@@ -104,16 +113,25 @@ def main():
                     warns.append(f"{pd.GLYPH.get(status,'?')} {platform} `{f['feature']}` — evidence resolves "
                                  f"but row not ✅ (possible under-claim; confirm behaviour, then flip).")
 
-    print(f"parity-evidence: {ok} ✅ UI claim(s) backed by resolvable source; "
-          f"{len(fails)} unbacked; {len(warns)} possible under-claim(s).")
+    # COMPLETENESS (2): every evidence key must match a real UI row. A typo'd/stale key matches
+    # nothing — and because matching is leading-substring, it would otherwise silently no-op (the gate
+    # quietly stops enforcing that row). Fail loudly instead.
+    orphan_keys = [k for k in keys if k not in used_keys]
+    for k in orphan_keys:
+        fails.append(f"evidence key {k!r} matches no UI row in PARITY.md — typo, or a stale/renamed row?")
+
+    print(f"parity-evidence: {ok} ✅ UI claim(s) backed by resolvable source; {len(ui_features)} UI "
+          f"row(s) checked; {len(fails)} problem(s); {len(warns)} possible under-claim(s).")
     for w in warns:
         print(f"  ⚠ {w}")
     for x in fails:
         print(f"  ✗ {x}")
     if not fails:
-        print("  ✓ every ✅ UI row points at source that exists.")
+        print("  ✓ every UI row has an evidence entry, every ✅ points at source that exists, "
+              "and no key is orphaned.")
         return 0
-    print("\n  A ✅ UI row must point at real source in spec/ui-evidence.json (so the claim is auditable).")
+    print("\n  ui-evidence.json must stay in lock-step with PARITY's UI rows: every UI row keyed, "
+          "every ✅ backed by real source, no orphan keys.")
     return 0 if a.warn else 1
 
 
