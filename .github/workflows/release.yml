@@ -1,0 +1,217 @@
+name: release
+
+# Build distributable Windows + macOS artifacts and publish a GitHub Release.
+#
+# Trigger: pushing a version tag matching v* (e.g. v0.2.0). The tag IS the release
+# (semantics tracked in PARITY.md: App version == CFBundleShortVersionString == csproj <Version>).
+#
+# NOTE: tag v0.2.0 already exists on a commit that PREDATES this workflow; to release 0.2.0 you must
+# move/recreate the tag onto a commit that contains this file.
+#
+# NOTE ON SIGNING: there are no Apple Developer / code-signing secrets in CI. The Windows .exe is
+# unsigned and the macOS .app is UNSIGNED + UNNOTARIZED. The release notes tell users how to clear
+# the quarantine attribute. For a signed/notarized build, run sign-notarize.sh locally.
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    name: build — Windows (dotnet publish)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "9.0.x"
+
+      - name: derive version
+        id: ver
+        shell: pwsh
+        run: |
+          if ("${{ github.ref_type }}" -eq "tag") {
+            $v = "${{ github.ref_name }}".TrimStart("v")
+          } else {
+            $v = "0.0.0-dev"
+          }
+          "version=$v" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          Write-Host "Release version: $v"
+
+      - name: dotnet publish (App, self-contained win-x64)
+        shell: pwsh
+        run: >
+          dotnet publish platforms/windows/src/TranslateTheDamn.App/TranslateTheDamn.App.csproj
+          -c Release
+          -r win-x64
+          --self-contained true
+          -p:PublishSingleFile=false
+          -o publish/windows
+
+      - name: sanity — exe exists
+        shell: pwsh
+        run: |
+          $exe = "publish/windows/TranslateTheDamn.exe"
+          if (-not (Test-Path $exe)) {
+            Get-ChildItem publish/windows
+            throw "Expected $exe not found"
+          }
+          Write-Host "Found $exe"
+
+      # Guard: on a real tag, the exe's ProductVersion must match the tag (csproj <Version> == tag).
+      - name: version match guard (tag builds only)
+        if: github.ref_type == 'tag'
+        shell: pwsh
+        run: |
+          $exe = "publish/windows/TranslateTheDamn.exe"
+          $pv = (Get-Item $exe).VersionInfo.ProductVersion
+          $tag = "${{ steps.ver.outputs.version }}"
+          Write-Host "exe ProductVersion=$pv  tag=$tag"
+          if (-not $pv.StartsWith($tag)) {
+            throw "exe ProductVersion ($pv) does not match tag ($tag) — bump <Version> in TranslateTheDamn.App.csproj before tagging"
+          }
+
+      - name: zip publish folder
+        shell: pwsh
+        run: |
+          $zip = "TranslateTheDamn-${{ steps.ver.outputs.version }}-windows-x64.zip"
+          Compress-Archive -Path publish/windows/* -DestinationPath $zip -Force
+          "ASSET=$zip" | Out-File -FilePath $env:GITHUB_ENV -Append
+          Write-Host "Created $zip"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-zip
+          path: ${{ env.ASSET }}
+          if-no-files-found: error
+          retention-days: 7
+
+  build-macos:
+    name: build — macOS (build-app.sh)
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: toolchain
+        run: swift --version
+
+      - name: derive version
+        id: ver
+        run: |
+          if [ "${{ github.ref_type }}" = "tag" ]; then
+            v="${GITHUB_REF_NAME#v}"
+          else
+            v="0.0.0-dev"
+          fi
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+          echo "Release version: $v"
+
+      - name: build .app (real build-app.sh)
+        run: ./platforms/macos/scripts/build-app.sh
+
+      - name: sanity — .app exists and is arm64
+        run: |
+          APP="platforms/macos/TranslateTheDamn.app"
+          test -d "$APP" || { echo "Missing $APP"; exit 1; }
+          BIN="$APP/Contents/MacOS/TranslateTheDamn"
+          test -x "$BIN" || { echo "Missing executable $BIN"; exit 1; }
+          file "$BIN"
+          file "$BIN" | grep -q arm64 || { echo "Executable is not arm64"; exit 1; }
+
+      # Guard: build-app.sh does NOT take a version arg — the bundle version comes from Info.plist.
+      # On a real tag, CFBundleShortVersionString must equal the tag, or the zip name lies about the
+      # app inside it (Constitution Law 3 / this workflow's own header contract).
+      - name: version match guard (tag builds only)
+        if: github.ref_type == 'tag'
+        run: |
+          APP="platforms/macos/TranslateTheDamn.app"
+          SHORT="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$APP/Contents/Info.plist")"
+          TAG="${{ steps.ver.outputs.version }}"
+          echo "CFBundleShortVersionString=$SHORT  tag=$TAG"
+          if [ "$SHORT" != "$TAG" ]; then
+            echo "CFBundleShortVersionString ($SHORT) != tag ($TAG) — bump it in platforms/macos/Resources/Info.plist before tagging"
+            exit 1
+          fi
+
+      - name: zip the .app
+        run: |
+          ZIP="TranslateTheDamn-${{ steps.ver.outputs.version }}-macos-arm64.zip"
+          ditto -c -k --keepParent platforms/macos/TranslateTheDamn.app "$ZIP"
+          echo "ASSET=$ZIP" >> "$GITHUB_ENV"
+          echo "Created $ZIP"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos-zip
+          path: ${{ env.ASSET }}
+          if-no-files-found: error
+          retention-days: 7
+
+  release:
+    name: publish GitHub Release
+    needs: [build-windows, build-macos]
+    if: github.ref_type == 'tag'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: download windows artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-zip
+          path: dist
+
+      - name: download macos artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: macos-zip
+          path: dist
+
+      - name: list assets
+        run: ls -la dist
+
+      - name: create release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: translate-the-damn ${{ github.ref_name }}
+          draft: false
+          prerelease: ${{ contains(github.ref_name, '-') }}
+          fail_on_unmatched_files: true
+          files: |
+            dist/*.zip
+          body: |
+            ## translate-the-damn ${{ github.ref_name }}
+
+            Copy / hotkey-to-translate desktop tool. Built from this tag on Windows 11 (WPF, .NET 9)
+            and macOS (SwiftUI, Apple Silicon arm64).
+
+            ### Downloads
+            - `TranslateTheDamn-*-windows-x64.zip` — Windows 11 x64, self-contained (no .NET runtime install needed). Unzip and run `TranslateTheDamn.exe`.
+            - `TranslateTheDamn-*-macos-arm64.zip` — macOS 14+ (Sonoma), Apple Silicon. Unzip to get `TranslateTheDamn.app`.
+
+            ### macOS Gatekeeper caveat (UNSIGNED build)
+            These CI artifacts are **not code-signed or notarized** (no signing secrets in CI). macOS
+            Gatekeeper will block the app on first launch ("can't be opened because Apple cannot check
+            it for malicious software", or "is damaged"). Clear the quarantine attribute on the .app
+            you unzipped (adjust the path to where you unzipped/moved it):
+
+            ```
+            xattr -dr com.apple.quarantine /path/to/TranslateTheDamn.app
+            ```
+
+            Then open it normally. A properly signed + notarized build can be produced locally with
+            `platforms/macos/scripts/sign-notarize.sh` (requires an Apple Developer account).
+
+            > The macOS app is **not sandboxed** by design — it spawns user-installed translation
+            > CLIs. API keys live only in your local `config.json` and are never bundled.
