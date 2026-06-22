@@ -1,0 +1,56 @@
+PARITY.md
+  0000019ef05617d0 1-95
+conformance/cli-output-parse.json
+  0000019ef05617d0 1-24
+platforms/macos/src/App/AppDelegate.swift
+  0000019ef05617d0 1-282
+platforms/macos/src/App/LiveCheck.swift
+  0000019ef05617d0 1-36
+platforms/macos/src/Core/BackendManifest.swift
+  0000019ef05617d0 1-209
+platforms/macos/src/Core/ProcessTranslator.swift
+  0000019ef05617d0 1-297
+platforms/macos/tests/Conformance/CliOutputParseTests.swift
+  0000019ef05617d0 1-26
+platforms/windows/src/TranslateTheDamn.Core/Backends/Manifest/BackendManifest.cs
+  0000019ef05617d0 1-121
+platforms/windows/src/TranslateTheDamn.Core/Backends/Manifest/ManifestCliBackend.cs
+  0000019ef05617d0 1-157
+platforms/windows/tests/TranslateTheDamn.Tests/Conformance.cs
+  0000019ef05617d0 1-355
+spec/backends.json
+  0000019ef05617d0 1-151
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "e8a808e663801baf57a733ae4bc2b26b1a4fcd87",
+  "prompts": {
+    "s_c99c3a585a6ebe::t_c79759cf6887b8": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1782148634135622000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "0000019ef05617d0": {
+      "agent_id": {
+        "tool": "claude",
+        "model": "claude-opus-4-8",
+        "id": "ai-thread-claude-claude-opus-4-8-1782148634576"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 1753,
+      "total_deletions": 0,
+      "accepted_lines": 1753,
+      "overriden_lines": 0
+    }
+  }
+}
