@@ -67,6 +67,10 @@ final class SettingsViewModel: ObservableObject {
     @Published var fetchedModels: [String] = []   // live /models result for the selected HTTP backend
     @Published var modelsFetching: Bool = false
 
+    @Published var discovered: [DiscoveredCredential] = []   // credential auto-discovery results (consent checklist)
+    @Published var showDetect: Bool = false
+    @Published var detectSelection: Set<Int> = []
+
     @Published var modelText: String = ""
     @Published var apiKeyText: String = ""
     @Published var endpointText: String = ""
@@ -261,6 +265,39 @@ final class SettingsViewModel: ObservableObject {
         selectedBackendId = backendIds.first ?? "claude"
         loadBackend(selectedBackendId)
         saveStatus = "已删除 \(id)(保存后写入)"
+    }
+
+    /// Discover the user's OWN static API keys (env + opencode + codex) and show the consent checklist.
+    /// Never reads OAuth stores; keys persist on save. Mirrors Windows BtnDetectKeys_Click.
+    func detectKeys() {
+        let found = CredentialDiscovery.scan()
+        if found.isEmpty { saveStatus = "未发现可导入的静态密钥(env / opencode / codex)"; return }
+        discovered = found
+        detectSelection = Set(0..<found.count)   // default all checked
+        showDetect = true
+    }
+
+    /// Import the checked discovered credentials as http backends (filled, ready). Persisted on save.
+    func importSelected() {
+        objectWillChange.send()
+        var lastId: String?
+        var n = 0
+        for (i, c) in discovered.enumerated() where detectSelection.contains(i) {
+            let id = uniqueBackendId(c.suggestedId)
+            config.backends[id] = BackendConfig(type: "http", model: "", timeoutSec: 30,
+                                                endpoint: c.baseUrl, apiKey: c.key, protocol: c.protocolName)
+            lastId = id; n += 1
+        }
+        showDetect = false
+        if let id = lastId { selectedBackendId = id; loadBackend(id) }
+        saveStatus = "已导入 \(n) 个 provider(保存后写入)"
+    }
+
+    private func uniqueBackendId(_ base: String) -> String {
+        if config.backends[base] == nil { return base }
+        var i = 2
+        while config.backends["\(base)-\(i)"] != nil { i += 1 }
+        return "\(base)-\(i)"
     }
 
     func loadBackend(_ id: String) {

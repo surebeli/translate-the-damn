@@ -162,6 +162,7 @@ struct DSSettingsView: View {
             // the selected custom one (built-ins are protected).
             HStack {
                 Button("新增 provider…") { newProviderId = ""; showAddProvider = true }
+                Button("🔍 检测已有密钥") { vm.detectKeys() }
                 Spacer()
                 Button("删除 provider", role: .destructive) { vm.deleteProvider() }
                     .disabled(!vm.isCustomProvider)
@@ -174,6 +175,43 @@ struct DSSettingsView: View {
         } message: {
             Text("新增一个通用 HTTP(OpenAI/Anthropic 协议)后端;添加后填 Endpoint/Key/模型/协议再保存。")
         }
+        .sheet(isPresented: $vm.showDetect) { detectSheet }
+    }
+
+    /// Credential auto-discovery consent checklist: each discovered STATIC key (provider · protocol ·
+    /// masked · provenance) with a toggle; import the selected ones as http backends.
+    private var detectSheet: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("在本机发现 \(vm.discovered.count) 个可导入的静态 API key(不含订阅 OAuth)。勾选要导入的:")
+                .font(.headline)
+            ScrollView {
+                VStack(alignment: .leading, spacing: 8) {
+                    ForEach(Array(vm.discovered.enumerated()), id: \.offset) { idx, c in
+                        Toggle(isOn: Binding(
+                            get: { vm.detectSelection.contains(idx) },
+                            set: { on in if on { vm.detectSelection.insert(idx) } else { vm.detectSelection.remove(idx) } }
+                        )) {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("\(c.provider)  ·  \(c.protocolName)  ·  \(c.keyMasked)")
+                                Text("\(c.baseUrl)   [\(c.source)]")
+                                    .font(.caption).foregroundStyle(.secondary)
+                            }
+                        }
+                    }
+                }
+                .padding(.vertical, 4)
+            }
+            .frame(maxHeight: 280)
+            Text("注意:导入的 Key 以明文保存在 config.json(与现有 key 一致)。")
+                .font(.caption).foregroundStyle(.secondary)
+            HStack {
+                Spacer()
+                Button("取消") { vm.showDetect = false }
+                Button("导入选中") { vm.importSelected() }.buttonStyle(.borderedProminent)
+            }
+        }
+        .padding(20)
+        .frame(minWidth: 480, minHeight: 240)
     }
 
     // MARK: - Popup
