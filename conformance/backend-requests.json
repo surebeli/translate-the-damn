@@ -46,6 +46,50 @@
         "bodyContains": ["input_text", "\"target_language\":\"zh\"", "\"model\":\"doubao-seed-translation-250915\""],
         "bodyNotContains": ["source_language", "messages"]
       }
+    },
+    {
+      "name": "openai-http /chat/completions shape (custom baseURL, built prompt injected)",
+      "backend": "openai-http",
+      "config": { "apiKey": "K", "endpoint": "https://api.deepseek.com/v1/chat/completions", "model": "deepseek-v4-flash" },
+      "promptTemplate": "Translate to zh. Output only the translation.\n\n{content}",
+      "text": "Hello",
+      "doc": "ASCII-only body asserts (C# escapes CJK uppercase-\\u, Swift emits raw UTF-8 — a raw-CJK assert is NOT portable). 'Translate to zh' pins that {prompt} != {text} (rules injected). Protocol separated by body: openai has stream, NOT max_tokens.",
+      "expect": {
+        "method": "POST",
+        "urlContains": ["api.deepseek.com", "chat/completions"],
+        "urlNotContains": ["/messages"],
+        "headers": { "Authorization": "Bearer K", "Content-Type": "application/json" },
+        "bodyContains": ["\"model\":\"deepseek-v4-flash\"", "\"role\":\"user\"", "\"stream\":false", "Hello", "Translate to zh"],
+        "bodyNotContains": ["max_tokens"]
+      }
+    },
+    {
+      "name": "openai-http base endpoint (no /chat/completions) is normalized via chatPath",
+      "backend": "openai-http",
+      "config": { "apiKey": "K", "endpoint": "https://tokbox-api.netease.im/v1", "model": "deepseek-v4-flash" },
+      "promptTemplate": "T:{content}",
+      "text": "Hi",
+      "doc": "A bare /v1 base (the @ai-sdk/openai-compatible convention) gets /chat/completions appended; a full URL is left as-is.",
+      "expect": {
+        "urlContains": ["https://tokbox-api.netease.im/v1/chat/completions"],
+        "bodyContains": ["\"model\":\"deepseek-v4-flash\""]
+      }
+    },
+    {
+      "name": "anthropic-http /messages shape (Kimi Code, built prompt injected)",
+      "backend": "anthropic-http",
+      "config": { "apiKey": "K", "endpoint": "https://api.kimi.com/coding/v1/messages", "model": "kimi-for-coding" },
+      "promptTemplate": "Translate to zh. Output only the translation.\n\n{content}",
+      "text": "Hello",
+      "doc": "Kimi Code REQUIRES /messages (OpenAI /chat/completions is blocked). Protocol separated by body: anthropic has max_tokens, NOT stream. Header is x-api-key + anthropic-version (NOT Authorization).",
+      "expect": {
+        "method": "POST",
+        "urlContains": ["api.kimi.com/coding", "/messages"],
+        "urlNotContains": ["chat/completions"],
+        "headers": { "x-api-key": "K", "anthropic-version": "2023-06-01" },
+        "bodyContains": ["\"model\":\"kimi-for-coding\"", "\"max_tokens\":4096", "\"role\":\"user\"", "Hello", "Translate to zh"],
+        "bodyNotContains": ["\"stream\""]
+      }
     }
   ]
 }

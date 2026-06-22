@@ -1,5 +1,6 @@
 using TranslateTheDamn.Core.Backends.Manifest;
 using TranslateTheDamn.Core.Config;
+using TranslateTheDamn.Core.Util;
 
 namespace TranslateTheDamn.Core.Backends;
 
@@ -17,14 +18,28 @@ public sealed class TranslatorRegistry
     {
         var reg = new TranslatorRegistry();
         var manifest = BackendManifest.Load();
-        var tmpl = cfg.Translation.PromptTemplate;
+        // Resolve the unified target language once: {target} -> translation.targetLanguage. Every
+        // prompt-driven backend (CLI + openai-http/anthropic-http) then shares the same target.
+        var tmpl = PromptBuilder.WithTarget(cfg.Translation.PromptTemplate, cfg.Translation.TargetLanguage);
 
         foreach (var (id, bc) in cfg.Backends)
         {
-            if (!manifest.Backends.TryGetValue(id, out var def)) continue;
+            // Built-in backends resolve by id. A CUSTOM provider (id absent from the manifest) resolves a
+            // generic HTTP template by its declared protocol — so user-typed base_url+key providers work
+            // with no per-vendor manifest entry and no switch(id) (Constitution Law 6).
+            if (!manifest.Backends.TryGetValue(id, out var def))
+            {
+                var tmplId = bc.Protocol?.Trim().ToLowerInvariant() switch
+                {
+                    "anthropic" => "anthropic-http",
+                    "openai" => "openai-http",
+                    _ => null
+                };
+                if (tmplId is null || !manifest.Backends.TryGetValue(tmplId, out def)) continue;
+            }
             ITranslator? t = def.Kind.ToLowerInvariant() switch
             {
-                "http" => new ManifestHttpBackend(id, def, bc),
+                "http" => new ManifestHttpBackend(id, def, bc, tmpl),
                 "cli" => new ManifestCliBackend(id, def, bc, tmpl),
                 _ => null
             };

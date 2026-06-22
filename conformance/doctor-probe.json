@@ -1,0 +1,13 @@
+{
+  "fn": "BackendManifest.probe",
+  "doc": "Per-backend non-interactive auth probe declared in spec/backends.json (the doctor runs these). claude/codex declare an argv auth command; copilot has none (presence-only, args=null); agy uses a cred-file/log probe (kind=log, no argv). network=true marks probes that touch the network.",
+  "cases": [
+    { "backend": "claude",  "args": ["auth", "status", "--json"], "network": false, "retries": 1, "successSignatures": ["\"loggedIn\": true"], "failSignatures": ["\"loggedIn\": false"] },
+    { "backend": "codex",   "args": ["login", "status"],          "network": false, "retries": 1, "successSignatures": ["Logged in using"], "failSignatures": ["not logged in"] },
+    { "backend": "copilot", "args": null },
+    { "backend": "agy",     "kind": "log", "network": true, "retries": 3, "successSignatures": ["authenticated via keyring", "authenticated successfully as"], "failSignatures": ["not logged into Antigravity"] },
+    { "backend": "opencode", "args": ["auth", "list"], "network": false, "retries": 1, "failWins": true, "successSignatures": ["credentials"], "failSignatures": ["0 credentials"] },
+    { "backend": "kimi",     "args": ["provider", "list"], "network": false, "retries": 1, "successSignatures": ["source=oauth", "managed:kimi-code"], "failSignatures": ["models=0", "No providers configured"] },
+    { "backend": "mimo",     "args": ["providers", "whoami"], "network": false, "retries": 1, "successSignatures": ["Provider: MiMo", "User ID:"], "failSignatures": ["not logged in", "no provider"] }
+  ]
+}

@@ -49,7 +49,11 @@ public sealed class PopupConfig
 
 public sealed class TranslationConfig
 {
-    public string TargetLanguageDefault { get; set; } = "zh-CN";
+    /// <summary>Unified target language (display name, e.g. "简体中文"/"English") injected into the prompt
+    /// via the <c>{target}</c> placeholder for ALL prompt-driven backends (CLI + openai-http/anthropic-http).
+    /// google-v2/doubao use their own <c>Target</c>/<c>TargetLanguage</c> code fields instead.</summary>
+    public string TargetLanguage { get; set; } = "简体中文";
+    public string TargetLanguageDefault { get; set; } = "zh-CN";   // legacy; unused by the prompt path
     public int MaxChars { get; set; } = 8000;
     public string PromptTemplate { get; set; } = "";
 }
@@ -73,6 +77,11 @@ public sealed class BackendConfig
     // --- http ---
     public string? Endpoint { get; set; }
     public string? ApiKey { get; set; }
+    // For a custom provider whose id is NOT a manifest entry: selects the generic HTTP template
+    // ("openai" -> openai-http /chat/completions, "anthropic" -> anthropic-http /messages). Null/empty
+    // for built-in backends (resolved by id). Additive/optional — no config-version bump (Law 4).
+    // NOTE: mirror this typed field to macOS BackendConfig.swift + BackendTestConfig in lockstep.
+    public string? Protocol { get; set; }
     public string? Target { get; set; }            // google-v2
     public string? Source { get; set; }            // google-v2
     public string? Format { get; set; }            // google-v2

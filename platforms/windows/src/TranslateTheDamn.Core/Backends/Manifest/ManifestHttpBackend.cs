@@ -1,5 +1,6 @@
 using System.Text.Json;
 using TranslateTheDamn.Core.Config;
+using TranslateTheDamn.Core.Util;
 
 namespace TranslateTheDamn.Core.Backends.Manifest;
 
@@ -12,17 +13,34 @@ public sealed class ManifestHttpBackend : HttpTranslator
 {
     private readonly string _id;
     private readonly BackendDef _def;
+    private readonly string _promptTemplate;
 
-    public ManifestHttpBackend(string id, BackendDef def, BackendConfig cfg) : base(cfg)
+    public ManifestHttpBackend(string id, BackendDef def, BackendConfig cfg, string promptTemplate = "") : base(cfg)
     {
         _id = id;
         _def = def;
+        _promptTemplate = promptTemplate;
     }
 
     public override string Id => _id;
     protected override bool HasCredential => !string.IsNullOrWhiteSpace(Cfg.ApiKey);
 
-    private string Endpoint => string.IsNullOrWhiteSpace(Cfg.Endpoint) ? (_def.Endpoint ?? string.Empty) : Cfg.Endpoint!;
+    private string Endpoint
+    {
+        get
+        {
+            var e = (string.IsNullOrWhiteSpace(Cfg.Endpoint) ? (_def.Endpoint ?? string.Empty) : Cfg.Endpoint!).Trim();
+            // If the manifest declares a chatPath (openai-http/anthropic-http) and the user gave a BASE
+            // (e.g. https://host/v1) instead of the full chat URL, append it — matching the @ai-sdk/
+            // openai-compatible convention where the configured baseURL omits /chat/completions.
+            if (!string.IsNullOrEmpty(_def.ChatPath) && e.Length > 0)
+            {
+                var trimmed = e.TrimEnd('/');
+                if (!trimmed.EndsWith(_def.ChatPath, StringComparison.OrdinalIgnoreCase)) e = trimmed + _def.ChatPath;
+            }
+            return e;
+        }
+    }
     private string Method => _def.Method ?? "POST";
 
     public override HttpCall BuildCall(string text)
@@ -52,6 +70,9 @@ public sealed class ManifestHttpBackend : HttpTranslator
     private Dictionary<string, string> Vars(string text) => new(StringComparer.Ordinal)
     {
         ["text"] = text,
+        // {prompt} = the full built translation prompt (rules + text), as the CLI backends send. Distinct
+        // from PromptBuilder's own {content} placeholder. Unused by google-v2/doubao (they use {text}).
+        ["prompt"] = PromptBuilder.Build(_promptTemplate, text),
         ["apiKey"] = Cfg.ApiKey ?? string.Empty,
         ["model"] = Pick(Cfg.Model, "model"),
         ["target"] = Pick(Cfg.Target, "target"),

@@ -1,0 +1,13 @@
+{
+  "fn": "BackendManifest.effortTiers",
+  "doc": "Per-CLI-backend effort/reasoning tier list declared in spec/backends.json — drives the per-vendor effort ComboBox. agy omits it (effort is a model-label suffix, no flag) → empty. Each platform's interpreter must expose the same lists from the shared manifest.",
+  "cases": [
+    { "backend": "claude",  "tiers": ["low", "medium", "high", "xhigh", "max"] },
+    { "backend": "codex",   "tiers": ["low", "medium", "high", "xhigh"] },
+    { "backend": "copilot", "tiers": ["none", "low", "medium", "high", "xhigh", "max"] },
+    { "backend": "agy",     "tiers": [] },
+    { "backend": "opencode", "tiers": ["none", "minimal", "low", "medium", "high", "xhigh", "max"] },
+    { "backend": "kimi",     "tiers": [] },
+    { "backend": "mimo",     "tiers": ["minimal", "low", "medium", "high", "max"] }
+  ]
+}

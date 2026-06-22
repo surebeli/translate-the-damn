@@ -7,11 +7,22 @@ using TranslateTheDamn.Tests;
 
 // Opt-in live end-to-end check against a real, installed, authenticated CLI (not part of the
 // default offline suite). Usage: dotnet run -- --live [backendId]
+if (args.Contains("--scan"))
+{
+    Console.WriteLine("# Credential auto-discovery — discovered STATIC keys (masked):");
+    var found = TranslateTheDamn.Core.Config.CredentialDiscovery.Scan();
+    if (found.Count == 0) Console.WriteLine("  (none found)");
+    foreach (var c in found)
+        Console.WriteLine($"  {c.Provider,-26} {c.Protocol,-10} {c.BaseUrl,-46} {c.KeyMasked,-16} [{c.Source}]");
+    return 0;
+}
+
 if (args.Contains("--live"))
 {
     var backendId = args.FirstOrDefault(a => !a.StartsWith("--")) ?? "claude";
     Console.WriteLine($"# LIVE end-to-end via real backend: {backendId}");
-    var liveCfg = DefaultConfig.Create();
+    // Use the REAL user config (incl. custom http providers) so --live tests what's actually installed.
+    var liveCfg = new ConfigService().LoadOrBootstrap();
     var reg = TranslatorRegistry.Build(liveCfg);
     var translator = reg.Get(backendId);
     if (translator is null) { Console.WriteLine("unknown backend"); return 2; }
@@ -38,7 +49,7 @@ Check.Section("ConfigService");
 
         var cfg = svc.LoadOrBootstrap();
         Check.True(File.Exists(svc.FilePath), "bootstrap writes config.json");
-        Check.Eq(6, cfg.Backends.Count, "default has 6 backends");
+        Check.Eq(9, cfg.Backends.Count, "default has 9 backends");
         Check.True(cfg.Backends.ContainsKey("agy"), "default has agy backend");
         Check.True(cfg.ModelCatalog.ContainsKey("claude"), "default has claude model catalog");
         Check.Eq("claude", cfg.General.ActiveBackend, "default active backend = claude");
@@ -59,7 +70,7 @@ Check.Section("ConfigService");
         // corrupt file -> backed up + rebootstrapped
         File.WriteAllText(svc.FilePath, "{ this is : not json ");
         var recovered = new ConfigService(dir).LoadOrBootstrap();
-        Check.Eq(6, recovered.Backends.Count, "corrupt config recovers to defaults");
+        Check.Eq(9, recovered.Backends.Count, "corrupt config recovers to defaults");
         Check.True(Directory.GetFiles(dir, "config.json.bak.*").Length >= 1, "corrupt config backed up to .bak");
     }
     finally { try { Directory.Delete(dir, true); } catch { } }
@@ -103,6 +114,20 @@ Check.Section("PromptBuilder");
     Check.Eq("rules: hello", PromptBuilder.Build("rules: {content}", "hello"), "placeholder substituted");
     Check.Eq("hello", PromptBuilder.Build("", "hello"), "empty template -> content");
     Check.Contains(PromptBuilder.Build("just rules", "hello"), "hello", "no placeholder -> appended");
+
+    // unified target language: {target} resolved once, then {content} per request
+    Check.Eq("译为English。内容:{content}", PromptBuilder.WithTarget("译为{target}。内容:{content}", "English"), "WithTarget resolves {target}, leaves {content}");
+    Check.Eq("plain", PromptBuilder.WithTarget("plain", "English"), "WithTarget no-op when no {target}");
+    var rendered = PromptBuilder.Build(PromptBuilder.WithTarget("译为{target}:{content}", "日本語"), "hi");
+    Check.Eq("译为日本語:hi", rendered, "target then content compose correctly");
+    // existing config carrying the OLD (pre-{target}) default is auto-upgraded on load
+    var migCfg = DefaultConfig.Create();
+    migCfg.Translation.PromptTemplate = DefaultConfig.OldPromptTemplate;
+    var migDir = Path.Combine(Path.GetTempPath(), "ttd-mig-" + Guid.NewGuid().ToString("N"));
+    try { var svc = new ConfigService(migDir); svc.Save(migCfg); var loaded = svc.LoadOrBootstrap();
+        Check.Eq(DefaultConfig.DefaultPromptTemplate, loaded.Translation.PromptTemplate, "old default template auto-upgrades to {target} on load");
+        Check.Contains(loaded.Translation.PromptTemplate, "{target}", "upgraded template uses {target}"); }
+    finally { try { System.IO.Directory.Delete(migDir, true); } catch { } }
 }
 
 // ---------------------------------------------------------------- AnsiStripper
@@ -142,14 +167,71 @@ Check.Section("CLI BuildInvocation");
 
     var copilot = Tb.Cli("copilot", new BackendConfig { Type = "cli", Command = "copilot" }, tmpl);
     var cp = copilot.BuildInvocation("P", null);
-    Check.SeqContains(cp.Args, "-s", "copilot silent -s");
-    Check.SeqContains(cp.Args, "--no-ask-user", "copilot --no-ask-user");
+    Check.SeqContains(cp.Args, "--allow-all-tools", "copilot --allow-all-tools (required for non-interactive)");
+    Check.SeqContains(cp.Args, "--model", "copilot passes --model");
 
     var agy = Tb.Cli("agy", new BackendConfig { Type = "cli", Command = "agy", FallbackCommand = "gemini" }, tmpl);
     var ay = agy.BuildInvocation("P", "C:\\tmp\\x.log");
     Check.True(ay.WantsLogFile, "agy wants log file");
+    Check.SeqContains(ay.Args, "--dangerously-skip-permissions", "agy skips tool-permission prompt for non-interactive -p");
     Check.SeqContains(ay.Args, "--log-file", "agy passes --log-file");
     Check.SeqContains(ay.Args, "C:\\tmp\\x.log", "agy log path threaded");
+
+    // effort wiring: claude/copilot append --effort ONLY when a reasoning tier is set (codex is inline)
+    var claudeEff = Tb.Cli("claude", new BackendConfig { Type = "cli", Command = "claude", Reasoning = "high" }, tmpl).BuildInvocation("P", null);
+    Check.SeqContains(claudeEff.Args, "--effort", "claude appends --effort when reasoning set");
+    Check.SeqContains(claudeEff.Args, "high", "claude --effort value threaded");
+    var claudeNoEff = Tb.Cli("claude", new BackendConfig { Type = "cli", Command = "claude" }, tmpl).BuildInvocation("P", null);
+    Check.True(!claudeNoEff.Args.Contains("--effort"), "claude omits --effort when reasoning unset (no default behavior change)");
+    var copilotEff = Tb.Cli("copilot", new BackendConfig { Type = "cli", Command = "copilot", Reasoning = "medium" }, tmpl).BuildInvocation("P", null);
+    Check.SeqContains(copilotEff.Args, "--effort", "copilot appends --effort when reasoning set");
+    Check.SeqContains(copilotEff.Args, "medium", "copilot --effort value threaded");
+    var copilotNoEff = Tb.Cli("copilot", new BackendConfig { Type = "cli", Command = "copilot" }, tmpl).BuildInvocation("P", null);
+    Check.True(!copilotNoEff.Args.Contains("--effort"), "copilot omits --effort when reasoning unset");
+    var agyEff = Tb.Cli("agy", new BackendConfig { Type = "cli", Command = "agy", Reasoning = "high" }, tmpl).BuildInvocation("P", null);
+    Check.True(!agyEff.Args.Contains("--effort"), "agy has no --effort flag even with reasoning set (effort = model label)");
+    var codexInline = Tb.Cli("codex", new BackendConfig { Type = "cli", Command = "codex", Reasoning = "high" }, tmpl).BuildInvocation("P", null);
+    Check.True(codexInline.Args.Any(a => a.Contains("model_reasoning_effort=\"high\"")), "codex threads effort inline (model_reasoning_effort)");
+
+    // new vendors: opencode (run + positional prompt + --format json + skip-perms + --variant effort), kimi (-p + stream-json), mimo (run + skip-perms)
+    var oc = Tb.Cli("opencode", new BackendConfig { Type = "cli", Command = "opencode" }, tmpl).BuildInvocation("PROMPT", null);
+    Check.Eq("run", oc.Args[0], "opencode uses the run subcommand (not -p)");
+    Check.SeqContains(oc.Args, "PROMPT", "opencode prompt is a positional arg");
+    Check.SeqContains(oc.Args, "json", "opencode --format json");
+    Check.SeqContains(oc.Args, "--dangerously-skip-permissions", "opencode skip-permissions");
+    Check.True(!oc.Args.Contains("--variant"), "opencode omits --variant when no effort tier");
+    var ocVar = Tb.Cli("opencode", new BackendConfig { Type = "cli", Command = "opencode", Reasoning = "high" }, tmpl).BuildInvocation("P", null);
+    Check.SeqContains(ocVar.Args, "--variant", "opencode appends --variant when reasoning set");
+    Check.SeqContains(ocVar.Args, "high", "opencode --variant value threaded");
+    var km = Tb.Cli("kimi", new BackendConfig { Type = "cli", Command = "kimi" }, tmpl).BuildInvocation("P", null);
+    Check.SeqContains(km.Args, "-p", "kimi non-interactive -p");
+    Check.SeqContains(km.Args, "stream-json", "kimi --output-format stream-json (manifest default)");
+    var mm = Tb.Cli("mimo", new BackendConfig { Type = "cli", Command = "mimo" }, tmpl).BuildInvocation("P", null);
+    Check.Eq("run", mm.Args[0], "mimo uses the run subcommand (bare mimo = TUI)");
+    Check.SeqContains(mm.Args, "--dangerously-skip-permissions", "mimo skip-permissions (required)");
+    Check.SeqContains(mm.Args, "json", "mimo --format json (clean answer, no chrome header line)");
+
+    // live model enumeration parser: keep provider/model ids; drop chrome / blank / spaced lines; dedup, order-preserved
+    var parsed = ModelEnumerator.ParseModels("opencode/big-pickle\ndeepseek/deepseek-chat\n\n> build · chrome line\ndeepseek/deepseek-chat\nplainword\n");
+    Check.Eq(2, parsed.Count, "ParseModels keeps only unique provider/model ids");
+    Check.Eq("opencode/big-pickle", parsed[0], "ParseModels preserves source order");
+    Check.SeqContains(parsed, "deepseek/deepseek-chat", "ParseModels keeps the deepseek id (deduped once)");
+
+    // HTTP /models enumeration: derive the GET /models URL from a chat/messages endpoint + parse the OpenAI-shaped body
+    Check.Eq("https://api.deepseek.com/v1/models", ModelEnumerator.DeriveModelsUrl("https://api.deepseek.com/v1/chat/completions"), "derive /models from openai chat endpoint");
+    Check.Eq("https://api.kimi.com/coding/v1/models", ModelEnumerator.DeriveModelsUrl("https://api.kimi.com/coding/v1/messages"), "derive /models from anthropic messages endpoint");
+    // bare base (e.g. tokbox-api.netease.im) serves /v1/models, NOT /models -> try /v1/models first, then /models
+    var bareUrls = ModelEnumerator.DeriveModelsUrls("https://tokbox-api.netease.im");
+    Check.Eq("https://tokbox-api.netease.im/v1/models", bareUrls[0], "bare base -> /v1/models is the first candidate");
+    Check.SeqContains(bareUrls, "https://tokbox-api.netease.im/models", "bare base -> /models is a fallback candidate");
+    Check.Eq("https://x.ai/v1/models", ModelEnumerator.DeriveModelsUrl("https://x.ai/v1"), "/v1 base -> /v1/models (no double /v1)");
+    Check.Eq("https://openrouter.ai/api/v1/models", ModelEnumerator.DeriveModelsUrl("https://openrouter.ai/api/v1"), "openrouter /api/v1 -> /api/v1/models (versioned root)");
+    Check.SeqContains(ModelEnumerator.ParseModelsJson("{\"models\":[{\"name\":\"llama3\"},{\"name\":\"qwen\"}]}"), "llama3", "ParseModelsJson handles {models:[{name}]} (ollama)");
+    Check.SeqContains(ModelEnumerator.ParseModelsJson("[\"gpt-4o\",\"gpt-4o-mini\"]"), "gpt-4o-mini", "ParseModelsJson handles a bare string array");
+    var apiModels = ModelEnumerator.ParseModelsJson("{\"object\":\"list\",\"data\":[{\"id\":\"deepseek-v4-flash\"},{\"id\":\"deepseek-reasoner\"},{\"id\":\"deepseek-v4-flash\"}]}");
+    Check.Eq(2, apiModels.Count, "ParseModelsJson extracts unique data[].id");
+    Check.Eq("deepseek-v4-flash", apiModels[0], "ParseModelsJson preserves API order");
+    Check.Eq(0, ModelEnumerator.ParseModelsJson("not json at all").Count, "ParseModelsJson tolerates non-JSON");
 }
 
 // ---------------------------------------------------------------- HTTP calls + parsing
@@ -192,11 +274,24 @@ Check.Section("HTTP credential gating");
 Check.Section("TranslatorRegistry");
 {
     var reg = TranslatorRegistry.Build(DefaultConfig.Create());
-    Check.Eq(6, reg.Ids.Count, "registry builds 6 backends");
+    Check.Eq(9, reg.Ids.Count, "registry builds 9 backends");
     Check.True(reg.Get("claude") is ManifestCliBackend, "claude -> manifest CLI backend");
     Check.True(reg.Get("doubao") is ManifestHttpBackend, "doubao -> manifest HTTP backend");
     Check.True(reg.Get("CLAUDE") is ManifestCliBackend, "lookup is case-insensitive");
     Check.True(reg.Get("nope") is null, "unknown backend -> null");
+
+    // custom provider: an id ABSENT from the manifest resolves a generic HTTP template by protocol (Law-6, no switch(id))
+    var customCfg = DefaultConfig.Create();
+    customCfg.Backends["my-deepseek"] = new BackendConfig { Type = "http", Protocol = "openai", Endpoint = "https://api.deepseek.com/v1/chat/completions", ApiKey = "K", Model = "deepseek-v4-flash" };
+    customCfg.Backends["my-kimi"] = new BackendConfig { Type = "http", Protocol = "anthropic", Endpoint = "https://api.kimi.com/coding/v1/messages", ApiKey = "K", Model = "kimi-for-coding" };
+    customCfg.Backends["no-proto"] = new BackendConfig { Type = "http", Endpoint = "https://x/y", ApiKey = "K" };  // no protocol -> dropped
+    var creg = TranslatorRegistry.Build(customCfg);
+    Check.True(creg.Get("my-deepseek") is ManifestHttpBackend, "custom openai provider resolves via protocol fallback");
+    Check.True(creg.Get("my-kimi") is ManifestHttpBackend, "custom anthropic provider resolves via protocol fallback");
+    Check.True(creg.Get("no-proto") is null, "custom http id with no protocol is dropped (not silently mis-resolved)");
+    var dsCall = ((ManifestHttpBackend)creg.Get("my-deepseek")!).BuildCall("Hello");
+    Check.True(dsCall.Url.Contains("api.deepseek.com", StringComparison.Ordinal), "custom provider uses the config endpoint, not the empty manifest one");
+    Check.True(dsCall.BodyJson.Contains("\"stream\":false", StringComparison.Ordinal) && !dsCall.BodyJson.Contains("max_tokens", StringComparison.Ordinal), "custom openai provider emits the openai-http body shape");
 }
 
 // ---------------------------------------------------------------- Manifest hardening (codex review fixes)

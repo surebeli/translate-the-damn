@@ -34,3 +34,12 @@ public sealed record TranslationResult(string Text, TranslateStatus Status, stri
     public static TranslationResult Successful(string text) => new(text, TranslateStatus.Success);
     public static TranslationResult Failure(TranslateStatus status, string error) => new(string.Empty, status, error);
 }
+
+/// <summary>Per-check status for the backend doctor (spec §9).</summary>
+public enum DoctorStatus { Ok, Degraded, Fail, Unknown }
+
+/// <summary>One row in a <see cref="DoctorReport"/>: a named check + status + human detail. Never a secret.</summary>
+public sealed record DoctorCheck(string Name, DoctorStatus Status, string Detail);
+
+/// <summary>Result of running the backend doctor: per-check rows + an aggregate. Carries no API key.</summary>
+public sealed record DoctorReport(string BackendId, DoctorStatus Overall, IReadOnlyList<DoctorCheck> Checks);

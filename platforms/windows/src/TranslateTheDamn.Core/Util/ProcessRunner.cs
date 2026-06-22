@@ -42,6 +42,11 @@ public sealed class ProcessRunner
             StandardOutputEncoding = Encoding.UTF8,
             StandardErrorEncoding = Encoding.UTF8
         };
+        // Pipe the prompt as UTF-8 (codex/claude read it from stdin). Without this the input stream
+        // uses the system ANSI codepage (e.g. GBK on zh-CN Windows), so a Chinese prompt arrives as
+        // invalid UTF-8 and codex aborts with "stdin needs utf-8". Only settable when redirecting in.
+        if (stdinMode == StdinMode.Pipe)
+            psi.StandardInputEncoding = Encoding.UTF8;
         if (!string.IsNullOrEmpty(workingDirectory) && Directory.Exists(workingDirectory))
             psi.WorkingDirectory = workingDirectory;
         foreach (var a in cmd.PrependArgs) psi.ArgumentList.Add(a);

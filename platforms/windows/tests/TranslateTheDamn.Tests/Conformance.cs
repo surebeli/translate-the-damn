@@ -1,6 +1,7 @@
 using System.Text.Json;
 using TranslateTheDamn.Core;
 using TranslateTheDamn.Core.Backends;
+using TranslateTheDamn.Core.Backends.Manifest;
 using TranslateTheDamn.Core.Config;
 using TranslateTheDamn.Core.Util;
 
@@ -55,6 +56,90 @@ public static class Conformance
         RunConfigDefaults(dir);
         RunBackendRequests(dir);
         await RunCacheScenariosAsync(dir);
+        RunEffortTiers(dir);
+        RunDoctorProbe(dir);
+        RunDoctorClassify(dir);
+        RunCredentialDiscovery(dir);
+    }
+
+    // --- per-vendor effort tiers declared in the manifest ---
+    private static void RunEffortTiers(string dir)
+    {
+        var path = Path.Combine(dir, "effort-tiers.json");
+        if (!File.Exists(path)) { Check.True(false, "conformance file exists: effort-tiers.json"); return; }
+
+        var manifest = BackendManifest.Load();
+        using var vec = JsonDocument.Parse(File.ReadAllText(path));
+        foreach (var c in vec.RootElement.GetProperty("cases").EnumerateArray())
+        {
+            var backend = c.GetProperty("backend").GetString()!;
+            var expected = string.Join(",", c.GetProperty("tiers").EnumerateArray().Select(x => x.GetString()));
+            var actual = string.Join(",", (manifest.Backends.TryGetValue(backend, out var def) ? def.EffortTiers : null) ?? new List<string>());
+            Check.Eq(expected, actual, $"conformance effort-tiers [{backend}]");
+        }
+    }
+
+    // --- per-vendor doctor probe argv/kind declared in the manifest ---
+    private static void RunDoctorProbe(string dir)
+    {
+        var path = Path.Combine(dir, "doctor-probe.json");
+        if (!File.Exists(path)) { Check.True(false, "conformance file exists: doctor-probe.json"); return; }
+
+        var manifest = BackendManifest.Load();
+        using var vec = JsonDocument.Parse(File.ReadAllText(path));
+        foreach (var c in vec.RootElement.GetProperty("cases").EnumerateArray())
+        {
+            var backend = c.GetProperty("backend").GetString()!;
+            manifest.Backends.TryGetValue(backend, out var def);
+            var probe = def?.Probe;
+            if (c.TryGetProperty("args", out var argsEl))
+            {
+                if (argsEl.ValueKind == JsonValueKind.Null)
+                    Check.True(probe?.Args is null || probe.Args.Count == 0, $"conformance doctor-probe [{backend}] presence-only (no argv)");
+                else
+                {
+                    var expected = string.Join(" ", argsEl.EnumerateArray().Select(x => x.GetString()));
+                    Check.Eq(expected, string.Join(" ", probe?.Args ?? new List<string>()), $"conformance doctor-probe [{backend}] argv");
+                }
+            }
+            if (c.TryGetProperty("kind", out var kindEl))
+                Check.Eq(kindEl.GetString(), probe?.Kind, $"conformance doctor-probe [{backend}] kind");
+            if (c.TryGetProperty("network", out var netEl))
+                Check.Eq(netEl.GetBoolean(), probe?.Network ?? false, $"conformance doctor-probe [{backend}] network");
+            if (c.TryGetProperty("retries", out var retEl))
+                Check.Eq(retEl.GetInt32(), probe?.Retries ?? 0, $"conformance doctor-probe [{backend}] retries");
+            if (c.TryGetProperty("successSignatures", out var ssEl))
+                Check.Eq(string.Join("|", ssEl.EnumerateArray().Select(x => x.GetString())), string.Join("|", probe?.SuccessSignatures ?? new List<string>()), $"conformance doctor-probe [{backend}] successSignatures");
+            if (c.TryGetProperty("failSignatures", out var fsEl))
+                Check.Eq(string.Join("|", fsEl.EnumerateArray().Select(x => x.GetString())), string.Join("|", probe?.FailSignatures ?? new List<string>()), $"conformance doctor-probe [{backend}] failSignatures");
+            if (c.TryGetProperty("failWins", out var fwEl))
+                Check.Eq(fwEl.GetBoolean(), probe?.FailWins ?? false, $"conformance doctor-probe [{backend}] failWins");
+        }
+    }
+
+    // --- generic auth/connectivity classifier (success-wins; agy transient regression) ---
+    private static void RunDoctorClassify(string dir)
+    {
+        var path = Path.Combine(dir, "doctor-classify.json");
+        if (!File.Exists(path)) { Check.True(false, "conformance file exists: doctor-classify.json"); return; }
+
+        using var vec = JsonDocument.Parse(File.ReadAllText(path));
+        foreach (var c in vec.RootElement.GetProperty("cases").EnumerateArray())
+        {
+            var name = c.GetProperty("name").GetString() ?? "?";
+            var success = c.GetProperty("success").EnumerateArray().Select(x => x.GetString()!).ToList();
+            var fail = c.GetProperty("fail").EnumerateArray().Select(x => x.GetString()!).ToList();
+            var text = c.GetProperty("text").GetString() ?? string.Empty;
+            var expected = c.GetProperty("out").GetString();
+            var failWins = c.TryGetProperty("failWins", out var fwEl) && fwEl.GetBoolean();
+            var got = ProbeClassifier.Classify(success, fail, text, failWins) switch
+            {
+                ProbeStatus.Ok => "ok",
+                ProbeStatus.Fail => "fail",
+                _ => "unknown"
+            };
+            Check.Eq(expected, got, $"conformance doctor-classify [{name}]");
+        }
     }
 
     // --- serialized default-config assertions ---
@@ -95,7 +180,8 @@ public static class Conformance
             var name = c.GetProperty("name").GetString() ?? "?";
             var backend = c.GetProperty("backend").GetString()!;
             var bc = BackendFromConfig(c.GetProperty("config"));
-            var t = Tb.Http(backend, bc);
+            var tmpl = c.TryGetProperty("promptTemplate", out var pt) ? (pt.GetString() ?? "") : "";
+            var t = Tb.Http(backend, bc, tmpl);
             var call = t.BuildCall(c.GetProperty("text").GetString()!);
             var ex = c.GetProperty("expect");
 
@@ -122,6 +208,7 @@ public static class Conformance
             Type = "http",
             ApiKey = S("apiKey"),
             Endpoint = S("endpoint"),
+            Protocol = S("protocol"),
             Model = S("model"),
             Target = S("target"),
             Source = S("source"),
@@ -129,6 +216,29 @@ public static class Conformance
             TargetLanguage = S("targetLanguage"),
             SourceLanguage = S("sourceLanguage")
         };
+    }
+
+    // --- credential auto-discovery: the static-key/OAuth import boundary ---
+    private static void RunCredentialDiscovery(string dir)
+    {
+        var path = Path.Combine(dir, "credential-discovery.json");
+        if (!File.Exists(path)) { Check.True(false, "conformance file exists: credential-discovery.json"); return; }
+
+        using var vec = JsonDocument.Parse(File.ReadAllText(path));
+        foreach (var c in vec.RootElement.GetProperty("cases").EnumerateArray())
+        {
+            var name = c.GetProperty("name").GetString() ?? "?";
+            var got = CredentialClassifier.Classify("test", c.GetProperty("baseUrl").GetString(), c.GetProperty("key").GetString());
+            var ex = c.GetProperty("expect");
+            var wantImport = ex.GetProperty("import").GetBoolean();
+            Check.Eq(wantImport, got is not null, $"cred-classify [{name}] import?");
+            if (wantImport && got is not null)
+            {
+                if (ex.TryGetProperty("provider", out var pv)) Check.Eq(pv.GetString(), got.Provider, $"cred-classify [{name}] provider");
+                if (ex.TryGetProperty("protocol", out var pr)) Check.Eq(pr.GetString(), got.Protocol, $"cred-classify [{name}] protocol");
+                if (ex.TryGetProperty("suggestedId", out var si)) Check.Eq(si.GetString(), got.SuggestedId, $"cred-classify [{name}] suggestedId");
+            }
+        }
     }
 
     // --- stateful cache scenarios ---

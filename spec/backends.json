@@ -7,10 +7,13 @@
       "command": "claude",
       "promptVia": "stdin",
       "args": ["-p", "--model", "{model}", "--output-format", "{outputFormat}"],
+      "argsAppend": [ { "when": "reasoning", "args": ["--effort", "{reasoning}"] } ],
       "defaults": { "model": "haiku", "outputFormat": "text", "timeoutSec": 60 },
+      "effortTiers": ["low", "medium", "high", "xhigh", "max"],
+      "probe": { "args": ["auth", "status", "--json"], "network": false, "retries": 1, "successSignatures": ["\"loggedIn\": true"], "failSignatures": ["\"loggedIn\": false"] },
       "parse": { "mode": "stdout-clean", "jsonResultPath": "result" },
       "auth": "claude.ai OAuth or ANTHROPIC_API_KEY",
-      "notes": "prompt via stdin avoids cmd.exe/shell arg mangling; spawn from a neutral CWD so it doesn't load the current project's context."
+      "notes": "prompt via stdin avoids cmd.exe/shell arg mangling; spawn from a neutral CWD so it doesn't load the current project's context. --effort is appended only when a reasoning tier is set; the model alias is the primary capability tier."
     },
     "codex": {
       "kind": "cli",
@@ -18,34 +21,39 @@
       "promptVia": "stdin-dash",
       "args": ["exec", "--skip-git-repo-check", "--sandbox", "read-only", "--color", "never", "-m", "{model}", "-c", "model_reasoning_effort=\"{reasoning}\"", "-"],
       "defaults": { "model": "gpt-5.4-mini", "reasoning": "low", "timeoutSec": 60 },
+      "effortTiers": ["low", "medium", "high", "xhigh"],
+      "probe": { "args": ["login", "status"], "network": false, "retries": 1, "successSignatures": ["Logged in using"], "failSignatures": ["not logged in"] },
       "parse": { "mode": "stdout-clean", "jsonEvent": "item.completed -> item.text" },
       "auth": "ChatGPT login or CODEX_API_KEY",
-      "notes": "trailing '-' reads stdin (avoids the non-TTY hang); chrome goes to stderr."
+      "notes": "trailing '-' reads stdin (avoids the non-TTY hang); chrome goes to stderr. effort via -c model_reasoning_effort (inline, always-on, default low). Doctor matches the `login status` signature; do NOT gate on `codex doctor` top-level overallStatus (npm-root noise)."
     },
     "copilot": {
       "kind": "cli",
       "command": "copilot",
       "promptVia": "arg",
-      "args": ["-p", "{prompt}", "-s", "--no-ask-user", "--model", "{model}"],
-      "defaults": { "model": "claude-haiku-4.5", "timeoutSec": 60 },
+      "args": ["-p", "{prompt}", "--model", "{model}", "--allow-all-tools"],
+      "argsAppend": [ { "when": "reasoning", "args": ["--effort", "{reasoning}"] } ],
+      "defaults": { "model": "auto", "timeoutSec": 60 },
+      "effortTiers": ["none", "low", "medium", "high", "xhigh", "max"],
       "parse": { "mode": "stdout-clean" },
       "auth": "COPILOT_GITHUB_TOKEN (fine-grained PAT, Copilot Requests)",
       "status": "best-effort",
-      "notes": "Windows -p no-output bug (github/copilot-cli #1181) — verify per version; prompt-as-arg may need shell-safe handling per platform."
+      "notes": "Non-interactive form verified vs `copilot --help`: `-p <prompt> --model <m> --allow-all-tools` (--allow-all-tools is REQUIRED for non-interactive; old `-s`/`--no-ask-user` are gone). Default model `auto` (Copilot picks) — pinning a name not in the user's Copilot model set caused 'model from --model flag is not available'. `--effort`/`--reasoning-effort` choices: none/low/medium/high. Appended only when a tier is set. No non-interactive auth-status -> doctor presence-only."
     },
     "agy": {
       "kind": "cli",
       "command": "agy",
       "promptVia": "arg",
-      "args": ["-p", "{prompt}", "--log-file", "{logFile}"],
+      "args": ["-p", "{prompt}", "--dangerously-skip-permissions", "--log-file", "{logFile}"],
       "defaults": { "model": "gemini-3.5-flash", "timeoutSec": 60 },
       "fallbackCommand": "gemini",
       "fallbackArgs": ["-p", "{prompt}", "--output-format", "text"],
       "knownInstallPaths": { "windows": ["%LOCALAPPDATA%\\agy\\bin\\agy.exe"] },
+      "probe": { "kind": "log", "network": true, "retries": 3, "successSignatures": ["authenticated via keyring", "authenticated successfully as"], "failSignatures": ["not logged into Antigravity"], "credFiles": ["%USERPROFILE%\\.gemini\\oauth_creds.json", "%USERPROFILE%\\.gemini\\google_accounts.json"] },
       "parse": { "mode": "stdout-clean", "logDiagnosis": "exit0+empty-stdout+auth-error-in-log" },
       "auth": "ANTIGRAVITY_API_KEY / OAuth (gemini fallback: GEMINI_API_KEY)",
       "status": "best-effort",
-      "notes": "Windows -p no-stdout bug (gemini-cli #27466) -> fall back to gemini."
+      "notes": "`-p` non-interactive REQUIRES --dangerously-skip-permissions (agy's equivalent of copilot's --allow-all-tools) or it blocks on a tool-permission prompt and returns empty ('没有返回译文'). If stdout is still empty afterwards (gemini-cli #27466) -> fall back to gemini. First-call 'not logged into Antigravity' is a transient keyring cold-start read race (~1s), NOT a logout: success markers appear ~300ms later in the SAME log -> success-wins classification + bounded retry (report the final state) + local cred-file check. Do not conflate with the empty-stdout -p bug."
     },
     "google-v2": {
       "kind": "http",
@@ -71,6 +79,73 @@
       "responsePath": "output[type=message].content[type=output_text].text",
       "defaults": { "model": "doubao-seed-translation-250915", "targetLanguage": "zh" },
       "notes": "MUST be /responses (not /chat/completions); language goes in translation_options; ~4K in/3K out chars; per-character billing; confidence medium (official docs JS-rendered)."
+    },
+    "opencode": {
+      "kind": "cli",
+      "command": "opencode",
+      "promptVia": "arg",
+      "args": ["run", "{prompt}", "-m", "{model}", "--format", "json", "--dangerously-skip-permissions"],
+      "argsAppend": [ { "when": "reasoning", "args": ["--variant", "{reasoning}"] } ],
+      "defaults": { "model": "deepseek/deepseek-chat", "timeoutSec": 60 },
+      "effortTiers": ["none", "minimal", "low", "medium", "high", "xhigh", "max"],
+      "probe": { "args": ["auth", "list"], "network": false, "retries": 1, "failWins": true, "successSignatures": ["credentials"], "failSignatures": ["0 credentials"] },
+      "modelsCmd": ["models"],
+      "parse": { "mode": "stdout-clean", "jsonl": true, "jsonlType": "text", "jsonlTextPath": "part.text" },
+      "auth": "opencode auth login (creds in ~/.local/share/opencode/auth.json) or provider env keys",
+      "status": "best-effort",
+      "notes": "sst/opencode TS edition (v1.17.7): prompt is a POSITIONAL arg to the `run` subcommand (NEVER -p; -p there = --password). --format json -> JSONL; answer = each type==text event's part.text concatenated. --variant tiers are provider-specific (server-validated) -> append only when set. --dangerously-skip-permissions avoids any permission-prompt hang. Spawn from a NEUTRAL CWD (loads AGENTS.md otherwise). Models are dynamic (`opencode models`); the catalog is a snapshot. PROBE is fail-wins: 'credentials' substring-matches '0 credentials' too, so failSignatures must be evaluated first. Verified live end-to-end at $0."
+    },
+    "kimi": {
+      "kind": "cli",
+      "command": "kimi",
+      "promptVia": "arg",
+      "args": ["-p", "{prompt}", "--model", "{model}", "--output-format", "{outputFormat}"],
+      "defaults": { "model": "kimi-code/kimi-for-coding", "outputFormat": "stream-json", "timeoutSec": 90 },
+      "effortTiers": [],
+      "probe": { "args": ["provider", "list"], "network": false, "retries": 1, "successSignatures": ["source=oauth", "managed:kimi-code"], "failSignatures": ["models=0", "No providers configured"] },
+      "parse": { "mode": "stdout-clean", "jsonl": true, "jsonlType": "text", "jsonlTextPath": "text" },
+      "auth": "Kimi Code OAuth (`kimi login`); creds at ~/.kimi-code/credentials/kimi-code.json",
+      "status": "best-effort",
+      "notes": "Moonshot Kimi Code CLI (kimi.exe v0.17.1; NOT legacy 'kimi-cli'). `-p` runs ONE prompt non-interactively, self-contained: NO skip-permissions flag, and -p is mutually exclusive with --auto/--yolo/--plan (adding any -> exit 1). One model (kimi-code/kimi-for-coding; thinking always-on; no per-call effort -> effortTiers []). Default --output-format stream-json (NDJSON); answer = concat type==text parts. The stream-json field shape is verified-by-help, not by a real call -> best-effort; the owner's first real translate locks it. Spawn from a neutral CWD."
+    },
+    "mimo": {
+      "kind": "cli",
+      "command": "mimo",
+      "promptVia": "arg",
+      "args": ["run", "{prompt}", "--model", "{model}", "--format", "json", "--dangerously-skip-permissions"],
+      "argsAppend": [ { "when": "reasoning", "args": ["--variant", "{reasoning}"] } ],
+      "defaults": { "model": "xiaomi/mimo-v2.5-pro", "timeoutSec": 90 },
+      "effortTiers": ["minimal", "low", "medium", "high", "max"],
+      "probe": { "args": ["providers", "whoami"], "network": false, "retries": 1, "successSignatures": ["Provider: MiMo", "User ID:"], "failSignatures": ["not logged in", "no provider"] },
+      "modelsCmd": ["models"],
+      "parse": { "mode": "stdout-clean", "jsonl": true, "jsonlType": "text", "jsonlTextPath": "part.text" },
+      "auth": "Xiaomi MiMo API key in ~/.local/share/mimocode/auth.json (`mimo providers login`)",
+      "status": "best-effort",
+      "notes": "OpenCode-derived 'mimocode' (v0.1.1). NON-INTERACTIVE = `mimo run <message>` (positional; bare `mimo` launches a TUI and HANGS). --dangerously-skip-permissions REQUIRED (--never-ask does NOT cover permissions). --variant carries reasoning effort (help exemplifies high/max/minimal; tiers are examples). Text mode leaks a `> build · <model>` chrome header line that stdout-clean can't remove -> switched to --format json (NDJSON step_start/text/step_finish; answer = each type==text event's part.text, same shape as opencode). Structure verified live; offline capture can't validate the UTF-8 (PowerShell re-encodes pipe text and mimo SUPPRESSES stdout to a non-TTY FILE — agy-#76 family — but emits to a PIPE, which is what ProcessRunner uses), so the owner's in-app test locks the final bytes. Neutral CWD."
+    },
+    "openai-http": {
+      "kind": "http",
+      "method": "POST",
+      "endpoint": "",
+      "chatPath": "/chat/completions",
+      "headers": { "Authorization": "Bearer {apiKey}", "Content-Type": "application/json" },
+      "bodyTemplate": { "model": "{model}", "messages": [ { "role": "user", "content": "{prompt}" } ], "stream": false },
+      "responsePath": "choices[0].message.content",
+      "defaults": { "model": "deepseek-v4-flash", "timeoutSec": 60 },
+      "auth": "static API key (Bearer); BYOK",
+      "notes": "Generic OpenAI /chat/completions long tail (DeepSeek/MiMo/Moonshot/any base_url+key). endpoint+model+apiKey ALL come from config.json (empty manifest endpoint -> ManifestHttpBackend prefers Cfg.Endpoint). {prompt} = PromptBuilder.Build(translation rules, source text) — the SAME built prompt the CLI backends send, distinct from PromptBuilder's own {content} placeholder. Custom-provider config ids with no manifest entry resolve THIS def via BackendConfig.protocol=openai. NEVER use for Kimi Code: api.kimi.com/coding returns access_terminated to OpenAI-format clients — use anthropic-http."
+    },
+    "anthropic-http": {
+      "kind": "http",
+      "method": "POST",
+      "endpoint": "",
+      "chatPath": "/messages",
+      "headers": { "x-api-key": "{apiKey}", "anthropic-version": "2023-06-01", "Content-Type": "application/json" },
+      "bodyTemplate": { "model": "{model}", "max_tokens": 4096, "messages": [ { "role": "user", "content": "{prompt}" } ] },
+      "responsePath": "content[type=text].text",
+      "defaults": { "model": "kimi-for-coding", "timeoutSec": 60 },
+      "auth": "static API key (x-api-key, Bearer also accepted by Kimi); BYOK",
+      "notes": "Generic Anthropic /messages. REQUIRED for Kimi Code (https://api.kimi.com/coding/v1/messages) which blocks OpenAI /chat/completions (access_terminated, coding-agent allow-list). Also usable for any Claude-compatible base_url+key. endpoint+model+apiKey from config; {prompt} = PromptBuilder output. responsePath content[type=text].text uses the same arr[key=value] filter doubao uses. Custom ids resolve via BackendConfig.protocol=anthropic. Do NOT forge a coding-agent User-Agent (ToS); if Kimi 403s, fall back to the kimi CLI."
     }
   }
 }

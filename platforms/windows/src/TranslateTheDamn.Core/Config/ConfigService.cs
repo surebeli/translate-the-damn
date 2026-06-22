@@ -75,8 +75,21 @@ public sealed class ConfigService
         cfg.Translation ??= def.Translation;
         if (string.IsNullOrWhiteSpace(cfg.Translation.PromptTemplate))
             cfg.Translation.PromptTemplate = DefaultConfig.DefaultPromptTemplate;
+        else if (cfg.Translation.PromptTemplate == DefaultConfig.OldPromptTemplate)
+            // Auto-upgrade the pre-{target} default so the unified target language takes effect.
+            cfg.Translation.PromptTemplate = DefaultConfig.DefaultPromptTemplate;
+        if (string.IsNullOrWhiteSpace(cfg.Translation.TargetLanguage))
+            cfg.Translation.TargetLanguage = "简体中文";
         cfg.Backends ??= def.Backends;
-        cfg.ModelCatalog ??= def.ModelCatalog;
+        // Merge in any backends introduced AFTER this config file was written (e.g. new vendors like
+        // opencode/kimi/mimo), without overwriting the user's existing per-backend settings (API keys,
+        // chosen models). TryAdd only adds keys that aren't already present.
+        foreach (var kv in def.Backends)
+            cfg.Backends.TryAdd(kv.Key, kv.Value);
+        // The model catalog is a built-in (materialized) list, NOT user data — always refresh it from
+        // the current defaults so model-list updates (e.g. copilot's valid models) reach existing
+        // configs. The user's chosen model (backends.<id>.model) is preserved.
+        cfg.ModelCatalog = def.ModelCatalog;
     }
 
     private void BackupCorrupt()

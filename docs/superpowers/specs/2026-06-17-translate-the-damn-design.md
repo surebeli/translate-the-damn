@@ -138,6 +138,26 @@ Known Windows risks to verify by smoke test before relying on them: `copilot -p`
 (copilot-cli #1181) and `agy -p` no-stdout (gemini-cli #27466). The agy log-file path + gemini
 fallback mitigate the latter.
 
+**Per-vendor effort tiers + probe (model-management).** The manifest declares, per CLI backend:
+- `effortTiers` — allowed reasoning/effort levels for the per-vendor selector (claude
+  `low/medium/high/xhigh/max`, codex `low/medium/high/xhigh`, copilot
+  `none/low/medium/high/xhigh/max`; agy omits it — its effort is a model-label suffix, no flag). The
+  selector is an **editable** ComboBox bound to this list (unknown/future tiers still round-trip); the
+  chosen tier persists in `config.backends.<id>.reasoning`.
+- effort wiring is **per-vendor honest**: codex passes it inline always-on
+  (`-c model_reasoning_effort`, default `low`); claude/copilot append `--effort {tier}` **only when a
+  tier is set** (manifest `argsAppend` conditional — appended only when its `when` var is non-empty);
+  agy has no flag.
+- `probe` — a non-interactive auth/connectivity check for the **doctor**: `claude auth status --json`,
+  `codex login status` (match the login signature, NOT `codex doctor` top-level status), copilot =
+  presence-only, agy = cred-file check + bounded-retry over log success-markers (the first-call "not
+  logged into Antigravity" is a transient keyring cold-start race, not a logout). Classification
+  (generic): **ok if any successSignature present; else fail if any failSignature; else unknown**
+  (success-wins fixes the agy transient + the `ProcessTranslator` false-AuthFail it exposed). The
+  doctor is scoped to connectivity/auth + reporting the **static** `ModelCatalog` (no CLI enumerates
+  models non-interactively) + the effort tiers; depth is **local by default** with an opt-in
+  "深度检测" billable `-p` live probe.
+
 ### 6.1 Google Cloud Translation v2 (Basic) — request
 
 ```
@@ -242,6 +262,13 @@ hot-reloads the running pipeline.
 - **Single instance** (shared rule): the settings window is **single-instance** — re-invoking "open
   settings" (tray menu or tray double-click) surfaces/refocuses the **existing** window (restoring it
   if minimized) instead of opening a second one.
+- **Per-vendor effort selector + doctor** (shared rule, §6): the per-backend "推理强度" field is an
+  **editable ComboBox** bound to the manifest `effortTiers` (shown only for backends that declare
+  tiers; removes the old hardcoded codex-only visibility). A **诊断** button runs the manifest `probe`
+  (async, off the UI thread, bounded by `timeoutSec`) and drives a **live** auth lamp + a read-only
+  results area (binary/version/auth/model-source/effort-wiring); it **never echoes the API key**.
+  Depth is **local credential check by default**, with a **深度检测** toggle for a billable live `-p`
+  probe. Doctor results are not persisted.
 
 ## 10. Non-functional / risks
 

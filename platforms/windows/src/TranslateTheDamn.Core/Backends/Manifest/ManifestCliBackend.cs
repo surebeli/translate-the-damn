@@ -32,6 +32,9 @@ public sealed class ManifestCliBackend : ProcessTranslator
     protected override IReadOnlyList<string> KnownInstallPaths =>
         _def.KnownInstallPaths is not null && _def.KnownInstallPaths.TryGetValue("windows", out var p) ? p : Array.Empty<string>();
 
+    protected override IReadOnlyList<string> AuthSuccessSignatures =>
+        _def.Probe?.SuccessSignatures ?? (IReadOnlyList<string>)Array.Empty<string>();
+
     public override CliInvocation BuildInvocation(string prompt, string? logFilePath)
     {
         var vars = new Dictionary<string, string>(StringComparer.Ordinal)
@@ -44,7 +47,15 @@ public sealed class ManifestCliBackend : ProcessTranslator
         };
 
         var template = _def.Args ?? new List<string>();
-        var args = template.Select(a => ManifestEngine.Subst(a, vars)).ToArray();
+        var argv = template.Select(a => ManifestEngine.Subst(a, vars)).ToList();
+
+        // Conditional appends (e.g. claude/copilot `--effort {reasoning}`): only when the gating var
+        // is non-empty, so out-of-the-box behavior is unchanged until the user picks a tier.
+        foreach (var ap in _def.ArgsAppend ?? Enumerable.Empty<ArgsAppendDef>())
+            if (vars.TryGetValue(ap.When, out var w) && !string.IsNullOrEmpty(w))
+                foreach (var a in ap.Args) argv.Add(ManifestEngine.Subst(a, vars));
+
+        var args = argv.ToArray();
         var wantsLog = template.Any(a => a.Contains("{logFile}", StringComparison.Ordinal));
 
         var pipe = _def.PromptVia is "stdin" or "stdin-dash";
@@ -54,7 +65,27 @@ public sealed class ManifestCliBackend : ProcessTranslator
     protected override string CleanOutput(ProcessResult r)
     {
         var raw = AnsiStripper.Strip(r.Stdout).Trim();
-        if (raw.Length > 0 && string.Equals(OutputFormat, "json", StringComparison.OrdinalIgnoreCase) && _def.Parse?.JsonResultPath is { } jsonPath)
+        if (raw.Length == 0) return raw;
+
+        // JSONL / stream-json (opencode, kimi): each line is a JSON object; collect every
+        // type==JsonlType object's JsonlTextPath, concatenated. Falls back to raw if nothing matched.
+        if (_def.Parse?.Jsonl == true)
+        {
+            var sb = new System.Text.StringBuilder();
+            var type = _def.Parse.JsonlType ?? "text";
+            var textPath = _def.Parse.JsonlTextPath ?? "text";
+            foreach (var line in raw.Split('\n'))
+            {
+                var t = line.Trim();
+                if (t.Length == 0 || (t[0] != '{' && t[0] != '[')) continue;
+                try { using var doc = JsonDocument.Parse(t); CollectJsonlText(doc.RootElement, type, textPath, sb); }
+                catch { /* not a JSON line (chrome) — skip */ }
+            }
+            var collected = sb.ToString().Trim();
+            return collected.Length > 0 ? collected : raw;
+        }
+
+        if (string.Equals(OutputFormat, "json", StringComparison.OrdinalIgnoreCase) && _def.Parse?.JsonResultPath is { } jsonPath)
         {
             try
             {
@@ -65,6 +96,26 @@ public sealed class ManifestCliBackend : ProcessTranslator
             catch { /* not JSON after all */ }
         }
         return raw;
+    }
+
+    /// <summary>Recursively collect the text of every object whose <c>type</c> == <paramref name="type"/>,
+    /// read via <paramref name="textPath"/> (handles flat events like opencode and content-part arrays like kimi).</summary>
+    private static void CollectJsonlText(JsonElement el, string type, string textPath, System.Text.StringBuilder sb)
+    {
+        switch (el.ValueKind)
+        {
+            case JsonValueKind.Object:
+                if (el.TryGetProperty("type", out var tEl) && tEl.ValueKind == JsonValueKind.String && tEl.GetString() == type)
+                {
+                    var txt = ManifestEngine.Eval(el, textPath);
+                    if (!string.IsNullOrEmpty(txt)) sb.Append(txt);
+                }
+                foreach (var p in el.EnumerateObject()) CollectJsonlText(p.Value, type, textPath, sb);
+                break;
+            case JsonValueKind.Array:
+                foreach (var item in el.EnumerateArray()) CollectJsonlText(item, type, textPath, sb);
+                break;
+        }
     }
 
     public override async Task<TranslationResult> TranslateAsync(TranslationRequest request, CancellationToken ct)

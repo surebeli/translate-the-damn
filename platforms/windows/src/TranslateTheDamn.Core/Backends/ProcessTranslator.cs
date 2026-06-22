@@ -28,6 +28,11 @@ public abstract class ProcessTranslator : ITranslator
     protected string Model => string.IsNullOrWhiteSpace(Cfg.Model) ? DefaultModel : Cfg.Model!;
     protected virtual IReadOnlyList<string> KnownInstallPaths => Array.Empty<string>();
 
+    /// <summary>Manifest probe success markers. If any appears in the output the backend IS authed
+    /// (e.g. the agy keyring cold-start transient), so empty output is the CLI's no-output bug, not an
+    /// auth failure — see the success-wins guard in <see cref="Classify"/>.</summary>
+    protected virtual IReadOnlyList<string> AuthSuccessSignatures => Array.Empty<string>();
+
     /// <summary>Pure, unit-testable argv builder. <paramref name="logFilePath"/> is non-null only when <c>WantsLogFile</c>.</summary>
     public abstract CliInvocation BuildInvocation(string prompt, string? logFilePath);
 
@@ -76,8 +81,14 @@ public abstract class ProcessTranslator : ITranslator
         var text = CleanOutput(r);
         if (!string.IsNullOrWhiteSpace(text)) return TranslationResult.Successful(text);
 
-        var blob = (r.Stdout + "\n" + r.Stderr + "\n" + (logContent ?? string.Empty)).ToLowerInvariant();
-        if (LooksLikeAuthError(blob))
+        var raw = r.Stdout + "\n" + r.Stderr + "\n" + (logContent ?? string.Empty);
+        var blob = raw.ToLowerInvariant();
+        // SUCCESS-WINS (conformance doctor-classify): a manifest auth-success marker means the backend
+        // IS authed — e.g. agy's keyring cold-start race logs "not logged into Antigravity" and then
+        // authenticates in the same run — so empty output is the CLI's no-output bug, NOT an auth
+        // failure. Without this guard the transient "not logged in" line false-flags AuthFail.
+        var authed = ProbeClassifier.HasAny(AuthSuccessSignatures, ProbeClassifier.Normalize(raw));
+        if (!authed && LooksLikeAuthError(blob))
             return TranslationResult.Failure(TranslateStatus.AuthFail, "认证失败,请在设置中登录或填写密钥。");
         if (r.ExitCode != 0)
             return TranslationResult.Failure(TranslateStatus.UnknownFail, FirstLine(r.Stderr) ?? $"退出码 {r.ExitCode}");

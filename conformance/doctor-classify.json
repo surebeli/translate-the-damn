@@ -1,0 +1,16 @@
+{
+  "fn": "ProbeClassifier.classify",
+  "doc": "Normalize (lowercase + strip ALL whitespace) the probe output and each signature, then: ok if any successSignature present; else fail if any failSignature; else unknown. SUCCESS-WINS — the agy keyring transient ('not logged into Antigravity' FOLLOWED BY a success marker) is ok (not a logout), which also locks the ProcessTranslator false-AuthFail fix. Whitespace stripping defeats the codex 'not logged in' ⊄ 'logged in using' substring trap and compact-vs-pretty JSON.",
+  "cases": [
+    { "name": "claude logged in",                "success": ["\"loggedIn\": true"], "fail": ["\"loggedIn\": false"], "text": "{\"loggedIn\":true,\"authMethod\":\"claude.ai\"}", "out": "ok" },
+    { "name": "claude logged out (pretty json)",  "success": ["\"loggedIn\": true"], "fail": ["\"loggedIn\": false"], "text": "{\n  \"loggedIn\": false\n}", "out": "fail" },
+    { "name": "codex logged in",                  "success": ["Logged in using"], "fail": ["not logged in"], "text": "Logged in using ChatGPT (user@example.com)", "out": "ok" },
+    { "name": "codex not-logged-in (substring trap)", "success": ["Logged in using"], "fail": ["not logged in"], "text": "You are not logged in. Run codex login.", "out": "fail" },
+    { "name": "agy transient-then-success (regression)", "success": ["authenticated via keyring", "authenticated successfully as"], "fail": ["not logged into Antigravity"], "text": "keyringAuth: timed out after 1s, skipping keyring auth\nYou are not logged into Antigravity\nChainedAuth: authenticated via keyring\nOAuth: authenticated successfully as surebeli@gmail.com", "out": "ok" },
+    { "name": "agy persistent fail",              "success": ["authenticated via keyring", "authenticated successfully as"], "fail": ["not logged into Antigravity"], "text": "You are not logged into Antigravity", "out": "fail" },
+    { "name": "agy hostname cloudcode-pa is NOT auth (connection target logged before token validation, not a success marker)", "success": ["authenticated via keyring", "authenticated successfully as"], "fail": ["not logged into Antigravity"], "text": "Connecting to cloudcode-pa.googleapis.com\nYou are not logged into Antigravity\nHTTP 401 Unauthorized", "out": "fail" },
+    { "name": "opencode authed (fail-wins): '2 credentials' => ok", "success": ["credentials"], "fail": ["0 credentials"], "failWins": true, "text": "DeepSeek api\nXiaomi Token Plan (China) api\n2 credentials", "out": "ok" },
+    { "name": "opencode not-configured (fail-wins): '0 credentials' contains 'credentials' but means NOT authed => fail", "success": ["credentials"], "fail": ["0 credentials"], "failWins": true, "text": "0 credentials", "out": "fail" },
+    { "name": "no signal => unknown",             "success": ["alpha"], "fail": ["beta"], "text": "some unrelated output here", "out": "unknown" }
+  ]
+}
