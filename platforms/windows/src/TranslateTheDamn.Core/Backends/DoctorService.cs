@@ -53,7 +53,7 @@ public sealed class DoctorService
             checks.Add(await RunArgsProbeAsync(resolved, probe, ceiling, ct));
         else if (probe?.CredFiles is { Count: > 0 })
         {
-            var present = probe.CredFiles.Any(f => File.Exists(Environment.ExpandEnvironmentVariables(f)));
+            var present = probe.CredFiles.Any(f => File.Exists(ExpandPath(f)));
             checks.Add(new DoctorCheck("认证(本地凭据文件)", present ? DoctorStatus.Ok : DoctorStatus.Unknown,
                 present ? "找到本地 OAuth 凭据文件(未做联网验证)" : "未找到本地凭据文件;勾选“深度检测”可联网验证"));
         }
@@ -73,6 +73,16 @@ public sealed class DoctorService
             checks.Add(new DoctorCheck("Effort 档位", DoctorStatus.Ok, string.Join(" / ", tiers)));
 
         return new DoctorReport(backendId, Aggregate(checks), checks);
+    }
+
+    /// <summary>Expand a manifest credFile path cross-platform: a leading <c>~/</c> → the user's home
+    /// (the shared, platform-neutral form — macOS expands it the same way), and any remaining
+    /// <c>%VAR%</c> tokens via the environment (backward-compatible).</summary>
+    private static string ExpandPath(string p)
+    {
+        if (p.StartsWith("~/", StringComparison.Ordinal) || p.StartsWith("~\\", StringComparison.Ordinal))
+            p = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), p[2..]);
+        return Environment.ExpandEnvironmentVariables(p);
     }
 
     /// <summary>Local auth probe with bounded retry that reports the FINAL state (agy keyring race).</summary>
