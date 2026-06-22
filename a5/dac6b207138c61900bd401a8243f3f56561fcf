@@ -1,0 +1,23 @@
+docs/PARITY-HANDOFF-macos-visual-walkthrough.md
+  s_aa5b50d395b0a0::t_a1efd8a7f20113 1-83
+platforms/windows/src/TranslateTheDamn.App/UI/PopupWindow.xaml.cs
+  s_aa5b50d395b0a0::t_513694fe3c558b 18
+  s_aa5b50d395b0a0::t_aa7ae3832edb92 35-38
+  s_aa5b50d395b0a0::t_f9d662b3494614 39-40
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "a5dac6b207138c61900bd401a8243f3f56561fcf",
+  "prompts": {},
+  "sessions": {
+    "s_aa5b50d395b0a0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "fa525b59-03ad-4f0e-bc1b-d5b0b5eca96f",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
