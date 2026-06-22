@@ -60,6 +60,16 @@ public enum BackendManifest {
         return defaults[key]
     }
 
+    /// Per-CLI-backend effort/reasoning tiers declared in `spec/backends.json` — drives the
+    /// per-vendor effort selector. An absent `effortTiers` key (e.g. agy/kimi: effort is a model-label
+    /// suffix or always-on, no flag) → empty list. Mirrors the shared `effort-tiers` conformance
+    /// vector; every platform's interpreter must expose the same lists from the shared manifest.
+    public static func effortTiers(_ backend: String) -> [String] {
+        guard let def = backendDef(backend),
+              let tiers = def["effortTiers"] as? [Any] else { return [] }
+        return tiers.compactMap { $0 as? String }
+    }
+
     public static func subst(_ template: String, _ vars: [String: String]) -> String {
         var result = ""
         var i = template.startIndex
