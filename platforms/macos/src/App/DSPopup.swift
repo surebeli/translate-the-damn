@@ -59,6 +59,15 @@ final class DSPopup: NSPanel, TranslationPopupUI {
     private var isMouseOver = false
     private var currentTranslation = ""
 
+    // Session-sticky drag position (spec §8 "Drag to reposition" shared rule). Static so it survives
+    // the panel being recreated on every show (AppDelegate rebuilds DSPopup each time); in-memory
+    // only, so it resets to top-center on app restart. nil until the user performs a REAL drag.
+    // Mirrors Windows `PopupWindow._userPosition`.
+    private static var sessionOrigin: NSPoint?
+    // Filters our own placement (showAndPlace / the show animation) out of the move notifications, so
+    // programmatic positioning is never mistaken for a user drag.
+    private var isProgrammaticMove = false
+
     // History navigation (spec §4.1 / §8): browse the recent-translation cache, one entry at a time.
     private let prevButton = NSButton(title: "", target: nil, action: nil)   // ◀ older
     private let nextButton = NSButton(title: "", target: nil, action: nil)   // ▶ newer
@@ -97,6 +106,8 @@ final class DSPopup: NSPanel, TranslationPopupUI {
     override var canBecomeKey: Bool { false }
     override var canBecomeMain: Bool { false }
 
+    deinit { NotificationCenter.default.removeObserver(self) }
+
     // MARK: - Window
 
     private func setUpWindow() {
@@ -105,7 +116,7 @@ final class DSPopup: NSPanel, TranslationPopupUI {
         isOpaque = false
         backgroundColor = .clear
         hasShadow = true
-        isMovableByWindowBackground = false
+        isMovableByWindowBackground = true   // drag the card background to reposition (spec §8)
         collectionBehavior = [.canJoinAllSpaces, .ignoresCycle]
         animationBehavior = .none
         titleVisibility = .hidden
@@ -115,6 +126,15 @@ final class DSPopup: NSPanel, TranslationPopupUI {
         standardWindowButton(.zoomButton)?.isHidden = true
 
         contentView = visualEffectView
+
+        // Drag-to-reposition wiring (spec §8): pause auto-dismiss while the user drags the card, and
+        // on settle remember the spot (session-sticky) + restart the timer. The action buttons / text
+        // view consume their own mouse events, so background drag never fires on them. canBecomeKey =
+        // false keeps the drag from stealing focus (the macOS analog of WS_EX_NOACTIVATE).
+        NotificationCenter.default.addObserver(self, selector: #selector(handleWillMove),
+                                               name: NSWindow.willMoveNotification, object: self)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleDidMove),
+                                               name: NSWindow.didMoveNotification, object: self)
     }
 
     // MARK: - Content
@@ -444,20 +464,27 @@ final class DSPopup: NSPanel, TranslationPopupUI {
         setContentSize(isLargeSize ? largeWindowSize : normalWindowSize)
         visualEffectView.layoutSubtreeIfNeeded()
 
-        let target = topCenterOrigin()
+        // Session-sticky: reuse the user's dragged spot (clamped on-screen) if they moved it this
+        // session; otherwise top-center. isProgrammaticMove filters these placements out of the
+        // move-notification handlers below.
+        let target = clampToVisible(Self.sessionOrigin ?? topCenterOrigin())
+        isProgrammaticMove = true
         if !isVisible {
             alphaValue = 0
             setFrameOrigin(NSPoint(x: target.x, y: target.y - 10))
             orderFrontRegardless()
-            NSAnimationContext.runAnimationGroup { ctx in
+            NSAnimationContext.runAnimationGroup({ ctx in
                 ctx.duration = 0.2
                 ctx.timingFunction = CAMediaTimingFunction(name: .easeOut)
                 self.animator().alphaValue = 1.0
                 self.animator().setFrameOrigin(target)
-            }
+            }, completionHandler: { [weak self] in
+                self?.isProgrammaticMove = false
+            })
         } else {
             alphaValue = 1.0
             setFrameOrigin(target)
+            isProgrammaticMove = false
         }
     }
 
@@ -494,6 +521,31 @@ final class DSPopup: NSPanel, TranslationPopupUI {
     override func mouseExited(with event: NSEvent) {
         isMouseOver = false
         if cfg.keepOnHover { restartDismiss() }
+    }
+
+    // MARK: - Drag (session-sticky reposition, spec §8)
+
+    @objc private func handleWillMove(_ note: Notification) {
+        guard !isProgrammaticMove else { return }   // ignore our own placement
+        dismissTimer?.invalidate()                  // pause auto-dismiss while dragging
+    }
+
+    @objc private func handleDidMove(_ note: Notification) {
+        guard !isProgrammaticMove else { return }
+        // A REAL user drag (a plain click never moves the window, so this never fires on a tap):
+        // remember the spot for later popups this session, and restart the dismiss countdown — which,
+        // because didMove fires per move step, only elapses fully after the last move = on drop.
+        Self.sessionOrigin = clampToVisible(frame.origin)
+        restartDismiss()
+    }
+
+    private func clampToVisible(_ origin: NSPoint) -> NSPoint {
+        guard let screen = NSScreen.screens.first else { return origin }
+        let vf = screen.visibleFrame
+        let f = self.frame
+        let x = min(max(origin.x, vf.minX), vf.maxX - f.width)
+        let y = min(max(origin.y, vf.minY), vf.maxY - f.height)
+        return NSPoint(x: x, y: y)
     }
 
     // MARK: - Actions

@@ -110,5 +110,17 @@ stale,真正第一优先是**建 CI + 走 PR**,`--verify-vectors` 降级。
   与 Win 同助记字母 C、原生 ⌘ 手感;用户拍板),再改 `ConfigService`/`AppConfig` 默认值转 GREEN,更 spec §7 +
   设置占位符。本机 `swift test` 119 全绿、`swift build`(含视图层)通过。PARITY macOS 该行 ⬜→✅,并按 #4 加
   macOS 证据指针(`parity-evidence` 强制:17 ✅ UI 声明全部有源)。drift:macOS 1→0 behind(仅剩 Linux 整列未开工)。
-- **仍欠**:#4 的"下沉向量"另一半(`popup-dismiss` 决策→向量,受限于 CI 不构建视图层)、#7(PARITY 半生成化
-  + 噪声 baseline 让 `--fail-on-drift` 能上 CI)、Linux 整列移植。`--verify-vectors` 已被 #9 实质实现,降级归档。
+- **Popup drag-to-reposition(两端共同欠账 → 对齐)**:用户告知 Windows 早在 `72cea10` 就实现了浮窗拖动
+  (`PopupWindow._userPosition` + `DragMove`,session-sticky、不抢焦点、夹取在屏内),PARITY 却一直 ⬜——
+  **又一处 stale under-claim**。读源确认后翻 Win ✅;macOS 按 spec §8 既有"shared rule"实现(`DSPopup`:
+  `isMovableByWindowBackground` + 静态 `sessionOrigin` 跨重建保活 + `willMove/didMove` 暂停/重启自动消失 +
+  夹屏),`swift build` + 119 测试通过后翻 macOS ✅,两端各加证据指针。**至此 Win↔macOS 仅剩 Dark scrollbar
+  (macOS 据实 n/a)不同,其余全对齐。**
+  > ⚠ 暴露 `parity-evidence` 的一处**残余盲区**:它只在"证据条目存在但行非 ✅"时 WARN;而 popup-drag 当时
+  > **既没翻 ✅、也没证据条目**(⬜⬜),所以**没报警**——这处 stale 是靠**用户口头告知**才发现的。结论:
+  > "功能已实现、但 PARITY 既无 ✅ 又无证据条目"仍逃得过所有自动闸。要根治需让 evidence 条目本身有"应覆盖
+  > 哪些 feature 行"的完整性校验,或 UI 行也强制声明证据(即便 ⬜)。记入路线,暂未做。
+- **仍欠**:#4 的"下沉向量"另一半(`popup-dismiss` 决策→向量,受限于 CI 不构建视图层)、上述 evidence 完整性
+  校验、#7(PARITY 半生成化 + 噪声 baseline 让 `--fail-on-drift` 能上 CI)、Linux 整列移植、popup-drag 的
+  **运行时拖拽手势**仍需本端手动走查(视图层无向量、CI 不构建、headless 无法模拟真实拖拽)。`--verify-vectors`
+  已被 #9 实质实现,降级归档。

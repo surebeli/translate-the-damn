@@ -36,6 +36,10 @@
     "API Key field masked": {
       "Win": [{ "path": "platforms/windows/src/TranslateTheDamn.App/UI/SettingsWindow.xaml", "symbol": "PasswordBox" }],
       "macOS": [{ "path": "platforms/macos/src/App/DSSettingsView.swift", "symbol": "SecureField" }]
+    },
+    "Popup drag-to-reposition": {
+      "Win": [{ "path": "platforms/windows/src/TranslateTheDamn.App/UI/PopupWindow.xaml.cs", "symbol": "DragMove" }],
+      "macOS": [{ "path": "platforms/macos/src/App/DSPopup.swift", "symbol": "sessionOrigin" }]
     }
   }
 }
