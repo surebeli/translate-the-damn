@@ -66,6 +66,7 @@ final class SettingsViewModel: ObservableObject {
     @Published var modelText: String = ""
     @Published var apiKeyText: String = ""
     @Published var endpointText: String = ""
+    @Published var protocolText: String = "openai"   // custom HTTP provider: "openai" | "anthropic"
     @Published var targetText: String = ""
     @Published var sourceText: String = ""
     @Published var reasoningText: String = ""
@@ -87,7 +88,15 @@ final class SettingsViewModel: ObservableObject {
     private let doctor = DoctorService()
 
     var backendIds: [String] {
-        backendOrder.filter { config.backends[$0] != nil }
+        let builtin = backendOrder.filter { config.backends[$0] != nil }
+        let custom = config.backends.keys.filter { !backendOrder.contains($0) }.sorted()
+        return builtin + custom
+    }
+
+    /// A user-added generic HTTP provider (id not in the manifest/backendOrder): protocol is
+    /// selectable and the provider is deletable. Built-in HTTP backends (google-v2/doubao) are not custom.
+    var isCustomProvider: Bool {
+        isHttp && !backendOrder.contains(selectedBackendId)
     }
 
     var availableModels: [String] {
@@ -178,12 +187,40 @@ final class SettingsViewModel: ObservableObject {
         }
     }
 
+    /// Add a custom generic-HTTP provider (openai/anthropic). User then fills endpoint/key/model/
+    /// protocol and saves. Mirrors Windows BtnAddProvider_Click.
+    func addProvider(_ rawId: String) {
+        let id = rawId.trimmingCharacters(in: .whitespaces)
+        guard !id.isEmpty else { return }
+        guard config.backends[id] == nil else { saveStatus = "已存在:\(id)"; return }
+        flushBackend()
+        objectWillChange.send()
+        config.backends[id] = BackendConfig(type: "http", model: "", timeoutSec: 30,
+                                            endpoint: "", apiKey: "", protocol: "openai")
+        selectedBackendId = id
+        loadBackend(id)
+        saveStatus = "已新增 \(id) · 填 Endpoint/Key/模型/协议后点保存"
+    }
+
+    /// Delete the selected custom provider (built-ins are protected). Mirrors BtnDeleteProvider_Click.
+    func deleteProvider() {
+        let id = selectedBackendId
+        guard !backendOrder.contains(id) else { saveStatus = "内置后端不可删除"; return }
+        objectWillChange.send()
+        config.backends.removeValue(forKey: id)
+        if config.general.activeBackend == id { config.general.activeBackend = "claude" }
+        selectedBackendId = backendIds.first ?? "claude"
+        loadBackend(selectedBackendId)
+        saveStatus = "已删除 \(id)(保存后写入)"
+    }
+
     func loadBackend(_ id: String) {
         guard let bc = config.backends[id] else { return }
 
         modelText = bc.model ?? ""
         apiKeyText = bc.apiKey ?? ""
         endpointText = bc.endpoint ?? ""
+        protocolText = bc.`protocol` ?? "openai"
 
         if isGoogleV2 {
             targetText = bc.target ?? ""
@@ -222,6 +259,9 @@ final class SettingsViewModel: ObservableObject {
                 bc.targetLanguage = t.isEmpty ? nil : t
                 let s = sourceText.trimmingCharacters(in: .whitespaces)
                 bc.sourceLanguage = s.isEmpty ? nil : s
+            } else {
+                // custom generic HTTP provider → persist the protocol selector
+                bc.`protocol` = protocolText.isEmpty ? "openai" : protocolText
             }
         } else {
             let r = reasoningText.trimmingCharacters(in: .whitespaces)
