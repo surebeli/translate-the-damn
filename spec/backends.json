@@ -103,10 +103,10 @@
       "defaults": { "model": "kimi-code/kimi-for-coding", "outputFormat": "stream-json", "timeoutSec": 90 },
       "effortTiers": [],
       "probe": { "args": ["provider", "list"], "network": false, "retries": 1, "successSignatures": ["source=oauth", "managed:kimi-code"], "failSignatures": ["models=0", "No providers configured"] },
-      "parse": { "mode": "stdout-clean", "jsonl": true, "jsonlType": "text", "jsonlTextPath": "text" },
+      "parse": { "mode": "stdout-clean", "jsonl": true, "jsonlTypePath": "role", "jsonlType": "assistant", "jsonlTextPath": "content" },
       "auth": "Kimi Code OAuth (`kimi login`); creds at ~/.kimi-code/credentials/kimi-code.json",
       "status": "best-effort",
-      "notes": "Moonshot Kimi Code CLI (kimi.exe v0.17.1; NOT legacy 'kimi-cli'). `-p` runs ONE prompt non-interactively, self-contained: NO skip-permissions flag, and -p is mutually exclusive with --auto/--yolo/--plan (adding any -> exit 1). One model (kimi-code/kimi-for-coding; thinking always-on; no per-call effort -> effortTiers []). Default --output-format stream-json (NDJSON); answer = concat type==text parts. The stream-json field shape is verified-by-help, not by a real call -> best-effort; the owner's first real translate locks it. Spawn from a neutral CWD."
+      "notes": "Moonshot Kimi Code CLI (kimi.exe v0.17.1; NOT legacy 'kimi-cli'). `-p` runs ONE prompt non-interactively, self-contained: NO skip-permissions flag, and -p is mutually exclusive with --auto/--yolo/--plan (adding any -> exit 1). One model (kimi-code/kimi-for-coding; thinking always-on; no per-call effort -> effortTiers []). Default --output-format stream-json (NDJSON). LOCKED BY A REAL LIVE CALL (was a verified-by-help guess of type==text/text, which was WRONG): the answer is the `content` of the line whose `role`==`assistant`; a trailing `{role:meta, type:session.resume_hint}` line is ignored. Hence jsonlTypePath=role (default elsewhere is `type`). Spawn from a neutral CWD."
     },
     "mimo": {
       "kind": "cli",

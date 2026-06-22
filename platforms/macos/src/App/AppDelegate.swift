@@ -12,6 +12,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     static func main() {
         // Dev-only visual-walkthrough harness — inert unless TTD_SHOT_KIND is set.
         if ScreenshotHarness.runIfRequested() { return }
+        // Dev-only live end-to-end check (mirrors Windows --live): translate once via one backend, exit.
+        let cliArgs = CommandLine.arguments
+        if let i = cliArgs.firstIndex(of: "--live") {
+            let backendId = (i + 1 < cliArgs.count) ? cliArgs[i + 1] : "claude"
+            let extra = cliArgs[(i + 2)...].joined(separator: " ")
+            let sample = extra.isEmpty ? "Hello, world. The TranslationPipeline supersedes any in-flight request." : extra
+            LiveCheck.run(backendId: backendId, sample: sample)
+            return
+        }
         let app = NSApplication.shared
         let delegate = AppDelegate()
         app.delegate = delegate

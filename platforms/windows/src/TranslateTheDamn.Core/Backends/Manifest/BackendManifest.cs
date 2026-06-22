@@ -91,8 +91,9 @@ public sealed class ParseRule
     // JSONL / stream-json output (opencode, kimi): each stdout line is a JSON object; collect the text
     // of every object whose "type" == JsonlType, read from JsonlTextPath, concatenated in order.
     public bool Jsonl { get; set; }
-    public string? JsonlType { get; set; }      // e.g. "text"
-    public string? JsonlTextPath { get; set; }  // e.g. "part.text" (opencode) or "text" (kimi)
+    public string? JsonlTypePath { get; set; }   // discriminator FIELD name; default "type". kimi uses "role".
+    public string? JsonlType { get; set; }       // discriminator VALUE, e.g. "text" (opencode/mimo) / "assistant" (kimi)
+    public string? JsonlTextPath { get; set; }   // e.g. "part.text" (opencode/mimo) or "content" (kimi)
 }
 
 /// <summary>Append <see cref="Args"/> to the argv only when the variable named <see cref="When"/>

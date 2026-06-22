@@ -132,6 +132,34 @@ public enum BackendManifest {
         return (value as? String)?.isEmpty ?? false
     }
 
+    /// Extract translation text from stream-json / NDJSON stdout (`parse.jsonl`): for each line that
+    /// parses as JSON, recursively collect every object whose `typeField` string == `typeValue`, read
+    /// `textPath` (dotted, string leaf only) off it, and concatenate in order. Non-JSON lines are
+    /// skipped. Returns "" when nothing matches (caller falls back to raw). Mirrors the Windows
+    /// `ManifestCliBackend.CollectJsonlText`; pinned by `conformance/cli-output-parse.json`.
+    public static func collectJsonl(_ raw: String, typeField: String, typeValue: String, textPath: String) -> String {
+        var sb = ""
+        func collect(_ node: Any) {
+            if let dict = node as? [String: Any] {
+                if let dv = dict[typeField] as? String, dv == typeValue,
+                   let txt = eval(root: dict, path: textPath), !txt.isEmpty {
+                    sb += txt
+                }
+                for (_, v) in dict { collect(v) }
+            } else if let arr = node as? [Any] {
+                for el in arr { collect(el) }
+            }
+        }
+        for line in raw.components(separatedBy: .newlines) {
+            let t = line.trimmingCharacters(in: .whitespaces)
+            guard let first = t.first, first == "{" || first == "[",
+                  let data = t.data(using: .utf8),
+                  let obj = try? JSONSerialization.jsonObject(with: data) else { continue }
+            collect(obj)
+        }
+        return sb.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
     public static func eval(root: Any, path: String) -> String? {
         var cur: Any = root
         for rawSeg in path.split(separator: ".") {
