@@ -5,10 +5,11 @@ import TranslateTheDamnCore
 
 private let kCheckSignature: OSType = 0x5474_546B
 private let kCheckHotKeyID = UInt32(99)
-private let backendOrder = ["claude", "codex", "copilot", "agy", "google-v2", "doubao"]
+private let backendOrder = ["claude", "codex", "copilot", "agy", "opencode", "kimi", "mimo", "google-v2", "doubao"]
 
 // MARK: - Window Controller
 
+@MainActor
 final class SettingsWindowController {
     private var window: NSWindow?
     private let viewModel: SettingsViewModel
@@ -46,6 +47,7 @@ final class SettingsWindowController {
 
 // MARK: - ViewModel
 
+@MainActor
 final class SettingsViewModel: ObservableObject {
     private let configPath: String
     private let onSave: (AppConfig) -> Void
@@ -77,6 +79,12 @@ final class SettingsViewModel: ObservableObject {
 
     @Published var saveStatus: String = ""
     @Published var authHint: String = ""
+
+    // Live auth lamp (spec §9 backend doctor): nil = not yet probed; otherwise the last probe verdict.
+    @Published var doctorStatus: DoctorStatus? = nil
+    @Published var doctorDetail: String = ""
+    @Published var doctorRunning: Bool = false
+    private let doctor = DoctorService()
 
     var backendIds: [String] {
         backendOrder.filter { config.backends[$0] != nil }
@@ -148,7 +156,26 @@ final class SettingsViewModel: ObservableObject {
         guard loaded, newId != selectedBackendId else { return }
         flushBackend()
         selectedBackendId = newId
+        doctorStatus = nil; doctorDetail = ""   // verdict is per-backend — clear on switch
         loadBackend(newId)
+    }
+
+    /// Run the manifest-driven doctor for the selected backend off the main thread (it may spawn a
+    /// CLI), then publish the verdict to the lamp. Never stores or shows the API key.
+    func runDoctor() {
+        guard !doctorRunning else { return }
+        doctorRunning = true
+        doctorDetail = ""
+        let id = selectedBackendId
+        let doctor = self.doctor
+        // Probe off the main actor (it may spawn a CLI), then resume on the main actor to publish the
+        // verdict. doctor/id/DoctorResult are all Sendable, so nothing unsafe crosses the boundary.
+        Task { @MainActor in
+            let result = await Task.detached(priority: .userInitiated) { doctor.probe(backendId: id) }.value
+            self.doctorStatus = result.status
+            self.doctorDetail = result.detail
+            self.doctorRunning = false
+        }
     }
 
     func loadBackend(_ id: String) {
