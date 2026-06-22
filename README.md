@@ -67,6 +67,24 @@ enforced by language-neutral conformance vectors + a parity matrix + CI, not by 
 
 ## Install & run
 
+### Download a prebuilt release
+
+Grab the latest archives from the
+[**Releases**](https://github.com/surebeli/translate-the-damn/releases/latest) page:
+
+- **macOS** (Apple Silicon) — `TranslateTheDamn-<version>-macos-arm64.zip`
+- **Windows 11** (x64) — `TranslateTheDamn-<version>-windows-x64.zip`
+
+> **⚠️ macOS Gatekeeper** — the macOS build is **unsigned / un-notarized**, so on first launch
+> Gatekeeper blocks it. Either **right‑click the app → Open** (and confirm once), or clear the
+> quarantine flag from the folder you unzipped it into:
+> ```bash
+> xattr -dr com.apple.quarantine /path/to/TranslateTheDamn.app
+> ```
+> (Not necessarily `/Applications` — use wherever you unzipped.)
+
+### Build from source
+
 **macOS** (Apple Silicon, Xcode 16 / Swift 6 command-line tools):
 
 ```bash
@@ -81,13 +99,9 @@ dotnet build platforms\windows\TranslateTheDamn.sln -c Release
 .\platforms\windows\src\TranslateTheDamn.App\bin\Release\net9.0-windows\TranslateTheDamn.exe
 ```
 
-Prebuilt artifacts are attached to each [GitHub Release](https://github.com/surebeli/translate-the-damn/releases)
-(the macOS build is **unsigned** — right-click → Open, or
-`xattr -dr com.apple.quarantine /path/to/TranslateTheDamn.app`).
-
 There is **no main window** — look in the menu bar (macOS) / system tray (Windows) for the icon
 (green = listening, grey = paused); click it for Settings or quit. On macOS the app intentionally
-does **not** run in the App Sandbox (it must spawn your CLIs); for distribution, sign + notarize with
+does **not** run in the App Sandbox (it must spawn your CLIs); for a signed + notarized build, use
 `platforms/macos/scripts/sign-notarize.sh`.
 
 ## Usage
