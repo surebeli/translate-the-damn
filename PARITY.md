@@ -27,7 +27,7 @@ Legend: ✅ shipped · 🚧 in progress · ⬜ not started · ⚠️ partial/bes
 | Recent-translation cache (5 entries, MRU + recency refresh) | §4.1 | `pipeline-cache` | ✅ | ✅ | ⬜ |
 | config.json defaults / bootstrap | §7 | `config-defaults` | ✅ | ✅ | ⬜ |
 | Default translate hotkey (per-platform default) | §7 | — (per-platform) | ✅ | ✅ | ⬜ |
-| Per-vendor effort-tier selector (manifest tiers + conditional `--effort`) | §6, §9 | `effort-tiers` | ✅ | ⬜ | ⬜ |
+| Per-vendor effort-tier selector (manifest tiers + conditional `--effort`) | §6, §9 | `effort-tiers` | ✅ | ✅ | ⬜ |
 | Backend doctor (connectivity/auth probe + live auth lamp) | §9 | `doctor-probe`, `doctor-classify` | ✅ | ⬜ | ⬜ |
 | Acrylic popup (no-focus-steal, hover-keep, auto-dismiss, scroll) | §8 | — (UI) | ✅ | ✅ | ⬜ |
 | Popup copy + close buttons | §8 | — (UI) | ✅ | ✅ | ⬜ |

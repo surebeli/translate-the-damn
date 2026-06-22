@@ -81,38 +81,49 @@ def main():
         print(f"✗ parity-verify: platform {a.platform!r} not a PARITY column ({parsed['platforms']}).")
         return 2
 
+    # ROW-LEVEL semantics (a row may list MORE THAN ONE vector — e.g. the opencode/kimi/mimo backends
+    # row needs both effort-tiers AND doctor-probe). A row is ✅-able only when ALL its vectors are
+    # green; it is correctly NOT-✅ while any vector is still red/absent. Per-stem checking would
+    # falsely flag a multi-vector row the moment its first vector goes green.
     under, over_red, over_absent, ok = [], [], [], []
     for f in parsed["features"]:
         if f["kind"] != "logic":
             continue  # UI/backend rows have no vector truth here — out of scope by design
         declared = f["status"].get(col)
-        for stem in f["vectors"]:
-            green = vectors.get(stem)  # True / False / None(=not run by this platform)
-            row = f["feature"]
-            if green is True and declared != pd.SHIPPED:
-                under.append((row, stem, declared))
-            elif declared == pd.SHIPPED and green is False:
-                over_red.append((row, stem))
-            elif declared == pd.SHIPPED and green is None:
-                over_absent.append((row, stem))
-            elif green is True and declared == pd.SHIPPED:
-                ok.append((row, stem))
+        stems = f["vectors"]
+        if not stems:
+            continue
+        greens = {s: vectors.get(s) for s in stems}  # True / False / None(=not run by this platform)
+        row = f["feature"]
+        reds = [s for s, gv in greens.items() if gv is False]
+        absent = [s for s, gv in greens.items() if gv is None]
+        all_green = all(gv is True for gv in greens.values())
+        if declared == pd.SHIPPED:
+            if reds:
+                over_red.append((row, reds))
+            elif absent:
+                over_absent.append((row, absent))
+            else:
+                ok.append(row)
+        elif all_green:
+            under.append((row, stems, declared))
+        # else: legitimately not-✅ — at least one vector still red/absent. No flag.
 
     g = pd.GLYPH
     print(f"parity-verify: platform={col}  results={a.results}")
     print(f"  vectors emitted: {len(vectors)}  ({sum(1 for v in vectors.values() if v)} green)")
     if ok:
-        print(f"  ✓ {len(ok)} logic row(s) agree (vector green ⇄ column {g[pd.SHIPPED]}).")
+        print(f"  ✓ {len(ok)} logic row(s) agree (all vectors green ⇄ column {g[pd.SHIPPED]}).")
 
     bad = under or over_red or over_absent
-    for row, stem, decl in under:
-        print(f"  ✗ UNDER-CLAIM: `{stem}` is GREEN on {col} but row is {g.get(decl,'?')} — flip it to {g[pd.SHIPPED]}.")
+    for row, stems, decl in under:
+        print(f"  ✗ UNDER-CLAIM: all vector(s) {stems} GREEN on {col} but row is {g.get(decl,'?')} — flip it to {g[pd.SHIPPED]}.")
         print(f"       row: {row}")
-    for row, stem in over_red:
-        print(f"  ✗ OVER-CLAIM: row marked {g[pd.SHIPPED]} on {col} but `{stem}` is RED (also fails the conformance job).")
+    for row, stems in over_red:
+        print(f"  ✗ OVER-CLAIM: row marked {g[pd.SHIPPED]} on {col} but {stems} RED (also fails the conformance job).")
         print(f"       row: {row}")
-    for row, stem in over_absent:
-        print(f"  ✗ OVER-CLAIM: row marked {g[pd.SHIPPED]} on {col} but `{stem}` was NOT run by this platform's runner.")
+    for row, stems in over_absent:
+        print(f"  ✗ OVER-CLAIM: row marked {g[pd.SHIPPED]} on {col} but {stems} NOT run by this platform's runner.")
         print(f"       row: {row}")
 
     if not bad:
