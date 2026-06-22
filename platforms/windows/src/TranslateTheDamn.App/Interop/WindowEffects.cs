@@ -49,4 +49,16 @@ internal static class WindowEffects
         int pref = DWMWCP_ROUND;
         DwmSetWindowAttribute(hwnd, DWMWA_WINDOW_CORNER_PREFERENCE, ref pref, sizeof(int));
     }
+
+    /// <summary>Force a solid dark title bar (immersive dark mode, no Mica). Used ONLY by the screenshot
+    /// harness so captured windows show the intended uniform dark chrome regardless of the capture
+    /// machine's wallpaper — Mica samples the (often bright) desktop wallpaper into the title bar, which
+    /// looks light against the opaque-dark client area. Behaviour-neutral: the shipping app never calls this.</summary>
+    public static void UseDarkTitleBarSolid(IntPtr hwnd)
+    {
+        int dark = 1;
+        DwmSetWindowAttribute(hwnd, DWMWA_USE_IMMERSIVE_DARK_MODE, ref dark, sizeof(int));
+        int none = DWMSBT_NONE;
+        DwmSetWindowAttribute(hwnd, DWMWA_SYSTEMBACKDROP_TYPE, ref none, sizeof(int));
+    }
 }

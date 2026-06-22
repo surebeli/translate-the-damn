@@ -441,6 +441,14 @@ public partial class SettingsWindow : Window
         }
     }
 
+    /// <summary>Screenshot-harness hook: render a doctor verdict (result panel + auth lamp) without
+    /// running a probe. Used only by <see cref="ScreenshotHarness"/>; no effect on normal use.</summary>
+    internal void ApplyShotDoctor(DoctorReport report)
+    {
+        TxtDoctorResult.Visibility = Visibility.Visible;
+        RenderDoctor(report);
+    }
+
     private void RenderDoctor(DoctorReport report)
     {
         var sb = new System.Text.StringBuilder();

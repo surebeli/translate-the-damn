@@ -37,3 +37,6 @@ __pycache__/
 
 # per-platform conformance results emitted by runners for parity-verify (mechanism #9) — CI artifact, not source
 conformance-results.*.json
+
+## visual-walkthrough scratch shots
+.shots/
