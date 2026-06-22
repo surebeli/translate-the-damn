@@ -19,6 +19,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         app.run()
     }
     private var pipeline: TranslationPipeline?
+    // The model the retained pipeline was built with — bound to the pipeline's lifetime so the
+    // cache key (text+backend+model) is STABLE across presses. Mirrors Windows (model lives on the
+    // retained pipeline's config); re-reading it from disk per press decoupled the key from the
+    // pipeline's frozen backend and could defeat the recent-translation cache (spec §4.1 main case:
+    // repeated hotkey on unchanged content must be a HIT, not a re-translate).
+    private var pipelineModel: String = ""
     private var registry: TranslatorRegistry?
     private var clipboardWatcher: ClipboardWatcher?
     private var hotkeyService: HotkeyService?
@@ -126,8 +132,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         currentTranslationId = id
         translationLock.unlock()
 
-        let config = ConfigService.load(from: configPath) ?? ConfigService.defaultConfig()
-        let model = config.backends[config.general.activeBackend]?.model ?? ""
+        // Use the pipeline-bound model (set in buildPipeline), NOT a fresh per-press disk reload —
+        // the cache key must stay stable so an identical repeat press HITS the cache (spec §4.1).
+        let model = pipelineModel
 
         let runner = PipelineRunner(pipeline: currentPipeline)
 
@@ -190,6 +197,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func buildPipeline(from config: AppConfig, registry: TranslatorRegistry) -> TranslationPipeline {
         let backendId = config.general.activeBackend
+        // Bind the cache-key model to this pipeline build (stable across presses until a settings
+        // save rebuilds the pipeline — at which point a fresh cache is expected anyway).
+        pipelineModel = config.backends[backendId]?.model ?? ""
         // Resolve the unified target language ONCE ({target} -> translation.targetLanguage) before the
         // template reaches the translators — mirrors Windows TranslatorRegistry.Build. Without this the
         // prompt would contain a literal "{target}".
