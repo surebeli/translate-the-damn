@@ -1,0 +1,58 @@
+.hopper/handoffs/win-screenshots.md
+  0000019ef0176f0c 1-74
+README.md
+  0000019ef0176f0c 1-218
+docs/assets/popup-error-macos.png
+  0000019ef0176f0c 1-165
+docs/assets/popup-history-macos.png
+  0000019ef0176f0c 1-351
+docs/assets/popup-large-macos.png
+  0000019ef0176f0c 1-596
+docs/assets/popup-loading-macos.png
+  0000019ef0176f0c 1-84
+docs/assets/popup-result-macos.png
+  0000019ef0176f0c 1-216
+docs/assets/settings-builtin-macos.png
+  0000019ef0176f0c 1-813
+docs/assets/settings-custom-macos.png
+  0000019ef0176f0c 1-904
+docs/assets/settings-http-macos.png
+  0000019ef0176f0c 1-916
+docs/assets/settings-lamp-fail-macos.png
+  0000019ef0176f0c 1-972
+docs/assets/settings-lamp-ok-macos.png
+  0000019ef0176f0c 1-967
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "102d3de781526d3fe8d55a13e5beea6dae4a5f78",
+  "prompts": {
+    "s_abbaa38f713562::t_3810ed82c84dba": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1782144527739826000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "0000019ef0176f0c": {
+      "agent_id": {
+        "tool": "claude",
+        "model": "claude-opus-4-8",
+        "id": "ai-thread-claude-claude-opus-4-8-1782144528140"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 6276,
+      "total_deletions": 0,
+      "accepted_lines": 6276,
+      "overriden_lines": 0
+    }
+  }
+}
