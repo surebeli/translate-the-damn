@@ -1,0 +1,26 @@
+platforms/macos/tests/ModelEnumeratorTests.swift
+  s_aa5b50d395b0a0::t_c920fa32511228 1-35
+platforms/macos/src/Core/ModelEnumerator.swift
+  s_aa5b50d395b0a0::t_d481416291992f 1-97
+platforms/macos/src/Core/HttpTranslator.swift
+  s_aa5b50d395b0a0::t_6572840192ab84 7
+  s_aa5b50d395b0a0::t_4f69bdc1333e7a 5
+platforms/macos/src/Core/TranslatorRegistry.swift
+  s_aa5b50d395b0a0::t_9e48229ebdd344 16-17
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "efc3c75e8ac0454c653d56b9f49eafadd8d5221a",
+  "prompts": {},
+  "sessions": {
+    "s_aa5b50d395b0a0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "fa525b59-03ad-4f0e-bc1b-d5b0b5eca96f",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
