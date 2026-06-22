@@ -46,7 +46,11 @@ public static class DefaultConfig
             ["doubao"]  = new() { Type = "http", Endpoint = "https://ark.cn-beijing.volces.com/api/v3/responses", ApiKey = "", Model = "doubao-seed-translation-250915", TargetLanguage = "zh", SourceLanguage = "" },
             ["opencode"] = new() { Type = "cli", Command = "opencode", Model = "deepseek/deepseek-chat", TimeoutSec = 60 },
             ["kimi"]     = new() { Type = "cli", Command = "kimi", Model = "kimi-code/kimi-for-coding", OutputFormat = "stream-json", TimeoutSec = 90 },
-            ["mimo"]     = new() { Type = "cli", Command = "mimo", Model = "xiaomi/mimo-v2.5-pro", TimeoutSec = 90 }
+            ["mimo"]     = new() { Type = "cli", Command = "mimo", Model = "xiaomi/mimo-v2.5-pro", TimeoutSec = 90 },
+            // Built-in API providers (BYOK — fill the API Key). base endpoint + protocol; chatPath appends the path.
+            ["deepseek-http"] = new() { Type = "http", Protocol = "openai", Endpoint = "https://api.deepseek.com/v1", ApiKey = "", Model = "deepseek-v4-flash", TimeoutSec = 30 },
+            ["mimo-http"]     = new() { Type = "http", Protocol = "openai", Endpoint = "https://api.xiaomimimo.com/v1", ApiKey = "", Model = "mimo-v2.5", TimeoutSec = 30 },
+            ["kimi-http"]     = new() { Type = "http", Protocol = "anthropic", Endpoint = "https://api.kimi.com/coding/v1", ApiKey = "", Model = "kimi-for-coding", TimeoutSec = 30 }
         },
         ModelCatalog = new Dictionary<string, List<string>>
         {
@@ -58,7 +62,10 @@ public static class DefaultConfig
             ["doubao"]  = new() { "doubao-seed-translation-250915" },
             ["opencode"] = new() { "deepseek/deepseek-chat", "deepseek/deepseek-reasoner", "deepseek/deepseek-v4-pro", "tokenbox/glm-5.2", "tokenbox/kimi-k2.6", "xiaomi-token-plan-cn/mimo-v2.5-pro" },
             ["kimi"]     = new() { "kimi-code/kimi-for-coding" },
-            ["mimo"]     = new() { "mimo/mimo-auto", "xiaomi/mimo-v2-flash", "xiaomi/mimo-v2-pro", "xiaomi/mimo-v2.5", "xiaomi/mimo-v2.5-pro" }
+            ["mimo"]     = new() { "mimo/mimo-auto", "xiaomi/mimo-v2-flash", "xiaomi/mimo-v2-pro", "xiaomi/mimo-v2.5", "xiaomi/mimo-v2.5-pro" },
+            ["deepseek-http"] = new() { "deepseek-v4-flash", "deepseek-v4-pro" },
+            ["mimo-http"]     = new() { "mimo-v2.5", "mimo-v2.5-pro", "mimo-v2-pro", "mimo-v2-flash" },
+            ["kimi-http"]     = new() { "kimi-for-coding" }
         }
     };
 }

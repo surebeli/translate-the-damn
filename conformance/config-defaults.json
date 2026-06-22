@@ -7,7 +7,7 @@
     { "path": "general.listenClipboard", "equals": true },
     { "path": "popup.style", "equals": "acrylic" },
     { "path": "popup.autoDismissSeconds", "equals": 6 },
-    { "path": "backends", "count": 9 },
+    { "path": "backends", "count": 12 },
     { "path": "backends.claude.model", "equals": "haiku" },
     { "path": "backends.codex.reasoning", "equals": "low" },
     { "path": "backends.agy.fallbackCommand", "equals": "gemini" },

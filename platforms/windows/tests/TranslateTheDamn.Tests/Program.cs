@@ -49,7 +49,7 @@ Check.Section("ConfigService");
 
         var cfg = svc.LoadOrBootstrap();
         Check.True(File.Exists(svc.FilePath), "bootstrap writes config.json");
-        Check.Eq(9, cfg.Backends.Count, "default has 9 backends");
+        Check.Eq(12, cfg.Backends.Count, "default has 12 backends");
         Check.True(cfg.Backends.ContainsKey("agy"), "default has agy backend");
         Check.True(cfg.ModelCatalog.ContainsKey("claude"), "default has claude model catalog");
         Check.Eq("claude", cfg.General.ActiveBackend, "default active backend = claude");
@@ -70,7 +70,7 @@ Check.Section("ConfigService");
         // corrupt file -> backed up + rebootstrapped
         File.WriteAllText(svc.FilePath, "{ this is : not json ");
         var recovered = new ConfigService(dir).LoadOrBootstrap();
-        Check.Eq(9, recovered.Backends.Count, "corrupt config recovers to defaults");
+        Check.Eq(12, recovered.Backends.Count, "corrupt config recovers to defaults");
         Check.True(Directory.GetFiles(dir, "config.json.bak.*").Length >= 1, "corrupt config backed up to .bak");
     }
     finally { try { Directory.Delete(dir, true); } catch { } }
@@ -274,7 +274,7 @@ Check.Section("HTTP credential gating");
 Check.Section("TranslatorRegistry");
 {
     var reg = TranslatorRegistry.Build(DefaultConfig.Create());
-    Check.Eq(9, reg.Ids.Count, "registry builds 9 backends");
+    Check.Eq(12, reg.Ids.Count, "registry builds 12 backends");
     Check.True(reg.Get("claude") is ManifestCliBackend, "claude -> manifest CLI backend");
     Check.True(reg.Get("doubao") is ManifestHttpBackend, "doubao -> manifest HTTP backend");
     Check.True(reg.Get("CLAUDE") is ManifestCliBackend, "lookup is case-insensitive");

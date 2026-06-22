@@ -106,7 +106,14 @@ public enum ConfigService {
                     command: "mimo",
                     model: "xiaomi/mimo-v2.5-pro",
                     timeoutSec: 90
-                )
+                ),
+                // Built-in API providers (BYOK — fill the API Key). base endpoint + protocol; chatPath appends the path.
+                "deepseek-http": BackendConfig(type: "http", model: "deepseek-v4-flash", timeoutSec: 30,
+                                               endpoint: "https://api.deepseek.com/v1", apiKey: "", protocol: "openai"),
+                "mimo-http": BackendConfig(type: "http", model: "mimo-v2.5", timeoutSec: 30,
+                                           endpoint: "https://api.xiaomimimo.com/v1", apiKey: "", protocol: "openai"),
+                "kimi-http": BackendConfig(type: "http", model: "kimi-for-coding", timeoutSec: 30,
+                                           endpoint: "https://api.kimi.com/coding/v1", apiKey: "", protocol: "anthropic")
             ],
             modelCatalog: [
                 "claude": ["haiku", "sonnet", "opus", "fable"],
@@ -117,7 +124,10 @@ public enum ConfigService {
                 "doubao": ["doubao-seed-translation-250915"],
                 "opencode": ["deepseek/deepseek-chat", "deepseek/deepseek-reasoner", "deepseek/deepseek-v4-pro", "tokenbox/glm-5.2", "tokenbox/kimi-k2.6", "xiaomi-token-plan-cn/mimo-v2.5-pro"],
                 "kimi": ["kimi-code/kimi-for-coding"],
-                "mimo": ["mimo/mimo-auto", "xiaomi/mimo-v2-flash", "xiaomi/mimo-v2-pro", "xiaomi/mimo-v2.5", "xiaomi/mimo-v2.5-pro"]
+                "mimo": ["mimo/mimo-auto", "xiaomi/mimo-v2-flash", "xiaomi/mimo-v2-pro", "xiaomi/mimo-v2.5", "xiaomi/mimo-v2.5-pro"],
+                "deepseek-http": ["deepseek-v4-flash", "deepseek-v4-pro"],
+                "mimo-http": ["mimo-v2.5", "mimo-v2.5-pro", "mimo-v2-pro", "mimo-v2-flash"],
+                "kimi-http": ["kimi-for-coding"]
             ]
         )
     }
