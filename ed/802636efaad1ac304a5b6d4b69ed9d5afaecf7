@@ -1,0 +1,130 @@
+platforms/macos/src/Core/PopupSizing.swift
+  0000019eed4a569e 1-23
+.github/workflows/conformance.yml
+  0000019eee13ea35 1-85
+.gitignore
+  0000019eee13ea35 1-39
+.hopper/RETROSPECTIVE-2026-06-20-parity-mechanism.md
+  0000019eee13ea35 1-102
+docs/CROSS-PLATFORM-PARITY.md
+  0000019eee13ea35 1-199
+platforms/macos/tests/Conformance/ConformanceHarness.swift
+  0000019eee13ea35 1-90
+platforms/macos/tests/Conformance/ConformanceResults.swift
+  0000019eee13ea35 1-65
+platforms/windows/tests/TranslateTheDamn.Tests/Check.cs
+  0000019eee13ea35 1-79
+platforms/windows/tests/TranslateTheDamn.Tests/Conformance.cs
+  0000019eee13ea35 1-231
+platforms/windows/tests/TranslateTheDamn.Tests/Program.cs
+  0000019eee13ea35 1-344
+scripts/parity-verify.py
+  0000019eee13ea35 1-127
+PARITY.md
+  0000019eee297bc7 1-80
+scripts/parity-evidence.py
+  0000019eee297bc7 1-121
+spec/ui-evidence.json
+  0000019eee297bc7 1-40
+docs/superpowers/specs/2026-06-17-translate-the-damn-design.md
+  0000019eee4a7a6e 1-289
+platforms/macos/src/App/DSSettingsView.swift
+  0000019eee4a7a6e 1-162
+platforms/macos/src/Core/AppConfig.swift
+  0000019eee4a7a6e 1-157
+platforms/macos/src/Core/CarbonKeyMap.swift
+  0000019eee4a7a6e 1-49
+platforms/macos/src/Core/ConfigService.swift
+  0000019eee4a7a6e 1-141
+platforms/macos/tests/PlatformDefaultsTests.swift
+  0000019eee4a7a6e 1-26
+platforms/macos/src/App/DSPopup.swift
+  0000019eee6fa5e4 1-615
+platforms/macos/src/Core/HotkeyParser.swift
+  0000019eee6fa5e4 1-107
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "ed802636efaad1ac304a5b6d4b69ed9d5afaecf7",
+  "prompts": {
+    "s_e64eb2437abb27::t_6052e73fc1c922": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1782097532228877000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "0000019eed4a569e": {
+      "agent_id": {
+        "tool": "claude",
+        "model": "claude-opus-4-8",
+        "id": "ai-thread-claude-claude-opus-4-8-1782097532574"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 23,
+      "total_deletions": 0,
+      "accepted_lines": 23,
+      "overriden_lines": 0
+    },
+    "0000019eee13ea35": {
+      "agent_id": {
+        "tool": "claude",
+        "model": "claude-opus-4-8",
+        "id": "ai-thread-claude-claude-opus-4-8-1782110743093"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 1361,
+      "total_deletions": 0,
+      "accepted_lines": 1361,
+      "overriden_lines": 0
+    },
+    "0000019eee297bc7": {
+      "agent_id": {
+        "tool": "claude",
+        "model": "claude-opus-4-8",
+        "id": "ai-thread-claude-claude-opus-4-8-1782112156615"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 241,
+      "total_deletions": 0,
+      "accepted_lines": 241,
+      "overriden_lines": 0
+    },
+    "0000019eee4a7a6e": {
+      "agent_id": {
+        "tool": "claude",
+        "model": "claude-opus-4-8",
+        "id": "ai-thread-claude-claude-opus-4-8-1782114318958"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 824,
+      "total_deletions": 0,
+      "accepted_lines": 824,
+      "overriden_lines": 0
+    },
+    "0000019eee6fa5e4": {
+      "agent_id": {
+        "tool": "claude",
+        "model": "claude-opus-4-8",
+        "id": "ai-thread-claude-claude-opus-4-8-1782116754916"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 722,
+      "total_deletions": 0,
+      "accepted_lines": 722,
+      "overriden_lines": 0
+    }
+  }
+}
