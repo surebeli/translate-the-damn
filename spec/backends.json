@@ -49,7 +49,7 @@
       "fallbackCommand": "gemini",
       "fallbackArgs": ["-p", "{prompt}", "--output-format", "text"],
       "knownInstallPaths": { "windows": ["%LOCALAPPDATA%\\agy\\bin\\agy.exe"] },
-      "probe": { "kind": "log", "network": true, "retries": 3, "successSignatures": ["authenticated via keyring", "authenticated successfully as"], "failSignatures": ["not logged into Antigravity"], "credFiles": ["%USERPROFILE%\\.gemini\\oauth_creds.json", "%USERPROFILE%\\.gemini\\google_accounts.json"] },
+      "probe": { "kind": "log", "network": true, "retries": 3, "successSignatures": ["authenticated via keyring", "authenticated successfully as"], "failSignatures": ["not logged into Antigravity"], "credFiles": ["~/.gemini/oauth_creds.json", "~/.gemini/google_accounts.json"] },
       "parse": { "mode": "stdout-clean", "logDiagnosis": "exit0+empty-stdout+auth-error-in-log" },
       "auth": "ANTIGRAVITY_API_KEY / OAuth (gemini fallback: GEMINI_API_KEY)",
       "status": "best-effort",
