@@ -15,7 +15,8 @@
       "macOS": [{ "path": "platforms/macos/src/App/DSPopup.swift", "symbol": "func dismiss" }]
     },
     "Default translate hotkey": {
-      "Win": [{ "path": "platforms/windows/src/TranslateTheDamn.Core/Config/AppConfig.cs", "symbol": "DefaultTranslate" }]
+      "Win": [{ "path": "platforms/windows/src/TranslateTheDamn.Core/Config/AppConfig.cs", "symbol": "DefaultTranslate" }],
+      "macOS": [{ "path": "platforms/macos/src/Core/ConfigService.swift", "symbol": "Ctrl+Shift+C" }]
     },
     "Settings window": {
       "Win": [{ "path": "platforms/windows/src/TranslateTheDamn.App/UI/SettingsWindow.xaml.cs" }],

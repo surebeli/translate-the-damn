@@ -33,7 +33,7 @@ struct DSSettingsView: View {
 
             HStack {
                 Text(StringsLoader["settings.field.hotkey"])
-                TextField("Ctrl+Alt+T", text: $vm.hotkeyText)
+                TextField("Ctrl+Shift+C", text: $vm.hotkeyText)
                     .textFieldStyle(.roundedBorder)
                     .onChange(of: vm.hotkeyText) { _, _ in vm.checkHotkey() }
             }

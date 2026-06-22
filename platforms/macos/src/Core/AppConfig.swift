@@ -55,7 +55,7 @@ public struct HotkeyConfig: Codable {
     public var translate: String
     public var toggleListen: String
 
-    public init(translate: String = "Ctrl+Alt+T", toggleListen: String = "") {
+    public init(translate: String = "Ctrl+Shift+C", toggleListen: String = "") {
         self.translate = translate
         self.toggleListen = toggleListen
     }
