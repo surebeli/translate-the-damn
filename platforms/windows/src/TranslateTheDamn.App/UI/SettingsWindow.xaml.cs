@@ -188,7 +188,7 @@ public partial class SettingsWindow : Window
         TxtFallback.Text = bc.FallbackCommand ?? string.Empty;
         TxtTimeout.Text = bc.TimeoutSec.ToString();
 
-        LblAuth.Text = AuthHint(id, bc);
+        SetAuthLamp(id, bc);
     }
 
     /// <summary>Replace the model dropdown with the backend's LIVE model list (manifest <c>modelsCmd</c>),
@@ -256,22 +256,37 @@ public partial class SettingsWindow : Window
         }
     }
 
-    private static string AuthHint(string id, BackendConfig bc)
+    private static (string Text, bool Ready) AuthHint(string id, BackendConfig bc)
     {
         if (bc.Kind == BackendKind.Http)
-            return string.IsNullOrWhiteSpace(bc.ApiKey) ? "● 未配置 API Key(请在下方填写)" : "● 已配置 API Key";
+            return string.IsNullOrWhiteSpace(bc.ApiKey)
+                ? ("● 未配置 API Key(请在下方填写)", false)
+                : ("● 已配置 API Key", true);
 
         var paths = id == "agy"
             ? new[] { System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "agy", "bin", "agy.exe") }
             : Array.Empty<string>();
         var resolved = PathResolver.Resolve(bc.Command ?? id, paths);
-        return resolved is null ? $"● 未找到命令 “{bc.Command ?? id}”" : $"● 已检测到 {bc.Command ?? id}(认证在首次翻译时确认)";
+        return resolved is null
+            ? ($"● 未找到命令 “{bc.Command ?? id}”", false)
+            : ($"● 已检测到 {bc.Command ?? id}(认证在首次翻译时确认)", true);
+    }
+
+    /// <summary>Set the per-backend auth lamp text AND colour it by readiness: a missing key / missing CLI
+    /// reads as an error (red), a ready backend as green. Without the colour the ● glyph alone is the only
+    /// pass/fail cue and it renders the same dim gray in both states.</summary>
+    private void SetAuthLamp(string id, BackendConfig bc)
+    {
+        var (text, ready) = AuthHint(id, bc);
+        LblAuth.Text = text;
+        LblAuth.Foreground = ready ? StatusOkBrush : StatusErrorBrush;
     }
 
     private void ValidateHotkey()
     {
         var spec = HotkeyParser.Parse(TxtHotkey.Text);
         LblHotkeyStatus.Text = spec.IsValid ? $"✓ {spec.Display}(保存时注册;若被占用会提示)" : $"✗ {spec.Error}";
+        LblHotkeyStatus.Foreground = spec.IsValid ? StatusOkBrush : StatusErrorBrush;
     }
 
     private void BtnSave_Click(object sender, RoutedEventArgs e)
@@ -291,17 +306,42 @@ public partial class SettingsWindow : Window
         {
             _svc.Save(_config);
             StartupManager.Apply(_config.General.StartWithWindows);
-            LblSaveStatus.Text = "已保存 ✓";
+            SetStatus("已保存 ✓", StatusKind.Ok);
             Saved?.Invoke(_config);
-            if (_currentBackendId is not null) LblAuth.Text = AuthHint(_currentBackendId, _config.Backends[_currentBackendId]);
+            if (_currentBackendId is not null) SetAuthLamp(_currentBackendId, _config.Backends[_currentBackendId]);
         }
         catch (Exception ex)
         {
-            LblSaveStatus.Text = "保存失败:" + ex.Message;
+            SetStatus("保存失败:" + ex.Message, StatusKind.Error);
         }
     }
 
     private void BtnClose_Click(object sender, RoutedEventArgs e) => Close();
+
+    /// <summary>Semantic colour for the save-status line: success=green, error=red, neutral info=gray.
+    /// Keeps the status text legible against the dark theme and makes failures read as failures (a green
+    /// "保存失败" looked like success). Colours match the popup error/loading palette for consistency.</summary>
+    private enum StatusKind { Ok, Error, Info }
+
+    private static readonly System.Windows.Media.Brush StatusOkBrush =
+        new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0x8F, 0xE3, 0xC0));  // calm green
+    private static readonly System.Windows.Media.Brush StatusErrorBrush =
+        new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xB4, 0xA9));  // warm red — single-sourced with popup error #FFB4A9
+    private static readonly System.Windows.Media.Brush StatusInfoBrush =
+        new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xC9, 0xC9, 0xC9));  // neutral gray
+    private static readonly System.Windows.Media.Brush StatusWarnBrush =
+        new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xE8, 0xC0, 0x7A));  // amber (degraded)
+
+    private void SetStatus(string text, StatusKind kind)
+    {
+        LblSaveStatus.Text = text;
+        LblSaveStatus.Foreground = kind switch
+        {
+            StatusKind.Ok => StatusOkBrush,
+            StatusKind.Error => StatusErrorBrush,
+            _ => StatusInfoBrush,
+        };
+    }
 
     /// <summary>Add a custom API provider (generic openai/anthropic http backend). User fills endpoint/key/model/protocol then saves.</summary>
     private void BtnAddProvider_Click(object sender, RoutedEventArgs e)
@@ -309,11 +349,11 @@ public partial class SettingsWindow : Window
         var name = InputBox.Show(this, "新增 API provider", "provider 名称(英文 id,例如 my-deepseek):");
         if (string.IsNullOrWhiteSpace(name)) return;
         var id = name.Trim();
-        if (_config.Backends.ContainsKey(id)) { LblSaveStatus.Text = $"已存在:{id}"; return; }
+        if (_config.Backends.ContainsKey(id)) { SetStatus($"已存在:{id}", StatusKind.Error); return; }
         if (_currentBackendId is not null) FlushBackendFields(_currentBackendId);
         _config.Backends[id] = new BackendConfig { Type = "http", Protocol = "openai", Endpoint = "", ApiKey = "", Model = "", TimeoutSec = 30 };
         RebuildBackendList(id);
-        LblSaveStatus.Text = $"已新增 {id} · 填 Endpoint/Key/模型/协议后点保存";
+        SetStatus($"已新增 {id} · 填 Endpoint/Key/模型/协议后点保存", StatusKind.Info);
     }
 
     /// <summary>Discover the user's OWN static API keys (env + opencode + codex), show a consent checklist,
@@ -322,8 +362,8 @@ public partial class SettingsWindow : Window
     {
         IReadOnlyList<DiscoveredCredential> found;
         try { found = CredentialDiscovery.Scan(); }
-        catch (Exception ex) { LblSaveStatus.Text = "检测失败(" + ex.GetType().Name + ")"; return; }
-        if (found.Count == 0) { LblSaveStatus.Text = "未在本机发现可导入的静态密钥(env / opencode / codex)"; return; }
+        catch (Exception ex) { SetStatus("检测失败(" + ex.GetType().Name + ")", StatusKind.Error); return; }
+        if (found.Count == 0) { SetStatus("未在本机发现可导入的静态密钥(env / opencode / codex)", StatusKind.Info); return; }
 
         var selected = CredentialImportDialog.Show(this, found);
         if (selected is null || selected.Count == 0) return;
@@ -338,7 +378,7 @@ public partial class SettingsWindow : Window
             lastId = id; n++;
         }
         RebuildBackendList(lastId);
-        LblSaveStatus.Text = $"已导入 {n} 个 provider(点保存写入 config.json)";
+        SetStatus($"已导入 {n} 个 provider(点保存写入 config.json)", StatusKind.Ok);
     }
 
     private string UniqueBackendId(string baseId)
@@ -352,12 +392,12 @@ public partial class SettingsWindow : Window
     {
         var id = _currentBackendId;
         if (id is null) return;
-        if (BackendOrder.Contains(id)) { LblSaveStatus.Text = "内置后端不可删除"; return; }
+        if (BackendOrder.Contains(id)) { SetStatus("内置后端不可删除", StatusKind.Error); return; }
         _config.Backends.Remove(id);
         if (string.Equals(_config.General.ActiveBackend, id, StringComparison.OrdinalIgnoreCase))
             _config.General.ActiveBackend = "claude";
         RebuildBackendList(OrderedBackendIds().FirstOrDefault());
-        LblSaveStatus.Text = $"已删除 {id}(保存后写入)";
+        SetStatus($"已删除 {id}(保存后写入)", StatusKind.Info);
     }
 
     /// <summary>Run the manifest-driven doctor for the selected backend (async, off the UI thread via
@@ -380,6 +420,7 @@ public partial class SettingsWindow : Window
 
         BtnDoctor.IsEnabled = false;
         TxtDoctorResult.Visibility = Visibility.Visible;
+        TxtDoctorResult.Foreground = StatusInfoBrush;     // transient "诊断中" reads as neutral, not pass/fail
         TxtDoctorResult.Text = deep ? "诊断中(含联网探测)…" : "诊断中…";
         try
         {
@@ -392,7 +433,7 @@ public partial class SettingsWindow : Window
         {
             // Doctor is CLI-only (RowDoctor is hidden for http backends), so no API key is in scope;
             // still surface only the exception type, never a raw message, to keep the no-leak guarantee.
-            if (!token.IsCancellationRequested) TxtDoctorResult.Text = "诊断失败(" + ex.GetType().Name + ")";
+            if (!token.IsCancellationRequested) { TxtDoctorResult.Foreground = StatusErrorBrush; TxtDoctorResult.Text = "诊断失败(" + ex.GetType().Name + ")"; }
         }
         finally
         {
@@ -406,11 +447,27 @@ public partial class SettingsWindow : Window
         sb.AppendLine($"{Glyph(report.Overall)} {report.BackendId} — 总体:{StatusZh(report.Overall)}");
         foreach (var c in report.Checks)
             sb.AppendLine($"  {Glyph(c.Status)} {c.Name}:{c.Detail}");
+        TxtDoctorResult.Foreground = report.Overall switch
+        {
+            DoctorStatus.Ok => StatusOkBrush,
+            DoctorStatus.Degraded => StatusWarnBrush,
+            DoctorStatus.Fail => StatusErrorBrush,
+            _ => StatusInfoBrush,
+        };
         TxtDoctorResult.Text = sb.ToString().TrimEnd();
 
-        // drive the (previously static) auth lamp live from the doctor's auth row
+        // drive the (previously static) auth lamp live from the doctor's auth row — colour it by the
+        // auth check's own verdict (fall back to Overall when no auth row exists) so a failed auth reads red.
         var auth = report.Checks.FirstOrDefault(c => c.Name.StartsWith("认证", StringComparison.Ordinal));
+        var lampStatus = auth?.Status ?? report.Overall;
         LblAuth.Text = auth is not null ? $"{Glyph(auth.Status)} {auth.Detail}" : $"{Glyph(report.Overall)} {StatusZh(report.Overall)}";
+        LblAuth.Foreground = lampStatus switch
+        {
+            DoctorStatus.Ok => StatusOkBrush,
+            DoctorStatus.Degraded => StatusWarnBrush,
+            DoctorStatus.Fail => StatusErrorBrush,
+            _ => StatusInfoBrush,
+        };
     }
 
     private static List<string> EffortTiersFor(string id) =>

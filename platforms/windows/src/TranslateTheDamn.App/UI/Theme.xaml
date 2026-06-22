@@ -71,4 +71,53 @@
         </Style.Triggers>
     </Style>
 
+    <!-- App-wide dark button. The default Aero2 template hardcodes a light-blue hover and a pale-gray
+         disabled fill that ignore the dark theme (setting Background inline only changes the IDLE state).
+         This template keeps each button's own Background/Foreground/Border and expresses hover/press as a
+         translucent veil (so it works over green, gray, any base colour), and DISABLED stays the button's
+         own dark chrome dimmed to 40% — never the off-theme pale box. Applies everywhere via App.xaml. -->
+    <Style TargetType="{x:Type Button}">
+        <Setter Property="Foreground" Value="#EDEDED"/>
+        <Setter Property="Background" Value="#2A2A2A"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="10,5"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="Bd" CornerRadius="6"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="True">
+                        <Grid>
+                            <!-- hover/press veil + keyboard-focus ring (overlay so there is no layout shift) -->
+                            <Border x:Name="Veil" CornerRadius="6" Background="Transparent" BorderThickness="0"/>
+                            <ContentPresenter Margin="{TemplateBinding Padding}"
+                                              HorizontalAlignment="Center" VerticalAlignment="Center"
+                                              RecognizesAccessKey="True"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Veil" Property="Background" Value="#22FFFFFF"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Veil" Property="Background" Value="#33000000"/>
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="Veil" Property="BorderBrush" Value="#8F8FE3C0"/>
+                            <Setter TargetName="Veil" Property="BorderThickness" Value="1"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Bd" Property="Opacity" Value="0.4"/>
+                            <Setter Property="Cursor" Value="Arrow"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

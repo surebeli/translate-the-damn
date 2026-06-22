@@ -6,6 +6,8 @@
         Width="440" Height="360"
         FontFamily="Segoe UI, Microsoft YaHei UI"
         MouseEnter="Root_MouseEnter" MouseLeave="Root_MouseLeave">
+    <!-- Button hover/press/disabled visuals (incl. the dimmed ◀/▶ boundary arrows) come from the
+         app-wide dark Button template in UI/Theme.xaml, merged via App.xaml. -->
     <!-- Exactly two fixed sizes (spec §8): normal 440x360, large = 2x width x 1.5x height. The window
          snaps to one of the two in code (ApplySize); the source is capped at ~2 lines and the
          translation scrolls inside, so different content lengths never produce a third size. -->
@@ -26,14 +28,14 @@
 
             <DockPanel Grid.Row="0" LastChildFill="False" Margin="0,0,0,8">
                 <TextBlock x:Name="HeaderText" Text="翻译" Foreground="#8FE3C0" FontSize="12" FontWeight="SemiBold" DockPanel.Dock="Left"/>
-                <TextBlock x:Name="StatusText" Text="" Foreground="#88AAAAAA" FontSize="11" DockPanel.Dock="Right"/>
+                <TextBlock x:Name="StatusText" Text="" Foreground="#B8B8B8" FontSize="11" DockPanel.Dock="Right"/>
             </DockPanel>
 
             <!-- italic + 2-line cap mirrors the macOS DS source signature; never grows the window -->
-            <TextBlock x:Name="SourceText" Grid.Row="1" Foreground="#90AAAAAA" FontSize="12" FontStyle="Italic"
+            <TextBlock x:Name="SourceText" Grid.Row="1" Foreground="#B0B0B0" FontSize="12" FontStyle="Italic"
                        TextWrapping="Wrap" MaxHeight="36" TextTrimming="CharacterEllipsis" Margin="0,0,0,8"/>
 
-            <Border Grid.Row="2" Height="1" Background="#22FFFFFF" Margin="0,0,0,10"/>
+            <Border x:Name="SourceDivider" Grid.Row="2" Height="1" Background="#22FFFFFF" Margin="0,0,0,10"/>
 
             <ScrollViewer x:Name="TranslationScroll" Grid.Row="3"
                           VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"

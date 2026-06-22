@@ -15,6 +15,7 @@ public partial class PopupWindow : Window
 {
     private readonly PopupConfig _cfg;
     private readonly DispatcherTimer _dismissTimer;
+    private readonly DispatcherTimer _copyResetTimer;   // reverts "已复制 ✓" back to "复制译文" after a moment
     private string _translation = string.Empty;
 
     // Two fixed window specs (spec §8). large = 2x width x 1.5x height — derived from the shared
@@ -31,6 +32,15 @@ public partial class PopupWindow : Window
     // (clamped to the work area) until the app restarts. Null = default top-center placement.
     private System.Windows.Point? _userPosition;
 
+    // State-coloured header: ready/result reads as calm green, in-progress as neutral, failure as
+    // warm red (matching the error body). Without this the header stayed green even on "翻译失败".
+    private static readonly System.Windows.Media.Brush HeaderReadyBrush =
+        new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(0xFF, 0x8F, 0xE3, 0xC0));
+    private static readonly System.Windows.Media.Brush HeaderLoadingBrush =
+        new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(0xFF, 0xC9, 0xC9, 0xC9));
+    private static readonly System.Windows.Media.Brush HeaderErrorBrush =
+        new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(0xFF, 0xFF, 0xB4, 0xA9));
+
     /// <summary>Raised when the user clicks 复制译文; the host writes the clipboard (with self-write guard).</summary>
     public event Action<string>? CopyRequested;
 
@@ -41,6 +51,14 @@ public partial class PopupWindow : Window
 
         _dismissTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(Math.Max(2, cfg.AutoDismissSeconds)) };
         _dismissTimer.Tick += (_, _) => { _dismissTimer.Stop(); Hide(); };
+
+        // "已复制 ✓" is a transient confirmation, not a sticky label: restore it so a second copy is afforded.
+        _copyResetTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1.5) };
+        _copyResetTimer.Tick += (_, _) =>
+        {
+            _copyResetTimer.Stop();
+            if (CopyButton.Visibility == Visibility.Visible) CopyButton.Content = "复制译文";
+        };
 
         if (string.Equals(cfg.Style, "solid", StringComparison.OrdinalIgnoreCase))
             Root.Background = new System.Windows.Media.SolidColorBrush(
@@ -62,11 +80,11 @@ public partial class PopupWindow : Window
         _history.Clear();
         _index = 0;
         HeaderText.Text = "翻译中…";
+        HeaderText.Foreground = HeaderLoadingBrush;
         StatusText.Text = backendId;
-        SourceText.Text = Shorten(sourceText, 400);
+        SetSource(Shorten(sourceText, 400));
         TranslationText.Text = "正在翻译,请稍候…";
-        TranslationText.Foreground = new System.Windows.Media.SolidColorBrush(
-            System.Windows.Media.Color.FromArgb(0xCC, 0xCC, 0xCC, 0xCC));
+        TranslationText.Foreground = HeaderLoadingBrush;   // single-source the in-progress neutral (was a 2nd near-equal gray)
         CopyButton.Visibility = Visibility.Collapsed;
         UpdateHistoryControls();                 // no history yet -> nav stays hidden
         ApplySize(sourceText?.Length ?? 0);      // size by the incoming source -> no resize on result
@@ -99,8 +117,9 @@ public partial class PopupWindow : Window
         _history.Clear();
         _index = 0;
         HeaderText.Text = "翻译失败";
+        HeaderText.Foreground = HeaderErrorBrush;
         StatusText.Text = backendId;
-        SourceText.Text = Shorten(sourceText, 400);
+        SetSource(Shorten(sourceText, 400));
         TranslationText.Text = error;
         TranslationText.Foreground = new System.Windows.Media.SolidColorBrush(
             System.Windows.Media.Color.FromArgb(0xFF, 0xFF, 0xB4, 0xA9));
@@ -116,12 +135,14 @@ public partial class PopupWindow : Window
     private void RenderCurrent()
     {
         if (_history.Count == 0) return;
+        _copyResetTimer.Stop();                   // a pending "已复制 ✓"→"复制译文" tick must not clobber this fresh entry
         _index = Math.Clamp(_index, 0, _history.Count - 1);
         var (source, translation) = _history[_index];
         _translation = translation;
         HeaderText.Text = "翻译";
+        HeaderText.Foreground = HeaderReadyBrush;
         StatusText.Text = _statusLabel;
-        SourceText.Text = Shorten(source, 400);
+        SetSource(Shorten(source, 400));
         TranslationText.Text = translation;
         TranslationText.Foreground = new System.Windows.Media.SolidColorBrush(
             System.Windows.Media.Color.FromArgb(0xFF, 0xF2, 0xF2, 0xF2));
@@ -235,12 +256,26 @@ public partial class PopupWindow : Window
         if (string.IsNullOrEmpty(_translation)) return;
         CopyRequested?.Invoke(_translation);
         CopyButton.Content = "已复制 ✓";
+        _copyResetTimer.Stop();
+        _copyResetTimer.Start();                  // revert to "复制译文" after a moment so a 2nd copy is afforded
     }
 
     private void CloseButton_Click(object sender, RoutedEventArgs e)
     {
         _dismissTimer.Stop();
+        _copyResetTimer.Stop();
         Hide();
+    }
+
+    /// <summary>Set the source-preview text and hide both it AND the divider when there is no source
+    /// (e.g. an error with no source, or a whitespace-only clipboard) so a stray rule never floats
+    /// under the header. Collapsed (not Hidden) removes the layout slots entirely.</summary>
+    private void SetSource(string text)
+    {
+        SourceText.Text = text;
+        var vis = string.IsNullOrWhiteSpace(text) ? Visibility.Collapsed : Visibility.Visible;
+        SourceText.Visibility = vis;
+        SourceDivider.Visibility = vis;
     }
 
     // The popup never takes focus (WS_EX_NOACTIVATE), so route wheel events to the scroller
