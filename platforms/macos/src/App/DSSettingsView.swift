@@ -8,6 +8,8 @@ import TranslateTheDamnCore
 /// (Originally the "DS" style; kept as the single UI after consolidating away the other six.)
 struct DSSettingsView: View {
     @ObservedObject var vm: SettingsViewModel
+    @State private var showAddProvider = false
+    @State private var newProviderId = ""
 
     var body: some View {
         VStack(spacing: 0) {
@@ -118,6 +120,12 @@ struct DSSettingsView: View {
                 } else if vm.isDoubao {
                     TextField("目标语言", text: $vm.targetText)
                     TextField("源语言(可选)", text: $vm.sourceText)
+                } else if vm.isCustomProvider {
+                    Picker("协议", selection: $vm.protocolText) {
+                        Text("OpenAI (/chat/completions)").tag("openai")
+                        Text("Anthropic (/messages)").tag("anthropic")
+                    }
+                    .pickerStyle(.segmented)
                 }
             } else {
                 if vm.isCodex {
@@ -130,6 +138,22 @@ struct DSSettingsView: View {
                     TextField(StringsLoader["settings.field.timeout"], text: $vm.timeoutText)
                 }
             }
+
+            // Custom (generic HTTP) provider management — add an openai/anthropic provider, or delete
+            // the selected custom one (built-ins are protected).
+            HStack {
+                Button("新增 provider…") { newProviderId = ""; showAddProvider = true }
+                Spacer()
+                Button("删除 provider", role: .destructive) { vm.deleteProvider() }
+                    .disabled(!vm.isCustomProvider)
+            }
+        }
+        .alert("新增 API provider", isPresented: $showAddProvider) {
+            TextField("provider id(英文,如 my-deepseek)", text: $newProviderId)
+            Button("添加") { vm.addProvider(newProviderId) }
+            Button("取消", role: .cancel) { }
+        } message: {
+            Text("新增一个通用 HTTP(OpenAI/Anthropic 协议)后端;添加后填 Endpoint/Key/模型/协议再保存。")
         }
     }
 

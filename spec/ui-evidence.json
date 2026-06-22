@@ -42,7 +42,8 @@
       "macOS": [{ "path": "platforms/macos/src/App/DSPopup.swift", "symbol": "sessionOrigin" }]
     },
     "Custom provider": {
-      "Win": [{ "path": "platforms/windows/src/TranslateTheDamn.App/UI/SettingsWindow.xaml.cs", "symbol": "BtnAddProvider_Click" }]
+      "Win": [{ "path": "platforms/windows/src/TranslateTheDamn.App/UI/SettingsWindow.xaml.cs", "symbol": "BtnAddProvider_Click" }],
+      "macOS": [{ "path": "platforms/macos/src/App/SettingsWindow.swift", "symbol": "func addProvider" }]
     }
   }
 }

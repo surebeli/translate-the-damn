@@ -21,7 +21,7 @@ Legend: ✅ shipped · 🚧 in progress · ⬜ not started · ⚠️ partial/bes
 | Backends — google-v2, doubao (HTTP) | §6.1/6.2 | `backend-requests` + `spec/backends.json` | ✅ | ✅ | ⬜ |
 | Backends — opencode, kimi, mimo (CLI) | §6 | `spec/backends.json` + `effort-tiers` + `doctor-probe` | ✅ | ✅ | ⬜ |
 | Backends — openai-http / anthropic-http (generic HTTP LLM, baseURL+key+protocol) | §6.x (design 2026-06-22) | `backend-requests` | ✅ | ✅ | ⬜ |
-| Custom provider (add/delete dialog, baseURL+key, OpenAI/Anthropic protocol radio) | §9 (design) | — (UI) | ✅ | ⬜ | ⬜ |
+| Custom provider (add/delete dialog, baseURL+key, OpenAI/Anthropic protocol radio) | §9 (design) | — (UI) | ✅ | ✅ | ⬜ |
 | Unified target language (`{target}` prompt var, CLI + API; live `/models` enum; CLI/API dropdown tags) | §5/§9 (design) | `config-defaults` + `prompt-builder` | ✅ | ✅ | ⬜ |
 | Credential auto-discovery (static-key only, consent-gated; env + opencode + codex) | §9 (design) | `credential-discovery` | ✅ | ✅ | ⬜ |
 | Recent-translation cache (5 entries, MRU + recency refresh) | §4.1 | `pipeline-cache` | ✅ | ✅ | ⬜ |
