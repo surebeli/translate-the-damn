@@ -89,5 +89,41 @@ stale,真正第一优先是**建 CI + 走 PR**,`--verify-vectors` 降级。
   **诚实修正**:原以为它能抓住 `72cea10` 的 Win popup stale——**抓不到**:`72cea10` *动了* PARITY(翻了
   cache 行),只是 popup 行没翻 ✅。`parity-gate` 只抓"完全忘改 PARITY",抓不到"改了但标错行";后者仍要
   路线 #5/#7(逻辑行 ✅ 从向量真值派生)。这条限制已写进 `docs/CROSS-PLATFORM-PARITY.md §4.5`,不过度宣称。
-- **仍欠**:#5(`--verify-vectors` / 逻辑行派生)、#7(PARITY 半生成化 + 噪声 baseline 让 `--fail-on-drift`
-  能上 CI)、以及真正"走 PR"的习惯(gate 只在 PR 触发)。任务 #5/#6/#9 + 这两项继续。
+- **路线 #9(P1)PARITY ⇄ 向量真值交叉核对**:`scripts/parity-verify.py` 关掉 #7/#8 都漏的那类——
+  **向量在平台 P 已绿、PARITY 该列却 🚧/⬜**(`72cea10` 欠标)。各端 CI job 内拿 runner **实测**逐向量
+  pass/fail 跟 PARITY 该列对账(under-claim / over-claim-red / over-claim-absent),不一致即 job 红。逐向量
+  真值由 runner 自吐、**无手维护映射**:macOS 用 `XCTestObservation`(向量名=载入文件名),Windows 用
+  `Check.Vector()` 打标;PARITY 解析 import `parity-drift.py`(单源)。**本地实测**:`swift test` 吐
+  7 向量全绿 → `parity-verify --platform macOS` 一致 exit 0;并构造 `72cea10` 复现(popup-sizing 绿、行 🚧)
+  → 精确报 UNDER-CLAIM exit 1;over-claim(red/absent)、`--warn` 均验证。Windows 端 C# 改动本机无法编译
+  (net9-windows + dotnet7),靠 CI 验。已记 `docs §4.6`,并据实标注剩余边界(只覆盖有向量的逻辑行,UI 行仍要 #4)。
+- **路线 #4(P1)UI 行证据指针**:`scripts/parity-evidence.py` + `spec/ui-evidence.json` 缩小最后的
+  UI 行盲区——每个 UI 行的 ✅ 必须指向实现源码(逐平台 path+symbol),指针悬空/缺失即 CI 红;指针解析但行
+  非 ✅ 则 WARN(疑似欠标)。CI 的 `parity` job 校验全平台。**落地即抓出真 stale**:Win `API Key field
+  masked` 早在 `72cea10` 就用 `PasswordBox` 实现(读源确认:`TxtApiKey` 绑 `bc.ApiKey`、注释写 masked),
+  PARITY 却一直 ⬜——已翻 ✅,**顺带清掉真功能待办 #6**。本机实测:16 个 ✅ UI 声明全部有可解析源、0 unbacked;
+  fail 路径(悬空指针)exit 1、`--warn` exit 0 均验证。据实边界:证据指针让 ✅ 可从 diff 审计、防指针腐烂,
+  但**不证明行为**(文件在≠功能对);真能机器证明的 UI 交互应下沉成向量(`popup-dismiss` 决策逻辑是下一候选,
+  但 CI 不构建视图层,"视图是否真调用"仍需本端构建核对)。
+- **路线 #5(真功能)macOS per-platform 默认热键**:spec-first/TDD 落地——先写 RED `tests/PlatformDefaultsTests`
+  钉 macOS 默认 = `Ctrl+Shift+C`(经 `CarbonKeyMap` 映射 Ctrl→⌘、Shift→⇧,用户实按 **⇧⌘C / Shift+Command+C**,
+  与 Win 同助记字母 C、原生 ⌘ 手感;用户拍板),再改 `ConfigService`/`AppConfig` 默认值转 GREEN,更 spec §7 +
+  设置占位符。本机 `swift test` 119 全绿、`swift build`(含视图层)通过。PARITY macOS 该行 ⬜→✅,并按 #4 加
+  macOS 证据指针(`parity-evidence` 强制:17 ✅ UI 声明全部有源)。drift:macOS 1→0 behind(仅剩 Linux 整列未开工)。
+- **Popup drag-to-reposition(两端共同欠账 → 对齐)**:用户告知 Windows 早在 `72cea10` 就实现了浮窗拖动
+  (`PopupWindow._userPosition` + `DragMove`,session-sticky、不抢焦点、夹取在屏内),PARITY 却一直 ⬜——
+  **又一处 stale under-claim**。读源确认后翻 Win ✅;macOS 按 spec §8 既有"shared rule"实现(`DSPopup`:
+  `isMovableByWindowBackground` + 静态 `sessionOrigin` 跨重建保活 + `willMove/didMove` 暂停/重启自动消失 +
+  夹屏),`swift build` + 119 测试通过后翻 macOS ✅,两端各加证据指针。**至此 Win↔macOS 仅剩 Dark scrollbar
+  (macOS 据实 n/a)不同,其余全对齐。**
+  > ⚠ 暴露 `parity-evidence` 的一处**残余盲区**:它只在"证据条目存在但行非 ✅"时 WARN;而 popup-drag 当时
+  > **既没翻 ✅、也没证据条目**(⬜⬜),所以**没报警**——这处 stale 是靠**用户口头告知**才发现的。
+  > **(已补)** 随后给 `parity-evidence` 加了**完整性校验**(见下),关掉这一类静默遗漏的洞。
+- **evidence 完整性校验(已补)**:`parity-evidence` 现强制 `ui-evidence.json` ⇄ PARITY UI 行**双向锁步**——
+  (1) 每个 UI 行必须有证据条目(全 ⬜ 也要空 `{}`),否则 fail;(2) 每个 key 必须命中真实 UI 行,否则 fail
+  (防前缀匹配的拼错 key 静默不命中)。本机实测:现状通过(10 UI 行 0 问题);删 popup-drag 条目→精确报
+  "NO entry";加 orphan key→报"matches no UI row";均 exit 1。**这关掉了 popup-drag 暴露的"⬜⬜ 且无条目→
+  静默遗漏"洞。** 据实残余:仍抓不到"代码已实现、PARITY 无 ✅ 且 evidence 无任何引用"的纯隐藏实现(要反向
+  扫码,不做);popup-drag 运行时拖拽手势已由**用户本端亲验**确认。
+- **仍欠**:#4 的"下沉向量"另一半(`popup-dismiss` 决策→向量,受限于 CI 不构建视图层)、#7(PARITY 半生成化
+  + 噪声 baseline 让 `--fail-on-drift` 能上 CI)、Linux 整列移植。`--verify-vectors` 已被 #9 实质实现,降级归档。

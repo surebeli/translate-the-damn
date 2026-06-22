@@ -220,10 +220,13 @@ later it may be replaced by a remote/dynamic catalog.
 Secrets (`apiKey`) are never committed; they stay only in the user's local config.json.
 
 **Default translate hotkey is per-platform** (not a shared contract). The value above (`Shift+Alt+C`)
-is the **Windows** default; macOS picks its own platform-appropriate default (e.g. a ⌘-based one),
-tracked in `PARITY.md`. Therefore `hotkey.translate` is **not** asserted by the shared
-`conformance/config-defaults` vector — each platform owns its default and verifies it with a
-platform-local test. All other default-config fields remain shared and vector-pinned.
+is the **Windows** default. The **macOS** default is `Ctrl+Shift+C` — the hotkey string stays in the
+shared Windows-naming schema (Law 5), and macOS maps modifiers to native at registration
+(`CarbonKeyMap`: Ctrl→⌘, Shift→⇧, Alt→⌥), so a Mac user presses **⇧⌘C (Shift+Command+C)** — same
+mnemonic letter `C` as Windows, native ⌘-based feel. Therefore `hotkey.translate` is **not** asserted
+by the shared `conformance/config-defaults` vector — each platform owns its default and verifies it
+with a platform-local test (Windows: its conformance runner; macOS: `tests/PlatformDefaultsTests`).
+All other default-config fields remain shared and vector-pinned.
 
 ## 8. Popup UX
 

@@ -26,7 +26,7 @@ Legend: ✅ shipped · 🚧 in progress · ⬜ not started · ⚠️ partial/bes
 | Credential auto-discovery (static-key only, consent-gated; env + opencode + codex) | §9 (design) | `credential-discovery` | ✅ | ⬜ | ⬜ |
 | Recent-translation cache (5 entries, MRU + recency refresh) | §4.1 | `pipeline-cache` | ✅ | ✅ | ⬜ |
 | config.json defaults / bootstrap | §7 | `config-defaults` | ✅ | ✅ | ⬜ |
-| Default translate hotkey (per-platform default) | §7 | — (per-platform) | ✅ | ⬜ | ⬜ |
+| Default translate hotkey (per-platform default) | §7 | — (per-platform) | ✅ | ✅ | ⬜ |
 | Per-vendor effort-tier selector (manifest tiers + conditional `--effort`) | §6, §9 | `effort-tiers` | 🚧 | ⬜ | ⬜ |
 | Backend doctor (connectivity/auth probe + live auth lamp) | §9 | `doctor-probe`, `doctor-classify` | 🚧 | ⬜ | ⬜ |
 | Acrylic popup (no-focus-steal, hover-keep, auto-dismiss, scroll) | §8 | — (UI) | ✅ | ✅ | ⬜ |
@@ -37,7 +37,7 @@ Legend: ✅ shipped · 🚧 in progress · ⬜ not started · ⚠️ partial/bes
 | App icon = tray glyph (single source) | — | — (UI) | ✅ | ✅ | ⬜ |
 | Dark scrollbar theme | — | — (UI) | ✅ | — | ⬜ |
 | API Key field masked (secure entry) | §9 | — (UI) | ✅ | ✅ | ⬜ |
-| Popup drag-to-reposition (session-sticky) | §8 | — (UI) | ⬜ | ⬜ | ⬜ |
+| Popup drag-to-reposition (session-sticky) | §8 | — (UI) | ✅ | ✅ | ⬜ |
 
 ## Version
 

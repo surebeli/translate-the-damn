@@ -429,4 +429,11 @@ Check.Section("TranslationPipeline cache supersession");
 Check.Section("Conformance (language-neutral vectors from /conformance)");
 await Conformance.RunAsync();
 
-return Check.Report();
+var exit = Check.Report();
+
+// Emit per-vector results for scripts/parity-verify.py (mechanism #9) when asked. Done AFTER Report
+// so the suite's pass/fail is unchanged whether or not emission is requested.
+var emitPath = Environment.GetEnvironmentVariable("TTD_EMIT_RESULTS");
+if (!string.IsNullOrEmpty(emitPath)) Check.WriteResults(emitPath);
+
+return exit;

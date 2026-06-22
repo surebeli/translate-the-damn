@@ -31,7 +31,9 @@ public struct HotkeyResult: Equatable {
     }
 }
 
-/// Parses a human hotkey string like "Ctrl+Alt+T" into modifier flags + a virtual key.
+/// Parses a human hotkey string (shared Windows-naming schema, e.g. the macOS default
+/// "Ctrl+Shift+C") into modifier flags + a virtual key. Modifier→native mapping happens later at
+/// registration (`CarbonKeyMap`); the parse itself is platform-neutral.
 public enum HotkeyParser {
     public static func parse(_ text: String) -> HotkeyResult {
         let trimmed = text.trimmingCharacters(in: .whitespaces)

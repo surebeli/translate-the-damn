@@ -138,11 +138,64 @@ Windows 加 powershell 条——放各机 `.claude/settings.local.json`(gitignor
   message 写一行 `parity:n/a <理由>` 放行,**逼一次有意识判断**而非无脑勾选。
 
 > 边界(据实,别过度宣称):`parity-gate` 只抓"**完全忘了改 PARITY**"(历史里真有,如纯改 macOS src 的
-> 提交);它**抓不到**"改了 PARITY 但某行标错"——例如向量已绿、行却还是 🚧(`72cea10` 正是如此)。后者
-> 要靠"逻辑行 ✅ 从向量真值派生"(路线 #5/#7),尚未落地。
+> 提交);它**抓不到**"改了 PARITY 但某行标错"——例如向量已绿、行却还是 🚧(`72cea10` 正是如此)。**那一类
+> 由下面 §4.6 的 `parity-verify` 关掉。**
 >
 > 另:`parity-gate` 只在 **PR** 上触发——直推 main 不受约束,所以"走 PR"是这道门生效的前提(也是复核建议)。
 > 本端合并前可手动 `python3 scripts/parity-gate.py` 自查。
+
+### 4.6 PARITY ⇄ 向量真值交叉核对(2026-06-22,关掉 72cea10 盲区)
+
+#7(向量回归→job 红)+ #8(忘改 PARITY→PR 红)都漏掉一类:**某逻辑行的向量在平台 P 已绿,PARITY 该平台列
+却还是 🚧/⬜**(欠标)。#7 不触发(job 是绿的)、#8 不触发(PARITY 也许动了,只是动错格)——这正是
+`72cea10`(`popup-sizing` 在 Win 已绿、行却 🚧)当初要靠手工修的那类。
+
+`scripts/parity-verify.py` 关掉它:在**各端自己的 CI job 内**(那是唯一能观测到该端向量真伪的地方),拿该端
+runner **实测**的逐向量 pass/fail 跟 PARITY 该列对账,对每个逻辑行:
+
+- 向量**绿**但列非 ✅ → **UNDER-CLAIM**(`72cea10` 反向 stale,job fail)
+- 列 ✅ 但向量**红** → OVER-CLAIM(同时也被 #7 抓)
+- 列 ✅ 但该端 runner **根本没跑**这个向量 → OVER-CLAIM(给没测的功能标绿)
+
+逐向量真值由 runner 自己吐(**无手维护映射**——drift 不会再生):
+- macOS:`tests/Conformance/ConformanceResults.swift`(`XCTestObservation`),向量名就是 `loadVector(...)`
+  载入的文件名,各 conformance test 一向量;`TTD_EMIT_RESULTS` 置位时写 `conformance-results.macos.json`。
+- Windows:`Check.Vector(stem)` 给每段 conformance 块打标,`Check.WriteResults(...)` 写
+  `conformance-results.windows.json`。
+- PARITY 解析直接 import `parity-drift.py`(**单一事实源**,两个工具不会对一行的含义产生分歧)。
+
+CI 里 `macos`/`windows` job 跑完向量后各自 `parity-verify --platform <P>`;不一致即该 job 红。本机自查:
+`TTD_EMIT_RESULTS=/tmp/r.json swift test && python3 scripts/parity-verify.py --platform macOS --results /tmp/r.json`。
+
+> 仍有边界:只覆盖**有向量的逻辑行**;**UI 行**(剪贴板监听/浮窗/托盘等无 language-neutral 向量者)
+> `parity-verify` 管不到——那一块由下面 §4.7 的证据指针缩小。
+
+### 4.7 UI 行证据指针(2026-06-22,缩小 UI 盲区)
+
+UI 行没有 language-neutral 向量(亚克力模糊、不抢焦点、托盘、安全输入框……都是真·视图层),`parity-verify`
+够不着。`scripts/parity-evidence.py` 缩小这块:**每个 UI 行的 ✅ 必须在 `spec/ui-evidence.json` 里指向实现
+它的源码**(逐平台 `path` + 可选 `symbol`),checker 校验指针**解析得到**(文件在、符号在):
+
+- ✅ 但无指针 / 指针悬空(文件没了、符号找不到)→ **CI 红**(声明了却无法被 reviewer 核对)
+- 指针**解析成功**但该平台行**非 ✅** → **WARN**(疑似欠标;文件在 ≠ 行为对,需人确认后再翻)
+
+CI 的 `parity` job(Ubuntu,整树都在)跑 `parity-evidence.py` 校验全平台指针。本机自查:`python3
+scripts/parity-evidence.py`。落地即见效:它**当场抓出 Win `API Key field masked` 欠标**——Win 早在
+`72cea10` 就用 `PasswordBox`(`TxtApiKey` 绑 `bc.ApiKey`、注释明写 masked)实现了,PARITY 却一直 ⬜;
+读源确认后已翻 ✅(顺带清掉真功能待办 #6)。
+
+**完整性校验(2026-06-22 增补)**:`parity-evidence` 还强制 `ui-evidence.json` 与 PARITY 的 UI 行**双向锁步**:
+- 每个 UI 行**都必须有证据条目**(哪怕全平台 ⬜,也写个空 `{}`)——否则 fail。这关掉了 popup-drag 暴露的洞:
+  当时它 ⬜/⬜ 且**根本没条目**,gate 压根没看它(Win 其实早实现了)。强制建条目,让每个 UI 行都成为一次
+  "这行到底谁实现了、各端啥状态"的自觉检查点。
+- 每个证据 key **都必须命中某个真实 UI 行**——否则 fail。因为匹配用前缀,一个拼错/过期的 key 会**静默不命中**
+  (gate 悄悄停止对那行的强制),所以要大声报错。
+
+> 据实边界(别过度宣称):证据指针让 ✅ **可从 diff 审计**、防指针腐烂、且 UI 行不能再被静默遗漏;但**仍不
+> 证明行为正确**——文件在不等于功能对,那仍要 spec + 人工 UI 走查。**也仍抓不到**"代码已实现、但 PARITY 既无
+> ✅、`ui-evidence.json` 也无任何引用"的纯隐藏实现——那要反向扫码,本工具不做(popup-drag 那次正是靠人发现)。
+> 真正能机器证明的 UI 交互,应**下沉成向量**(如 `popup-sizing` 已做;`popup-dismiss` 决策逻辑是候选,但 CI
+> **不构建 WPF/SwiftUI 视图层**,"视图是否真调用该决策"仍需本端构建核对)。
 
 ---
 
