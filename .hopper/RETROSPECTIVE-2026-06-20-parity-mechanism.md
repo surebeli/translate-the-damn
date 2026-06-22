@@ -97,6 +97,13 @@ stale,真正第一优先是**建 CI + 走 PR**,`--verify-vectors` 降级。
   7 向量全绿 → `parity-verify --platform macOS` 一致 exit 0;并构造 `72cea10` 复现(popup-sizing 绿、行 🚧)
   → 精确报 UNDER-CLAIM exit 1;over-claim(red/absent)、`--warn` 均验证。Windows 端 C# 改动本机无法编译
   (net9-windows + dotnet7),靠 CI 验。已记 `docs §4.6`,并据实标注剩余边界(只覆盖有向量的逻辑行,UI 行仍要 #4)。
-- **仍欠**:#4(关键 UI 交互下沉成向量,缩掉 UI 行盲区)、#7(PARITY 半生成化 + 噪声 baseline 让
-  `--fail-on-drift` 能上 CI)、真功能欠账 #5/#6。`--verify-vectors` 这条已被 #9 的"runner 吐真值 + 交叉核对"
-  实质实现,降级归档。
+- **路线 #4(P1)UI 行证据指针**:`scripts/parity-evidence.py` + `spec/ui-evidence.json` 缩小最后的
+  UI 行盲区——每个 UI 行的 ✅ 必须指向实现源码(逐平台 path+symbol),指针悬空/缺失即 CI 红;指针解析但行
+  非 ✅ 则 WARN(疑似欠标)。CI 的 `parity` job 校验全平台。**落地即抓出真 stale**:Win `API Key field
+  masked` 早在 `72cea10` 就用 `PasswordBox` 实现(读源确认:`TxtApiKey` 绑 `bc.ApiKey`、注释写 masked),
+  PARITY 却一直 ⬜——已翻 ✅,**顺带清掉真功能待办 #6**。本机实测:16 个 ✅ UI 声明全部有可解析源、0 unbacked;
+  fail 路径(悬空指针)exit 1、`--warn` exit 0 均验证。据实边界:证据指针让 ✅ 可从 diff 审计、防指针腐烂,
+  但**不证明行为**(文件在≠功能对);真能机器证明的 UI 交互应下沉成向量(`popup-dismiss` 决策逻辑是下一候选,
+  但 CI 不构建视图层,"视图是否真调用"仍需本端构建核对)。
+- **仍欠**:#4 的"下沉向量"另一半(`popup-dismiss` 决策→向量,受限于 CI 不构建视图层)、#7(PARITY 半生成化
+  + 噪声 baseline 让 `--fail-on-drift` 能上 CI)、真功能欠账 #5。`--verify-vectors` 已被 #9 实质实现,降级归档。

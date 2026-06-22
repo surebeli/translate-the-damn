@@ -65,6 +65,11 @@ jobs:
       # (PARITY semi-generation + a baseline that distinguishes "Linux not started" from "new drift").
       - name: parity drift report
         run: python3 scripts/parity-drift.py
+      # Hard gate: every ✅ in a UI row (no vector to verify) must point at real source in
+      # spec/ui-evidence.json (mechanism #4). Won't false-fail on the un-started Linux column (those
+      # are ⬜, not ✅). All platforms' src is in this checkout, so one Ubuntu job can check them all.
+      - name: UI evidence pointers resolve (mechanism #4)
+        run: python3 scripts/parity-evidence.py
 
   parity-gate:
     name: PARITY coupling gate
