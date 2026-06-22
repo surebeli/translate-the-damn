@@ -3,3 +3,6 @@
 Package.resolved
 TranslateTheDamn.app
 DerivedData/
+
+# visual-walkthrough screenshots (dev artifact)
+.shots/
