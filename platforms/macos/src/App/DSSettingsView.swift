@@ -64,6 +64,15 @@ struct DSSettingsView: View {
 
     // MARK: - Backend
 
+    private var doctorColor: Color {
+        switch vm.doctorStatus {
+        case .ok: return .green
+        case .fail: return .red
+        case .unknown: return .orange
+        case .notInstalled, nil: return .secondary
+        }
+    }
+
     private var backendSection: some View {
         Section(StringsLoader["settings.group.backend"]) {
             Picker(StringsLoader["settings.field.backend"], selection: Binding(
@@ -75,6 +84,22 @@ struct DSSettingsView: View {
 
             if !vm.authHint.isEmpty {
                 Text(vm.authHint).font(.caption).foregroundStyle(.secondary)
+            }
+
+            // Live auth lamp (spec §9 backend doctor): a manifest-driven, non-interactive probe.
+            HStack(spacing: 8) {
+                Circle()
+                    .fill(doctorColor)
+                    .frame(width: 9, height: 9)
+                if vm.doctorRunning {
+                    Text("检测中…").font(.caption).foregroundStyle(.secondary)
+                } else if !vm.doctorDetail.isEmpty {
+                    Text(vm.doctorDetail).font(.caption).foregroundStyle(.secondary)
+                } else {
+                    Text("未检测").font(.caption).foregroundStyle(.secondary)
+                }
+                Spacer()
+                Button("检测") { vm.runDoctor() }.disabled(vm.doctorRunning)
             }
 
             if vm.showModel {

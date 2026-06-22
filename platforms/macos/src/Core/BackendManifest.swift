@@ -70,6 +70,15 @@ public enum BackendManifest {
         return tiers.compactMap { $0 as? String }
     }
 
+    /// The declarative doctor probe for a backend, straight from `spec/backends.json` (Law 6) —
+    /// `{ args | kind, network, retries, successSignatures, failSignatures, failWins, credFiles }`.
+    /// nil when the backend declares no probe (e.g. copilot: presence-only). The doctor runs `args`
+    /// (or checks `credFiles` for `kind:"log"`) and feeds the output to `ProbeClassifier`. Mirrors the
+    /// shared `doctor-probe` vector — every platform exposes the same probe from the shared manifest.
+    public static func probe(_ backend: String) -> [String: Any]? {
+        backendDef(backend)?["probe"] as? [String: Any]
+    }
+
     public static func subst(_ template: String, _ vars: [String: String]) -> String {
         var result = ""
         var i = template.startIndex
