@@ -33,4 +33,14 @@ enum LiveCheck {
         if !r.detail.isEmpty { print("detail = \(r.detail)") }
         exit(r.ok ? 0 : 2)
     }
+
+    /// Dev-only: live-enumerate a CLI backend's models via its manifest `modelsCmd` (e.g. `mimo models`)
+    /// — verifies the CLI model-enumeration path that Settings' "刷新模型" uses. Usage: --models <backend>.
+    static func runModels(backendId: String) {
+        let cfg = ConfigService.load(from: ConfigService.defaultConfigPath) ?? ConfigService.defaultConfig()
+        let models = ModelEnumerator.enumerateCli(backendId: backendId, command: cfg.backends[backendId]?.command)
+        print("# MODELS \(backendId): \(models.count)")
+        for m in models { print("  \(m)") }
+        exit(models.isEmpty ? 2 : 0)
+    }
 }

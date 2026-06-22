@@ -21,6 +21,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             LiveCheck.run(backendId: backendId, sample: sample)
             return
         }
+        if let i = cliArgs.firstIndex(of: "--models") {
+            LiveCheck.runModels(backendId: (i + 1 < cliArgs.count) ? cliArgs[i + 1] : "mimo")
+            return
+        }
         let app = NSApplication.shared
         let delegate = AppDelegate()
         app.delegate = delegate

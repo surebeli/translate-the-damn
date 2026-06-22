@@ -21,6 +21,7 @@ Legend: ✅ shipped · 🚧 in progress · ⬜ not started · ⚠️ partial/bes
 | Backends — google-v2, doubao (HTTP) | §6.1/6.2 | `backend-requests` + `spec/backends.json` | ✅ | ✅ | ⬜ |
 | Backends — opencode, kimi, mimo (CLI) | §6 | `spec/backends.json` + `effort-tiers` + `doctor-probe` | ✅ | ✅ | ⬜ |
 | CLI stream-json output parse (jsonl: type/role → text/content) | §6 | `cli-output-parse` | ✅ | ✅ | ⬜ |
+| CLI live model enumeration (`modelsCmd` → parse provider/name) | §6 | `models-list-parse` | ✅ | ✅ | ⬜ |
 | Backends — openai-http / anthropic-http (generic HTTP LLM, baseURL+key+protocol) | §6.x (design 2026-06-22) | `backend-requests` | ✅ | ✅ | ⬜ |
 | Custom provider (add/delete dialog, baseURL+key, OpenAI/Anthropic protocol radio) | §9 (design) | — (UI) | ✅ | ✅ | ⬜ |
 | Unified target language (`{target}` prompt var, CLI + API; live `/models` enum; CLI/API dropdown tags) | §5/§9 (design) | `config-defaults` + `prompt-builder` | ✅ | ✅ | ⬜ |
@@ -58,7 +59,7 @@ Legend: ✅ shipped · 🚧 in progress · ⬜ not started · ⚠️ partial/bes
 - Conformance coverage: `prompt-builder`, `ansi-stripper`, `hotkey-parser`, `config-defaults`,
   `backend-requests` (google-v2 + doubao request shapes), `pipeline-cache`, `popup-sizing`,
   `cli-output-parse` (stream-json/NDJSON CLI stdout extraction — opencode/mimo type→part.text, kimi
-  role→content) — run in
+  role→content), `models-list-parse` (CLI `modelsCmd` stdout → provider/name model ids) — run in
   **CI on every push/PR** by each platform's native runner over the same `conformance/` JSON
   (`.github/workflows/conformance.yml`): Windows via `dotnet run` (~150 checks), macOS via
   `swift test` (117 tests). Linux adds its runner when the port starts. *This is the Law 2 forcing
