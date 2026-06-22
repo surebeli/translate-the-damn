@@ -1,0 +1,83 @@
+platforms/windows/tests/TranslateTheDamn.Tests/Conformance.cs
+  0000019eeea43ff7 1-345
+PARITY.md
+  0000019eeea43ff7 1-87
+platforms/macos/src/Core/ConfigService.swift
+  s_aa5b50d395b0a0::t_958967af359d97 1-6,9-9,18-45,47-89,109-116,121-148,154-178
+  s_aa5b50d395b0a0::t_11c2711929a90b 90-108
+  s_aa5b50d395b0a0::t_4a29995f99ccc5 117-120
+spec/ui-evidence.json
+  0000019eeea43ff7 1-48
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "07287d0c7a1e504919cc85f2595e3cf1d2147197",
+  "prompts": {
+    "s_aa5b50d395b0a0::t_24d4c69f5d3545": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "fa525b59-03ad-4f0e-bc1b-d5b0b5eca96f",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "s_aa5b50d395b0a0::t_294228f0449074": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "fa525b59-03ad-4f0e-bc1b-d5b0b5eca96f",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "s_aa5b50d395b0a0::t_958967af359d97": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "fa525b59-03ad-4f0e-bc1b-d5b0b5eca96f",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 139,
+      "total_deletions": 0,
+      "accepted_lines": 139,
+      "overriden_lines": 0
+    },
+    "s_aa5b50d395b0a0::t_32213fdeecf7ac": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "fa525b59-03ad-4f0e-bc1b-d5b0b5eca96f",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "0000019eeea43ff7": {
+      "agent_id": {
+        "tool": "claude",
+        "model": "claude-opus-4-8",
+        "id": "ai-thread-claude-claude-opus-4-8-1782120202231"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 480,
+      "total_deletions": 0,
+      "accepted_lines": 480,
+      "overriden_lines": 0
+    }
+  }
+}
