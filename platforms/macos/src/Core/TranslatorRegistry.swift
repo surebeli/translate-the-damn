@@ -41,6 +41,11 @@ public final class TranslatorRegistry {
             translator = nil
         }
 
+        // NOTE: this caches the built translator by id, which bakes in the config's apiKey/endpoint/model.
+        // A registry must therefore be treated as bound to ONE config snapshot — callers MUST build a fresh
+        // registry when the config changes (see AppDelegate.buildPipeline), exactly as Windows rebuilds via
+        // TranslatorRegistry.Build(cfg). Reusing one registry across a settings change would serve a stale
+        // translator (e.g. a freshly-entered API key would be ignored → 401).
         if let t = translator {
             map[key] = t
         }
