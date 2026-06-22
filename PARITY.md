@@ -48,6 +48,11 @@ Legend: ✅ shipped · 🚧 in progress · ⬜ not started · ⚠️ partial/bes
 
 ## Notes
 
+- **Releases** — published by `.github/workflows/release.yml` on a `v*` tag: per-platform
+  version-match guards (built artifact version == tag) gate the build, then a GitHub Release is cut
+  with `TranslateTheDamn-<v>-macos-arm64.zip` + `TranslateTheDamn-<v>-windows-x64.zip`. **Latest:
+  v0.3.0** (2026-06-22) — both artifacts published; the macOS arm64 build is unsigned (Gatekeeper
+  note in README + `docs/RELEASING.md`). App version is bumped on **both** platforms together (Law 3).
 - ⚠️ copilot/agy on Windows are best-effort (known Windows `-p` quirks; agy falls back to gemini).
 - Conformance coverage: `prompt-builder`, `ansi-stripper`, `hotkey-parser`, `config-defaults`,
   `backend-requests` (google-v2 + doubao request shapes), `pipeline-cache`, `popup-sizing` — run in

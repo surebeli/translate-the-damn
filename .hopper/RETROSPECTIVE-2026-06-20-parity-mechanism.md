@@ -125,5 +125,13 @@ stale,真正第一优先是**建 CI + 走 PR**,`--verify-vectors` 降级。
   "NO entry";加 orphan key→报"matches no UI row";均 exit 1。**这关掉了 popup-drag 暴露的"⬜⬜ 且无条目→
   静默遗漏"洞。** 据实残余:仍抓不到"代码已实现、PARITY 无 ✅ 且 evidence 无任何引用"的纯隐藏实现(要反向
   扫码,不做);popup-drag 运行时拖拽手势已由**用户本端亲验**确认。
+- **发布管线已证(v0.3.0,2026-06-22)**:`release.yml` 先前只经蜂巢评审、从未真跑。本会话**实跑兑现**——
+  双端版本 bump `0.2.0→0.3.0`(Law 3:同 MAJOR.MINOR 同功能集)、切 fresh `v0.3.0`(避开 `v0.2.0` 早于
+  workflow 的坑)、release.yml 跑绿(1m48s):两端 **version-match guard 命中**(Win `exe ProductVersion=0.3.0`、
+  macOS `CFBundleShortVersionString=0.3.0`)、`build-windows`/`build-macos`/`publish` 三 job 全 success、
+  GitHub Release 发布两个 zip。再**下载 macOS zip 实测**:版本 0.3.0、arm64、adhoc 签名、`open` 启动后进程
+  稳定无崩溃;并端到端验证 README 的 Gatekeeper 说明(`com.apple.quarantine`→`spctl` 拒绝→`xattr -dr` 清除)。
+  教训补遗:**"review-validated ≠ proven"**——评审过的 release.yml 直到真跑 + 真下载启动才算证实(就像 #2
+  当初戳穿"无 CI 的 Law 2 是空头支票"一样,"没真发布过的 release 管线"也只是叙事)。
 - **仍欠**:#4 的"下沉向量"另一半(`popup-dismiss` 决策→向量,受限于 CI 不构建视图层)、#7(PARITY 半生成化
   + 噪声 baseline 让 `--fail-on-drift` 能上 CI)、Linux 整列移植。`--verify-vectors` 已被 #9 实质实现,降级归档。
