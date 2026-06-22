@@ -32,6 +32,11 @@ jobs:
         run: swift --version
       - name: swift test (conformance vectors — Law 2)
         run: swift test
+        env:
+          TTD_EMIT_RESULTS: ${{ github.workspace }}/conformance-results.macos.json
+      - name: PARITY ⇄ vector cross-check (mechanism #9)
+        working-directory: ${{ github.workspace }}
+        run: python3 scripts/parity-verify.py --platform macOS --results conformance-results.macos.json
 
   windows:
     name: conformance — Windows (dotnet)
@@ -44,6 +49,10 @@ jobs:
       # Dependency-free offline harness (no network / no spawned CLIs). Same JSON as macOS.
       - name: offline conformance harness (Law 2)
         run: dotnet run --project platforms/windows/tests/TranslateTheDamn.Tests
+        env:
+          TTD_EMIT_RESULTS: ${{ github.workspace }}/conformance-results.windows.json
+      - name: PARITY ⇄ vector cross-check (mechanism #9)
+        run: python scripts/parity-verify.py --platform Win --results conformance-results.windows.json
 
   parity:
     name: parity drift (visibility)
