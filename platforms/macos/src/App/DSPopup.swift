@@ -276,7 +276,7 @@ final class DSPopup: NSPanel, TranslationPopupUI {
         setHeader(title: StringsLoader["popup.header.translating"], loading: true)
         sourceLabel.stringValue = ""
         sourceLabel.isHidden = true
-        setBody(StringsLoader["popup.body.translating"], color: .tertiaryLabelColor)
+        setBody(StringsLoader["popup.body.translating"], color: .secondaryLabelColor)
         copyButton.isHidden = true
         copyButton.attributedTitle = accentTitle(StringsLoader["popup.button.copy"])
         history = []
@@ -370,10 +370,12 @@ final class DSPopup: NSPanel, TranslationPopupUI {
     }
 
     func showError(message: String) {
-        setHeader(title: StringsLoader["popup.header.error"], loading: false)
+        // Hard failure → red on BOTH header and body (was: black header + orange body, which read as
+        // a warning and gave the error no header-level signal).
+        setHeader(title: StringsLoader["popup.header.error"], loading: false, color: .systemRed)
         sourceLabel.stringValue = ""
         sourceLabel.isHidden = true
-        setBody(message, color: .systemOrange)
+        setBody(message, color: .systemRed)
         copyButton.isHidden = true
         history = []
         setHistoryControlsHidden()
@@ -414,8 +416,9 @@ final class DSPopup: NSPanel, TranslationPopupUI {
 
     // MARK: - Header / body helpers
 
-    private func setHeader(title: String, loading: Bool) {
+    private func setHeader(title: String, loading: Bool, color: NSColor = .labelColor) {
         headerLabel.stringValue = title
+        headerLabel.textColor = color
         if loading {
             headerSpinner.isHidden = false
             headerSpinner.startAnimation(nil)

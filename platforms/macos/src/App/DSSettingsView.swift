@@ -35,7 +35,10 @@ struct DSSettingsView: View {
 
             HStack {
                 Text(StringsLoader["settings.field.hotkey"])
-                TextField("Ctrl+Shift+C", text: $vm.hotkeyText)
+                // Empty label + labelsHidden: the leading Text is the label. Passing the value as the
+                // TextField title rendered it a SECOND time on macOS (visible label, not placeholder).
+                TextField("", text: $vm.hotkeyText)
+                    .labelsHidden()
                     .textFieldStyle(.roundedBorder)
                     .onChange(of: vm.hotkeyText) { _, _ in vm.checkHotkey() }
             }
@@ -75,6 +78,17 @@ struct DSSettingsView: View {
         }
     }
 
+    // Single auth row: doctor verdict if probed, else the static auth hint, else "未检测".
+    private var lampText: String {
+        if vm.doctorRunning { return "检测中…" }
+        if !vm.doctorDetail.isEmpty { return vm.doctorDetail }
+        // authHint carries its own leading "● " bullet — strip it so it doesn't double up with the
+        // status Circle drawn beside it.
+        if !vm.authHint.isEmpty { return vm.authHint.trimmingCharacters(in: CharacterSet(charactersIn: "●•◦ \t")) }
+        return "未检测"
+    }
+    private var lampTextColor: Color { vm.doctorStatus == .fail ? .red : .secondary }
+
     private var backendSection: some View {
         Section(StringsLoader["settings.group.backend"]) {
             // Unified target language — drives every prompt-based backend (CLI + API) via {target}.
@@ -89,22 +103,15 @@ struct DSSettingsView: View {
                 ForEach(vm.backendIds, id: \.self) { Text(vm.backendDisplay($0)).tag($0) }
             }
 
-            if !vm.authHint.isEmpty {
-                Text(vm.authHint).font(.caption).foregroundStyle(.secondary)
-            }
-
-            // Live auth lamp (spec §9 backend doctor): a manifest-driven, non-interactive probe.
+            // Live auth lamp (spec §9 backend doctor): ONE row — spinner while probing, else a status
+            // dot; the doctor verdict (or the static auth hint until probed); and the probe button.
             HStack(spacing: 8) {
-                Circle()
-                    .fill(doctorColor)
-                    .frame(width: 9, height: 9)
                 if vm.doctorRunning {
-                    Text("检测中…").font(.caption).foregroundStyle(.secondary)
-                } else if !vm.doctorDetail.isEmpty {
-                    Text(vm.doctorDetail).font(.caption).foregroundStyle(.secondary)
+                    ProgressView().controlSize(.small).scaleEffect(0.55).frame(width: 11, height: 11)
                 } else {
-                    Text("未检测").font(.caption).foregroundStyle(.secondary)
+                    Circle().fill(doctorColor).frame(width: 9, height: 9)
                 }
+                Text(lampText).font(.caption).foregroundStyle(lampTextColor)
                 Spacer()
                 Button("检测") { vm.runDoctor() }.disabled(vm.doctorRunning)
             }
