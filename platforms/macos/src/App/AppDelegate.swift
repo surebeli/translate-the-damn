@@ -38,7 +38,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     // pipeline's frozen backend and could defeat the recent-translation cache (spec §4.1 main case:
     // repeated hotkey on unchanged content must be a HIT, not a re-translate).
     private var pipelineModel: String = ""
-    private var registry: TranslatorRegistry?
     private var clipboardWatcher: ClipboardWatcher?
     private var hotkeyService: HotkeyService?
     private var trayController: TrayController?
@@ -59,8 +58,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         let config = ConfigService.load(from: configPath) ?? ConfigService.defaultConfig()
 
-        registry = TranslatorRegistry()
-        pipeline = buildPipeline(from: config, registry: registry!)
+        pipeline = buildPipeline(from: config)
 
         popup = createPopup(config: config)
 
@@ -201,14 +199,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         } else {
             clipboardWatcher?.stop()
         }
-        pipeline = buildPipeline(from: config, registry: registry!)
+        pipeline = buildPipeline(from: config)
         // Dismiss the old popup (if visible) to avoid a ghost window, then recreate it so
         // style/autoDismiss/keepOnHover changes take effect immediately.
         popup?.dismiss()
         popup = createPopup(config: config)
     }
 
-    private func buildPipeline(from config: AppConfig, registry: TranslatorRegistry) -> TranslationPipeline {
+    private func buildPipeline(from config: AppConfig) -> TranslationPipeline {
+        // Fresh registry per build: a registry caches translators by id (baking in the config's
+        // apiKey/endpoint/model), so reusing one across a settings hot-reload would serve a STALE
+        // translator — e.g. a freshly-entered API key would be ignored and the call would 401. Rebuilding
+        // here on every launch/hot-reload mirrors Windows' TranslatorRegistry.Build(cfg).
+        let registry = TranslatorRegistry()
         let backendId = config.general.activeBackend
         // Bind the cache-key model to this pipeline build (stable across presses until a settings
         // save rebuilds the pipeline — at which point a fresh cache is expected anyway).
