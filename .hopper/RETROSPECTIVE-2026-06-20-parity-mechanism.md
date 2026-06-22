@@ -89,5 +89,14 @@ stale,真正第一优先是**建 CI + 走 PR**,`--verify-vectors` 降级。
   **诚实修正**:原以为它能抓住 `72cea10` 的 Win popup stale——**抓不到**:`72cea10` *动了* PARITY(翻了
   cache 行),只是 popup 行没翻 ✅。`parity-gate` 只抓"完全忘改 PARITY",抓不到"改了但标错行";后者仍要
   路线 #5/#7(逻辑行 ✅ 从向量真值派生)。这条限制已写进 `docs/CROSS-PLATFORM-PARITY.md §4.5`,不过度宣称。
-- **仍欠**:#5(`--verify-vectors` / 逻辑行派生)、#7(PARITY 半生成化 + 噪声 baseline 让 `--fail-on-drift`
-  能上 CI)、以及真正"走 PR"的习惯(gate 只在 PR 触发)。任务 #5/#6/#9 + 这两项继续。
+- **路线 #9(P1)PARITY ⇄ 向量真值交叉核对**:`scripts/parity-verify.py` 关掉 #7/#8 都漏的那类——
+  **向量在平台 P 已绿、PARITY 该列却 🚧/⬜**(`72cea10` 欠标)。各端 CI job 内拿 runner **实测**逐向量
+  pass/fail 跟 PARITY 该列对账(under-claim / over-claim-red / over-claim-absent),不一致即 job 红。逐向量
+  真值由 runner 自吐、**无手维护映射**:macOS 用 `XCTestObservation`(向量名=载入文件名),Windows 用
+  `Check.Vector()` 打标;PARITY 解析 import `parity-drift.py`(单源)。**本地实测**:`swift test` 吐
+  7 向量全绿 → `parity-verify --platform macOS` 一致 exit 0;并构造 `72cea10` 复现(popup-sizing 绿、行 🚧)
+  → 精确报 UNDER-CLAIM exit 1;over-claim(red/absent)、`--warn` 均验证。Windows 端 C# 改动本机无法编译
+  (net9-windows + dotnet7),靠 CI 验。已记 `docs §4.6`,并据实标注剩余边界(只覆盖有向量的逻辑行,UI 行仍要 #4)。
+- **仍欠**:#4(关键 UI 交互下沉成向量,缩掉 UI 行盲区)、#7(PARITY 半生成化 + 噪声 baseline 让
+  `--fail-on-drift` 能上 CI)、真功能欠账 #5/#6。`--verify-vectors` 这条已被 #9 的"runner 吐真值 + 交叉核对"
+  实质实现,降级归档。

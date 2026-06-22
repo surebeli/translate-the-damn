@@ -33,6 +33,10 @@ enum ConformanceHarness {
                 XCTFail("conformance file not a JSON object: \(file)")
                 return nil
             }
+            // Bind this running test to the vector it just loaded (stem = filename w/o .json), so the
+            // results emitter (mechanism #9) records pass/fail per vector with no hand-kept map.
+            let stem = (file as NSString).deletingPathExtension
+            ConformanceResults.shared.willRun(vector: stem, testCase: testCase)
             return obj
         } catch {
             XCTFail("conformance file invalid JSON: \(file) — \(error)")

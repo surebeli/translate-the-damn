@@ -21,25 +21,29 @@ public static class Conformance
         var dir = FindUp("conformance");
         if (dir is null) { Check.True(false, "conformance/ directory located"); return; }
 
-        // --- pure functions ---
+        // --- pure functions --- (each block tags its vector so per-vector results can be emitted)
+        Check.Vector("prompt-builder");
         Each(dir, "prompt-builder.json", (name, input, expected) =>
         {
             var r = PromptBuilder.Build(input.GetProperty("template").GetString()!, input.GetProperty("content").GetString()!);
             Check.Eq(expected.GetString(), r, $"conformance prompt-builder [{name}]");
         });
 
+        Check.Vector("ansi-stripper");
         Each(dir, "ansi-stripper.json", (name, input, expected) =>
         {
             var s = Markers(input.GetProperty("s").GetString());
             Check.Eq(expected.GetString(), AnsiStripper.Strip(s), $"conformance ansi-stripper [{name}]");
         });
 
+        Check.Vector("popup-sizing");
         Each(dir, "popup-sizing.json", (name, input, expected) =>
         {
             var cls = PopupSizing.SizeClass(input.GetProperty("sourceChars").GetInt32());
             Check.Eq(expected.GetString(), cls, $"conformance popup-sizing [{name}]");
         });
 
+        Check.Vector("hotkey-parser");
         Each(dir, "hotkey-parser.json", (name, input, expected) =>
         {
             var spec = HotkeyParser.Parse(input.GetProperty("text").GetString());
@@ -55,11 +59,13 @@ public static class Conformance
         RunConfigDefaults(dir);
         RunBackendRequests(dir);
         await RunCacheScenariosAsync(dir);
+        Check.Vector(null); // stop attributing to any vector
     }
 
     // --- serialized default-config assertions ---
     private static void RunConfigDefaults(string dir)
     {
+        Check.Vector("config-defaults");
         var path = Path.Combine(dir, "config-defaults.json");
         if (!File.Exists(path)) { Check.True(false, "conformance file exists: config-defaults.json"); return; }
 
@@ -86,6 +92,7 @@ public static class Conformance
     // --- HTTP backend request building ---
     private static void RunBackendRequests(string dir)
     {
+        Check.Vector("backend-requests");
         var path = Path.Combine(dir, "backend-requests.json");
         if (!File.Exists(path)) { Check.True(false, "conformance file exists: backend-requests.json"); return; }
 
@@ -134,6 +141,7 @@ public static class Conformance
     // --- stateful cache scenarios ---
     private static async Task RunCacheScenariosAsync(string dir)
     {
+        Check.Vector("pipeline-cache");
         var path = Path.Combine(dir, "pipeline-cache.json");
         if (!File.Exists(path)) { Check.True(false, "conformance file exists: pipeline-cache.json"); return; }
 

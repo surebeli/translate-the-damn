@@ -138,11 +138,37 @@ Windows 加 powershell 条——放各机 `.claude/settings.local.json`(gitignor
   message 写一行 `parity:n/a <理由>` 放行,**逼一次有意识判断**而非无脑勾选。
 
 > 边界(据实,别过度宣称):`parity-gate` 只抓"**完全忘了改 PARITY**"(历史里真有,如纯改 macOS src 的
-> 提交);它**抓不到**"改了 PARITY 但某行标错"——例如向量已绿、行却还是 🚧(`72cea10` 正是如此)。后者
-> 要靠"逻辑行 ✅ 从向量真值派生"(路线 #5/#7),尚未落地。
+> 提交);它**抓不到**"改了 PARITY 但某行标错"——例如向量已绿、行却还是 🚧(`72cea10` 正是如此)。**那一类
+> 由下面 §4.6 的 `parity-verify` 关掉。**
 >
 > 另:`parity-gate` 只在 **PR** 上触发——直推 main 不受约束,所以"走 PR"是这道门生效的前提(也是复核建议)。
 > 本端合并前可手动 `python3 scripts/parity-gate.py` 自查。
+
+### 4.6 PARITY ⇄ 向量真值交叉核对(2026-06-22,关掉 72cea10 盲区)
+
+#7(向量回归→job 红)+ #8(忘改 PARITY→PR 红)都漏掉一类:**某逻辑行的向量在平台 P 已绿,PARITY 该平台列
+却还是 🚧/⬜**(欠标)。#7 不触发(job 是绿的)、#8 不触发(PARITY 也许动了,只是动错格)——这正是
+`72cea10`(`popup-sizing` 在 Win 已绿、行却 🚧)当初要靠手工修的那类。
+
+`scripts/parity-verify.py` 关掉它:在**各端自己的 CI job 内**(那是唯一能观测到该端向量真伪的地方),拿该端
+runner **实测**的逐向量 pass/fail 跟 PARITY 该列对账,对每个逻辑行:
+
+- 向量**绿**但列非 ✅ → **UNDER-CLAIM**(`72cea10` 反向 stale,job fail)
+- 列 ✅ 但向量**红** → OVER-CLAIM(同时也被 #7 抓)
+- 列 ✅ 但该端 runner **根本没跑**这个向量 → OVER-CLAIM(给没测的功能标绿)
+
+逐向量真值由 runner 自己吐(**无手维护映射**——drift 不会再生):
+- macOS:`tests/Conformance/ConformanceResults.swift`(`XCTestObservation`),向量名就是 `loadVector(...)`
+  载入的文件名,各 conformance test 一向量;`TTD_EMIT_RESULTS` 置位时写 `conformance-results.macos.json`。
+- Windows:`Check.Vector(stem)` 给每段 conformance 块打标,`Check.WriteResults(...)` 写
+  `conformance-results.windows.json`。
+- PARITY 解析直接 import `parity-drift.py`(**单一事实源**,两个工具不会对一行的含义产生分歧)。
+
+CI 里 `macos`/`windows` job 跑完向量后各自 `parity-verify --platform <P>`;不一致即该 job 红。本机自查:
+`TTD_EMIT_RESULTS=/tmp/r.json swift test && python3 scripts/parity-verify.py --platform macOS --results /tmp/r.json`。
+
+> 仍有边界:只覆盖**有向量的逻辑行**;**UI 行**(剪贴板监听/浮窗/托盘等无 language-neutral 向量者)仍只能靠
+> spec + 人工走查,`parity-verify` 管不到——要再缩这块,得把关键 UI 交互也下沉成向量(路线 #4)。
 
 ---
 
