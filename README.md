@@ -10,7 +10,13 @@ and a configurable global hotkey, runs the text through a pluggable backend — 
 already logged into, or a **translation / LLM HTTP API** — and shows the result in a
 non-focus-stealing floating popup.
 
-![The result popup](docs/assets/popup-result.png)
+<table>
+<tr><td align="center"><b>macOS</b></td><td align="center"><b>Windows</b></td></tr>
+<tr>
+<td width="50%"><img alt="macOS — result popup" src="docs/assets/popup-result-macos.png" width="100%"></td>
+<td width="50%"><img alt="Windows — result popup" src="docs/assets/popup-result-windows.png" width="100%"></td>
+</tr>
+</table>
 
 **Native on each platform, one shared contract.** Windows (WPF/.NET 9) and macOS (SwiftUI/AppKit,
 Apple Silicon) ship the **same feature set** without sharing UI or runtime code — consistency is
@@ -89,7 +95,13 @@ does **not** run in the App Sandbox (it must spawn your CLIs); for distribution,
 On first launch the app writes `~/.translatethedamn/config.json` with sensible defaults. After that,
 the Settings window and that file are the source of truth — everything hot-reloads, no restart needed.
 
-![Settings — built-in CLI backend](docs/assets/settings-builtin.png)
+<table>
+<tr><td align="center"><b>macOS</b></td><td align="center"><b>Windows</b></td></tr>
+<tr>
+<td width="50%"><img alt="macOS — settings, built-in CLI backend" src="docs/assets/settings-builtin-macos.png" width="100%"></td>
+<td width="50%"><img alt="Windows — settings, built-in CLI backend" src="docs/assets/settings-builtin-windows.png" width="100%"></td>
+</tr>
+</table>
 
 - **监听与触发 (Listen & trigger)** — toggle the clipboard watcher and set the **translate hotkey**; a
   live check confirms it's available (✓ green) or already taken.
@@ -102,25 +114,51 @@ the Settings window and that file are the source of truth — everything hot-rel
 while the backend runs, then the glass card slides in without stealing focus — **复制译文** to copy,
 **关闭** to dismiss, hover to keep it open. Page your last 5 with **◀ ▶**; long source auto-enlarges.
 
-![Popup — translating](docs/assets/popup-loading.png)
-![Popup — history navigation](docs/assets/popup-history.png)
+<table>
+<tr><td align="center" colspan="2"><b>Translating</b></td><td align="center" colspan="2"><b>History ◀ ▶</b></td></tr>
+<tr><td align="center">macOS</td><td align="center">Windows</td><td align="center">macOS</td><td align="center">Windows</td></tr>
+<tr>
+<td width="25%"><img alt="macOS — translating" src="docs/assets/popup-loading-macos.png" width="100%"></td>
+<td width="25%"><img alt="Windows — translating" src="docs/assets/popup-loading-windows.png" width="100%"></td>
+<td width="25%"><img alt="macOS — history navigation" src="docs/assets/popup-history-macos.png" width="100%"></td>
+<td width="25%"><img alt="Windows — history navigation" src="docs/assets/popup-history-windows.png" width="100%"></td>
+</tr>
+</table>
 
 If a backend isn't logged in or the network is down, the popup shows a clear **error in red** and
 points you back to the doctor in Settings:
 
-![Popup — error state](docs/assets/popup-error.png)
+<table>
+<tr><td align="center"><b>macOS</b></td><td align="center"><b>Windows</b></td></tr>
+<tr>
+<td width="50%"><img alt="macOS — error state" src="docs/assets/popup-error-macos.png" width="100%"></td>
+<td width="50%"><img alt="Windows — error state" src="docs/assets/popup-error-windows.png" width="100%"></td>
+</tr>
+</table>
 
 **Check a backend** with the **检测** doctor — a non-interactive auth/connectivity probe with a status
 lamp (OK / fail):
 
-![Settings — doctor lamp OK](docs/assets/settings-lamp-ok.png)
+<table>
+<tr><td align="center"><b>macOS</b></td><td align="center"><b>Windows</b></td></tr>
+<tr>
+<td width="50%"><img alt="macOS — doctor lamp OK" src="docs/assets/settings-lamp-ok-macos.png" width="100%"></td>
+<td width="50%"><img alt="Windows — doctor lamp OK" src="docs/assets/settings-lamp-ok-windows.png" width="100%"></td>
+</tr>
+</table>
 
 **HTTP APIs / custom providers:** select an HTTP backend (`doubao`, `google-v2`, or a DeepSeek/MiMo/Kimi
 preset) and fill the masked API Key + endpoint; **检测已有密钥** can auto-discover keys already on your
 machine (consent-gated, static keys only). To use any other service, **新增 provider…** with a base URL
 + key and pick **OpenAI (`/chat/completions`)** or **Anthropic (`/messages`)**:
 
-![Settings — custom provider](docs/assets/settings-custom.png)
+<table>
+<tr><td align="center"><b>macOS</b></td><td align="center"><b>Windows</b></td></tr>
+<tr>
+<td width="50%"><img alt="macOS — custom provider" src="docs/assets/settings-custom-macos.png" width="100%"></td>
+<td width="50%"><img alt="Windows — custom provider" src="docs/assets/settings-custom-windows.png" width="100%"></td>
+</tr>
+</table>
 
 ## Configuration
 
