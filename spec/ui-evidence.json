@@ -2,6 +2,7 @@
   "_comment": "Evidence pointers for UI-kind PARITY rows — the rows that have NO language-neutral conformance vector (acrylic blur, focus-steal, tray, secure entry, ...) and so are invisible to scripts/parity-verify.py. Each ✅ in a UI row must point here at the source that implements it, per platform, so a reviewer can confirm the claim WITHOUT running the GUI, and so scripts/parity-evidence.py can fail CI when a ✅ has no pointer or a dangling one. Keys match the PARITY feature row text exactly (substring match on the leading text is used by the checker). `path` is repo-root-relative; optional `symbol` must appear in that file. This shrinks but does not eliminate the UI blind spot: a file existing is not proof of correct behaviour — that still needs spec + human UI walkthrough. The genuinely logic-shaped UI interactions are sunk into real vectors instead (see popup-sizing; popup-dismiss is the next candidate).",
   "schemaVersion": 1,
   "evidence": {
+    "UI localization": {},
     "Clipboard watch": {
       "Win": [{ "path": "platforms/windows/src/TranslateTheDamn.App/Services/ClipboardListener.cs", "symbol": "Clipboard" }],
       "macOS": [{ "path": "platforms/macos/src/App/ClipboardWatcher.swift", "symbol": "changeCount" }]
