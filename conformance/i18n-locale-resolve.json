@@ -1,0 +1,15 @@
+{
+  "fn": "LocaleResolver.resolve",
+  "doc": "UI-locale resolution (spec §3): resolve the app's DISPLAY language from the configured override and the system locale, over available = [zh-CN, en, ja, ko]. SEPARATE from the translation target language — never conflate. Order: (1) non-empty configUiLang that is in available wins; (2) else map systemLocale by primary language subtag (case-insensitive) zh*→zh-CN (v1: all Chinese), ja*→ja, ko*→ko, en*→en; (3) else en. Both platforms read this same vector so resolution never drifts.",
+  "cases": [
+    { "configUiLang": "ja", "systemLocale": "en-US",       "expected": "ja" },
+    { "configUiLang": "",   "systemLocale": "ja-JP",       "expected": "ja" },
+    { "configUiLang": "",   "systemLocale": "ko-KR",       "expected": "ko" },
+    { "configUiLang": "",   "systemLocale": "zh-Hans-CN",  "expected": "zh-CN" },
+    { "configUiLang": "",   "systemLocale": "zh-Hant-TW",  "expected": "zh-CN" },
+    { "configUiLang": "",   "systemLocale": "en-GB",       "expected": "en" },
+    { "configUiLang": "",   "systemLocale": "fr-FR",       "expected": "en" },
+    { "configUiLang": "xx", "systemLocale": "fr-FR",       "expected": "en" },
+    { "configUiLang": "",   "systemLocale": "",            "expected": "en" }
+  ]
+}

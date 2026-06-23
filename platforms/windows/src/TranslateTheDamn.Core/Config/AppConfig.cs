@@ -23,6 +23,12 @@ public sealed class GeneralConfig
     public bool ListenClipboard { get; set; } = true;
     public string ActiveBackend { get; set; } = "claude";
     public bool StartWithWindows { get; set; } = false;
+
+    /// <summary>UI DISPLAY language (spec §4): "" = follow the system language, else a locale id from
+    /// <see cref="LocaleResolver.Available"/> (zh-CN/en/ja/ko). SEPARATE from the translation TARGET
+    /// language (<see cref="TranslationConfig.TargetLanguage"/>) — never conflate. Additive/optional,
+    /// no config-version bump. Mirrors macOS <c>general.uiLanguage</c>.</summary>
+    public string UiLanguage { get; set; } = "";
 }
 
 public sealed class HotkeyConfig
