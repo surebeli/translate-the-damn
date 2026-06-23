@@ -1,0 +1,56 @@
+.github/PULL_REQUEST_TEMPLATE.md
+  0000019ef2599387 1-22
+.github/workflows/conformance.yml
+  0000019ef2599387 1-90
+AGENTS.md
+  0000019ef2599387 1-152
+CLAUDE.md
+  0000019ef2599387 1-171
+CONSTITUTION.md
+  0000019ef2599387 1-75
+CONTRIBUTING.md
+  0000019ef2599387 1-164
+PARITY.md
+  0000019ef2599387 1-96
+README.en.md
+  0000019ef2599387 1-246
+README.md
+  0000019ef2599387 1-226
+conformance/README.md
+  0000019ef2599387 1-45
+docs/CROSS-PLATFORM-PARITY.md
+  0000019ef2599387 1-226
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "a1f5c788e62a9b4bf9f0ea24eddb9e47c5963d23",
+  "prompts": {
+    "s_56c573f05389e0::t_045fd16f3e5e19": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1782182416896145000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "0000019ef2599387": {
+      "agent_id": {
+        "tool": "claude",
+        "model": "claude-opus-4-8",
+        "id": "ai-thread-claude-claude-opus-4-8-1782182417287"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 1513,
+      "total_deletions": 0,
+      "accepted_lines": 1513,
+      "overriden_lines": 0
+    }
+  }
+}
