@@ -1,278 +1,45 @@
-platforms/windows/src/TranslateTheDamn.Core/StringsLoader.cs
-  s_2b4fe8ea41ad13::t_7d7f1f02ee9a91 1-99
-platforms/windows/src/TranslateTheDamn.App/TranslateTheDamn.App.csproj
-  s_2b4fe8ea41ad13::t_e851ff97fc7738 7-12
-platforms/windows/src/TranslateTheDamn.App/AppController.cs
-  s_2b4fe8ea41ad13::t_7bd2cc463cd7e8 33-37
-platforms/windows/src/TranslateTheDamn.App/UI/SettingsWindow.xaml
-  s_2b4fe8ea41ad13::t_38923ff081c96c 55-55,62-62
-  s_2b4fe8ea41ad13::t_e4336abd955a85 76-76,82-82,85-95
-  s_2b4fe8ea41ad13::t_ad95f475585420 102-102
-  s_2b4fe8ea41ad13::t_33686fdafe134b 109-109
-  s_2b4fe8ea41ad13::t_355c60f1402940 130-130
-  s_2b4fe8ea41ad13::t_10672270d9ad9a 157-157
-  s_2b4fe8ea41ad13::t_38e78273dd0551 166-166
-  s_2b4fe8ea41ad13::t_8dac6cbb057eff 175-175
-  s_2b4fe8ea41ad13::t_6a56482e8bbe55 184-184
-  s_2b4fe8ea41ad13::t_b3fd3b17c72a52 194-194
-  s_2b4fe8ea41ad13::t_272aa791e3f210 212-212
-  s_2b4fe8ea41ad13::t_dd3f8b0a07b8f1 218-218
-  s_2b4fe8ea41ad13::t_31271d132291b9 227-227
-  s_2b4fe8ea41ad13::t_6f27b29525154b 239-239,241-241
 platforms/windows/src/TranslateTheDamn.App/UI/SettingsWindow.xaml.cs
-  s_2b4fe8ea41ad13::t_ba0f1cba2c61fa 7-7
+  s_2b4fe8ea41ad13::t_a8a3473b5f0f99 421
+  s_2b4fe8ea41ad13::t_ba0f1cba2c61fa 7
   s_2b4fe8ea41ad13::t_33e24e373be0e0 29-31
   s_2b4fe8ea41ad13::t_bfc8c06d52525d 71-72
   s_2b4fe8ea41ad13::t_d9a1e737179a44 85-96
   s_2b4fe8ea41ad13::t_16583b19f61dad 108-218
-  s_2b4fe8ea41ad13::t_a8a3473b5f0f99 421-421
-.hopper/handoffs/i18n-windows-wpf.md
-  s_2b4fe8ea41ad13::t_fe54941fc29712 21-36
+platforms/windows/src/TranslateTheDamn.App/TranslateTheDamn.App.csproj
+  s_2b4fe8ea41ad13::t_e851ff97fc7738 7-12
+platforms/windows/src/TranslateTheDamn.App/UI/SettingsWindow.xaml
+  s_2b4fe8ea41ad13::t_272aa791e3f210 212
+  s_2b4fe8ea41ad13::t_dd3f8b0a07b8f1 218
+  s_2b4fe8ea41ad13::t_31271d132291b9 227
+  s_2b4fe8ea41ad13::t_ad95f475585420 102
+  s_2b4fe8ea41ad13::t_6f27b29525154b 239,241
+  s_2b4fe8ea41ad13::t_8dac6cbb057eff 175
+  s_2b4fe8ea41ad13::t_38e78273dd0551 166
+  s_2b4fe8ea41ad13::t_355c60f1402940 130
+  s_2b4fe8ea41ad13::t_38923ff081c96c 55,62
+  s_2b4fe8ea41ad13::t_33686fdafe134b 109
+  s_2b4fe8ea41ad13::t_e4336abd955a85 76,82,85-95
+  s_2b4fe8ea41ad13::t_10672270d9ad9a 157
+  s_2b4fe8ea41ad13::t_6a56482e8bbe55 184
+  s_2b4fe8ea41ad13::t_b3fd3b17c72a52 194
+platforms/windows/src/TranslateTheDamn.App/AppController.cs
+  s_2b4fe8ea41ad13::t_7bd2cc463cd7e8 33-37
+platforms/windows/src/TranslateTheDamn.Core/StringsLoader.cs
+  s_2b4fe8ea41ad13::t_7d7f1f02ee9a91 1-99
 ---
 {
   "schema_version": "authorship/3.0.0",
   "git_ai_version": "1.5.10",
   "base_commit_sha": "54902e86695b6e452740d0bda78fef4c977ae721",
-  "prompts": {
-    "s_2b4fe8ea41ad13::t_7d7f1f02ee9a91": {
+  "prompts": {},
+  "sessions": {
+    "s_2b4fe8ea41ad13": {
       "agent_id": {
         "tool": "claude",
         "id": "aef3bbe6-fd50-4133-b04b-39b8990ee44a",
         "model": "claude-opus-4-8"
       },
-      "human_author": "litianyi <litianyi@corp.netease.com>",
-      "messages": [],
-      "total_additions": 99,
-      "total_deletions": 0,
-      "accepted_lines": 99,
-      "overriden_lines": 0
-    },
-    "s_2b4fe8ea41ad13::t_e851ff97fc7738": {
-      "agent_id": {
-        "tool": "claude",
-        "id": "aef3bbe6-fd50-4133-b04b-39b8990ee44a",
-        "model": "claude-opus-4-8"
-      },
-      "human_author": "litianyi <litianyi@corp.netease.com>",
-      "messages": [],
-      "total_additions": 6,
-      "total_deletions": 0,
-      "accepted_lines": 6,
-      "overriden_lines": 0
-    },
-    "s_2b4fe8ea41ad13::t_7bd2cc463cd7e8": {
-      "agent_id": {
-        "tool": "claude",
-        "id": "aef3bbe6-fd50-4133-b04b-39b8990ee44a",
-        "model": "claude-opus-4-8"
-      },
-      "human_author": "litianyi <litianyi@corp.netease.com>",
-      "messages": [],
-      "total_additions": 5,
-      "total_deletions": 0,
-      "accepted_lines": 5,
-      "overriden_lines": 0
-    },
-    "s_2b4fe8ea41ad13::t_38923ff081c96c": {
-      "agent_id": {
-        "tool": "claude",
-        "id": "aef3bbe6-fd50-4133-b04b-39b8990ee44a",
-        "model": "claude-opus-4-8"
-      },
-      "human_author": "litianyi <litianyi@corp.netease.com>",
-      "messages": [],
-      "total_additions": 2,
-      "total_deletions": 0,
-      "accepted_lines": 2,
-      "overriden_lines": 0
-    },
-    "s_2b4fe8ea41ad13::t_ba0f1cba2c61fa": {
-      "agent_id": {
-        "tool": "claude",
-        "id": "aef3bbe6-fd50-4133-b04b-39b8990ee44a",
-        "model": "claude-opus-4-8"
-      },
-      "human_author": "litianyi <litianyi@corp.netease.com>",
-      "messages": [],
-      "total_additions": 1,
-      "total_deletions": 0,
-      "accepted_lines": 1,
-      "overriden_lines": 0
-    },
-    "s_2b4fe8ea41ad13::t_fe54941fc29712": {
-      "agent_id": {
-        "tool": "claude",
-        "id": "aef3bbe6-fd50-4133-b04b-39b8990ee44a",
-        "model": "claude-opus-4-8"
-      },
-      "human_author": "litianyi <litianyi@corp.netease.com>",
-      "messages": [],
-      "total_additions": 16,
-      "total_deletions": 0,
-      "accepted_lines": 16,
-      "overriden_lines": 0
-    },
-    "s_2b4fe8ea41ad13::t_e4336abd955a85": {
-      "agent_id": null,
-      "human_author": null,
-      "messages": [],
-      "total_additions": 13,
-      "total_deletions": 0,
-      "accepted_lines": 13,
-      "overriden_lines": 0
-    },
-    "s_2b4fe8ea41ad13::t_ad95f475585420": {
-      "agent_id": null,
-      "human_author": null,
-      "messages": [],
-      "total_additions": 1,
-      "total_deletions": 0,
-      "accepted_lines": 1,
-      "overriden_lines": 0
-    },
-    "s_2b4fe8ea41ad13::t_33686fdafe134b": {
-      "agent_id": null,
-      "human_author": null,
-      "messages": [],
-      "total_additions": 1,
-      "total_deletions": 0,
-      "accepted_lines": 1,
-      "overriden_lines": 0
-    },
-    "s_2b4fe8ea41ad13::t_355c60f1402940": {
-      "agent_id": null,
-      "human_author": null,
-      "messages": [],
-      "total_additions": 1,
-      "total_deletions": 0,
-      "accepted_lines": 1,
-      "overriden_lines": 0
-    },
-    "s_2b4fe8ea41ad13::t_10672270d9ad9a": {
-      "agent_id": null,
-      "human_author": null,
-      "messages": [],
-      "total_additions": 1,
-      "total_deletions": 0,
-      "accepted_lines": 1,
-      "overriden_lines": 0
-    },
-    "s_2b4fe8ea41ad13::t_38e78273dd0551": {
-      "agent_id": null,
-      "human_author": null,
-      "messages": [],
-      "total_additions": 1,
-      "total_deletions": 0,
-      "accepted_lines": 1,
-      "overriden_lines": 0
-    },
-    "s_2b4fe8ea41ad13::t_8dac6cbb057eff": {
-      "agent_id": null,
-      "human_author": null,
-      "messages": [],
-      "total_additions": 1,
-      "total_deletions": 0,
-      "accepted_lines": 1,
-      "overriden_lines": 0
-    },
-    "s_2b4fe8ea41ad13::t_6a56482e8bbe55": {
-      "agent_id": null,
-      "human_author": null,
-      "messages": [],
-      "total_additions": 1,
-      "total_deletions": 0,
-      "accepted_lines": 1,
-      "overriden_lines": 0
-    },
-    "s_2b4fe8ea41ad13::t_b3fd3b17c72a52": {
-      "agent_id": null,
-      "human_author": null,
-      "messages": [],
-      "total_additions": 1,
-      "total_deletions": 0,
-      "accepted_lines": 1,
-      "overriden_lines": 0
-    },
-    "s_2b4fe8ea41ad13::t_272aa791e3f210": {
-      "agent_id": null,
-      "human_author": null,
-      "messages": [],
-      "total_additions": 1,
-      "total_deletions": 0,
-      "accepted_lines": 1,
-      "overriden_lines": 0
-    },
-    "s_2b4fe8ea41ad13::t_dd3f8b0a07b8f1": {
-      "agent_id": null,
-      "human_author": null,
-      "messages": [],
-      "total_additions": 1,
-      "total_deletions": 0,
-      "accepted_lines": 1,
-      "overriden_lines": 0
-    },
-    "s_2b4fe8ea41ad13::t_31271d132291b9": {
-      "agent_id": null,
-      "human_author": null,
-      "messages": [],
-      "total_additions": 1,
-      "total_deletions": 0,
-      "accepted_lines": 1,
-      "overriden_lines": 0
-    },
-    "s_2b4fe8ea41ad13::t_6f27b29525154b": {
-      "agent_id": null,
-      "human_author": null,
-      "messages": [],
-      "total_additions": 2,
-      "total_deletions": 0,
-      "accepted_lines": 2,
-      "overriden_lines": 0
-    },
-    "s_2b4fe8ea41ad13::t_33e24e373be0e0": {
-      "agent_id": null,
-      "human_author": null,
-      "messages": [],
-      "total_additions": 3,
-      "total_deletions": 0,
-      "accepted_lines": 3,
-      "overriden_lines": 0
-    },
-    "s_2b4fe8ea41ad13::t_bfc8c06d52525d": {
-      "agent_id": null,
-      "human_author": null,
-      "messages": [],
-      "total_additions": 2,
-      "total_deletions": 0,
-      "accepted_lines": 2,
-      "overriden_lines": 0
-    },
-    "s_2b4fe8ea41ad13::t_d9a1e737179a44": {
-      "agent_id": null,
-      "human_author": null,
-      "messages": [],
-      "total_additions": 12,
-      "total_deletions": 0,
-      "accepted_lines": 12,
-      "overriden_lines": 0
-    },
-    "s_2b4fe8ea41ad13::t_16583b19f61dad": {
-      "agent_id": null,
-      "human_author": null,
-      "messages": [],
-      "total_additions": 111,
-      "total_deletions": 0,
-      "accepted_lines": 111,
-      "overriden_lines": 0
-    },
-    "s_2b4fe8ea41ad13::t_a8a3473b5f0f99": {
-      "agent_id": null,
-      "human_author": null,
-      "messages": [],
-      "total_additions": 1,
-      "total_deletions": 0,
-      "accepted_lines": 1,
-      "overriden_lines": 0
+      "human_author": "litianyi <litianyi@corp.netease.com>"
     }
   }
 }
