@@ -52,10 +52,9 @@ cp "${RELEASE_BIN}" "${MACOS_DIR}/${EXECUTABLE_NAME}"
 echo "=== Step 4/5: Copy resources ==="
 cp "${PROJECT_DIR}/Resources/app.icns" "${RESOURCES_DIR}/app.icns"
 
-STRINGS_SRC="${REPO_ROOT}/strings/zh-CN.json"
-STRINGS_DST="${RESOURCES_DIR}/strings/zh-CN.json"
-mkdir -p "$(dirname "${STRINGS_DST}")"
-cp "${STRINGS_SRC}" "${STRINGS_DST}"
+# Copy ALL locale catalogs (i18n) — StringsLoader resolves strings/<locale>.json at runtime.
+mkdir -p "${RESOURCES_DIR}/strings"
+cp "${REPO_ROOT}"/strings/*.json "${RESOURCES_DIR}/strings/"
 
 BACKENDS_SRC="${REPO_ROOT}/spec/backends.json"
 cp "${BACKENDS_SRC}" "${RESOURCES_DIR}/backends.json"

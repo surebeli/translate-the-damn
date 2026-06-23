@@ -30,7 +30,8 @@ public enum ConfigService {
             general: GeneralConfig(
                 listenClipboard: true,
                 activeBackend: "claude",
-                startWithWindows: false
+                startWithWindows: false,
+                uiLanguage: ""    // "" = follow system language (spec §4); user may override in Settings
             ),
             hotkey: HotkeyConfig(
                 translate: "Ctrl+Shift+C",

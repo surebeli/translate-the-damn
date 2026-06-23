@@ -44,7 +44,7 @@ struct DSSettingsView: View {
             }
             hotkeyStatus
 
-            Text("按下热键时翻译当前剪贴板内容。注册失败说明热键已被占用。")
+            Text(StringsLoader["settings.hotkey.hint"])
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
@@ -53,15 +53,17 @@ struct DSSettingsView: View {
     @ViewBuilder
     private var hotkeyStatus: some View {
         if vm.hotkeyValid && vm.hotkeyConflict {
-            Label("✗ \(vm.hotkeyDisplay) 热键已被占用", systemImage: "xmark.circle.fill")
+            Label(StringsLoader["settings.hotkey.conflict"].replacingOccurrences(of: "{hotkey}", with: vm.hotkeyDisplay),
+                  systemImage: "xmark.circle.fill")
                 .foregroundStyle(.red)
                 .font(.caption)
         } else if vm.hotkeyValid {
-            Label("✓ \(vm.hotkeyDisplay) 可用", systemImage: "checkmark.circle.fill")
+            Label(StringsLoader["settings.hotkey.ok"].replacingOccurrences(of: "{hotkey}", with: vm.hotkeyDisplay),
+                  systemImage: "checkmark.circle.fill")
                 .foregroundStyle(.green)
                 .font(.caption)
         } else if !vm.hotkeyText.trimmingCharacters(in: .whitespaces).isEmpty {
-            Label("✗ 格式无效", systemImage: "xmark.circle.fill")
+            Label(StringsLoader["settings.hotkey.invalid"], systemImage: "xmark.circle.fill")
                 .foregroundStyle(.red)
                 .font(.caption)
         }
@@ -78,21 +80,22 @@ struct DSSettingsView: View {
         }
     }
 
-    // Single auth row: doctor verdict if probed, else the static auth hint, else "未检测".
+    // Single auth row: doctor verdict if probed, else the static auth hint, else the unchecked label.
     private var lampText: String {
-        if vm.doctorRunning { return "检测中…" }
+        if vm.doctorRunning { return StringsLoader["settings.doctor.checking"] }
         if !vm.doctorDetail.isEmpty { return vm.doctorDetail }
         // authHint carries its own leading "● " bullet — strip it so it doesn't double up with the
         // status Circle drawn beside it.
         if !vm.authHint.isEmpty { return vm.authHint.trimmingCharacters(in: CharacterSet(charactersIn: "●•◦ \t")) }
-        return "未检测"
+        return StringsLoader["settings.doctor.unchecked"]
     }
     private var lampTextColor: Color { vm.doctorStatus == .fail ? .red : .secondary }
 
     private var backendSection: some View {
         Section(StringsLoader["settings.group.backend"]) {
             // Unified target language — drives every prompt-based backend (CLI + API) via {target}.
-            Picker("目标语言", selection: $vm.targetLanguage) {
+            // This is the TRANSLATION target, distinct from the UI display language in the General group.
+            Picker(StringsLoader["settings.field.target"], selection: $vm.targetLanguage) {
                 ForEach(vm.targetLanguageOptions, id: \.self) { Text($0).tag($0) }
             }
 
@@ -113,7 +116,7 @@ struct DSSettingsView: View {
                 }
                 Text(lampText).font(.caption).foregroundStyle(lampTextColor)
                 Spacer()
-                Button("检测") { vm.runDoctor() }.disabled(vm.doctorRunning)
+                Button(StringsLoader["settings.doctor.button"]) { vm.runDoctor() }.disabled(vm.doctorRunning)
             }
 
             if vm.showModel {
@@ -121,23 +124,23 @@ struct DSSettingsView: View {
                     // API backends: free-entry model + live /models fetch (Picker can't be edited).
                     HStack {
                         TextField(StringsLoader["settings.field.model"], text: $vm.modelText)
-                        Button(vm.modelsFetching ? "拉取中…" : "刷新模型") { vm.refreshModels() }
+                        Button(vm.modelsFetching ? StringsLoader["settings.model.fetching"] : StringsLoader["settings.model.refresh"]) { vm.refreshModels() }
                             .disabled(vm.modelsFetching)
                     }
                     if !vm.fetchedModels.isEmpty {
-                        Picker("可选模型", selection: $vm.modelText) {
+                        Picker(StringsLoader["settings.model.options"], selection: $vm.modelText) {
                             ForEach(vm.fetchedModels, id: \.self) { Text($0).tag($0) }
                         }
                     }
                 } else {
-                    // CLI backends: pick from the catalog, plus a live "刷新模型" for those that declare
+                    // CLI backends: pick from the catalog, plus a live refresh-models for those that declare
                     // a manifest modelsCmd (mimo/opencode) — runs the subcommand and merges the result.
                     HStack {
                         Picker(StringsLoader["settings.field.model"], selection: $vm.modelText) {
                             ForEach(vm.availableModels, id: \.self) { Text($0).tag($0) }
                         }
                         if vm.canRefreshModels {
-                            Button(vm.modelsFetching ? "拉取中…" : "刷新模型") { vm.refreshModels() }
+                            Button(vm.modelsFetching ? StringsLoader["settings.model.fetching"] : StringsLoader["settings.model.refresh"]) { vm.refreshModels() }
                                 .disabled(vm.modelsFetching)
                         }
                     }
@@ -151,9 +154,9 @@ struct DSSettingsView: View {
                 if vm.isGoogleV2 || vm.isDoubao {
                     // Target language comes from the unified 目标语言 picker above (synced to the API's
                     // language code on save) — no separate per-backend target field. Source stays optional.
-                    TextField("源语言(可选)", text: $vm.sourceText)
+                    TextField(StringsLoader["settings.field.source"], text: $vm.sourceText)
                 } else if vm.isCustomProvider {
-                    Picker("协议", selection: $vm.protocolText) {
+                    Picker(StringsLoader["settings.field.protocol"], selection: $vm.protocolText) {
                         Text("OpenAI (/chat/completions)").tag("openai")
                         Text("Anthropic (/messages)").tag("anthropic")
                     }
@@ -161,10 +164,10 @@ struct DSSettingsView: View {
                 }
             } else {
                 if vm.isCodex {
-                    TextField("推理强度", text: $vm.reasoningText)
+                    TextField(StringsLoader["settings.field.reasoning"], text: $vm.reasoningText)
                 }
                 if vm.isAgy {
-                    TextField("回退命令", text: $vm.fallbackText)
+                    TextField(StringsLoader["settings.field.fallback"], text: $vm.fallbackText)
                 }
                 if vm.showTimeout {
                     TextField(StringsLoader["settings.field.timeout"], text: $vm.timeoutText)
@@ -174,19 +177,19 @@ struct DSSettingsView: View {
             // Custom (generic HTTP) provider management — add an openai/anthropic provider, or delete
             // the selected custom one (built-ins are protected).
             HStack {
-                Button("新增 provider…") { newProviderId = ""; showAddProvider = true }
-                Button("🔍 检测已有密钥") { vm.detectKeys() }
+                Button(StringsLoader["settings.provider.add"]) { newProviderId = ""; showAddProvider = true }
+                Button(StringsLoader["settings.provider.detectKeys"]) { vm.detectKeys() }
                 Spacer()
-                Button("删除 provider", role: .destructive) { vm.deleteProvider() }
+                Button(StringsLoader["settings.provider.delete"], role: .destructive) { vm.deleteProvider() }
                     .disabled(!vm.isCustomProvider)
             }
         }
-        .alert("新增 API provider", isPresented: $showAddProvider) {
-            TextField("provider id(英文,如 my-deepseek)", text: $newProviderId)
-            Button("添加") { vm.addProvider(newProviderId) }
-            Button("取消", role: .cancel) { }
+        .alert(StringsLoader["settings.provider.addTitle"], isPresented: $showAddProvider) {
+            TextField(StringsLoader["settings.provider.idPlaceholder"], text: $newProviderId)
+            Button(StringsLoader["settings.button.add"]) { vm.addProvider(newProviderId) }
+            Button(StringsLoader["settings.button.cancel"], role: .cancel) { }
         } message: {
-            Text("新增一个通用 HTTP(OpenAI/Anthropic 协议)后端;添加后填 Endpoint/Key/模型/协议再保存。")
+            Text(StringsLoader["settings.provider.addMessage"])
         }
         .sheet(isPresented: $vm.showDetect) { detectSheet }
     }
@@ -195,7 +198,7 @@ struct DSSettingsView: View {
     /// masked · provenance) with a toggle; import the selected ones as http backends.
     private var detectSheet: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("在本机发现 \(vm.discovered.count) 个可导入的静态 API key(不含订阅 OAuth)。勾选要导入的:")
+            Text(StringsLoader["settings.detect.header"].replacingOccurrences(of: "{count}", with: String(vm.discovered.count)))
                 .font(.headline)
             ScrollView {
                 VStack(alignment: .leading, spacing: 8) {
@@ -215,12 +218,12 @@ struct DSSettingsView: View {
                 .padding(.vertical, 4)
             }
             .frame(maxHeight: 280)
-            Text("注意:导入的 Key 以明文保存在 config.json(与现有 key 一致)。")
+            Text(StringsLoader["settings.detect.note"])
                 .font(.caption).foregroundStyle(.secondary)
             HStack {
                 Spacer()
-                Button("取消") { vm.showDetect = false }
-                Button("导入选中") { vm.importSelected() }.buttonStyle(.borderedProminent)
+                Button(StringsLoader["settings.button.cancel"]) { vm.showDetect = false }
+                Button(StringsLoader["settings.detect.import"]) { vm.importSelected() }.buttonStyle(.borderedProminent)
             }
         }
         .padding(20)
@@ -232,8 +235,8 @@ struct DSSettingsView: View {
     private var popupSection: some View {
         Section(StringsLoader["settings.group.popup"]) {
             Picker(StringsLoader["settings.field.style"], selection: $vm.popupStyle) {
-                Text("毛玻璃(Acrylic)").tag("acrylic")
-                Text("纯色半透明").tag("solid")
+                Text(StringsLoader["settings.style.acrylic"]).tag("acrylic")
+                Text(StringsLoader["settings.style.solid"]).tag("solid")
             }
             .pickerStyle(.segmented)
 
@@ -253,9 +256,16 @@ struct DSSettingsView: View {
 
     private var generalSection: some View {
         Section(StringsLoader["settings.group.general"]) {
+            // Display (UI) language — SEPARATE from the translation target language in the backend
+            // group above. Switching it hot-reloads the catalog + re-renders the window/tray.
+            Picker(StringsLoader["settings.field.uilang"], selection: $vm.uiLanguage) {
+                ForEach(vm.uiLanguageOptions, id: \.id) { Text($0.label).tag($0.id) }
+            }
+            .onChange(of: vm.uiLanguage) { _, _ in vm.onUiLanguageChange() }
+
             Toggle(StringsLoader["settings.field.startup"], isOn: $vm.startWithWindows)
 
-            Text("配置保存在 ~/.translatethedamn/config.json，API Key 仅保存在本机。")
+            Text(StringsLoader["settings.general.configHint"])
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }

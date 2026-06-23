@@ -1,4 +1,14 @@
-// StringsLoader — loads shared UI strings from strings/zh-CN.json (with a built-in fallback).
+// StringsLoader — loads shared UI strings from strings/<locale>.json (locale-aware).
+//
+// Catalog = strings/en.json as BASE, then overlaid by strings/<localeId>.json (the resolved locale
+// overrides en). A key missing from the resolved locale therefore falls back to en, then to the
+// key string itself (subscript). The resolved locale is set ONCE at startup via configure(localeId:)
+// (AppDelegate resolves it from config.general.uiLanguage + the system locale via LocaleResolver) and
+// can be hot-switched at runtime (Settings "Display language") via configure + reload.
+//
+// NOTE: the app's DISPLAY language is SEPARATE from the translation TARGET language
+// (translation.targetLanguage) — never conflate the two.
+//
 // Relocated here when the multi-style UI was consolidated to a single style (was in the
 // now-removed TranslationPopup.swift).
 import AppKit
@@ -7,20 +17,50 @@ import TranslateTheDamnCore
 
 enum StringsLoader {
     nonisolated(unsafe) private static var cached: [String: String]?
+    /// The resolved UI locale id (one of LocaleResolver.available). Defaults to "en" (global fallback)
+    /// until AppDelegate calls configure(localeId:) at startup.
+    nonisolated(unsafe) private static var localeId = "en"
+
+    /// Set the resolved UI locale and drop the cached catalog so the next access reloads it. Call once
+    /// at startup (before building any window/tray/popup) and again on a hot-switch from Settings.
+    static func configure(localeId: String) {
+        self.localeId = localeId
+        cached = nil
+    }
+
+    /// Drop the cached catalog so the next access reloads it (hot-switch after configure).
+    static func reload() {
+        cached = nil
+    }
 
     static var catalog: [String: String] {
         if let c = cached { return c }
-        let loaded = loadFromFile() ?? fallbackStrings
-        cached = loaded
-        return loaded
+        // BASE = en (full key set); OVERLAY = resolved locale (overrides en). If neither file is found,
+        // fall back to the built-in dict as a last resort so the UI is never blank.
+        let base = loadLocaleFile("en")
+        let overlay = localeId == "en" ? nil : loadLocaleFile(localeId)
+        var merged: [String: String]
+        if let base {
+            merged = base
+            if let overlay {
+                for (k, v) in overlay { merged[k] = v }   // resolved locale overrides en
+            }
+        } else if let overlay {
+            merged = overlay
+        } else {
+            merged = fallbackStrings
+        }
+        cached = merged
+        return merged
     }
 
     static subscript(_ key: String) -> String {
         catalog[key] ?? key
     }
 
-    private static func loadFromFile() -> [String: String]? {
-        let fileName = "zh-CN.json"
+    /// Load `strings/<locale>.json`'s `strings` map, searching the same repo-root-up paths as before.
+    private static func loadLocaleFile(_ locale: String) -> [String: String]? {
+        let fileName = "\(locale).json"
         let searchPaths: [String] = {
             var paths: [String] = []
             if let execPath = Bundle.main.executableURL?.path {
@@ -52,6 +92,8 @@ enum StringsLoader {
         return nil
     }
 
+    // Last-resort inline strings (used only if NO strings/*.json file is found on disk). The on-disk
+    // catalog is canonical; this is a guard so the UI is never blank when the resources are missing.
     private static let fallbackStrings: [String: String] = [
         "popup.header.translating": "翻译中…",
         "popup.header.result": "翻译",

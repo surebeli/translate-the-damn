@@ -9,6 +9,8 @@ import TranslateTheDamnCore
 final class TrayController {
     private let statusItem: NSStatusItem
     private let listenMenuItem: NSMenuItem
+    private let settingsMenuItem: NSMenuItem
+    private let exitMenuItem: NSMenuItem
     private let watcher: ClipboardWatcher
     private let configPath: String
     private let openSettings: () -> Void
@@ -37,12 +39,12 @@ final class TrayController {
             action: #selector(toggleListening(_:)),
             keyEquivalent: ""
         )
-        let settingsMenuItem = NSMenuItem(
+        settingsMenuItem = NSMenuItem(
             title: StringsLoader["tray.menu.settings"],
             action: #selector(openSettingsAction(_:)),
             keyEquivalent: ""
         )
-        let exitMenuItem = NSMenuItem(
+        exitMenuItem = NSMenuItem(
             title: StringsLoader["tray.menu.exit"],
             action: #selector(terminate(_:)),
             keyEquivalent: ""
@@ -63,6 +65,18 @@ final class TrayController {
         // matches the Windows tray/app glyph (UI/AppIcon.cs).
 
         updateState(to: initialListenState, persist: false)
+    }
+
+    /// Re-apply localized text (menu item titles + state tooltip) after a UI-language hot-switch. Menu
+    /// items are retained (state/targets preserved); only their StringsLoader-derived titles and the
+    /// current-state tooltip are refreshed. Mirrors the settings window's locale hot-reload.
+    func refreshLocalizedText() {
+        listenMenuItem.title = StringsLoader["tray.menu.listen"]
+        settingsMenuItem.title = StringsLoader["tray.menu.settings"]
+        exitMenuItem.title = StringsLoader["tray.menu.exit"]
+        statusItem.button?.toolTip = isListeningOn
+            ? StringsLoader["tray.tooltip.listening"]
+            : StringsLoader["tray.tooltip.paused"]
     }
 
     /// Programmatically turns listening on or off, persisting the change.

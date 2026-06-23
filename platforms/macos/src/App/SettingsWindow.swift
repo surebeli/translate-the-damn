@@ -14,34 +14,58 @@ final class SettingsWindowController {
     private var window: NSWindow?
     private let viewModel: SettingsViewModel
 
-    init(config: AppConfig, configPath: String, onSave: @escaping (AppConfig) -> Void) {
+    /// Invoked after the in-app "Display language" switch re-resolves the locale + reloads the catalog,
+    /// so the host (AppDelegate) can refresh out-of-window UI (the tray menu/tooltip). The settings
+    /// window + title bar are refreshed here.
+    init(config: AppConfig, configPath: String,
+         onSave: @escaping (AppConfig) -> Void,
+         onLocaleChange: @escaping () -> Void = {}) {
         viewModel = SettingsViewModel(config: config, configPath: configPath, onSave: onSave)
+        viewModel.onLocaleChange = { [weak self] in
+            self?.refreshLocalizedChrome()
+            onLocaleChange()
+        }
     }
 
     @MainActor func show() {
         if window == nil {
-            // Single finalized UI ("clean" style). Other style views + uiStyle switching removed.
-            let root = AnyView(DSSettingsView(vm: viewModel))
-            let hostingView = NSHostingView(rootView: root)
-            hostingView.frame.size = hostingView.fittingSize
-
             let win = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 560, height: 640),
                                styleMask: [.titled, .closable, .miniaturizable],
                                backing: .buffered,
                                defer: false)
-            // Caption shows the app version, aligned with Windows (SettingsWindow.xaml.cs:
-            // "translate-the-damn · 设置   v{Major}.{Minor}.{Build}"). Version is single-sourced from
-            // the bundle's CFBundleShortVersionString (Info.plist), matching the Windows csproj <Version>.
-            let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.2.0"
-            win.title = StringsLoader["settings.title"] + "   v" + version
-            win.contentView = hostingView
             win.center()
             win.isReleasedWhenClosed = false
-
             window = win
+            rebuildRootView()
+            refreshTitle()
         }
         window?.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
+    }
+
+    /// Rebuild the SwiftUI root view (single finalized "clean" UI; other styles + uiStyle switching
+    /// removed). Called on first show and on a locale hot-switch so re-read StringsLoader values render.
+    private func rebuildRootView() {
+        guard let win = window else { return }
+        let root = AnyView(DSSettingsView(vm: viewModel))
+        let hostingView = NSHostingView(rootView: root)
+        hostingView.frame.size = hostingView.fittingSize
+        win.contentView = hostingView
+    }
+
+    /// Caption shows the app version, aligned with Windows (SettingsWindow.xaml.cs:
+    /// "translate-the-damn · 设置   v{Major}.{Minor}.{Build}"). Version is single-sourced from the
+    /// bundle's CFBundleShortVersionString (Info.plist), matching the Windows csproj <Version>.
+    private func refreshTitle() {
+        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.2.0"
+        window?.title = StringsLoader["settings.title"] + "   v" + version
+    }
+
+    /// After a locale hot-switch: rebuild the SwiftUI tree (re-reads StringsLoader) and update the
+    /// window title bar (settings.title must also follow the new language).
+    private func refreshLocalizedChrome() {
+        rebuildRootView()
+        refreshTitle()
     }
 }
 
@@ -86,8 +110,16 @@ final class SettingsViewModel: ObservableObject {
     @Published var keepOnHover: Bool
     @Published var startWithWindows: Bool
 
+    /// UI DISPLAY language ("" = follow system, else a LocaleResolver.available id). SEPARATE from
+    /// `targetLanguage` (the translation target) — both are shown in Settings; never conflate them.
+    @Published var uiLanguage: String
+
     @Published var saveStatus: String = ""
     @Published var authHint: String = ""
+
+    /// Set by the host (SettingsWindowController) — invoked after a "Display language" hot-switch so the
+    /// open window + tray re-render in the new locale.
+    var onLocaleChange: () -> Void = {}
 
     // Live auth lamp (spec §9 backend doctor): nil = not yet probed; otherwise the last probe verdict.
     @Published var doctorStatus: DoctorStatus? = nil
@@ -148,6 +180,63 @@ final class SettingsViewModel: ObservableObject {
         Self.commonTargetLanguages.contains(targetLanguage) ? Self.commonTargetLanguages : [targetLanguage] + Self.commonTargetLanguages
     }
 
+    /// "Display language" selector options (spec §4): "Follow system" first, then one entry per
+    /// available locale by its native display name. The id ("" / "zh-CN" / "en" / "ja" / "ko") is the
+    /// stored value; the label is shown in the Picker. This is the UI language, NOT the translation
+    /// target — both are independent settings.
+    var uiLanguageOptions: [(id: String, label: String)] {
+        var opts: [(id: String, label: String)] = [("", StringsLoader["settings.uilang.system"])]
+        opts += LocaleResolver.available.map { ($0, Self.uiLanguageDisplayName($0)) }
+        return opts
+    }
+
+    private static func uiLanguageDisplayName(_ id: String) -> String {
+        switch id {
+        case "zh-CN": return "简体中文"
+        case "en": return "English"
+        case "ja": return "日本語"
+        case "ko": return "한국어"
+        default: return id
+        }
+    }
+
+    /// The translation target the user asked to keep consistent with the DISPLAY language:
+    ///   - explicit display locale → its matching target name (简体中文 / English / 日本語 / 한국어)
+    ///   - "follow system" ("")    → the system language mapped onto the (broader) target list,
+    ///     falling back to 简体中文 when the system language is unobtainable or unsupported.
+    func targetLanguageFollowingUiLanguage() -> String {
+        switch uiLanguage.trimmingCharacters(in: .whitespaces) {
+        case "zh-CN": return "简体中文"
+        case "en": return "English"
+        case "ja": return "日本語"
+        case "ko": return "한국어"
+        case "": return Self.systemTargetLanguageName()   // follow system
+        default: return Self.systemTargetLanguageName()
+        }
+    }
+
+    /// Map the real system language onto the target list (richer than the 4 UI locales). Unobtainable
+    /// or unsupported → 简体中文 (the product default).
+    static func systemTargetLanguageName() -> String {
+        let sys = LocaleResolver.systemLocaleId().lowercased()
+        let lang = sys.split(whereSeparator: { $0 == "-" || $0 == "_" }).first.map(String.init) ?? ""
+        if lang == "zh" {
+            if sys.contains("hant") || sys.contains("tw") || sys.contains("hk") || sys.contains("mo") { return "繁體中文" }
+            return "简体中文"
+        }
+        switch lang {
+        case "en": return "English"
+        case "ja": return "日本語"
+        case "ko": return "한국어"
+        case "fr": return "Français"
+        case "de": return "Deutsch"
+        case "es": return "Español"
+        case "ru": return "Русский"
+        case "pt": return "Português"
+        default: return "简体中文"   // unobtainable / unsupported → Chinese (per product decision)
+        }
+    }
+
     var currentBackend: BackendConfig? {
         config.backends[selectedBackendId]
     }
@@ -197,6 +286,11 @@ final class SettingsViewModel: ObservableObject {
         autoDismissSeconds = Double(config.popup.autoDismissSeconds)
         keepOnHover = config.popup.keepOnHover
         startWithWindows = config.general.startWithWindows
+        uiLanguage = config.general.uiLanguage
+
+        // Keep the translation target consistent with the display language (follow-system → system
+        // language, fallback 中文). All stored properties are now set, so the helper is callable.
+        targetLanguage = targetLanguageFollowingUiLanguage()
 
         if !backendIds.contains(selectedBackendId), let first = backendIds.first {
             selectedBackendId = first
@@ -205,6 +299,24 @@ final class SettingsViewModel: ObservableObject {
         loadBackend(selectedBackendId)
         checkHotkey()
         loaded = true
+    }
+
+    /// Hot-switch the UI DISPLAY language: persist the selection to config, re-resolve the locale,
+    /// reload the catalog, then ask the host to re-render the open window + tray. This is the UI
+    /// language only — the translation target (`targetLanguage`) is untouched.
+    func onUiLanguageChange() {
+        guard loaded else { return }
+        config.general.uiLanguage = uiLanguage
+        let resolved = LocaleResolver.resolve(
+            configUiLang: uiLanguage,
+            systemLocale: LocaleResolver.systemLocaleId()
+        )
+        StringsLoader.configure(localeId: resolved)
+        StringsLoader.reload()
+        // Keep the translation target consistent with the chosen display language (issue #2).
+        targetLanguage = targetLanguageFollowingUiLanguage()
+        objectWillChange.send()
+        onLocaleChange()
     }
 
     func onBackendChange(_ newId: String) {
@@ -471,6 +583,7 @@ final class SettingsViewModel: ObservableObject {
         config.general.listenClipboard = listenClipboard
         config.general.activeBackend = selectedBackendId
         config.general.startWithWindows = startWithWindows
+        config.general.uiLanguage = uiLanguage
         config.translation.targetLanguage = targetLanguage.trimmingCharacters(in: .whitespaces).isEmpty ? "简体中文" : targetLanguage
         syncTranslationApiTargets()   // the single 目标语言 picker also drives google-v2 / doubao (no per-backend field)
         config.hotkey.translate = hotkeyText.trimmingCharacters(in: .whitespaces)

@@ -41,12 +41,17 @@ public struct GeneralConfig: Codable {
     public var listenClipboard: Bool
     public var activeBackend: String
     public var startWithWindows: Bool
+    /// UI display language (spec §4): a locale id from `LocaleResolver.available` ("zh-CN"/"en"/"ja"/"ko"),
+    /// or "" = follow the system language. SEPARATE from `translation.targetLanguage` (the translation
+    /// target) — the two are independent and must never be conflated.
+    public var uiLanguage: String
     public var uiStyle: String?  // Vestigial: the macOS port consolidated to a single UI, so this is no longer read. Kept (nil-by-default) only for back-compat with older config.json — serialized config (conformance) stays unchanged.
 
-    public init(listenClipboard: Bool = true, activeBackend: String = "claude", startWithWindows: Bool = false, uiStyle: String? = nil) {
+    public init(listenClipboard: Bool = true, activeBackend: String = "claude", startWithWindows: Bool = false, uiLanguage: String = "", uiStyle: String? = nil) {
         self.listenClipboard = listenClipboard
         self.activeBackend = activeBackend
         self.startWithWindows = startWithWindows
+        self.uiLanguage = uiLanguage
         self.uiStyle = uiStyle
     }
 }
