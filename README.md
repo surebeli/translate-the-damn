@@ -25,6 +25,10 @@
 
 <img alt="复制 → 热键 → 译文当场浮现,专业术语原样保留" src="docs/assets/demo-translate.gif" width="760">
 
+选好后端、一键 **检测** 确认可用(状态灯:已登录 / 正常 / 失败),再放心依赖它:
+
+<img alt="选后端 → 一键检测 → 状态灯亮起" src="docs/assets/demo-doctor.gif" width="520">
+
 | 平台 | 状态 | 技术栈 |
 |---|---|---|
 | **Windows 11** | ✅ 已发布 | C# / .NET 9,WPF + WinForms 托盘,Win32 P/Invoke |
