@@ -1,0 +1,46 @@
+platforms/macos/src/App/AppDelegate.swift
+  0000019ef27468d8 1-291
+platforms/macos/src/App/DSPopup.swift
+  0000019ef27468d8 1-642
+platforms/macos/src/App/DSSettingsView.swift
+  0000019ef27468d8 1-281
+platforms/macos/src/App/SettingsWindow.swift
+  0000019ef27468d8 1-491
+platforms/windows/src/TranslateTheDamn.App/UI/SettingsWindow.xaml
+  0000019ef27468d8 1-248
+platforms/windows/src/TranslateTheDamn.App/UI/SettingsWindow.xaml.cs
+  0000019ef27468d8 1-532
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "06bb99e672c2037e420f8d77eeec953376a40d55",
+  "prompts": {
+    "s_7e5fdbae438c7c::t_16560128d8d6a0": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1782184175434294000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "0000019ef27468d8": {
+      "agent_id": {
+        "tool": "claude",
+        "model": "claude-opus-4-8",
+        "id": "ai-thread-claude-claude-opus-4-8-1782184175832"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 2485,
+      "total_deletions": 0,
+      "accepted_lines": 2485,
+      "overriden_lines": 0
+    }
+  }
+}
