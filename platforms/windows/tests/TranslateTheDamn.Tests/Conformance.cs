@@ -83,6 +83,7 @@ public static class Conformance
         RunDoctorProbe(dir);
         RunDoctorClassify(dir);
         RunCredentialDiscovery(dir);
+        RunLocaleResolve(dir);
         Check.Vector(null); // stop attributing to any vector
     }
 
@@ -268,6 +269,23 @@ public static class Conformance
                 if (ex.TryGetProperty("protocol", out var pr)) Check.Eq(pr.GetString(), got.Protocol, $"cred-classify [{name}] protocol");
                 if (ex.TryGetProperty("suggestedId", out var si)) Check.Eq(si.GetString(), got.SuggestedId, $"cred-classify [{name}] suggestedId");
             }
+        }
+    }
+
+    // --- UI display-locale resolution (spec §3; SEPARATE from the translation target language) ---
+    private static void RunLocaleResolve(string dir)
+    {
+        Check.Vector("i18n-locale-resolve");
+        var path = Path.Combine(dir, "i18n-locale-resolve.json");
+        if (!File.Exists(path)) { Check.True(false, "conformance file exists: i18n-locale-resolve.json"); return; }
+
+        using var vec = JsonDocument.Parse(File.ReadAllText(path));
+        foreach (var c in vec.RootElement.GetProperty("cases").EnumerateArray())
+        {
+            var cfg = c.GetProperty("configUiLang").GetString() ?? "";
+            var sys = c.GetProperty("systemLocale").GetString() ?? "";
+            var expected = c.GetProperty("expected").GetString();
+            Check.Eq(expected, LocaleResolver.Resolve(cfg, sys), $"conformance i18n-locale-resolve [{cfg}|{sys}]");
         }
     }
 
