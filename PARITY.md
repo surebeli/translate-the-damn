@@ -10,43 +10,43 @@ Legend: ✅ shipped · 🚧 in progress · ⬜ not started · ⚠️ partial/bes
 > machine output). It reads the declarations below — it is **not** a test run; per Law 2 each
 > platform's CI vectors remain the truth. "DECLARED-ALIGNED" means the board is self-consistent.
 
-| Feature | Spec | Conformance | Win | macOS | Linux |
-|---|---|---|---|---|---|
-| Clipboard watch (toggle, self-write guard) | §4, §4.1 | — (UI/OS) | ✅ | ✅ | ⬜ |
-| Global hotkey (configurable, conflict-detect) | §4 | `hotkey-parser` | ✅ | ✅ | ⬜ |
-| Translation rules / prompt building | §5 | `prompt-builder` | ✅ | ✅ | ⬜ |
-| ANSI output cleaning | §6 | `ansi-stripper` | ✅ | ✅ | ⬜ |
-| Backends — claude, codex (CLI) | §6 | `spec/backends.json` | ✅ | ✅ | ⬜ |
-| Backends — copilot, agy (CLI) | §6 | `spec/backends.json` | ⚠️ | ⚠️ | ⬜ |
-| Backends — google-v2, doubao (HTTP) | §6.1/6.2 | `backend-requests` + `spec/backends.json` | ✅ | ✅ | ⬜ |
-| Backends — opencode, kimi, mimo (CLI) | §6 | `spec/backends.json` + `effort-tiers` + `doctor-probe` | ✅ | ✅ | ⬜ |
-| CLI stream-json output parse (jsonl: type/role → text/content) | §6 | `cli-output-parse` | ✅ | ✅ | ⬜ |
-| CLI live model enumeration (`modelsCmd` → parse provider/name) | §6 | `models-list-parse` | ✅ | ✅ | ⬜ |
-| Backends — openai-http / anthropic-http (generic HTTP LLM, baseURL+key+protocol) | §6.x (design 2026-06-22) | `backend-requests` | ✅ | ✅ | ⬜ |
-| Custom provider (add/delete dialog, baseURL+key, OpenAI/Anthropic protocol radio) | §9 (design) | — (UI) | ✅ | ✅ | ⬜ |
-| Unified target language (`{target}` prompt var, CLI + API; live `/models` enum; CLI/API dropdown tags) | §5/§9 (design) | `config-defaults` + `prompt-builder` | ✅ | ✅ | ⬜ |
-| Credential auto-discovery (static-key only, consent-gated; env + opencode + codex) | §9 (design) | `credential-discovery` | ✅ | ✅ | ⬜ |
-| Recent-translation cache (5 entries, MRU + recency refresh) | §4.1 | `pipeline-cache` | ✅ | ✅ | ⬜ |
-| config.json defaults / bootstrap | §7 | `config-defaults` | ✅ | ✅ | ⬜ |
-| Default translate hotkey (per-platform default) | §7 | — (per-platform) | ✅ | ✅ | ⬜ |
-| Per-vendor effort-tier selector (manifest tiers + conditional `--effort`) | §6, §9 | `effort-tiers` | ✅ | ✅ | ⬜ |
-| Backend doctor (connectivity/auth probe + live auth lamp) | §9 | `doctor-probe`, `doctor-classify` | ✅ | ✅ | ⬜ |
-| Acrylic popup (no-focus-steal, hover-keep, auto-dismiss, scroll) | §8 | — (UI) | ✅ | ✅ | ⬜ |
-| Popup copy + close buttons | §8 | — (UI) | ✅ | ✅ | ⬜ |
-| Popup adaptive size (source >500 chars → large) + history nav ◀▶ | §8 | `popup-sizing` | ✅ | ✅ | ⬜ |
-| Settings window (backend/model, fields, live hotkey check) | §9 | — (UI) | ✅ | ✅ | ⬜ |
-| Tray icon + global switch (persisted) | §3 | — (UI) | ✅ | ✅ | ⬜ |
-| App icon = tray glyph (single source) | — | — (UI) | ✅ | ✅ | ⬜ |
-| Dark scrollbar theme | — | — (UI) | ✅ | — | ⬜ |
-| API Key field masked (secure entry) | §9 | — (UI) | ✅ | ✅ | ⬜ |
-| Popup drag-to-reposition (session-sticky) | §8 | — (UI) | ✅ | ✅ | ⬜ |
+| Feature | Spec | Conformance | Win | macOS |
+|---|---|---|---|---|
+| Clipboard watch (toggle, self-write guard) | §4, §4.1 | — (UI/OS) | ✅ | ✅ |
+| Global hotkey (configurable, conflict-detect) | §4 | `hotkey-parser` | ✅ | ✅ |
+| Translation rules / prompt building | §5 | `prompt-builder` | ✅ | ✅ |
+| ANSI output cleaning | §6 | `ansi-stripper` | ✅ | ✅ |
+| Backends — claude, codex (CLI) | §6 | `spec/backends.json` | ✅ | ✅ |
+| Backends — copilot, agy (CLI) | §6 | `spec/backends.json` | ⚠️ | ⚠️ |
+| Backends — google-v2, doubao (HTTP) | §6.1/6.2 | `backend-requests` + `spec/backends.json` | ✅ | ✅ |
+| Backends — opencode, kimi, mimo (CLI) | §6 | `spec/backends.json` + `effort-tiers` + `doctor-probe` | ✅ | ✅ |
+| CLI stream-json output parse (jsonl: type/role → text/content) | §6 | `cli-output-parse` | ✅ | ✅ |
+| CLI live model enumeration (`modelsCmd` → parse provider/name) | §6 | `models-list-parse` | ✅ | ✅ |
+| Backends — openai-http / anthropic-http (generic HTTP LLM, baseURL+key+protocol) | §6.x (design 2026-06-22) | `backend-requests` | ✅ | ✅ |
+| Custom provider (add/delete dialog, baseURL+key, OpenAI/Anthropic protocol radio) | §9 (design) | — (UI) | ✅ | ✅ |
+| Unified target language (`{target}` prompt var, CLI + API; live `/models` enum; CLI/API dropdown tags) | §5/§9 (design) | `config-defaults` + `prompt-builder` | ✅ | ✅ |
+| Credential auto-discovery (static-key only, consent-gated; env + opencode + codex) | §9 (design) | `credential-discovery` | ✅ | ✅ |
+| Recent-translation cache (5 entries, MRU + recency refresh) | §4.1 | `pipeline-cache` | ✅ | ✅ |
+| config.json defaults / bootstrap | §7 | `config-defaults` | ✅ | ✅ |
+| Default translate hotkey (per-platform default) | §7 | — (per-platform) | ✅ | ✅ |
+| Per-vendor effort-tier selector (manifest tiers + conditional `--effort`) | §6, §9 | `effort-tiers` | ✅ | ✅ |
+| Backend doctor (connectivity/auth probe + live auth lamp) | §9 | `doctor-probe`, `doctor-classify` | ✅ | ✅ |
+| Acrylic popup (no-focus-steal, hover-keep, auto-dismiss, scroll) | §8 | — (UI) | ✅ | ✅ |
+| Popup copy + close buttons | §8 | — (UI) | ✅ | ✅ |
+| Popup adaptive size (source >500 chars → large) + history nav ◀▶ | §8 | `popup-sizing` | ✅ | ✅ |
+| Settings window (backend/model, fields, live hotkey check) | §9 | — (UI) | ✅ | ✅ |
+| Tray icon + global switch (persisted) | §3 | — (UI) | ✅ | ✅ |
+| App icon = tray glyph (single source) | — | — (UI) | ✅ | ✅ |
+| Dark scrollbar theme | — | — (UI) | ✅ | — |
+| API Key field masked (secure entry) | §9 | — (UI) | ✅ | ✅ |
+| Popup drag-to-reposition (session-sticky) | §8 | — (UI) | ✅ | ✅ |
 
 ## Version
 
-| | Win | macOS | Linux |
-|---|---|---|---|
-| App version | **0.3.1** | **0.3.1** (`CFBundleShortVersionString` via Info.plist) | — |
-| config schema | 1 | 1 | — |
+| | Win | macOS |
+|---|---|---|
+| App version | **0.3.1** | **0.3.1** (`CFBundleShortVersionString` via Info.plist) |
+| config schema | 1 | 1 |
 
 ## Notes
 
@@ -62,7 +62,7 @@ Legend: ✅ shipped · 🚧 in progress · ⬜ not started · ⚠️ partial/bes
   role→content), `models-list-parse` (CLI `modelsCmd` stdout → provider/name model ids) — run in
   **CI on every push/PR** by each platform's native runner over the same `conformance/` JSON
   (`.github/workflows/conformance.yml`): Windows via `dotnet run` (~150 checks), macOS via
-  `swift test` (117 tests). Linux adds its runner when the port starts. *This is the Law 2 forcing
+  `swift test` (117 tests). *This is the Law 2 forcing
   function — a vector that regresses on any platform turns its job red.*
 - The Windows adapters currently **hardcode** the backend definitions that `spec/backends.json`
   declares; refactoring Windows to read the manifest is a tracked future task (keeps the manifest

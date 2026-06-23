@@ -13,7 +13,7 @@
 Looking up one word in a dense foreign page shouldn't mean switching to a dictionary or firing up a whole
 LLM — the ROI is terrible. translate-the-damn compresses that to **"copy + one hotkey"**: it watches the
 clipboard (toggleable) and a configurable global hotkey, runs the text through a **pluggable backend** —
-an **agent CLI** you're already logged into, or a **translation / LLM HTTP API** — and shows the result in
+a **local CLI** you're already logged into, a **purpose-built translation API**, or a **subscription LLM over HTTP** — and shows the result in
 a **non-focus-stealing** floating popup.
 
 <table>
@@ -28,7 +28,6 @@ a **non-focus-stealing** floating popup.
 |---|---|---|
 | **Windows 11** | ✅ shipped | C# / .NET 9, WPF + WinForms tray, Win32 P/Invoke |
 | **macOS** (Apple Silicon, 14+) | ✅ shipped, feature-aligned with Windows | Swift, SwiftUI + AppKit, Carbon hotkeys |
-| **Linux** (Ubuntu 24.04+) | ⬜ planned | see `docs/PORTING-linux.md` |
 
 ## Why this tool: four core advantages
 
@@ -38,17 +37,25 @@ a **non-focus-stealing** floating popup.
   vectors + a parity matrix + CI**, not by shipping a cross-platform shell. The result feels light and
   responsive, like part of the system.
 - **🔌 Reuse the LLM access you already have — not locked to any vendor.** One declarative manifest
-  (`spec/backends.json`) drives three backend families:
-  - **Agent CLIs** (use a subscription you're already logged into, no extra key): `claude`, `codex`,
-    `copilot`, `agy` (Google Antigravity, falls back to `gemini`), `opencode`, `kimi`, `mimo`.
-  - **Translation / LLM HTTP APIs** (bring your own key): `google-v2` (Google Translation v2), `doubao`,
-    plus a generic **OpenAI- / Anthropic-protocol HTTP** backend with ready-to-fill DeepSeek / MiMo / Kimi presets.
-  - **Custom providers:** point the generic HTTP backend at *any* OpenAI-compatible (`/chat/completions`) or
-    Anthropic-compatible (`/messages`) endpoint — base URL + key + a protocol toggle — and delete it when done.
-- **💸 Very low cost.** Use a subscription you **already pay for**, or a cheap API key; the CLI path
-  effectively rides your existing subscription. **Local models are coming** — near-zero cost and fully offline.
+  (`spec/backends.json`) drives **three** backend tiers, each a trade-off:
+  1. **Purpose-built translation-model APIs** (made for translation — **fast and accurate**; BYOK):
+     `doubao` (Volcano Ark translation model), `google-v2` (Google Translation v2). Want another
+     pro-translation source (**Microsoft Translator, Alibaba MT**, …)?
+     **[Open an issue](https://github.com/surebeli/translate-the-damn/issues)**.
+  2. **Lightweight HTTP access (reuse a subscription / cheap key — ride your quota):** plug your LLM
+     **subscription** (Kimi Code, MiMo token-plan, …) or a cheap API key (DeepSeek, …) in over an
+     OpenAI/Anthropic-protocol HTTP endpoint — or point it at *any* compatible endpoint (custom provider,
+     deletable). Lightest to set up and rides your quota; but these are **general LLMs (not purpose-built
+     translators)**, so results come back **a bit slower** and occasionally less consistent than a pro translator.
+  3. **Local CLI access (reuse a subscription):** `claude`, `codex`, `copilot`, `agy` (falls back to
+     `gemini`), `opencode`, `kimi`, `mimo`. **Rides** the subscription you're already logged into, and
+     unlocks **more and stronger models** — at the cost of cold-starting an agent process each call (**slowest**).
+- **💸 Very low cost.** The CLI / subscription-HTTP paths effectively ride a subscription you **already pay
+  for**; a pro-translation API is only fractions of a cent per call.
 - **🔒 Your data stays local.** Config and secrets live only in `~/.translatethedamn/config.json`
   (`%USERPROFILE%\.translatethedamn\config.json` on Windows), **never** committed, never uploaded.
+
+> **On the roadmap: local models** — near-zero cost and fully offline.
 
 ## Highlights
 
@@ -71,23 +78,23 @@ a **non-focus-stealing** floating popup.
 
 ## Latency by access method (objective data)
 
-Different backends are different **trade-offs**, not "better/worse". So you know what to expect — and to
+The three tiers are different **trade-offs**, not "better/worse". So you know what to expect — and to
 preempt any "is this method slow?" worry — here is measured single-call latency on an Apple Silicon Mac,
 same ~18-word English input, **cold pipeline (no cache)**:
 
-| Access method | Example backends | Measured / call | Notes |
+| Access method | Example backends | Per call | Notes |
 |---|---|---|---|
-| **HTTP API** (BYOK) | Kimi / MiMo / DeepSeek presets | **~1–5 s** | one direct HTTP request — the **fast path**; Kimi endpoint as low as ~1s |
-| **Custom HTTP** | any OpenAI/Anthropic-compatible endpoint | **~1–6 s** | depends on the service you point at |
-| **Agent CLI** (light) | `codex` · `kimi` · `opencode` · `mimo` | **~5–8 s** | each call **cold-starts an agent process** |
-| **Agent CLI** (heavy) | `claude` · `copilot` | **~10–16 s** | heavy agents (more reasoning/context) in exchange for "reuse your subscription, zero extra key" |
+| **① Purpose-built translation API** | `doubao` · `google-v2` | **fastest, most stable** | optimized for translation; typically sub-second–2s (not configured/measured on this machine) |
+| **② Lightweight HTTP** (subscription / cheap key) | Kimi / MiMo / DeepSeek presets + custom | **~1–5 s** (measured) | rides your quota, lightest setup; **general LLM (not a translator)**, so a touch slower |
+| **③ Local CLI** (ride a subscription) | `codex`/`kimi`/`opencode`/`mimo` ~5–8s; `claude`/`copilot` ~10–16s | **~5–16 s** (measured) | unlocks **more/stronger models**, at the cost of cold-starting an agent process |
 
-In short: **want speed → use an HTTP API** (1–5s); **want to ride an existing subscription → use a CLI** —
-it's a few seconds slower because it spins up a full agent process each time, a deliberate cost-vs-speed
-trade-off, not a bug. A cache hit on a repeated translation is **instant**.
+In short: **want fast & accurate translation → a pro translation API ①**; **want to ride a subscription with the
+lightest setup → HTTP ②** (general model, a bit slower); **want to ride a subscription *and* use stronger models
+→ CLI ③** (slowest). If something feels "slow", you've most likely picked a general LLM (②/③) over a purpose-built
+translator — a deliberate cost / stronger-model vs. speed trade-off, not a bug. A cache hit is **instant**.
 
-> These backends reflect the **author's own resources and habits**. Want another one (e.g. **Microsoft
-> Translator, Alibaba Bailian / Qwen**)? **Open an [issue](https://github.com/surebeli/translate-the-damn/issues)**
+> These backends reflect the **author's own resources and habits**. Want another pro-translation source
+> (e.g. **Microsoft Translator, Alibaba Qwen / Bailian**)? **Open an [issue](https://github.com/surebeli/translate-the-damn/issues)**
 > — backends are driven by a declarative manifest, so adding one is easy.
 
 ## Install & run
@@ -201,8 +208,8 @@ language is unified via a `{target}` placeholder and selectable in Settings; the
 
 ## Backend notes
 
-- **Agent CLIs** must be installed and **logged in**; they're heavyweight, so a translation takes ~5–16s — the
-  **HTTP APIs are the fast path**. CLIs spawn from a neutral sandbox (never load your current project); prompts go via stdin.
+- **Local CLIs** must be installed and **logged in**; they're heavyweight, so a translation takes ~5–16s but
+  unlock more/stronger models — a **purpose-built translation API is the fast & stable path**. CLIs spawn from a neutral sandbox (never load your current project); prompts go via stdin.
 - **`claude` / `codex`** are verified live end-to-end on Windows; **`google-v2` / `doubao`** and the HTTP LLM
   providers are request/parse unit-tested — fill a key to use them; **`copilot` / `agy`** are best-effort. Shared
   request/parse, cache, hotkey, config, effort-tier and doctor logic is pinned by the conformance vectors and runs

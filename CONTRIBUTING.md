@@ -87,8 +87,8 @@ click it for Settings.
 
 ### Linux
 
-Planned, not started — see `docs/PORTING-linux.md`. The Linux column in `PARITY.md` is intentionally
-all ⬜.
+Not a current target — translate-the-damn ships on Windows + macOS only. (Local-model support is the
+next roadmap item; see the README.)
 
 ## 4. Tests = the conformance vectors
 
@@ -125,8 +125,8 @@ Every push and PR runs:
   *same* `conformance/`.
 - **`parity-verify`** — cross-checks each platform's real vector results against its `PARITY.md`
   column, so a row can't claim ✅ that the vectors don't back up.
-- **`parity drift (visibility)`** — surfaces `scripts/parity-drift.py` in the checks (not yet a hard
-  gate while Linux is un-started) and runs **`parity-evidence`**, which requires every ✅ UI row to
+- **`parity drift (visibility)`** — surfaces `scripts/parity-drift.py` in the checks (visibility, not a
+  hard gate) and runs **`parity-evidence`**, which requires every ✅ UI row to
   point at real source in `spec/ui-evidence.json`.
 - **`PARITY coupling gate`** (PRs only) — **fails your PR if you changed `platforms/<os>/src/**`
   without editing `PARITY.md`.** Escape hatch for genuinely behaviour-neutral changes: add a commit

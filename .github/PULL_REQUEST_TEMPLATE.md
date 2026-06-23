@@ -19,4 +19,4 @@
 
 ## Platform impact
 
-- [ ] Windows  - [ ] macOS  - [ ] Linux
+- [ ] Windows  - [ ] macOS

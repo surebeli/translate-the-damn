@@ -41,5 +41,5 @@ Add a vector here before adding new shared logic, so every platform has a test t
 - **Windows (C#)**: `platforms/windows/tests/TranslateTheDamn.Tests/Conformance.cs`, run by
   `dotnet run --project platforms/windows/tests/...` (the harness walks up to find this
   `conformance/` dir). This is the reference runner.
-- **macOS (Swift)** / **Linux**: add a runner that loads the same JSON and asserts via the native
-  impl; wire it into that platform's CI.
+- **macOS (Swift)**: a runner that loads the same JSON and asserts via the native impl, wired into CI.
+  (Any future platform adds its own runner the same way.)

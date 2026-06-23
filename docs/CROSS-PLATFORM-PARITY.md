@@ -11,7 +11,7 @@
 
 ## 1. 背景:为什么需要它
 
-本项目是 **native per platform**(Windows = C#/WPF,macOS = Swift/SwiftUI+AppKit,Linux 待做),
+本项目是 **native per platform**(Windows = C#/WPF,macOS = Swift/SwiftUI+AppKit),
 宪法明确**不共享 UI/runtime 代码**——原生换来最佳的性能、手感与平台规范一致性,但代价是:
 
 > **一端改了行为或加了功能,另一端不会自动知道 → 跨端漂移。**
@@ -39,7 +39,7 @@
 | **语言中立向量** | `conformance/*.json` | 唯一事实;每端写薄 runner 喂同一份 JSON 断言 |
 | 后端清单 | `spec/backends.json` | 声明式后端定义(所有端读它) |
 | 共享文案 | `strings/zh-CN.json` | UI 字符串单一来源 |
-| **功能×平台看板** | `PARITY.md` | 每功能在 Win/macOS/Linux 的 ✅/🚧/⬜/⚠️/— |
+| **功能×平台看板** | `PARITY.md` | 每功能在 Win/macOS 的 ✅/🚧/⬜/⚠️/— |
 | **漂移报表** | `scripts/parity-drift.py` | 读上面这些,输出各端落后清单 + 动作 |
 | **自动浮现** | `.claude/settings.json` hooks + `CLAUDE.md`/`AGENTS.md` 会话启动仪式 | 启动即提醒 + 自动建 TODO |
 | 跨端交接 | `docs/PARITY-HANDOFF-*.md` | 给落后端的逐文件任务简报 |
@@ -131,8 +131,8 @@ Windows 加 powershell 条——放各机 `.claude/settings.local.json`(gitignor
 
 - **`macos` / `windows` job**:各端原生 runner(`swift test` / `dotnet run` 离线 harness)跑**同一份**
   `conformance/` JSON。某端向量回归 → 该 job 红。**这就是 Law 2 缺失已久的 forcing function。**
-- **`parity` job**:`parity-drift.py` 报表(仅可见性,不硬门禁——Linux 整列未开工 + 移植期 Law-3 delta
-  会让 `--fail-on-drift` 永红;硬门禁见路线 #7)。
+- **`parity` job**:`parity-drift.py` 报表(仅可见性,不硬门禁——移植期 Law-3 delta 会让 `--fail-on-drift`
+  暂时翻红;硬门禁见路线 #7)。
 - **`parity-gate` job(仅 PR)**:`scripts/parity-gate.py`——改了 `platforms/<os>/src/**` 却没动
   `PARITY.md`,**该 PR 失败**(替代早已被证伪的 PR checkbox)。行为中性改动(重构/注释)用 commit
   message 写一行 `parity:n/a <理由>` 放行,**逼一次有意识判断**而非无脑勾选。
