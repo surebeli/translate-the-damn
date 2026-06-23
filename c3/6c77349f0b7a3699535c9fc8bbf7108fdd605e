@@ -1,0 +1,38 @@
+README.en.md
+  0000019ef2e5556c 1-247
+README.md
+  0000019ef2e5556c 1-226
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "c36c77349f0b7a3699535c9fc8bbf7108fdd605e",
+  "prompts": {
+    "s_937c1a483b2e37::t_2cd2ebf450f3b8": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1782191576089504000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "0000019ef2e5556c": {
+      "agent_id": {
+        "tool": "claude",
+        "model": "claude-opus-4-8",
+        "id": "ai-thread-claude-claude-opus-4-8-1782191576428"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 473,
+      "total_deletions": 0,
+      "accepted_lines": 473,
+      "overriden_lines": 0
+    }
+  }
+}
