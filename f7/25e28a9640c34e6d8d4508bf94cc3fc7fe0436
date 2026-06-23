@@ -1,0 +1,1648 @@
+.agents/skills/embedded-captions/.gitignore
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-24
+.agents/skills/embedded-captions/assets/brand/CDPR-fankit-terms.txt
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-35
+.agents/skills/embedded-captions/assets/brand/cyberpunk-widths.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-115
+.agents/skills/embedded-captions/assets/fonts/char-widths.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-2211
+.agents/skills/embedded-captions/assets/strokefonts/HersheyScript1.svg
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-242
+.agents/skills/embedded-captions/assets/strokefonts/HersheyScriptMed.svg
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-242
+.agents/skills/embedded-captions/CATALOG.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-93
+.agents/skills/embedded-captions/dna/chrome.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-68
+.agents/skills/embedded-captions/dna/cream.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-69
+.agents/skills/embedded-captions/dna/documentary.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-62
+.agents/skills/embedded-captions/dna/editorial.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-70
+.agents/skills/embedded-captions/dna/glitch.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-82
+.agents/skills/embedded-captions/dna/ink.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-65
+.agents/skills/embedded-captions/dna/keynote.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-62
+.agents/skills/embedded-captions/dna/loud.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-75
+.agents/skills/embedded-captions/dna/neon.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-58
+.agents/skills/embedded-captions/dna/README.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-148
+.agents/skills/embedded-captions/dna/velocity.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-89
+.agents/skills/embedded-captions/modes/cinematic/_archive/champion/spec.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-98
+.agents/skills/embedded-captions/modes/cinematic/_archive/champion/template.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-188
+.agents/skills/embedded-captions/modes/cinematic/_archive/memory-wall/spec.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-134
+.agents/skills/embedded-captions/modes/cinematic/_archive/memory-wall/template.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-179
+.agents/skills/embedded-captions/modes/cinematic/_archive/portrait-header/spec.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-81
+.agents/skills/embedded-captions/modes/cinematic/_archive/portrait-header/template.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-170
+.agents/skills/embedded-captions/modes/cinematic/cinematic-cream/spec.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-16
+.agents/skills/embedded-captions/modes/cinematic/cinematic-cream/template.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-226
+.agents/skills/embedded-captions/modes/cinematic/engine.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-355
+.agents/skills/embedded-captions/modes/cinematic/README.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-48
+.agents/skills/embedded-captions/modes/standard/_anatomy.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-233
+.agents/skills/embedded-captions/modes/standard/_motion.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-192
+.agents/skills/embedded-captions/modes/standard/fonts/build-fonts-css.cjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-97
+.agents/skills/embedded-captions/references/aesthetic-principles.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-168
+.agents/skills/embedded-captions/references/anti-patterns.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-188
+.agents/skills/embedded-captions/references/bespoke-vs-presets.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-178
+.agents/skills/embedded-captions/references/caption-grouping.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-130
+.agents/skills/embedded-captions/references/composition-craft.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-522
+.agents/skills/embedded-captions/references/direction-catalog.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-138
+.agents/skills/embedded-captions/references/example-renders/champion.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-371
+.agents/skills/embedded-captions/references/example-renders/memory-wall.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-334
+.agents/skills/embedded-captions/references/failure-modes.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-145
+.agents/skills/embedded-captions/references/layout-heuristics.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-238
+.agents/skills/embedded-captions/references/motion-vocabulary.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-148
+.agents/skills/embedded-captions/references/rail.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-68
+.agents/skills/embedded-captions/references/reference-bar.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-47
+.agents/skills/embedded-captions/references/scene-types.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-94
+.agents/skills/embedded-captions/references/test-set.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-66
+.agents/skills/embedded-captions/references/typographic-moves.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-266
+.agents/skills/embedded-captions/references/typography-presets.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-63
+.agents/skills/embedded-captions/scripts/audio-envelope.cjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-95
+.agents/skills/embedded-captions/scripts/check-occlusion.cjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-250
+.agents/skills/embedded-captions/scripts/check-overflow.cjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-194
+.agents/skills/embedded-captions/scripts/check-rail-climax.cjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-233
+.agents/skills/embedded-captions/scripts/check-timing.cjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-173
+.agents/skills/embedded-captions/scripts/fill-timings.cjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-124
+.agents/skills/embedded-captions/scripts/fit-fonts.cjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-158
+.agents/skills/embedded-captions/scripts/gen-stroke-path.py
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-46
+.agents/skills/embedded-captions/scripts/inject-fonts.cjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-169
+.agents/skills/embedded-captions/scripts/lib-dna.cjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-201
+.agents/skills/embedded-captions/scripts/make-cinematic.cjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-1205
+.agents/skills/embedded-captions/scripts/make-composition.cjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-404
+.agents/skills/embedded-captions/scripts/make-theme.cjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-8781
+.agents/skills/embedded-captions/scripts/matte.cjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-279
+.agents/skills/embedded-captions/scripts/measure-layout.cjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-293
+.agents/skills/embedded-captions/scripts/prepare.sh
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-39
+.agents/skills/embedded-captions/scripts/preview-frames.cjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-268
+.agents/skills/embedded-captions/scripts/render-and-composite.sh
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-469
+.agents/skills/embedded-captions/scripts/render-theme.sh
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-34
+.agents/skills/embedded-captions/scripts/safe-zones.cjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-813
+.agents/skills/embedded-captions/scripts/transcribe.cjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-328
+.agents/skills/embedded-captions/SKILL.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-284
+.agents/skills/embedded-captions/themes/anchor.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-27
+.agents/skills/embedded-captions/themes/arcade.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-51
+.agents/skills/embedded-captions/themes/aurora.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-41
+.agents/skills/embedded-captions/themes/biolume.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-35
+.agents/skills/embedded-captions/themes/brush.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-74
+.agents/skills/embedded-captions/themes/chalkboard.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-52
+.agents/skills/embedded-captions/themes/dossier.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-56
+.agents/skills/embedded-captions/themes/graffiti.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-62
+.agents/skills/embedded-captions/themes/hologram.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-41
+.agents/skills/embedded-captions/themes/inkwater.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-43
+.agents/skills/embedded-captions/themes/laser.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-46
+.agents/skills/embedded-captions/themes/lastpage.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-33
+.agents/skills/embedded-captions/themes/neonsign.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-53
+.agents/skills/embedded-captions/themes/nightcity.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-56
+.agents/skills/embedded-captions/themes/ordnance.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-54
+.agents/skills/embedded-captions/themes/papercut.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-37
+.agents/skills/embedded-captions/themes/popup.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-46
+.agents/skills/embedded-captions/themes/PORTING.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-49
+.agents/skills/embedded-captions/themes/ransom.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-62
+.agents/skills/embedded-captions/themes/README.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-244
+.agents/skills/embedded-captions/themes/scoreboard.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-54
+.agents/skills/embedded-captions/themes/spectrum.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-46
+.agents/skills/embedded-captions/themes/stardust.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-29
+.agents/skills/embedded-captions/themes/stomp.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-43
+.agents/skills/embedded-captions/themes/terminal.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-49
+.agents/skills/embedded-captions/themes/thunder.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-44
+.agents/skills/embedded-captions/themes/transit.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-44
+.agents/skills/embedded-captions/themes/vhs.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-47
+.agents/skills/faceless-explainer/agents/hyperframes-finalize.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-187
+.agents/skills/faceless-explainer/agents/hyperframes-scene.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-430
+.agents/skills/faceless-explainer/agents/scriptwriting.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-50
+.agents/skills/faceless-explainer/agents/visual-design.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-40
+.agents/skills/faceless-explainer/assets/sfx/CREDITS.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-35
+.agents/skills/faceless-explainer/assets/sfx/manifest.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-97
+.agents/skills/faceless-explainer/phases/audio/guide.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-55
+.agents/skills/faceless-explainer/phases/audio/lyria-recipe.py
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-126
+.agents/skills/faceless-explainer/phases/captions/guide.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-133
+.agents/skills/faceless-explainer/phases/design-system/README.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-231
+.agents/skills/faceless-explainer/phases/design-system/scripts/build-design.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-2948
+.agents/skills/faceless-explainer/phases/design-system/scripts/emit-chunks.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-276
+.agents/skills/faceless-explainer/phases/design-system/style-presets/block-frame/caption-skin.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-247
+.agents/skills/faceless-explainer/phases/design-system/style-presets/block-frame/components/button.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-20
+.agents/skills/faceless-explainer/phases/design-system/style-presets/block-frame/components/chip.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-19
+.agents/skills/faceless-explainer/phases/design-system/style-presets/block-frame/components/corner-pins.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-48
+.agents/skills/faceless-explainer/phases/design-system/style-presets/block-frame/components/dot-grid-bg.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-22
+.agents/skills/faceless-explainer/phases/design-system/style-presets/block-frame/components/feature-card.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-74
+.agents/skills/faceless-explainer/phases/design-system/style-presets/block-frame/components/hero.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-126
+.agents/skills/faceless-explainer/phases/design-system/style-presets/block-frame/components/quote-frame.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-66
+.agents/skills/faceless-explainer/phases/design-system/style-presets/block-frame/components/star-burst.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-20
+.agents/skills/faceless-explainer/phases/design-system/style-presets/block-frame/components/stat-counter.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-48
+.agents/skills/faceless-explainer/phases/design-system/style-presets/block-frame/components/timeline-step.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-74
+.agents/skills/faceless-explainer/phases/design-system/style-presets/block-frame/preset.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-463
+.agents/skills/faceless-explainer/phases/design-system/style-presets/capsule/caption-skin.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-243
+.agents/skills/faceless-explainer/phases/design-system/style-presets/capsule/components/bar-chart.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-92
+.agents/skills/faceless-explainer/phases/design-system/style-presets/capsule/components/chip.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-22
+.agents/skills/faceless-explainer/phases/design-system/style-presets/capsule/components/diagram-node.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-58
+.agents/skills/faceless-explainer/phases/design-system/style-presets/capsule/components/floating-pills.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-92
+.agents/skills/faceless-explainer/phases/design-system/style-presets/capsule/components/hero.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-49
+.agents/skills/faceless-explainer/phases/design-system/style-presets/capsule/components/orbit-composition.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-94
+.agents/skills/faceless-explainer/phases/design-system/style-presets/capsule/components/pillar-card.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-53
+.agents/skills/faceless-explainer/phases/design-system/style-presets/capsule/components/quote-highlight.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-54
+.agents/skills/faceless-explainer/phases/design-system/style-presets/capsule/components/stat-counter.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-47
+.agents/skills/faceless-explainer/phases/design-system/style-presets/capsule/components/timeline-step.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-54
+.agents/skills/faceless-explainer/phases/design-system/style-presets/capsule/components/title-pill.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-23
+.agents/skills/faceless-explainer/phases/design-system/style-presets/capsule/components/visual-frame.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-54
+.agents/skills/faceless-explainer/phases/design-system/style-presets/capsule/preset.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-381
+.agents/skills/faceless-explainer/phases/design-system/style-presets/claude/caption-skin.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-247
+.agents/skills/faceless-explainer/phases/design-system/style-presets/claude/components/button-pair.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-38
+.agents/skills/faceless-explainer/phases/design-system/style-presets/claude/components/chip-row.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-43
+.agents/skills/faceless-explainer/phases/design-system/style-presets/claude/components/code-window.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-125
+.agents/skills/faceless-explainer/phases/design-system/style-presets/claude/components/coral-callout.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-83
+.agents/skills/faceless-explainer/phases/design-system/style-presets/claude/components/editorial-column.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-110
+.agents/skills/faceless-explainer/phases/design-system/style-presets/claude/components/hero.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-74
+.agents/skills/faceless-explainer/phases/design-system/style-presets/claude/components/number-lockup.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-49
+.agents/skills/faceless-explainer/phases/design-system/style-presets/claude/components/pull-quote.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-48
+.agents/skills/faceless-explainer/phases/design-system/style-presets/claude/components/section-divider.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-52
+.agents/skills/faceless-explainer/phases/design-system/style-presets/claude/components/spike-mark.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-35
+.agents/skills/faceless-explainer/phases/design-system/style-presets/claude/components/stat-card.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-92
+.agents/skills/faceless-explainer/phases/design-system/style-presets/claude/components/text-statement.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-28
+.agents/skills/faceless-explainer/phases/design-system/style-presets/claude/preset.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-610
+.agents/skills/faceless-explainer/phases/design-system/style-presets/pin-and-paper/caption-skin.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-254
+.agents/skills/faceless-explainer/phases/design-system/style-presets/pin-and-paper/components/chip.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-37
+.agents/skills/faceless-explainer/phases/design-system/style-presets/pin-and-paper/components/divider-loud.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-33
+.agents/skills/faceless-explainer/phases/design-system/style-presets/pin-and-paper/components/hero.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-53
+.agents/skills/faceless-explainer/phases/design-system/style-presets/pin-and-paper/components/paper-grain-overlay.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-39
+.agents/skills/faceless-explainer/phases/design-system/style-presets/pin-and-paper/components/pill-yes.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-50
+.agents/skills/faceless-explainer/phases/design-system/style-presets/pin-and-paper/components/pinned-card.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-78
+.agents/skills/faceless-explainer/phases/design-system/style-presets/pin-and-paper/components/process-step.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-68
+.agents/skills/faceless-explainer/phases/design-system/style-presets/pin-and-paper/components/quote-panel.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-61
+.agents/skills/faceless-explainer/phases/design-system/style-presets/pin-and-paper/components/safety-pin.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-61
+.agents/skills/faceless-explainer/phases/design-system/style-presets/pin-and-paper/components/scribble-note.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-51
+.agents/skills/faceless-explainer/phases/design-system/style-presets/pin-and-paper/components/stamp.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-44
+.agents/skills/faceless-explainer/phases/design-system/style-presets/pin-and-paper/components/stat-counter.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-78
+.agents/skills/faceless-explainer/phases/design-system/style-presets/pin-and-paper/preset.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-614
+.agents/skills/faceless-explainer/phases/design-system/style-presets/scatterbrain/caption-skin.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-263
+.agents/skills/faceless-explainer/phases/design-system/style-presets/scatterbrain/components/bg-cork.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-30
+.agents/skills/faceless-explainer/phases/design-system/style-presets/scatterbrain/components/bg-paper.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-29
+.agents/skills/faceless-explainer/phases/design-system/style-presets/scatterbrain/components/bg-warm.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-38
+.agents/skills/faceless-explainer/phases/design-system/style-presets/scatterbrain/components/chip.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-36
+.agents/skills/faceless-explainer/phases/design-system/style-presets/scatterbrain/components/compare-card.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-128
+.agents/skills/faceless-explainer/phases/design-system/style-presets/scatterbrain/components/doodle.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-65
+.agents/skills/faceless-explainer/phases/design-system/style-presets/scatterbrain/components/feature-card.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-87
+.agents/skills/faceless-explainer/phases/design-system/style-presets/scatterbrain/components/grain-overlay.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-22
+.agents/skills/faceless-explainer/phases/design-system/style-presets/scatterbrain/components/hero.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-104
+.agents/skills/faceless-explainer/phases/design-system/style-presets/scatterbrain/components/photo-frame.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-95
+.agents/skills/faceless-explainer/phases/design-system/style-presets/scatterbrain/components/post-it.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-173
+.agents/skills/faceless-explainer/phases/design-system/style-presets/scatterbrain/components/stat-counter.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-84
+.agents/skills/faceless-explainer/phases/design-system/style-presets/scatterbrain/components/timeline-step.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-102
+.agents/skills/faceless-explainer/phases/design-system/style-presets/scatterbrain/preset.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-615
+.agents/skills/faceless-explainer/phases/scriptwriting/guide.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-296
+.agents/skills/faceless-explainer/phases/scriptwriting/structures/concept-explainer/overview.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-102
+.agents/skills/faceless-explainer/phases/scriptwriting/structures/how-to-process/overview.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-100
+.agents/skills/faceless-explainer/phases/scriptwriting/structures/listicle/overview.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-93
+.agents/skills/faceless-explainer/phases/scriptwriting/structures/story-explainer/overview.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-103
+.agents/skills/faceless-explainer/phases/visual-design/effects-catalog.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-60
+.agents/skills/faceless-explainer/phases/visual-design/guide.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-343
+.agents/skills/faceless-explainer/phases/visual-design/rules/color-system.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-119
+.agents/skills/faceless-explainer/phases/visual-design/rules/composition.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-210
+.agents/skills/faceless-explainer/phases/visual-design/rules/motion-language.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-183
+.agents/skills/faceless-explainer/phases/visual-design/rules/typography.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-75
+.agents/skills/faceless-explainer/scripts/assemble-index.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-442
+.agents/skills/faceless-explainer/scripts/audio.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-856
+.agents/skills/faceless-explainer/scripts/check-compositions.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-530
+.agents/skills/faceless-explainer/scripts/check-overlap.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-617
+.agents/skills/faceless-explainer/scripts/hoist-videos.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-491
+.agents/skills/faceless-explainer/scripts/lib/capture-meta.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-39
+.agents/skills/faceless-explainer/scripts/lib/dimensions.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-87
+.agents/skills/faceless-explainer/scripts/lib/hierarchy-gate.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-124
+.agents/skills/faceless-explainer/scripts/lib/prep-assets.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-101
+.agents/skills/faceless-explainer/scripts/lib/prep-design.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-113
+.agents/skills/faceless-explainer/scripts/lib/prep-log.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-8
+.agents/skills/faceless-explainer/scripts/lib/prep-section.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-197
+.agents/skills/faceless-explainer/scripts/lib/prep-sfx.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-91
+.agents/skills/faceless-explainer/scripts/lib/scratch-dir.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-20
+.agents/skills/faceless-explainer/scripts/lib/transition-registry.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-58
+.agents/skills/faceless-explainer/scripts/preflight-finalize.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-545
+.agents/skills/faceless-explainer/scripts/prep.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-623
+.agents/skills/faceless-explainer/scripts/transitions.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-573
+.agents/skills/faceless-explainer/scripts/validate-narrator.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-206
+.agents/skills/faceless-explainer/scripts/validate-section.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-407
+.agents/skills/faceless-explainer/scripts/validate.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-680
+.agents/skills/faceless-explainer/scripts/verify-output.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-253
+.agents/skills/faceless-explainer/scripts/wait-bgm.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-167
+.agents/skills/faceless-explainer/SKILL.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-395
+.agents/skills/general-video/SKILL.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-141
+.agents/skills/graphic-overlays/NOTICE.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-39
+.agents/skills/graphic-overlays/references/DESIGN_INDEX.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-145
+.agents/skills/graphic-overlays/references/frames/clean.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-92
+.agents/skills/graphic-overlays/references/frames/hairline.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-171
+.agents/skills/graphic-overlays/references/frames/polaroid.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-131
+.agents/skills/graphic-overlays/references/layouts/overlay.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-164
+.agents/skills/graphic-overlays/references/layouts/pip.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-143
+.agents/skills/graphic-overlays/references/layouts/split.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-121
+.agents/skills/graphic-overlays/references/layouts/stack.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-109
+.agents/skills/graphic-overlays/references/styles/academic.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-172
+.agents/skills/graphic-overlays/references/styles/audit.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-170
+.agents/skills/graphic-overlays/references/styles/editorial.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-189
+.agents/skills/graphic-overlays/references/styles/geom.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-181
+.agents/skills/graphic-overlays/references/styles/minimal.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-130
+.agents/skills/graphic-overlays/references/styles/spotlight.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-142
+.agents/skills/graphic-overlays/references/styles/swiss.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-188
+.agents/skills/graphic-overlays/references/styles/terminal.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-196
+.agents/skills/graphic-overlays/references/styles/whiteboard.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-170
+.agents/skills/graphic-overlays/references/styles/xhs.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-206
+.agents/skills/graphic-overlays/SKILL.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-1190
+.agents/skills/hyperframes/data-in-motion.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-19
+.agents/skills/hyperframes/house-style.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-73
+.agents/skills/hyperframes/palettes/bold-energetic.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-14
+.agents/skills/hyperframes/palettes/clean-corporate.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-14
+.agents/skills/hyperframes/palettes/dark-premium.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-14
+.agents/skills/hyperframes/palettes/jewel-rich.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-14
+.agents/skills/hyperframes/palettes/monochrome.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-14
+.agents/skills/hyperframes/palettes/nature-earth.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-14
+.agents/skills/hyperframes/palettes/neon-electric.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-14
+.agents/skills/hyperframes/palettes/pastel-soft.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-14
+.agents/skills/hyperframes/palettes/warm-editorial.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-14
+.agents/skills/hyperframes/patterns.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-191
+.agents/skills/hyperframes/references/audio-reactive.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-76
+.agents/skills/hyperframes/references/beat-direction.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-102
+.agents/skills/hyperframes/references/captions.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-163
+.agents/skills/hyperframes/references/css-patterns.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-373
+.agents/skills/hyperframes/references/design-picker.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-117
+.agents/skills/hyperframes/references/dynamic-techniques.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-90
+.agents/skills/hyperframes/references/motion-principles.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-142
+.agents/skills/hyperframes/references/narration.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-92
+.agents/skills/hyperframes/references/prompt-expansion.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-68
+.agents/skills/hyperframes/references/techniques.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-387
+.agents/skills/hyperframes/references/transcript-guide.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-107
+.agents/skills/hyperframes/references/transitions/catalog.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-117
+.agents/skills/hyperframes/references/transitions/css-3d.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-12
+.agents/skills/hyperframes/references/transitions/css-blur.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-51
+.agents/skills/hyperframes/references/transitions/css-cover.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-43
+.agents/skills/hyperframes/references/transitions/css-destruction.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-95
+.agents/skills/hyperframes/references/transitions/css-dissolve.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-66
+.agents/skills/hyperframes/references/transitions/css-distortion.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-45
+.agents/skills/hyperframes/references/transitions/css-grid.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-10
+.agents/skills/hyperframes/references/transitions/css-light.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-49
+.agents/skills/hyperframes/references/transitions/css-mechanical.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-30
+.agents/skills/hyperframes/references/transitions/css-other.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-25
+.agents/skills/hyperframes/references/transitions/css-push.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-41
+.agents/skills/hyperframes/references/transitions/css-radial.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-37
+.agents/skills/hyperframes/references/transitions/css-scale.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-24
+.agents/skills/hyperframes/references/transitions.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-112
+.agents/skills/hyperframes/references/typography.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-175
+.agents/skills/hyperframes/references/video-composition.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-62
+.agents/skills/hyperframes/scripts/animation-map.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-601
+.agents/skills/hyperframes/scripts/contrast-report.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-348
+.agents/skills/hyperframes/scripts/package-loader.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-269
+.agents/skills/hyperframes/SKILL.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-490
+.agents/skills/hyperframes/templates/design-picker.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-1432
+.agents/skills/hyperframes/visual-styles.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-443
+.agents/skills/hyperframes-animation/adapters/animate-text.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-64
+.agents/skills/hyperframes-animation/adapters/animejs.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-114
+.agents/skills/hyperframes-animation/adapters/css-animations.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-124
+.agents/skills/hyperframes-animation/adapters/gsap-easing-and-stagger.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-118
+.agents/skills/hyperframes-animation/adapters/gsap-timeline-and-labels.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-96
+.agents/skills/hyperframes-animation/adapters/gsap-transforms-and-perf.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-96
+.agents/skills/hyperframes-animation/adapters/gsap.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-105
+.agents/skills/hyperframes-animation/adapters/html-in-canvas-patterns.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-507
+.agents/skills/hyperframes-animation/adapters/lottie.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-112
+.agents/skills/hyperframes-animation/adapters/three.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-129
+.agents/skills/hyperframes-animation/adapters/typegpu.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-178
+.agents/skills/hyperframes-animation/adapters/waapi.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-94
+.agents/skills/hyperframes-animation/blueprints/brand-reveal-assemble-zoom.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-183
+.agents/skills/hyperframes-animation/blueprints/comparison-split-cards.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-141
+.agents/skills/hyperframes-animation/blueprints/concept-demo-decode-pan.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-179
+.agents/skills/hyperframes-animation/blueprints/cta-morph-press.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-183
+.agents/skills/hyperframes-animation/blueprints/cta-orbit-collapse.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-189
+.agents/skills/hyperframes-animation/blueprints/demo-page-scroll-spotlight.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-209
+.agents/skills/hyperframes-animation/blueprints/hook-counter-burst.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-161
+.agents/skills/hyperframes-animation/blueprints/messaging-multi-phrase.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-126
+.agents/skills/hyperframes-animation/blueprints/metric-video-text-pivot.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-212
+.agents/skills/hyperframes-animation/blueprints/problem-mockup-overwhelm.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-152
+.agents/skills/hyperframes-animation/blueprints/proof-logo-chain.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-189
+.agents/skills/hyperframes-animation/blueprints/takeover-ticker-displace.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-168
+.agents/skills/hyperframes-animation/blueprints/workflow-approve-press.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-192
+.agents/skills/hyperframes-animation/blueprints-index.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-173
+.agents/skills/hyperframes-animation/examples/brand-reveal-assemble-zoom.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-382
+.agents/skills/hyperframes-animation/examples/comparison-split-cards.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-649
+.agents/skills/hyperframes-animation/examples/concept-demo-decode-pan.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-520
+.agents/skills/hyperframes-animation/examples/cta-morph-press.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-468
+.agents/skills/hyperframes-animation/examples/cta-orbit-collapse.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-1298
+.agents/skills/hyperframes-animation/examples/demo-page-scroll-spotlight.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-759
+.agents/skills/hyperframes-animation/examples/hook-counter-burst.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-729
+.agents/skills/hyperframes-animation/examples/messaging-multi-phrase.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-352
+.agents/skills/hyperframes-animation/examples/metric-video-text-pivot.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-779
+.agents/skills/hyperframes-animation/examples/problem-mockup-overwhelm.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-1374
+.agents/skills/hyperframes-animation/examples/proof-logo-chain.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-861
+.agents/skills/hyperframes-animation/examples/takeover-ticker-displace.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-347
+.agents/skills/hyperframes-animation/examples/workflow-approve-press.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-606
+.agents/skills/hyperframes-animation/rules/3d-page-scroll.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-227
+.agents/skills/hyperframes-animation/rules/3d-text-depth-layers.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-297
+.agents/skills/hyperframes-animation/rules/ai-tracking-box.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-382
+.agents/skills/hyperframes-animation/rules/asr-keyword-glow.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-286
+.agents/skills/hyperframes-animation/rules/avatar-cloud-network.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-371
+.agents/skills/hyperframes-animation/rules/camera-cursor-tracking.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-246
+.agents/skills/hyperframes-animation/rules/card-morph-anchor.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-267
+.agents/skills/hyperframes-animation/rules/center-outward-expansion.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-227
+.agents/skills/hyperframes-animation/rules/context-sensitive-cursor.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-257
+.agents/skills/hyperframes-animation/rules/coordinate-target-zoom.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-332
+.agents/skills/hyperframes-animation/rules/counting-dynamic-scale.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-283
+.agents/skills/hyperframes-animation/rules/css-marker-patterns.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-373
+.agents/skills/hyperframes-animation/rules/cursor-click-ripple.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-262
+.agents/skills/hyperframes-animation/rules/discrete-text-sequence.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-273
+.agents/skills/hyperframes-animation/rules/dynamic-content-sequencing.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-307
+.agents/skills/hyperframes-animation/rules/gsap-effects.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-299
+.agents/skills/hyperframes-animation/rules/hacker-flip-3d.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-223
+.agents/skills/hyperframes-animation/rules/kinetic-beat-slam.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-183
+.agents/skills/hyperframes-animation/rules/multi-phase-camera.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-273
+.agents/skills/hyperframes-animation/rules/orbit-3d-entry.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-301
+.agents/skills/hyperframes-animation/rules/physics-press-reaction.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-350
+.agents/skills/hyperframes-animation/rules/press-release-spring.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-296
+.agents/skills/hyperframes-animation/rules/reactive-displacement.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-277
+.agents/skills/hyperframes-animation/rules/scale-swap-transition.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-298
+.agents/skills/hyperframes-animation/rules/sine-wave-loop.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-275
+.agents/skills/hyperframes-animation/rules/split-tilt-cards.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-277
+.agents/skills/hyperframes-animation/rules/stat-bars-and-fills.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-156
+.agents/skills/hyperframes-animation/rules/svg-icon-enrichment.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-329
+.agents/skills/hyperframes-animation/rules/svg-path-draw.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-274
+.agents/skills/hyperframes-animation/rules/vertical-spring-ticker.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-239
+.agents/skills/hyperframes-animation/rules/viewport-change.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-349
+.agents/skills/hyperframes-animation/rules-index.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-81
+.agents/skills/hyperframes-animation/scripts/animation-map.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-601
+.agents/skills/hyperframes-animation/scripts/package-loader.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-269
+.agents/skills/hyperframes-animation/SKILL.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-82
+.agents/skills/hyperframes-animation/techniques.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-507
+.agents/skills/hyperframes-animation/transitions/catalog.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-127
+.agents/skills/hyperframes-animation/transitions/css-3d.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-12
+.agents/skills/hyperframes-animation/transitions/css-blur.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-51
+.agents/skills/hyperframes-animation/transitions/css-cover.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-43
+.agents/skills/hyperframes-animation/transitions/css-destruction.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-95
+.agents/skills/hyperframes-animation/transitions/css-dissolve.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-66
+.agents/skills/hyperframes-animation/transitions/css-distortion.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-45
+.agents/skills/hyperframes-animation/transitions/css-grid.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-10
+.agents/skills/hyperframes-animation/transitions/css-light.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-49
+.agents/skills/hyperframes-animation/transitions/css-mechanical.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-30
+.agents/skills/hyperframes-animation/transitions/css-other.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-25
+.agents/skills/hyperframes-animation/transitions/css-push.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-41
+.agents/skills/hyperframes-animation/transitions/css-radial.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-37
+.agents/skills/hyperframes-animation/transitions/css-scale.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-24
+.agents/skills/hyperframes-animation/transitions/overview.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-153
+.agents/skills/hyperframes-animation/transitions/TRANSITION-REGISTRY.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-167
+.agents/skills/hyperframes-cli/SKILL.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-144
+.agents/skills/hyperframes-core/references/composition-patterns.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-263
+.agents/skills/hyperframes-core/references/data-attributes.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-68
+.agents/skills/hyperframes-core/references/determinism-rules.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-54
+.agents/skills/hyperframes-core/references/full-screen-motion.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-62
+.agents/skills/hyperframes-core/references/minimal-composition.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-66
+.agents/skills/hyperframes-core/references/sub-compositions.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-181
+.agents/skills/hyperframes-core/references/subagent-dispatch.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-41
+.agents/skills/hyperframes-core/references/tailwind.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-125
+.agents/skills/hyperframes-core/references/tracks-and-clips.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-76
+.agents/skills/hyperframes-core/references/variables-and-media.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-89
+.agents/skills/hyperframes-core/SKILL.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-129
+.agents/skills/hyperframes-creative/frame-presets/biennale-yellow/caption-skin.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-221
+.agents/skills/hyperframes-creative/frame-presets/biennale-yellow/frame-showcase.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-1214
+.agents/skills/hyperframes-creative/frame-presets/biennale-yellow/FRAME.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-289
+.agents/skills/hyperframes-creative/frame-presets/blockframe/caption-skin.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-224
+.agents/skills/hyperframes-creative/frame-presets/blockframe/frame-showcase.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-1347
+.agents/skills/hyperframes-creative/frame-presets/blockframe/FRAME.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-275
+.agents/skills/hyperframes-creative/frame-presets/blue-professional/caption-skin.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-223
+.agents/skills/hyperframes-creative/frame-presets/blue-professional/frame-showcase.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-1372
+.agents/skills/hyperframes-creative/frame-presets/blue-professional/FRAME.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-307
+.agents/skills/hyperframes-creative/frame-presets/bold-poster/caption-skin.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-230
+.agents/skills/hyperframes-creative/frame-presets/bold-poster/frame-showcase.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-1140
+.agents/skills/hyperframes-creative/frame-presets/bold-poster/FRAME.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-275
+.agents/skills/hyperframes-creative/frame-presets/broadside/caption-skin.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-225
+.agents/skills/hyperframes-creative/frame-presets/broadside/frame-showcase.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-1166
+.agents/skills/hyperframes-creative/frame-presets/broadside/FRAME.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-284
+.agents/skills/hyperframes-creative/frame-presets/capsule/caption-skin.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-224
+.agents/skills/hyperframes-creative/frame-presets/capsule/frame-showcase.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-1465
+.agents/skills/hyperframes-creative/frame-presets/capsule/FRAME.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-284
+.agents/skills/hyperframes-creative/frame-presets/cartesian/caption-skin.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-222
+.agents/skills/hyperframes-creative/frame-presets/cartesian/frame-showcase.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-1263
+.agents/skills/hyperframes-creative/frame-presets/cartesian/FRAME.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-278
+.agents/skills/hyperframes-creative/frame-presets/claude/caption-skin.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-224
+.agents/skills/hyperframes-creative/frame-presets/claude/frame-showcase.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-1439
+.agents/skills/hyperframes-creative/frame-presets/claude/FRAME.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-277
+.agents/skills/hyperframes-creative/frame-presets/cobalt-grid/caption-skin.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-238
+.agents/skills/hyperframes-creative/frame-presets/cobalt-grid/frame-showcase.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-1468
+.agents/skills/hyperframes-creative/frame-presets/cobalt-grid/FRAME.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-265
+.agents/skills/hyperframes-creative/frame-presets/coral/caption-skin.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-226
+.agents/skills/hyperframes-creative/frame-presets/coral/frame-showcase.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-1268
+.agents/skills/hyperframes-creative/frame-presets/coral/FRAME.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-314
+.agents/skills/hyperframes-creative/frame-presets/creative-mode/caption-skin.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-227
+.agents/skills/hyperframes-creative/frame-presets/creative-mode/frame-showcase.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-1330
+.agents/skills/hyperframes-creative/frame-presets/creative-mode/FRAME.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-333
+.agents/skills/hyperframes-creative/frame-presets/daisy-days/caption-skin.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-230
+.agents/skills/hyperframes-creative/frame-presets/daisy-days/frame-showcase.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-1444
+.agents/skills/hyperframes-creative/frame-presets/daisy-days/FRAME.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-274
+.agents/skills/hyperframes-creative/frame-presets/editorial-forest/caption-skin.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-223
+.agents/skills/hyperframes-creative/frame-presets/editorial-forest/frame-showcase.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-1273
+.agents/skills/hyperframes-creative/frame-presets/editorial-forest/FRAME.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-265
+.agents/skills/hyperframes-creative/palettes/bold-energetic.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-14
+.agents/skills/hyperframes-creative/palettes/clean-corporate.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-14
+.agents/skills/hyperframes-creative/palettes/dark-premium.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-14
+.agents/skills/hyperframes-creative/palettes/jewel-rich.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-14
+.agents/skills/hyperframes-creative/palettes/monochrome.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-14
+.agents/skills/hyperframes-creative/palettes/nature-earth.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-14
+.agents/skills/hyperframes-creative/palettes/neon-electric.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-14
+.agents/skills/hyperframes-creative/palettes/pastel-soft.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-14
+.agents/skills/hyperframes-creative/palettes/warm-editorial.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-14
+.agents/skills/hyperframes-creative/references/audio-reactive.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-76
+.agents/skills/hyperframes-creative/references/beat-direction.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-164
+.agents/skills/hyperframes-creative/references/composition-patterns.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-199
+.agents/skills/hyperframes-creative/references/data-in-motion.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-19
+.agents/skills/hyperframes-creative/references/design-adherence.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-19
+.agents/skills/hyperframes-creative/references/design-picker.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-123
+.agents/skills/hyperframes-creative/references/design-spec.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-55
+.agents/skills/hyperframes-creative/references/house-style.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-73
+.agents/skills/hyperframes-creative/references/motion-principles.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-150
+.agents/skills/hyperframes-creative/references/narration.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-92
+.agents/skills/hyperframes-creative/references/prompt-expansion.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-68
+.agents/skills/hyperframes-creative/references/typography.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-218
+.agents/skills/hyperframes-creative/references/video-composition.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-63
+.agents/skills/hyperframes-creative/references/visual-styles.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-457
+.agents/skills/hyperframes-creative/scripts/contrast-report.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-348
+.agents/skills/hyperframes-creative/scripts/extract-audio-data.py
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-188
+.agents/skills/hyperframes-creative/scripts/package-loader.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-269
+.agents/skills/hyperframes-creative/SKILL.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-68
+.agents/skills/hyperframes-creative/templates/design-picker.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-1432
+.agents/skills/hyperframes-media/assets/sfx/CREDITS.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-35
+.agents/skills/hyperframes-media/assets/sfx/manifest.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-97
+.agents/skills/hyperframes-media/references/bgm.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-70
+.agents/skills/hyperframes-media/references/captions/authoring.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-159
+.agents/skills/hyperframes-media/references/captions/motion.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-87
+.agents/skills/hyperframes-media/references/captions/transcript-handling.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-97
+.agents/skills/hyperframes-media/references/remove-background.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-143
+.agents/skills/hyperframes-media/references/requirements.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-13
+.agents/skills/hyperframes-media/references/sfx.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-42
+.agents/skills/hyperframes-media/references/transcribe.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-52
+.agents/skills/hyperframes-media/references/tts-to-captions.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-24
+.agents/skills/hyperframes-media/references/tts.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-133
+.agents/skills/hyperframes-media/scripts/audio.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-282
+.agents/skills/hyperframes-media/scripts/heygen-tts.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-121
+.agents/skills/hyperframes-media/scripts/lib/bgm.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-235
+.agents/skills/hyperframes-media/scripts/lib/heygen.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-131
+.agents/skills/hyperframes-media/scripts/lib/sfx.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-128
+.agents/skills/hyperframes-media/scripts/lib/tts.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-216
+.agents/skills/hyperframes-media/scripts/lyria-recipe.py
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-128
+.agents/skills/hyperframes-media/scripts/wait-bgm.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-167
+.agents/skills/hyperframes-media/SKILL.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-81
+.agents/skills/hyperframes-registry/examples/add-block.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-51
+.agents/skills/hyperframes-registry/examples/add-component.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-73
+.agents/skills/hyperframes-registry/references/contributing.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-166
+.agents/skills/hyperframes-registry/references/demo-html-pattern.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-54
+.agents/skills/hyperframes-registry/references/discovery.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-215
+.agents/skills/hyperframes-registry/references/install-locations.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-45
+.agents/skills/hyperframes-registry/references/templates.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-417
+.agents/skills/hyperframes-registry/references/wiring-blocks.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-61
+.agents/skills/hyperframes-registry/references/wiring-components.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-39
+.agents/skills/hyperframes-registry/SKILL.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-101
+.agents/skills/motion-graphics/agents/builder.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-40
+.agents/skills/motion-graphics/agents/director.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-53
+.agents/skills/motion-graphics/agents/finalize.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-17
+.agents/skills/motion-graphics/catalog-map.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-40
+.agents/skills/motion-graphics/categories/asset-fusion/module.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-37
+.agents/skills/motion-graphics/categories/charts/module.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-21
+.agents/skills/motion-graphics/categories/kinetic-type/module.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-19
+.agents/skills/motion-graphics/categories/logo-reveal/module.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-17
+.agents/skills/motion-graphics/categories/lower-thirds/module.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-16
+.agents/skills/motion-graphics/categories/maps/bake-basemap.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-273
+.agents/skills/motion-graphics/categories/maps/module.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-61
+.agents/skills/motion-graphics/categories/news/module.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-56
+.agents/skills/motion-graphics/categories/stat/module.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-21
+.agents/skills/motion-graphics/categories/tweet/module.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-16
+.agents/skills/motion-graphics/categories/webpage/module.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-21
+.agents/skills/motion-graphics/grounding/locate.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-227
+.agents/skills/motion-graphics/grounding/PROTOCOL.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-64
+.agents/skills/motion-graphics/phases/source/guide.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-21
+.agents/skills/motion-graphics/references/builder-contract.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-38
+.agents/skills/motion-graphics/references/motion-vocabulary.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-43
+.agents/skills/motion-graphics/references/shot-plan-ir.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-54
+.agents/skills/motion-graphics/samples/asset-fusion/_ref-circle-highlight.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-306
+.agents/skills/motion-graphics/SKILL.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-170
+.agents/skills/pr-to-video/agents/hyperframes-finalize.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-187
+.agents/skills/pr-to-video/agents/hyperframes-scene.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-424
+.agents/skills/pr-to-video/agents/story-design.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-59
+.agents/skills/pr-to-video/agents/visual-design.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-40
+.agents/skills/pr-to-video/assets/sfx/CREDITS.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-35
+.agents/skills/pr-to-video/assets/sfx/manifest.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-97
+.agents/skills/pr-to-video/phases/audio/guide.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-63
+.agents/skills/pr-to-video/phases/audio/lyria-recipe.py
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-128
+.agents/skills/pr-to-video/phases/captions/guide.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-133
+.agents/skills/pr-to-video/phases/design-system/README.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-231
+.agents/skills/pr-to-video/phases/design-system/scripts/build-design.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-2948
+.agents/skills/pr-to-video/phases/design-system/scripts/emit-chunks.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-276
+.agents/skills/pr-to-video/phases/design-system/style-presets/block-frame/caption-skin.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-247
+.agents/skills/pr-to-video/phases/design-system/style-presets/block-frame/components/button.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-20
+.agents/skills/pr-to-video/phases/design-system/style-presets/block-frame/components/chip.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-19
+.agents/skills/pr-to-video/phases/design-system/style-presets/block-frame/components/corner-pins.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-48
+.agents/skills/pr-to-video/phases/design-system/style-presets/block-frame/components/dot-grid-bg.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-22
+.agents/skills/pr-to-video/phases/design-system/style-presets/block-frame/components/feature-card.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-74
+.agents/skills/pr-to-video/phases/design-system/style-presets/block-frame/components/hero.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-126
+.agents/skills/pr-to-video/phases/design-system/style-presets/block-frame/components/quote-frame.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-66
+.agents/skills/pr-to-video/phases/design-system/style-presets/block-frame/components/star-burst.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-20
+.agents/skills/pr-to-video/phases/design-system/style-presets/block-frame/components/stat-counter.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-48
+.agents/skills/pr-to-video/phases/design-system/style-presets/block-frame/components/timeline-step.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-74
+.agents/skills/pr-to-video/phases/design-system/style-presets/block-frame/preset.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-463
+.agents/skills/pr-to-video/phases/design-system/style-presets/capsule/caption-skin.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-243
+.agents/skills/pr-to-video/phases/design-system/style-presets/capsule/components/bar-chart.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-92
+.agents/skills/pr-to-video/phases/design-system/style-presets/capsule/components/chip.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-22
+.agents/skills/pr-to-video/phases/design-system/style-presets/capsule/components/diagram-node.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-58
+.agents/skills/pr-to-video/phases/design-system/style-presets/capsule/components/floating-pills.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-92
+.agents/skills/pr-to-video/phases/design-system/style-presets/capsule/components/hero.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-49
+.agents/skills/pr-to-video/phases/design-system/style-presets/capsule/components/orbit-composition.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-94
+.agents/skills/pr-to-video/phases/design-system/style-presets/capsule/components/pillar-card.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-53
+.agents/skills/pr-to-video/phases/design-system/style-presets/capsule/components/quote-highlight.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-54
+.agents/skills/pr-to-video/phases/design-system/style-presets/capsule/components/stat-counter.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-47
+.agents/skills/pr-to-video/phases/design-system/style-presets/capsule/components/timeline-step.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-54
+.agents/skills/pr-to-video/phases/design-system/style-presets/capsule/components/title-pill.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-23
+.agents/skills/pr-to-video/phases/design-system/style-presets/capsule/components/visual-frame.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-54
+.agents/skills/pr-to-video/phases/design-system/style-presets/capsule/preset.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-381
+.agents/skills/pr-to-video/phases/design-system/style-presets/claude/caption-skin.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-247
+.agents/skills/pr-to-video/phases/design-system/style-presets/claude/components/button-pair.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-38
+.agents/skills/pr-to-video/phases/design-system/style-presets/claude/components/chip-row.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-43
+.agents/skills/pr-to-video/phases/design-system/style-presets/claude/components/code-window.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-125
+.agents/skills/pr-to-video/phases/design-system/style-presets/claude/components/coral-callout.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-83
+.agents/skills/pr-to-video/phases/design-system/style-presets/claude/components/editorial-column.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-110
+.agents/skills/pr-to-video/phases/design-system/style-presets/claude/components/hero.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-74
+.agents/skills/pr-to-video/phases/design-system/style-presets/claude/components/number-lockup.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-49
+.agents/skills/pr-to-video/phases/design-system/style-presets/claude/components/pull-quote.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-48
+.agents/skills/pr-to-video/phases/design-system/style-presets/claude/components/section-divider.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-52
+.agents/skills/pr-to-video/phases/design-system/style-presets/claude/components/spike-mark.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-35
+.agents/skills/pr-to-video/phases/design-system/style-presets/claude/components/stat-card.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-92
+.agents/skills/pr-to-video/phases/design-system/style-presets/claude/components/text-statement.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-28
+.agents/skills/pr-to-video/phases/design-system/style-presets/claude/preset.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-610
+.agents/skills/pr-to-video/phases/design-system/style-presets/pin-and-paper/caption-skin.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-254
+.agents/skills/pr-to-video/phases/design-system/style-presets/pin-and-paper/components/chip.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-37
+.agents/skills/pr-to-video/phases/design-system/style-presets/pin-and-paper/components/divider-loud.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-33
+.agents/skills/pr-to-video/phases/design-system/style-presets/pin-and-paper/components/hero.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-53
+.agents/skills/pr-to-video/phases/design-system/style-presets/pin-and-paper/components/paper-grain-overlay.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-39
+.agents/skills/pr-to-video/phases/design-system/style-presets/pin-and-paper/components/pill-yes.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-50
+.agents/skills/pr-to-video/phases/design-system/style-presets/pin-and-paper/components/pinned-card.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-78
+.agents/skills/pr-to-video/phases/design-system/style-presets/pin-and-paper/components/process-step.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-68
+.agents/skills/pr-to-video/phases/design-system/style-presets/pin-and-paper/components/quote-panel.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-61
+.agents/skills/pr-to-video/phases/design-system/style-presets/pin-and-paper/components/safety-pin.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-61
+.agents/skills/pr-to-video/phases/design-system/style-presets/pin-and-paper/components/scribble-note.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-51
+.agents/skills/pr-to-video/phases/design-system/style-presets/pin-and-paper/components/stamp.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-44
+.agents/skills/pr-to-video/phases/design-system/style-presets/pin-and-paper/components/stat-counter.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-78
+.agents/skills/pr-to-video/phases/design-system/style-presets/pin-and-paper/preset.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-614
+.agents/skills/pr-to-video/phases/design-system/style-presets/scatterbrain/caption-skin.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-263
+.agents/skills/pr-to-video/phases/design-system/style-presets/scatterbrain/components/bg-cork.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-30
+.agents/skills/pr-to-video/phases/design-system/style-presets/scatterbrain/components/bg-paper.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-29
+.agents/skills/pr-to-video/phases/design-system/style-presets/scatterbrain/components/bg-warm.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-38
+.agents/skills/pr-to-video/phases/design-system/style-presets/scatterbrain/components/chip.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-36
+.agents/skills/pr-to-video/phases/design-system/style-presets/scatterbrain/components/compare-card.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-128
+.agents/skills/pr-to-video/phases/design-system/style-presets/scatterbrain/components/doodle.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-65
+.agents/skills/pr-to-video/phases/design-system/style-presets/scatterbrain/components/feature-card.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-87
+.agents/skills/pr-to-video/phases/design-system/style-presets/scatterbrain/components/grain-overlay.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-22
+.agents/skills/pr-to-video/phases/design-system/style-presets/scatterbrain/components/hero.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-104
+.agents/skills/pr-to-video/phases/design-system/style-presets/scatterbrain/components/photo-frame.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-95
+.agents/skills/pr-to-video/phases/design-system/style-presets/scatterbrain/components/post-it.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-173
+.agents/skills/pr-to-video/phases/design-system/style-presets/scatterbrain/components/stat-counter.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-84
+.agents/skills/pr-to-video/phases/design-system/style-presets/scatterbrain/components/timeline-step.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-102
+.agents/skills/pr-to-video/phases/design-system/style-presets/scatterbrain/preset.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-615
+.agents/skills/pr-to-video/phases/scriptwriting/guide.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-315
+.agents/skills/pr-to-video/phases/visual-design/effects-catalog.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-65
+.agents/skills/pr-to-video/phases/visual-design/guide.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-336
+.agents/skills/pr-to-video/phases/visual-design/rules/color-system.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-133
+.agents/skills/pr-to-video/phases/visual-design/rules/composition.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-207
+.agents/skills/pr-to-video/phases/visual-design/rules/motion-language.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-181
+.agents/skills/pr-to-video/phases/visual-design/rules/typography.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-73
+.agents/skills/pr-to-video/scripts/assemble-index.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-466
+.agents/skills/pr-to-video/scripts/audio.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-907
+.agents/skills/pr-to-video/scripts/captions.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-1721
+.agents/skills/pr-to-video/scripts/check-compositions.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-530
+.agents/skills/pr-to-video/scripts/check-overlap.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-617
+.agents/skills/pr-to-video/scripts/fetch-people-avatars.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-119
+.agents/skills/pr-to-video/scripts/hoist-videos.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-491
+.agents/skills/pr-to-video/scripts/ingest.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-544
+.agents/skills/pr-to-video/scripts/lib/capture-meta.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-39
+.agents/skills/pr-to-video/scripts/lib/dimensions.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-87
+.agents/skills/pr-to-video/scripts/lib/hierarchy-gate.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-124
+.agents/skills/pr-to-video/scripts/lib/prep-assets.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-101
+.agents/skills/pr-to-video/scripts/lib/prep-design.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-113
+.agents/skills/pr-to-video/scripts/lib/prep-log.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-8
+.agents/skills/pr-to-video/scripts/lib/prep-section.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-196
+.agents/skills/pr-to-video/scripts/lib/prep-sfx.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-91
+.agents/skills/pr-to-video/scripts/lib/scratch-dir.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-20
+.agents/skills/pr-to-video/scripts/lib/transition-registry.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-58
+.agents/skills/pr-to-video/scripts/preflight-finalize.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-546
+.agents/skills/pr-to-video/scripts/prep.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-653
+.agents/skills/pr-to-video/scripts/transitions.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-573
+.agents/skills/pr-to-video/scripts/validate-narrator.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-272
+.agents/skills/pr-to-video/scripts/validate-section.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-407
+.agents/skills/pr-to-video/scripts/validate.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-746
+.agents/skills/pr-to-video/scripts/verify-output.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-420
+.agents/skills/pr-to-video/scripts/wait-bgm.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-167
+.agents/skills/pr-to-video/SKILL.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-430
+.agents/skills/product-launch-video/references/composition.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-119
+.agents/skills/product-launch-video/references/motion-language.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-139
+.agents/skills/product-launch-video/references/story-design.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-267
+.agents/skills/product-launch-video/references/visual-design.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-83
+.agents/skills/product-launch-video/scripts/assemble-index.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-363
+.agents/skills/product-launch-video/scripts/audio.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-253
+.agents/skills/product-launch-video/scripts/build-frame.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-280
+.agents/skills/product-launch-video/scripts/captions.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-456
+.agents/skills/product-launch-video/scripts/lib/assets.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-55
+.agents/skills/product-launch-video/scripts/lib/dimensions.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-45
+.agents/skills/product-launch-video/scripts/lib/storyboard.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-249
+.agents/skills/product-launch-video/scripts/lib/tokens.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-170
+.agents/skills/product-launch-video/scripts/lib/transition-registry.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-38
+.agents/skills/product-launch-video/scripts/lib/transitions.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-71
+.agents/skills/product-launch-video/scripts/stage-assets.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-39
+.agents/skills/product-launch-video/scripts/transitions.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-320
+.agents/skills/product-launch-video/SKILL.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-197
+.agents/skills/product-launch-video/sub-agents/frame-worker.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-68
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/.gitignore
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-1
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/run.sh
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-249
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-1-title-card/.gitignore
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-10
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-1-title-card/expected.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-26
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-1-title-card/hf-src/index.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-61
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-1-title-card/README.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-41
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-1-title-card/remotion-src/package.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-14
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-1-title-card/remotion-src/remotion.config.ts
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-13
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-1-title-card/remotion-src/src/index.ts
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-4
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-1-title-card/remotion-src/src/Root.tsx
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-13
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-1-title-card/remotion-src/src/TitleCard.tsx
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-34
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-1-title-card/remotion-src/tsconfig.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-15
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-2-multi-scene/.gitignore
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-14
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-2-multi-scene/expected.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-29
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-2-multi-scene/hf-src/index.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-118
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-2-multi-scene/README.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-54
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-2-multi-scene/remotion-src/package.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-14
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-2-multi-scene/remotion-src/remotion.config.ts
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-13
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-2-multi-scene/remotion-src/src/index.ts
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-4
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-2-multi-scene/remotion-src/src/MultiScene.tsx
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-105
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-2-multi-scene/remotion-src/src/Root.tsx
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-13
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-2-multi-scene/remotion-src/tsconfig.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-15
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-2-multi-scene/setup.sh
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-34
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-3-data-driven/.gitignore
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-10
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-3-data-driven/expected.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-41
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-3-data-driven/hf-src/index.html
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-269
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-3-data-driven/README.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-85
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-3-data-driven/remotion-src/package.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-15
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-3-data-driven/remotion-src/remotion.config.ts
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-13
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-3-data-driven/remotion-src/src/components/AnimatedNumber.tsx
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-23
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-3-data-driven/remotion-src/src/components/StatCard.tsx
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-59
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-3-data-driven/remotion-src/src/components/UnderlinedText.tsx
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-47
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-3-data-driven/remotion-src/src/index.ts
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-4
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-3-data-driven/remotion-src/src/Root.tsx
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-27
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-3-data-driven/remotion-src/src/scenes/OutroScene.tsx
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-18
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-3-data-driven/remotion-src/src/scenes/StatsScene.tsx
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-34
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-3-data-driven/remotion-src/src/scenes/TitleScene.tsx
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-55
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-3-data-driven/remotion-src/src/Stargazed.tsx
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-37
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-3-data-driven/remotion-src/tsconfig.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-15
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-4-escape-hatch/cases/01-use-state.tsx
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-29
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-4-escape-hatch/cases/02-use-effect-deps.tsx
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-29
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-4-escape-hatch/cases/03-async-metadata.tsx
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-39
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-4-escape-hatch/cases/04-third-party-react.tsx
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-30
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-4-escape-hatch/cases/05-lambda-config.tsx
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-38
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-4-escape-hatch/cases/06-warnings-only.tsx
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-36
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-4-escape-hatch/cases/07-custom-hook.tsx
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-28
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-4-escape-hatch/cases/08-mixed.tsx
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-41
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-4-escape-hatch/expected.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-85
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-4-escape-hatch/README.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-51
+.agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-4-escape-hatch/validate.sh
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-110
+.agents/skills/remotion-to-hyperframes/references/api-map.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-142
+.agents/skills/remotion-to-hyperframes/references/escape-hatch.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-115
+.agents/skills/remotion-to-hyperframes/references/eval.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-140
+.agents/skills/remotion-to-hyperframes/references/fonts.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-112
+.agents/skills/remotion-to-hyperframes/references/limitations.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-136
+.agents/skills/remotion-to-hyperframes/references/lottie.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-119
+.agents/skills/remotion-to-hyperframes/references/media.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-149
+.agents/skills/remotion-to-hyperframes/references/parameters.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-167
+.agents/skills/remotion-to-hyperframes/references/sequencing.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-195
+.agents/skills/remotion-to-hyperframes/references/timing.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-165
+.agents/skills/remotion-to-hyperframes/references/transitions.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-114
+.agents/skills/remotion-to-hyperframes/scripts/frame_strip.sh
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-107
+.agents/skills/remotion-to-hyperframes/scripts/lint_source.py
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-358
+.agents/skills/remotion-to-hyperframes/scripts/render_diff.sh
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-103
+.agents/skills/remotion-to-hyperframes/scripts/tests/fixtures/blocker.tsx
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-50
+.agents/skills/remotion-to-hyperframes/scripts/tests/fixtures/clean.tsx
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-46
+.agents/skills/remotion-to-hyperframes/scripts/tests/smoke.sh
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-90
+.agents/skills/remotion-to-hyperframes/SKILL.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-120
+.agents/skills/slideshow/references/standalone-harness.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-597
+.agents/skills/slideshow/SKILL.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-396
+.agents/skills/website-to-video/assets/sfx/CREDITS.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-35
+.agents/skills/website-to-video/assets/sfx/manifest.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-97
+.agents/skills/website-to-video/references/beat-builder-guide.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-263
+.agents/skills/website-to-video/references/capabilities.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-713
+.agents/skills/website-to-video/references/step-0-capture.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-55
+.agents/skills/website-to-video/references/step-1-design.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-333
+.agents/skills/website-to-video/references/step-2-brief.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-178
+.agents/skills/website-to-video/references/step-3-storyboard.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-572
+.agents/skills/website-to-video/references/step-4-vo.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-230
+.agents/skills/website-to-video/references/step-5-build.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-483
+.agents/skills/website-to-video/references/step-6-validate.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-341
+.agents/skills/website-to-video/scripts/w2h-verify.mjs
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-759
+.agents/skills/website-to-video/SKILL.md
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-141
+skills-lock.json
+  s_8478efb7f7976f::t_a03eb340ebaf6c 1-107
+docs/release/video-script.md
+  s_8478efb7f7976f::t_17e12ccc5e59bd 1-1,3-3,6-8,14-17,19-31,35-35,37-40,63-63,65-65,69-70,73-83,86-86,88-88,90-101,104-106,108-119,121-122,124-137,141-142,144-155,160-160,162-165,169-169,175-175,177-177,179-179,181-181,183-183,185-185,189-189,191-191,193-193,195-195,197-197,199-199,201-201,209-214,225-225,227-233,237-239,243-246
+  s_8478efb7f7976f::t_93482841c8fd77 2-2,4-5,9-13,18-18,32-34,36-36,41-62,64-64,66-68,71-72,84-85,87-87,89-89,102-103,107-107,120-120,123-123,138-140,143-143,156-159,161-161,166-168,170-174,176-176,178-178,180-180,182-182,184-184,186-188,190-190,192-192,194-194,196-196,198-198,200-200,202-208,215-224,226-226,234-236,240-242
+videos/translate-the-damn-promo/AGENTS.md
+  s_8478efb7f7976f::t_def41afa09814a 1-87
+videos/translate-the-damn-promo/CLAUDE.md
+  s_8478efb7f7976f::t_def41afa09814a 1-87
+videos/translate-the-damn-promo/hyperframes.json
+  s_8478efb7f7976f::t_def41afa09814a 1-9
+videos/translate-the-damn-promo/index.html
+  s_8478efb7f7976f::t_def41afa09814a 1-1,3-10,12-13,16-16,25-27,33-33,386-386,399-406,408-410,545-549,600-603
+  s_8478efb7f7976f::t_4435a17590059a 2-2,11-11,14-15,17-19,21-22,24-24,28-32,34-34,36-46,48-70,73-74,80-124,126-166,168-168,175-385,387-398,407-407,411-544,565-568,570-576,578-582,584-587,589-593,595-598
+  s_8478efb7f7976f::t_a610f92ecf4093 20-20,23-23,35-35,47-47,125-125
+  s_8478efb7f7976f::t_9e5f150c8bfaef 71-72,569-569,577-577,583-583,588-588,594-594,599-599
+  s_8478efb7f7976f::t_0e4a2a5ded2303 75-79,550-550,552-553,555-556,558-559,561-562,564-564
+  s_8478efb7f7976f::t_9c2645bf1d5a25 167-167,169-174
+  s_8478efb7f7976f::t_f5c2ade35aa5d1 551-551,554-554,557-557,560-560,563-563
+videos/translate-the-damn-promo/meta.json
+  s_8478efb7f7976f::t_def41afa09814a 1-5
+videos/translate-the-damn-promo/package.json
+  s_8478efb7f7976f::t_def41afa09814a 1-11
+videos/translate-the-damn-xhs/AGENTS.md
+  s_8478efb7f7976f::t_372a10adaa2dc0 1-87
+videos/translate-the-damn-xhs/CLAUDE.md
+  s_8478efb7f7976f::t_372a10adaa2dc0 1-87
+videos/translate-the-damn-xhs/hyperframes.json
+  s_8478efb7f7976f::t_372a10adaa2dc0 1-9
+videos/translate-the-damn-xhs/index.html
+  s_8478efb7f7976f::t_372a10adaa2dc0 1-1,3-4,6-10,12-13,16-17,21-21,356-356,369-376,380-380,509-513,561-564
+  s_8478efb7f7976f::t_a49769f18d799b 2-2,5-5,11-11,14-15,18-19,22-22,24-34,36-45,47-68,71-72,78-121,123-355,357-368,377-379,381-508,529-532,534-540,542-545,547-549,551-554,556-559
+  s_8478efb7f7976f::t_a610f92ecf4093 20-20,23-23,35-35,46-46,122-122
+  s_8478efb7f7976f::t_9e5f150c8bfaef 69-70,533-533,541-541,546-546,550-550,555-555,560-560
+  s_8478efb7f7976f::t_0e4a2a5ded2303 73-77,514-514,516-517,519-520,522-523,525-526,528-528
+  s_8478efb7f7976f::t_f5c2ade35aa5d1 515-515,518-518,521-521,524-524,527-527
+videos/translate-the-damn-xhs/meta.json
+  s_8478efb7f7976f::t_372a10adaa2dc0 1-5
+videos/translate-the-damn-xhs/package.json
+  s_8478efb7f7976f::t_372a10adaa2dc0 1-11
+README.en.md
+  0000019ef3b361b5 1-252
+README.md
+  0000019ef3b361b5 1-229
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "f725e28a9640c34e6d8d4508bf94cc3fc7fe0436",
+  "prompts": {
+    "s_8478efb7f7976f::t_a03eb340ebaf6c": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ef30b-39f1-7a20-8e9d-ebef6ae976b9",
+        "model": "gpt-5.5"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 154041,
+      "total_deletions": 0,
+      "accepted_lines": 154041,
+      "overriden_lines": 0
+    },
+    "s_8478efb7f7976f::t_93482841c8fd77": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ef30b-39f1-7a20-8e9d-ebef6ae976b9",
+        "model": "gpt-5.5"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 105,
+      "total_deletions": 0,
+      "accepted_lines": 105,
+      "overriden_lines": 0
+    },
+    "s_8478efb7f7976f::t_17e12ccc5e59bd": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ef30b-39f1-7a20-8e9d-ebef6ae976b9",
+        "model": "gpt-5.5"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 141,
+      "total_deletions": 0,
+      "accepted_lines": 141,
+      "overriden_lines": 0
+    },
+    "s_8478efb7f7976f::t_def41afa09814a": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ef30b-39f1-7a20-8e9d-ebef6ae976b9",
+        "model": "gpt-5.5"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 236,
+      "total_deletions": 0,
+      "accepted_lines": 236,
+      "overriden_lines": 0
+    },
+    "s_8478efb7f7976f::t_372a10adaa2dc0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ef30b-39f1-7a20-8e9d-ebef6ae976b9",
+        "model": "gpt-5.5"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 231,
+      "total_deletions": 0,
+      "accepted_lines": 231,
+      "overriden_lines": 0
+    },
+    "s_0bdeb8cba91c86::t_2d5bed3d049939": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1782205079636181000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "0000019ef3b361b5": {
+      "agent_id": {
+        "tool": "claude",
+        "model": "claude-opus-4-8",
+        "id": "ai-thread-claude-claude-opus-4-8-1782205079989"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 481,
+      "total_deletions": 0,
+      "accepted_lines": 481,
+      "overriden_lines": 0
+    },
+    "s_8478efb7f7976f::t_4435a17590059a": {
+      "agent_id": null,
+      "human_author": null,
+      "messages": [],
+      "total_additions": 526,
+      "total_deletions": 0,
+      "accepted_lines": 526,
+      "overriden_lines": 0
+    },
+    "s_8478efb7f7976f::t_a610f92ecf4093": {
+      "agent_id": null,
+      "human_author": null,
+      "messages": [],
+      "total_additions": 10,
+      "total_deletions": 0,
+      "accepted_lines": 10,
+      "overriden_lines": 0
+    },
+    "s_8478efb7f7976f::t_9e5f150c8bfaef": {
+      "agent_id": null,
+      "human_author": null,
+      "messages": [],
+      "total_additions": 16,
+      "total_deletions": 0,
+      "accepted_lines": 16,
+      "overriden_lines": 0
+    },
+    "s_8478efb7f7976f::t_0e4a2a5ded2303": {
+      "agent_id": null,
+      "human_author": null,
+      "messages": [],
+      "total_additions": 30,
+      "total_deletions": 0,
+      "accepted_lines": 30,
+      "overriden_lines": 0
+    },
+    "s_8478efb7f7976f::t_9c2645bf1d5a25": {
+      "agent_id": null,
+      "human_author": null,
+      "messages": [],
+      "total_additions": 7,
+      "total_deletions": 0,
+      "accepted_lines": 7,
+      "overriden_lines": 0
+    },
+    "s_8478efb7f7976f::t_f5c2ade35aa5d1": {
+      "agent_id": null,
+      "human_author": null,
+      "messages": [],
+      "total_additions": 10,
+      "total_deletions": 0,
+      "accepted_lines": 10,
+      "overriden_lines": 0
+    },
+    "s_8478efb7f7976f::t_a49769f18d799b": {
+      "agent_id": null,
+      "human_author": null,
+      "messages": [],
+      "total_additions": 499,
+      "total_deletions": 0,
+      "accepted_lines": 499,
+      "overriden_lines": 0
+    }
+  }
+}
