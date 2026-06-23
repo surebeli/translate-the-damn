@@ -67,7 +67,9 @@ final class ScreenshotHarness: NSObject, NSApplicationDelegate {
     }
 
     private func makePopup(_ cfg: PopupConfig) -> TranslationPopupUI {
-        DSPopup(cfg: cfg, onCopy: { _ in })
+        let p = DSPopup(cfg: cfg, onCopy: { _ in })
+        p.backendName = "claude"   // show the translation-source hint (header right) in the screenshots
+        return p
     }
 
     private func makeSettingsWindow(_ cfg: inout AppConfig) -> NSWindow {
@@ -93,7 +95,8 @@ final class ScreenshotHarness: NSObject, NSApplicationDelegate {
         let size = hosting.fittingSize
         let win = NSWindow(contentRect: NSRect(x: 0, y: 0, width: max(560, size.width), height: max(560, size.height)),
                            styleMask: [.titled, .closable], backing: .buffered, defer: false)
-        win.title = "translate-the-damn · 设置   v0.2.0"
+        let version = ProcessInfo.processInfo.environment["TTD_SHOT_VERSION"] ?? "0.3.1"
+        win.title = "translate-the-damn · 设置   v" + version
         win.contentView = hosting
         win.center()
         win.makeKeyAndOrderFront(nil)
