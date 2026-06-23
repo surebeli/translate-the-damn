@@ -148,11 +148,9 @@ struct DSSettingsView: View {
                 SecureField(StringsLoader["settings.field.apiKey"], text: $vm.apiKeyText)
                 TextField(StringsLoader["settings.field.endpoint"], text: $vm.endpointText)
 
-                if vm.isGoogleV2 {
-                    TextField(StringsLoader["settings.field.target"], text: $vm.targetText)
-                    TextField("源语言(可选)", text: $vm.sourceText)
-                } else if vm.isDoubao {
-                    TextField("目标语言", text: $vm.targetText)
+                if vm.isGoogleV2 || vm.isDoubao {
+                    // Target language comes from the unified 目标语言 picker above (synced to the API's
+                    // language code on save) — no separate per-backend target field. Source stays optional.
                     TextField("源语言(可选)", text: $vm.sourceText)
                 } else if vm.isCustomProvider {
                     Picker("协议", selection: $vm.protocolText) {

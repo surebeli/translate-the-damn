@@ -352,13 +352,10 @@ final class SettingsViewModel: ObservableObject {
             bc.endpoint = ep.isEmpty ? nil : ep
             bc.apiKey = apiKeyText
             if isGoogleV2 {
-                let t = targetText.trimmingCharacters(in: .whitespaces)
-                bc.target = t.isEmpty ? nil : t
+                // bc.target is derived from the unified targetLanguage in syncTranslationApiTargets() — no per-backend field.
                 let s = sourceText.trimmingCharacters(in: .whitespaces)
                 bc.source = s.isEmpty ? nil : s
             } else if isDoubao {
-                let t = targetText.trimmingCharacters(in: .whitespaces)
-                bc.targetLanguage = t.isEmpty ? nil : t
                 let s = sourceText.trimmingCharacters(in: .whitespaces)
                 bc.sourceLanguage = s.isEmpty ? nil : s
             } else {
@@ -375,6 +372,31 @@ final class SettingsViewModel: ObservableObject {
             }
         }
         config.backends[selectedBackendId] = bc
+    }
+
+    /// Map the unified target-language display name to the code each dedicated translation API expects,
+    /// so the single 目标语言 picker also drives google-v2 / doubao (no separate per-backend target field).
+    private func translationApiCode(for backendId: String, _ displayName: String, fallback: String?) -> String {
+        let l = displayName.trimmingCharacters(in: .whitespaces)
+        let iso: [String: String] = ["简体中文": "zh", "繁體中文": "zh-Hant", "English": "en", "日本語": "ja",
+                                      "한국어": "ko", "Français": "fr", "Deutsch": "de", "Español": "es",
+                                      "Русский": "ru", "Português": "pt"]
+        if backendId == "google-v2", let g = ["简体中文": "zh-CN", "繁體中文": "zh-TW"][l] { return g }  // Google wants region codes
+        if let c = iso[l] { return c }
+        let fb = (fallback ?? "").trimmingCharacters(in: .whitespaces)
+        return fb.isEmpty ? l : fb
+    }
+
+    private func syncTranslationApiTargets() {
+        let lang = config.translation.targetLanguage
+        if var g = config.backends["google-v2"] {
+            g.target = translationApiCode(for: "google-v2", lang, fallback: g.target)
+            config.backends["google-v2"] = g
+        }
+        if var d = config.backends["doubao"] {
+            d.targetLanguage = translationApiCode(for: "doubao", lang, fallback: d.targetLanguage)
+            config.backends["doubao"] = d
+        }
     }
 
     func checkHotkey() {
@@ -450,6 +472,7 @@ final class SettingsViewModel: ObservableObject {
         config.general.activeBackend = selectedBackendId
         config.general.startWithWindows = startWithWindows
         config.translation.targetLanguage = targetLanguage.trimmingCharacters(in: .whitespaces).isEmpty ? "简体中文" : targetLanguage
+        syncTranslationApiTargets()   // the single 目标语言 picker also drives google-v2 / doubao (no per-backend field)
         config.hotkey.translate = hotkeyText.trimmingCharacters(in: .whitespaces)
         config.popup.style = popupStyle
         config.popup.autoDismissSeconds = Int(autoDismissSeconds)

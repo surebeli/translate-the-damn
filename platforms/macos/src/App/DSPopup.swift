@@ -47,7 +47,15 @@ final class DSPopup: NSPanel, TranslationPopupUI {
     private let headerStack = NSStackView()
     private let headerSpinner = NSProgressIndicator()
     private let headerLabel = NSTextField(labelWithString: "")
+    private let statusLabel = NSTextField(labelWithString: "")   // backend source — header right (mirrors Windows StatusText)
+    private let headerSpacer = NSView()
     private let sourceLabel = NSTextField(labelWithString: "")
+
+    /// The backend that produced the translation, shown dimmed at the header's right edge — the
+    /// translation-source hint the Windows popup already has (StatusText = backendId).
+    var backendName: String = "" {
+        didSet { statusLabel.stringValue = backendName; statusLabel.isHidden = backendName.isEmpty }
+    }
     private let translationScrollView = NSScrollView()
     private let translationTextView = NSTextView()
     private let buttonStack = NSStackView()
@@ -87,6 +95,7 @@ final class DSPopup: NSPanel, TranslationPopupUI {
     private var isLargeSize = false
     private var scrollWidthConstraint: NSLayoutConstraint!
     private var sourceWidthConstraint: NSLayoutConstraint!
+    private var headerWidthConstraint: NSLayoutConstraint!
 
     private func innerWidth(forLarge large: Bool) -> CGFloat {
         (large ? largeWindowSize.width : normalWindowSize.width) - contentInsetX
@@ -184,7 +193,21 @@ final class DSPopup: NSPanel, TranslationPopupUI {
         headerStack.spacing = 7
         headerStack.addArrangedSubview(headerSpinner)
         headerStack.addArrangedSubview(headerLabel)
+        // Backend source, pushed to the trailing edge (mirrors Windows StatusText = backendId).
+        statusLabel.font = NSFont.systemFont(ofSize: 11)
+        statusLabel.textColor = .tertiaryLabelColor
+        statusLabel.maximumNumberOfLines = 1
+        statusLabel.alignment = .right
+        statusLabel.lineBreakMode = .byTruncatingTail
+        statusLabel.isHidden = true
+        statusLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        headerSpacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        headerSpacer.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        headerStack.addArrangedSubview(headerSpacer)
+        headerStack.addArrangedSubview(statusLabel)
         contentStack.addArrangedSubview(headerStack)
+        headerWidthConstraint = headerStack.widthAnchor.constraint(equalToConstant: innerWidth(forLarge: false))
+        headerWidthConstraint.isActive = true
 
         // Source (italic, muted, two lines max — the DS signature).
         sourceLabel.font = NSFont.systemFont(ofSize: 11)
@@ -342,6 +365,7 @@ final class DSPopup: NSPanel, TranslationPopupUI {
         let w = innerWidth(forLarge: isLargeSize)
         scrollWidthConstraint.constant = w
         sourceWidthConstraint.constant = w
+        headerWidthConstraint.constant = w
         sourceLabel.preferredMaxLayoutWidth = w
     }
 

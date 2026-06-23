@@ -156,10 +156,6 @@ public partial class SettingsWindow : Window
         Show(RowModel, !isGoogle);                 // google v2 = NMT, no model picker
         Show(RowEndpoint, http);
         Show(RowApiKey, http);
-        // Target field only feeds google-v2 ({target}) / doubao ({targetLanguage}) request bodies.
-        // openai-http/anthropic-http (and CLI backends) get their target from the promptTemplate, so the
-        // field is irrelevant there — hide it to avoid the "empty target language" confusion.
-        Show(RowTarget, isGoogle || isDoubao);
         Show(RowReasoning, tiers.Count > 0);       // effort selector wherever the manifest declares tiers (Law-6; was hardcoded isCodex)
         Show(RowFallback, isAgy);
         Show(RowTimeout, !http);
@@ -184,7 +180,6 @@ public partial class SettingsWindow : Window
 
         TxtEndpoint.Text = bc.Endpoint ?? string.Empty;
         TxtApiKey.Password = bc.ApiKey ?? string.Empty;   // masked (PasswordBox)
-        TxtTarget.Text = isGoogle ? (bc.Target ?? string.Empty) : (bc.TargetLanguage ?? string.Empty);
         CmbReasoning.Items.Clear();
         foreach (var t in tiers) CmbReasoning.Items.Add(t);
         CmbReasoning.Text = bc.Reasoning ?? string.Empty;
@@ -247,9 +242,8 @@ public partial class SettingsWindow : Window
         {
             bc.Endpoint = NullIfEmpty(TxtEndpoint.Text);
             bc.ApiKey = TxtApiKey.Password;   // PasswordBox.Password is never null
-            if (isGoogle) bc.Target = NullIfEmpty(TxtTarget.Text);
-            else if (id == "doubao") bc.TargetLanguage = NullIfEmpty(TxtTarget.Text);
-            else bc.Protocol = (CmbProtocol.SelectedItem as ComboBoxItem)?.Tag as string ?? bc.Protocol ?? "openai";  // custom openai/anthropic provider
+            // google-v2 / doubao target language is derived from the unified target in SyncTranslationApiTargets().
+            if (!isGoogle && id != "doubao") bc.Protocol = (CmbProtocol.SelectedItem as ComboBoxItem)?.Tag as string ?? bc.Protocol ?? "openai";  // custom openai/anthropic provider
         }
         else
         {
@@ -301,6 +295,7 @@ public partial class SettingsWindow : Window
         if (_currentBackendId is not null) _config.General.ActiveBackend = _currentBackendId;
         _config.Hotkey.Translate = TxtHotkey.Text.Trim();
         _config.Translation.TargetLanguage = NullIfEmpty(CmbTargetLang.Text) ?? "简体中文";
+        SyncTranslationApiTargets();   // the single 目标语言 also drives google-v2 / doubao (no per-backend field)
         _config.Popup.Style = (CmbStyle.SelectedItem as ComboBoxItem)?.Tag as string ?? "acrylic";
         _config.Popup.AutoDismissSeconds = (int)SldDismiss.Value;
         _config.Popup.KeepOnHover = ChkHover.IsChecked == true;
@@ -501,6 +496,37 @@ public partial class SettingsWindow : Window
     };
 
     private static void Show(UIElement el, bool visible) => el.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
+
+    /// The single 目标语言 picker also drives the dedicated translation APIs: derive google-v2 / doubao's
+    /// language code from the unified target so they don't need a separate per-backend target field.
+    private void SyncTranslationApiTargets()
+    {
+        var lang = _config.Translation.TargetLanguage ?? "简体中文";
+        if (_config.Backends.TryGetValue("google-v2", out var g)) g.Target = TranslationApiCode("google-v2", lang, g.Target);
+        if (_config.Backends.TryGetValue("doubao", out var d)) d.TargetLanguage = TranslationApiCode("doubao", lang, d.TargetLanguage);
+    }
+
+    private static string TranslationApiCode(string backendId, string displayName, string? fallback)
+    {
+        var l = (displayName ?? string.Empty).Trim();
+        string? code = l switch
+        {
+            "简体中文" => backendId == "google-v2" ? "zh-CN" : "zh",   // Google wants region codes for Chinese
+            "繁體中文" => backendId == "google-v2" ? "zh-TW" : "zh-Hant",
+            "English" => "en",
+            "日本語" => "ja",
+            "한국어" => "ko",
+            "Français" => "fr",
+            "Deutsch" => "de",
+            "Español" => "es",
+            "Русский" => "ru",
+            "Português" => "pt",
+            _ => null
+        };
+        if (code is not null) return code;
+        var fb = (fallback ?? string.Empty).Trim();
+        return fb.Length > 0 ? fb : l;
+    }
 
     private static string? NullIfEmpty(string? s) => string.IsNullOrWhiteSpace(s) ? null : s.Trim();
 }
