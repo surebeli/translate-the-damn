@@ -1,0 +1,58 @@
+platforms/macos/scripts/shot-walkthrough.sh
+  0000019ef27ab55c 1-35
+platforms/macos/src/App/ScreenshotHarness.swift
+  0000019ef27ab55c 1-114
+docs/assets/popup-error-macos.png
+  0000019ef27ab55c 1-175
+docs/assets/popup-history-macos.png
+  0000019ef27ab55c 1-437
+docs/assets/popup-large-macos.png
+  0000019ef27ab55c 1-668
+docs/assets/popup-loading-macos.png
+  0000019ef27ab55c 1-102
+docs/assets/popup-result-macos.png
+  0000019ef27ab55c 1-280
+docs/assets/settings-builtin-macos.png
+  0000019ef27ab55c 1-754
+docs/assets/settings-custom-macos.png
+  0000019ef27ab55c 1-837
+docs/assets/settings-http-macos.png
+  0000019ef27ab55c 1-894
+docs/assets/settings-lamp-fail-macos.png
+  0000019ef27ab55c 1-898
+docs/assets/settings-lamp-ok-macos.png
+  0000019ef27ab55c 1-893
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "5e32a03ac24e666ec8acf51e3184b8e2f771b005",
+  "prompts": {
+    "s_91d29be7045e15::t_469fa8ce33604f": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1782184588253844000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "0000019ef27ab55c": {
+      "agent_id": {
+        "tool": "claude",
+        "model": "claude-opus-4-8",
+        "id": "ai-thread-claude-claude-opus-4-8-1782184588636"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 6087,
+      "total_deletions": 0,
+      "accepted_lines": 6087,
+      "overriden_lines": 0
+    }
+  }
+}
