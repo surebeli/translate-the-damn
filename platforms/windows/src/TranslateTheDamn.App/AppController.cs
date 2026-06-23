@@ -30,6 +30,11 @@ internal sealed class AppController : IDisposable
     {
         _configService = new ConfigService();
         _config = _configService.LoadOrBootstrap();
+
+        // Resolve the UI DISPLAY language BEFORE building the tray/popup/settings, so every piece of UI
+        // is created in the right locale. SEPARATE from translation.TargetLanguage — never conflate.
+        StringsLoader.Configure(LocaleResolver.Resolve(_config.General.UiLanguage, LocaleResolver.SystemLocaleId()));
+
         _pipeline = new TranslationPipeline(_config, TranslatorRegistry.Build(_config));
 
         _msgWindow = new NativeMessageWindow();
