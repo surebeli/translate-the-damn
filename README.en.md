@@ -24,6 +24,10 @@ a **non-focus-stealing** floating popup.
 </tr>
 </table>
 
+**▶ See it in action** (macOS): reading a Claude Code / Codex reply that came back in English — select it, hit the hotkey, and the translation appears right where you are, **without stealing focus or switching windows**; professional terms (`OAuth` / `API`) stay intact.
+
+<img alt="copy → hotkey → translation appears in place, terms preserved" src="docs/assets/demo-translate.gif" width="760">
+
 | Platform | Status | Stack |
 |---|---|---|
 | **Windows 11** | ✅ shipped | C# / .NET 9, WPF + WinForms tray, Win32 P/Invoke |

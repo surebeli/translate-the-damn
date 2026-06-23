@@ -21,6 +21,10 @@
 </tr>
 </table>
 
+**▶ 看它实际运行**(macOS):读 Claude Code / Codex 蹦出的英文回复 —— 选中、按热键,译文当场浮现在原地,**不抢焦点、不切窗口**,专业术语(`OAuth` / `API`)原样保留。
+
+<img alt="复制 → 热键 → 译文当场浮现,专业术语原样保留" src="docs/assets/demo-translate.gif" width="760">
+
 | 平台 | 状态 | 技术栈 |
 |---|---|---|
 | **Windows 11** | ✅ 已发布 | C# / .NET 9,WPF + WinForms 托盘,Win32 P/Invoke |
