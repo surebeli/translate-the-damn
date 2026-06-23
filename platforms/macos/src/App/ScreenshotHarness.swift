@@ -17,10 +17,16 @@ final class ScreenshotHarness: NSObject, NSApplicationDelegate {
     private var settingsWindow: NSWindow?
     private var popup: TranslationPopupUI?
 
-    private let srcShort = "A good translation tool stays invisible until you need it — then it is instantly useful."
-    private let zhShort = "好的翻译工具在你需要之前保持隐形——需要时立即可用。"
-    private let srcLong = String(repeating: "The quick brown fox jumps over the lazy dog, and a good translation tool stays out of your way until the very moment you need it. ", count: 5)
-    private let zhLong = String(repeating: "敏捷的棕色狐狸跳过那只懒狗;好的翻译工具会一直避开你,直到你真正需要它的那一刻才出现。", count: 5)
+    // Every popup that shows text demonstrates the built-in rule "English source → keep professional
+    // terms in English, translate the rest", spread across CS / medical / legal domains.
+    private let srcShort = "If the OAuth token is expired, the API returns 401 — refresh it before retrying the request."   // CS
+    private let zhShort = "如果 OAuth token 过期,API 会返回 401——重试请求前先刷新它。"
+    private let srcMed = "Start atorvastatin 20 mg nightly, then recheck LDL-C and ALT after eight weeks."                    // medical
+    private let zhMed = "每晚服用 atorvastatin 20 mg,八周后复查 LDL-C 和 ALT。"
+    private let srcLegal = "Under GDPR Article 17, the data subject may request erasure, and the controller must comply without undue delay."  // legal (short)
+    private let zhLegal = "根据 GDPR Article 17,data subject 可请求删除,controller 须无不当拖延地执行。"
+    private let srcLong = "Pursuant to Section 12 of the Agreement, the indemnifying Party shall hold the Indemnitee harmless from any liability arising under the SLA, provided that written notice is delivered within thirty (30) days. This clause survives termination and is governed by the laws of the State of Delaware."  // legal (long)
+    private let zhLong = "根据本协议第 12 条(Section 12),赔偿方应使 Indemnitee 免于因 SLA 产生的任何责任,前提是在三十(30)日内送达书面通知。本条款在终止后依然有效,并受 Delaware 州法律管辖。"
 
     init(kind: String, appearance: String, readyPath: String?) {
         self.kind = kind; self.appearance = appearance; self.readyPath = readyPath
@@ -41,6 +47,9 @@ final class ScreenshotHarness: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.appearance = NSAppearance(named: appearance == "dark" ? .darkAqua : .aqua)
         NSApp.activate(ignoringOtherApps: true)
+        // Dev harness locale: default zh-CN so the promo screenshot pipeline stays Chinese; set
+        // TTD_SHOT_LOCALE=en|ja|ko to render the localized UI for i18n verification.
+        StringsLoader.configure(localeId: ProcessInfo.processInfo.environment["TTD_SHOT_LOCALE"] ?? "zh-CN")
         var cfg = ConfigService.defaultConfig()
         cfg.popup.style = "acrylic"
 
@@ -53,9 +62,9 @@ final class ScreenshotHarness: NSObject, NSApplicationDelegate {
             case "popup-error":   p.showError(message: "翻译失败:claude 未登录或网络不可用(可在设置里「检测」后端)")
             case "popup-history":
                 p.showResults([
-                    PopupHistoryEntry(source: srcShort, translation: zhShort),
-                    PopupHistoryEntry(source: "Second most recent source line.", translation: "第二近的源文本行。"),
-                    PopupHistoryEntry(source: "Oldest cached entry.", translation: "最旧的缓存条目。"),
+                    PopupHistoryEntry(source: srcShort, translation: zhShort),   // CS (newest)
+                    PopupHistoryEntry(source: srcMed, translation: zhMed),        // medical (shown)
+                    PopupHistoryEntry(source: srcLegal, translation: zhLegal),    // legal (oldest)
                 ], index: 1)
             default:              p.showResult(translation: zhShort, source: srcShort)
             }
@@ -76,6 +85,11 @@ final class ScreenshotHarness: NSObject, NSApplicationDelegate {
         switch kind {
         case "settings-http":
             cfg.general.activeBackend = "doubao"
+        case "settings-backends":
+            cfg.backends["my-llm"] = BackendConfig(type: "http", model: "gpt-4o-mini", timeoutSec: 30,
+                                                   endpoint: "https://api.example.com/v1", apiKey: "sk-secret",
+                                                   protocol: "openai")
+            cfg.general.activeBackend = "claude"   // open dropdown: show the full list, claude (CLI) checked
         case "settings-custom", "settings-lamp-checking", "settings-lamp-ok", "settings-lamp-fail":
             cfg.backends["my-llm"] = BackendConfig(type: "http", model: "gpt-4o-mini", timeoutSec: 30,
                                                    endpoint: "https://api.example.com/v1", apiKey: "sk-secret",
@@ -91,7 +105,10 @@ final class ScreenshotHarness: NSObject, NSApplicationDelegate {
         case "settings-lamp-fail": vm.doctorStatus = .fail; vm.doctorDetail = "未登录(本地凭据检查未通过)"
         default: break
         }
-        let hosting = NSHostingView(rootView: AnyView(DSSettingsView(vm: vm)))
+        let rootView: AnyView = kind == "settings-backends"
+            ? AnyView(BackendDropdownShowcase(vm: vm))
+            : AnyView(DSSettingsView(vm: vm))
+        let hosting = NSHostingView(rootView: rootView)
         let size = hosting.fittingSize
         let win = NSWindow(contentRect: NSRect(x: 0, y: 0, width: max(560, size.width), height: max(560, size.height)),
                            styleMask: [.titled, .closable], backing: .buffered, defer: false)
@@ -110,5 +127,48 @@ final class ScreenshotHarness: NSObject, NSApplicationDelegate {
         else { n = NSApp.windows.first(where: { $0.isVisible })?.windowNumber ?? -1 }
         if let path = readyPath { try? "\(n)".write(toFile: path, atomically: true, encoding: .utf8) }
         NSLog("[ScreenshotHarness] kind=%@ appearance=%@ windowNumber=%d", kind, appearance, n)
+    }
+}
+
+/// Screenshot-only: the real config page (DSSettingsView) with the 后端 selector shown OPEN over it —
+/// so the shot reads as "the settings page, backend dropdown popped", highlighting the many backends.
+/// The menu uses the real `backendIds` / `backendDisplay`, so it mirrors the actual list.
+private struct BackendDropdownShowcase: View {
+    let vm: SettingsViewModel
+
+    var body: some View {
+        ZStack(alignment: .topLeading) {
+            DSSettingsView(vm: vm)
+            Color.black.opacity(0.16).allowsHitTesting(false)       // dim so the open menu reads as "on top"
+            BackendMenu(vm: vm)
+                .frame(width: 300)
+                .offset(x: 232, y: 214)                             // sits just under the 后端 picker
+                .shadow(color: .black.opacity(0.4), radius: 20, y: 10)
+        }
+        .frame(width: 560, height: 760)
+    }
+}
+
+/// The open, NSMenu-style list of every available backend (real `backendIds` / `backendDisplay`).
+private struct BackendMenu: View {
+    let vm: SettingsViewModel
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            ForEach(Array(vm.backendIds.enumerated()), id: \.element) { _, id in
+                let sel = id == vm.selectedBackendId
+                HStack(spacing: 8) {
+                    Image(systemName: "checkmark").font(.system(size: 11, weight: .semibold))
+                        .opacity(sel ? 1 : 0).frame(width: 13)
+                    Text(vm.backendDisplay(id)).font(.system(size: 13))
+                    Spacer(minLength: 12)
+                }
+                .padding(.horizontal, 10).padding(.vertical, 5)
+                .foregroundStyle(sel ? Color.white : Color.primary)
+                .background(sel ? Color.accentColor : Color.clear)
+            }
+        }
+        .padding(.vertical, 5)
+        .background(RoundedRectangle(cornerRadius: 7).fill(Color(nsColor: .windowBackgroundColor)))
+        .overlay(RoundedRectangle(cornerRadius: 7).strokeBorder(Color.primary.opacity(0.18)))
     }
 }

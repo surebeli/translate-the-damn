@@ -58,6 +58,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         let config = ConfigService.load(from: configPath) ?? ConfigService.defaultConfig()
 
+        // Resolve the UI display language BEFORE building any window/tray/popup, so every piece of UI
+        // is built in the right locale. SEPARATE from translation.targetLanguage (the translation
+        // target) — never conflate the two.
+        StringsLoader.configure(localeId: LocaleResolver.resolve(
+            configUiLang: config.general.uiLanguage,
+            systemLocale: LocaleResolver.systemLocaleId()
+        ))
+
         pipeline = buildPipeline(from: config)
 
         popup = createPopup(config: config)
@@ -186,6 +194,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             configPath: configPath,
             onSave: { [weak self] config in
                 self?.hotReload(config: config)
+            },
+            onLocaleChange: { [weak self] in
+                // The in-app "Display language" switch already re-resolved + reloaded the catalog and
+                // re-rendered the settings window; refresh the tray menu/tooltip so it follows too.
+                self?.trayController?.refreshLocalizedText()
             }
         )
         settingsWindowController?.show()

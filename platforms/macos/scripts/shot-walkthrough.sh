@@ -11,7 +11,7 @@ export TTD_SHOT_VERSION="$VERSION"
 rm -rf "${OUT}"; mkdir -p "${OUT}"
 
 KINDS=(popup-result popup-large popup-loading popup-error popup-history \
-       settings-builtin settings-http settings-custom \
+       settings-builtin settings-http settings-custom settings-backends \
        settings-lamp-checking settings-lamp-ok settings-lamp-fail)
 
 for kind in "${KINDS[@]}"; do
