@@ -28,6 +28,10 @@ a **non-focus-stealing** floating popup.
 
 <img alt="copy → hotkey → translation appears in place, terms preserved" src="docs/assets/demo-translate.gif" width="760">
 
+Pick a backend and hit **Check** to confirm it works (status lamp: signed in / OK / failed) before you rely on it:
+
+<img alt="pick a backend → Check → status lamp lights up" src="docs/assets/demo-doctor.gif" width="520">
+
 | Platform | Status | Stack |
 |---|---|---|
 | **Windows 11** | ✅ shipped | C# / .NET 9, WPF + WinForms tray, Win32 P/Invoke |
