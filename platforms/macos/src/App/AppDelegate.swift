@@ -238,7 +238,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let onCopy: (String) -> Void = { [weak self] text in
             self?.clipboardWatcher?.markSelfWrite(text)
         }
-        return DSPopup(cfg: config.popup) { onCopy($0) }
+        let popup = DSPopup(cfg: config.popup) { onCopy($0) }
+        popup.backendName = config.general.activeBackend   // translation-source hint in the popup header
+        return popup
     }
 
     private func buildMainMenu() -> NSMenu {

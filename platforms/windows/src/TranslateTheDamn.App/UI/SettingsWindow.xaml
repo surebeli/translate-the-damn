@@ -82,7 +82,7 @@
                             <TextBlock Grid.Column="0" Text="目标语言"/>
                             <ComboBox x:Name="CmbTargetLang" Grid.Column="1" Height="28" IsEditable="True"/>
                         </Grid>
-                        <TextBlock Style="{StaticResource Hint}" Text="统一目标语言:对所有 CLI 与 LLM API 后端生效(经提示词 {target} 注入)。google/doubao 用各自的目标语言代码字段。"/>
+                        <TextBlock Style="{StaticResource Hint}" Text="统一目标语言:对所有后端生效(CLI/LLM 经提示词 {target} 注入;google/doubao 自动转换为对应的语言代码)。"/>
                     </StackPanel>
                 </Border>
 
@@ -146,15 +146,6 @@
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Text="接口协议"/>
                             <ComboBox x:Name="CmbProtocol" Grid.Column="1" Height="28" Width="220" HorizontalAlignment="Left"/>
-                        </Grid>
-
-                        <Grid x:Name="RowTarget" Margin="0,8,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="110"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="目标(代码)"/>
-                            <TextBox x:Name="TxtTarget" Grid.Column="1" Height="28" VerticalContentAlignment="Center"/>
                         </Grid>
 
                         <Grid x:Name="RowReasoning" Margin="0,8,0,0">
