@@ -4,7 +4,7 @@
 > 它只装两样东西:**不可违背的法则(Laws)** 和 **指向一切的指针地图(Map)**。
 > 本文件**薄而稳**;它指向的内容(spec / 向量 / 矩阵 / 清单)才是会频繁变的。
 
-各平台原生开发(Windows = C#/WPF,macOS = Swift,Linux = 原生),**不共享 UI/运行时代码**。
+各平台原生开发(Windows = C#/WPF,macOS = Swift),**不共享 UI/运行时代码**。
 统一不靠共享二进制,而靠**共享契约 + 一致性向量 + 治理流程**。本宪法就是那个总闸。
 
 ---
@@ -36,7 +36,7 @@
 | 界面文案 / i18n | `strings/`(如 `strings/zh-CN.json`) |
 | 平台对齐矩阵(谁欠什么) | `PARITY.md` |
 | 版本规范(App 版本 vs config schema) | design spec **§12** |
-| 平台移植指南 | `docs/PORTING-macos.md`、`docs/PORTING-linux.md` |
+| 平台移植指南 | `docs/PORTING-macos.md` |
 | 变更检查单(spec-first 落地) | `.github/PULL_REQUEST_TEMPLATE.md` |
 
 ---
@@ -45,7 +45,7 @@
 
 - 各平台的本地 `CLAUDE.md` 是"薄指针",内容只一句:遵守本宪法 + 本平台特有注意事项。
 - **Windows** 位于 `platforms/windows/`(`src/` = Core + App、`tests/`、`TranslateTheDamn.sln`)。
-  macOS / Linux 同构落在 `platforms/<os>/`。各平台本地 `CLAUDE.md` 放各自目录下。
+  macOS 同构落在 `platforms/<os>/`。各平台本地 `CLAUDE.md` 放各自目录下。
 - 共享层(`spec/`、`conformance/`、`strings/`、`PARITY.md`、本宪法)放仓库根,随 git 流转到每个开发环境。
 
 ---

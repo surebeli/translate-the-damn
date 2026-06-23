@@ -12,7 +12,7 @@ Native per platform, no shared UI/runtime code; consistency is enforced by share
 conformance vectors + the parity matrix, not by sharing binaries.
 
 Per-platform notes live in each platform's local `CLAUDE.md`. **Windows** lives at
-`platforms/windows/` (`src/` = Core + App, `tests/`, the solution); macOS/Linux land under
+`platforms/windows/` (`src/` = Core + App, `tests/`, the solution); macOS lands under
 `platforms/<os>/`. Shared layer (`spec/`, `conformance/`, `strings/`, this file, `PARITY.md`) is at the repo root.
 
 Before changing behavior anywhere: update `/spec` and/or `/conformance` first (Constitution Law 1).
@@ -128,7 +128,7 @@ The host agent's own system prompt and tool rules remain authoritative; fable ov
 <!-- TTD-ORCH-START -->
 ## translate-the-damn 多端编排方法论
 
-跨平台开发采用 **主 session = CEO/CTO** 编排:主 session 只做 读契约 → 拆任务 → 调度 → 交叉审核 → 修复 → 必要时二次审核 → 记录;开发与审核委派给 **hopper vendors + Claude Code subagents**。本节适用于 macOS 移植(同模式可推 Linux)。
+跨平台开发采用 **主 session = CEO/CTO** 编排:主 session 只做 读契约 → 拆任务 → 调度 → 交叉审核 → 修复 → 必要时二次审核 → 记录;开发与审核委派给 **hopper vendors + Claude Code subagents**。本节适用于 macOS 移植。
 
 ### 会话启动仪式:自动浮现跨端待办(无需手动跑脚本)
 

@@ -111,7 +111,7 @@ The host agent's own system prompt and tool rules remain authoritative; fable ov
 <!-- TTD-ORCH-START -->
 ## translate-the-damn 多端编排方法论
 
-跨平台开发采用 **主 session = CEO/CTO** 编排:主 session 只做 读契约 → 拆任务 → 调度 → 交叉审核 → 修复 → 必要时二次审核 → 记录;开发与审核委派给 **hopper vendors + Claude Code subagents**。本节适用于 macOS 移植(同模式可推 Linux)。详见 `.hopper/queue.md` + `.hopper/AGENTS.md` + `.hopper/MANIFEST.md`。
+跨平台开发采用 **主 session = CEO/CTO** 编排:主 session 只做 读契约 → 拆任务 → 调度 → 交叉审核 → 修复 → 必要时二次审核 → 记录;开发与审核委派给 **hopper vendors + Claude Code subagents**。本节适用于 macOS 移植。详见 `.hopper/queue.md` + `.hopper/AGENTS.md` + `.hopper/MANIFEST.md`。
 
 ### 会话启动仪式:自动浮现跨端待办(无需手动跑脚本)
 
