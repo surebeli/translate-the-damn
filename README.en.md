@@ -84,7 +84,7 @@ same ~18-word English input, **cold pipeline (no cache)**:
 
 | Access method | Example backends | Per call | Notes |
 |---|---|---|---|
-| **① Purpose-built translation API** | `doubao` · `google-v2` | **fastest, most stable** | optimized for translation; typically sub-second–2s (not configured/measured on this machine) |
+| **① Purpose-built translation API** | `doubao` · `google-v2` | **~0.4–1.4 s** (measured) | made for translation, **fastest + most accurate**: google-v2 ~0.4s, doubao ~0.7–1.4s |
 | **② Lightweight HTTP** (subscription / cheap key) | Kimi / MiMo / DeepSeek presets + custom | **~1–5 s** (measured) | rides your quota, lightest setup; **general LLM (not a translator)**, so a touch slower |
 | **③ Local CLI** (ride a subscription) | `codex`/`kimi`/`opencode`/`mimo` ~5–8s; `claude`/`copilot` ~10–16s | **~5–16 s** (measured) | unlocks **more/stronger models**, at the cost of cold-starting an agent process |
 
