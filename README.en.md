@@ -42,15 +42,16 @@ a **non-focus-stealing** floating popup.
      `doubao` (Volcano Ark translation model), `google-v2` (Google Translation v2). Want another
      pro-translation source (**Microsoft Translator, Alibaba MT**, …)?
      **[Open an issue](https://github.com/surebeli/translate-the-damn/issues)**.
-  2. **Lightweight HTTP access (reuse a subscription / cheap key — ride your quota):** plug your LLM
-     **subscription** (Kimi Code, MiMo token-plan, …) or a cheap API key (DeepSeek, …) in over an
-     OpenAI/Anthropic-protocol HTTP endpoint — or point it at *any* compatible endpoint (custom provider,
-     deletable). Lightest to set up and rides your quota; but these are **general LLMs (not purpose-built
+  2. **HTTP (reuse a subscription / reuse an API):** bring whatever LLM access you already have in over an
+     OpenAI/Anthropic-protocol endpoint — **reuse a subscription** (some model subscriptions' tokens are meant for
+     agent/coding use and can be reused here, e.g. Kimi Code, MiMo token-plan) or **reuse an API** (an LLM API
+     you've already bought, e.g. DeepSeek) — or point it at *any* compatible endpoint (custom provider, deletable).
+     Lightest to set up and reuses credits you already have; but these are **general LLMs (not purpose-built
      translators)**, so results come back **a bit slower** and occasionally less consistent than a pro translator.
-  3. **Local CLI access (reuse a subscription):** `claude`, `codex`, `copilot`, `agy` (falls back to
-     `gemini`), `opencode`, `kimi`, `mimo`. **Rides** the subscription you're already logged into, and
+  3. **Local CLI (reuse a subscription):** `claude`, `codex`, `copilot`, `agy` (falls back to
+     `gemini`), `opencode`, `kimi`, `mimo`. **Reuses** the subscription you're already logged into, and
      unlocks **more and stronger models** — at the cost of cold-starting an agent process each call (**slowest**).
-- **💸 Very low cost.** The CLI / subscription-HTTP paths effectively ride a subscription you **already pay
+- **💸 Very low cost.** The CLI / HTTP paths effectively reuse a subscription or API you **already pay
   for**; a pro-translation API is only fractions of a cent per call.
 - **🔒 Your data stays local.** Config and secrets live only in `~/.translatethedamn/config.json`
   (`%USERPROFILE%\.translatethedamn\config.json` on Windows), **never** committed, never uploaded.
@@ -85,11 +86,11 @@ same ~18-word English input, **cold pipeline (no cache)**:
 | Access method | Example backends | Per call | Notes |
 |---|---|---|---|
 | **① Purpose-built translation API** | `doubao` · `google-v2` | **~0.4–1.4 s** (measured) | made for translation, **fastest + most accurate**: google-v2 ~0.4s, doubao ~0.7–1.4s |
-| **② Lightweight HTTP** (subscription / cheap key) | Kimi / MiMo / DeepSeek presets + custom | **~1–5 s** (measured) | rides your quota, lightest setup; **general LLM (not a translator)**, so a touch slower |
-| **③ Local CLI** (ride a subscription) | `codex`/`kimi`/`opencode`/`mimo` ~5–8s; `claude`/`copilot` ~10–16s | **~5–16 s** (measured) | unlocks **more/stronger models**, at the cost of cold-starting an agent process |
+| **② HTTP** (reuse subscription / reuse API) | Kimi / MiMo / DeepSeek presets + custom | **~1–5 s** (measured) | reuses credits you already have, lightest setup; **general LLM (not a translator)**, so a touch slower |
+| **③ Local CLI** (reuse a subscription) | `codex`/`kimi`/`opencode`/`mimo` ~5–8s; `claude`/`copilot` ~10–16s | **~5–16 s** (measured) | unlocks **more/stronger models**, at the cost of cold-starting an agent process |
 
-In short: **want fast & accurate translation → a pro translation API ①**; **want to ride a subscription with the
-lightest setup → HTTP ②** (general model, a bit slower); **want to ride a subscription *and* use stronger models
+In short: **want fast & accurate translation → a pro translation API ①**; **want to reuse a subscription / API with the
+lightest setup → HTTP ②** (general model, a bit slower); **want to reuse a subscription *and* use stronger models
 → CLI ③** (slowest). If something feels "slow", you've most likely picked a general LLM (②/③) over a purpose-built
 translator — a deliberate cost / stronger-model vs. speed trade-off, not a bug. A cache hit is **instant**.
 
