@@ -6,9 +6,9 @@
 [![release](https://github.com/surebeli/translate-the-damn/actions/workflows/release.yml/badge.svg)](https://github.com/surebeli/translate-the-damn/actions/workflows/release.yml)
 
 > **Copy any foreign text → hit one hotkey → read the translation right where you are.** A **native**
-> immersive translator for macOS & Windows that doesn't pull you out of what you're reading. It
-> **reuses the LLMs you already have** — an API, a subscription, or a local CLI — so it's bring-your-own-key,
-> very low cost, free and open-source.
+> immersive translator for macOS & Windows that doesn't pull you out of what you're reading — and
+> **keeps professional terms intact** (`OAuth`, `API`, `GDPR` stay as-is). It **reuses the LLMs you already
+> have** — an API, a subscription, or a local CLI — so it's bring-your-own-key, very low cost, free and open-source.
 
 Looking up one word in a dense foreign page shouldn't mean switching to a dictionary or firing up a whole
 LLM — the ROI is terrible. translate-the-damn compresses that to **"copy + one hotkey"**: it watches the
@@ -60,6 +60,11 @@ a **non-focus-stealing** floating popup.
 
 ## Highlights
 
+- **🎯 Professional terms stay intact — the translation is actually usable.** Technical / domain terms in
+  the English source — `OAuth`, `API`, `atorvastatin`, `GDPR` … — **stay in English**; only the connecting
+  prose is translated, and code blocks / commands / config are left untouched. Reading code, papers, or
+  contracts, it **never mangles the keywords you rely on** — tuned for **professional reading**, not
+  word-for-word, across CS, medical, and legal content.
 - **Two triggers, zero context switch.** A pausable clipboard watcher (copy-to-translate) plus a
   configurable global hotkey. Defaults: `⇧⌘C` on macOS, `Shift+Alt+C` on Windows; conflicts are detected
   live in Settings.
