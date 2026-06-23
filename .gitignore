@@ -44,3 +44,7 @@ conformance-results.*.json
 
 ## visual-walkthrough scratch shots
 .shots/
+
+## Local promo videos / recordings — keep out of git (bloat). For README playback, upload to a
+## GitHub Release / attachment and embed the CDN URL (inline player), not a repo path.
+docs/assets/recordings/
