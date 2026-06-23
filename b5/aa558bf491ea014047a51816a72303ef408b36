@@ -1,0 +1,66 @@
+platforms/macos/scripts/build-app.sh
+  0000019ef5e88ca3 1-71
+platforms/macos/scripts/shot-walkthrough.sh
+  0000019ef5e88ca3 1-35
+platforms/macos/src/App/AppDelegate.swift
+  0000019ef5e88ca3 1-304
+platforms/macos/src/App/DSSettingsView.swift
+  0000019ef5e88ca3 1-291
+platforms/macos/src/App/ScreenshotHarness.swift
+  0000019ef5e88ca3 1-174
+platforms/macos/src/App/SettingsWindow.swift
+  0000019ef5e88ca3 1-604
+platforms/macos/src/App/StringsLoader.swift
+  0000019ef5e88ca3 1-136
+platforms/macos/src/App/TrayController.swift
+  0000019ef5e88ca3 1-149
+platforms/macos/src/Core/AppConfig.swift
+  0000019ef5e88ca3 1-173
+platforms/macos/src/Core/ConfigService.swift
+  0000019ef5e88ca3 1-201
+platforms/macos/src/Core/LocaleResolver.swift
+  0000019ef5e88ca3 1-45
+platforms/macos/tests/Conformance/LocaleResolveTests.swift
+  0000019ef5e88ca3 1-23
+strings/en.json
+  0000019ef5e88ca3 1-79
+strings/ja.json
+  0000019ef5e88ca3 1-79
+strings/ko.json
+  0000019ef5e88ca3 1-79
+strings/zh-CN.json
+  0000019ef5e88ca3 1-79
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.10",
+  "base_commit_sha": "b5aa558bf491ea014047a51816a72303ef408b36",
+  "prompts": {
+    "s_5951c382693ea4::t_202da5b145dde1": {
+      "agent_id": {
+        "tool": "mock_ai",
+        "id": "ai-thread-1782242118378464000",
+        "model": "unknown"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "0000019ef5e88ca3": {
+      "agent_id": {
+        "tool": "claude",
+        "model": "claude-opus-4-8",
+        "id": "ai-thread-claude-claude-opus-4-8-1782242118819"
+      },
+      "human_author": "litianyi",
+      "messages": [],
+      "total_additions": 2522,
+      "total_deletions": 0,
+      "accepted_lines": 2522,
+      "overriden_lines": 0
+    }
+  }
+}
