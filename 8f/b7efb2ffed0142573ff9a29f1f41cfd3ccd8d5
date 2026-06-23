@@ -1,63 +1,24 @@
-platforms/windows/src/TranslateTheDamn.Core/LocaleResolver.cs
-  s_2b4fe8ea41ad13::t_ec80c3f67a3375 1-46
 platforms/windows/src/TranslateTheDamn.Core/Config/AppConfig.cs
   s_2b4fe8ea41ad13::t_190b2e0aff0ef5 26-31
 platforms/windows/tests/TranslateTheDamn.Tests/Conformance.cs
-  s_2b4fe8ea41ad13::t_27cbd9a17ae712 86-86
+  s_2b4fe8ea41ad13::t_27cbd9a17ae712 86
   s_2b4fe8ea41ad13::t_5d7d23026da6af 275-291
+platforms/windows/src/TranslateTheDamn.Core/LocaleResolver.cs
+  s_2b4fe8ea41ad13::t_ec80c3f67a3375 1-46
 ---
 {
   "schema_version": "authorship/3.0.0",
   "git_ai_version": "1.5.10",
   "base_commit_sha": "8fb7efb2ffed0142573ff9a29f1f41cfd3ccd8d5",
-  "prompts": {
-    "s_2b4fe8ea41ad13::t_ec80c3f67a3375": {
+  "prompts": {},
+  "sessions": {
+    "s_2b4fe8ea41ad13": {
       "agent_id": {
         "tool": "claude",
         "id": "aef3bbe6-fd50-4133-b04b-39b8990ee44a",
         "model": "claude-opus-4-8"
       },
-      "human_author": "litianyi <litianyi@corp.netease.com>",
-      "messages": [],
-      "total_additions": 46,
-      "total_deletions": 0,
-      "accepted_lines": 46,
-      "overriden_lines": 0
-    },
-    "s_2b4fe8ea41ad13::t_190b2e0aff0ef5": {
-      "agent_id": {
-        "tool": "claude",
-        "id": "aef3bbe6-fd50-4133-b04b-39b8990ee44a",
-        "model": "claude-opus-4-8"
-      },
-      "human_author": "litianyi <litianyi@corp.netease.com>",
-      "messages": [],
-      "total_additions": 6,
-      "total_deletions": 0,
-      "accepted_lines": 6,
-      "overriden_lines": 0
-    },
-    "s_2b4fe8ea41ad13::t_27cbd9a17ae712": {
-      "agent_id": {
-        "tool": "claude",
-        "id": "aef3bbe6-fd50-4133-b04b-39b8990ee44a",
-        "model": "claude-opus-4-8"
-      },
-      "human_author": "litianyi <litianyi@corp.netease.com>",
-      "messages": [],
-      "total_additions": 1,
-      "total_deletions": 0,
-      "accepted_lines": 1,
-      "overriden_lines": 0
-    },
-    "s_2b4fe8ea41ad13::t_5d7d23026da6af": {
-      "agent_id": null,
-      "human_author": null,
-      "messages": [],
-      "total_additions": 17,
-      "total_deletions": 0,
-      "accepted_lines": 17,
-      "overriden_lines": 0
+      "human_author": "litianyi <litianyi@corp.netease.com>"
     }
   }
 }
