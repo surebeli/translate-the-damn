@@ -1,5 +1,5 @@
 {
-  "doc": "Shared UI strings (i18n). All platforms read the same catalog so wording never drifts. {placeholders} are substituted by each platform. Sample extracted from the Windows build; add more keys as the macOS/Linux UI is built.",
+  "doc": "Shared UI strings (i18n) — CANONICAL locale: this file defines the key set; every other locale (en, ja, ko, …) MUST carry the exact same keys (completeness is conformance-checked). All platforms read the locale catalog so wording never drifts. {placeholders} are substituted per platform. See docs/superpowers/specs/2026-06-23-i18n-ui-localization.md.",
   "locale": "zh-CN",
   "strings": {
     "popup.header.translating": "翻译中…",
@@ -35,6 +35,8 @@
     "settings.field.autodismiss": "自动消失",
     "settings.field.keephover": "鼠标悬停时保持不消失",
     "settings.field.startup": "开机自启",
+    "settings.field.uilang": "界面语言",
+    "settings.uilang.system": "跟随系统",
     "settings.button.save": "保存",
     "settings.button.close": "关闭",
     "settings.status.saved": "已保存 ✓",

@@ -40,6 +40,7 @@ Legend: ✅ shipped · 🚧 in progress · ⬜ not started · ⚠️ partial/bes
 | Dark scrollbar theme | — | — (UI) | ✅ | — |
 | API Key field masked (secure entry) | §9 | — (UI) | ✅ | ✅ |
 | Popup drag-to-reposition (session-sticky) | §8 | — (UI) | ✅ | ✅ |
+| UI localization (follow-system + Display-language selector; locales zh-CN/en/ja/ko) | i18n design 2026-06-23 | — (i18n-locale-resolve at impl) | ⬜ | ⬜ |
 
 ## Version
 
