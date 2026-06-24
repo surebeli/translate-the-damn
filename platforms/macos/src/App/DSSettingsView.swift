@@ -179,10 +179,15 @@ struct DSSettingsView: View {
             // (~50% wider via minWidth, which also keeps longer localized labels from clipping); the
             // detect-existing-keys entry is right-aligned on the same row.
             HStack {
+                // .fixedSize(horizontal:) makes each button hug its FULL label so it never truncates
+                // (no "…"), and minWidth widens it ~50%; the two sit together on the left, detect-keys
+                // is right-aligned on the same row via the Spacer.
                 Button(StringsLoader["settings.provider.add"]) { newProviderId = ""; showAddProvider = true }
-                    .frame(minWidth: 150)
+                    .frame(minWidth: 165)
+                    .fixedSize(horizontal: true, vertical: false)
                 Button(StringsLoader["settings.provider.delete"], role: .destructive) { vm.deleteProvider() }
-                    .frame(minWidth: 150)
+                    .frame(minWidth: 165)
+                    .fixedSize(horizontal: true, vertical: false)
                     .disabled(!vm.isCustomProvider)
                 Spacer()
                 Button(StringsLoader["settings.provider.detectKeys"]) { vm.detectKeys() }
