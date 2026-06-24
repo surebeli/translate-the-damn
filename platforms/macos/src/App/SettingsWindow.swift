@@ -54,10 +54,12 @@ final class SettingsWindowController {
     }
 
     /// Caption shows the app version, aligned with Windows (SettingsWindow.xaml.cs:
-    /// "translate-the-damn · 设置   v{Major}.{Minor}.{Build}"). Version is single-sourced from the
-    /// bundle's CFBundleShortVersionString (Info.plist), matching the Windows csproj <Version>.
+    /// "translate-the-damn · 设置   v{Major}.{Minor}.{Build}"). Version is single-sourced at runtime from
+    /// the bundle's CFBundleShortVersionString (Info.plist), matching the Windows csproj <Version>.
+    /// The fallback is a NON-version sentinel ("dev") — it is only reached when there is no bundle
+    /// (raw-binary dev run), so it can never go stale or masquerade as a real release number.
     private func refreshTitle() {
-        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.2.0"
+        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "dev"
         window?.title = StringsLoader["settings.title"] + "   v" + version
     }
 

@@ -22,11 +22,10 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>app.ico</ApplicationIcon>
 
-    <!-- Single source of truth for the version (shown in the exe properties + settings caption). -->
+    <!-- SINGLE source of truth for the Windows version. FileVersion / AssemblyVersion /
+         InformationalVersion all DERIVE from <Version> by MSBuild default (no prerelease label here),
+         so only this one line moves on a bump. Read at runtime from the assembly for the settings caption. -->
     <Version>0.4.0</Version>
-    <FileVersion>0.4.0.0</FileVersion>
-    <AssemblyVersion>0.4.0.0</AssemblyVersion>
-    <InformationalVersion>0.4.0</InformationalVersion>
     <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
     <Product>translate-the-damn</Product>
     <AssemblyTitle>translate-the-damn — 全局一键翻译</AssemblyTitle>
