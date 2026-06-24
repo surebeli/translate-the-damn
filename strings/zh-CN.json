@@ -52,7 +52,7 @@
     "settings.field.protocol": "协议",
     "settings.field.reasoning": "推理强度",
     "settings.field.fallback": "回退命令",
-    "settings.provider.add": "新增 provider…",
+    "settings.provider.add": "新增 provider",
     "settings.provider.detectKeys": "🔍 检测已有密钥",
     "settings.provider.delete": "删除 provider",
     "settings.provider.addTitle": "新增 API provider",

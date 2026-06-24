@@ -52,7 +52,7 @@
     "settings.field.protocol": "プロトコル",
     "settings.field.reasoning": "推論の強度",
     "settings.field.fallback": "フォールバックコマンド",
-    "settings.provider.add": "プロバイダを追加…",
+    "settings.provider.add": "プロバイダを追加",
     "settings.provider.detectKeys": "🔍 既存のキーを検出",
     "settings.provider.delete": "プロバイダを削除",
     "settings.provider.addTitle": "API プロバイダを追加",

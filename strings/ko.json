@@ -52,7 +52,7 @@
     "settings.field.protocol": "프로토콜",
     "settings.field.reasoning": "추론 강도",
     "settings.field.fallback": "대체 명령",
-    "settings.provider.add": "공급자 추가…",
+    "settings.provider.add": "공급자 추가",
     "settings.provider.detectKeys": "🔍 기존 키 검색",
     "settings.provider.delete": "공급자 삭제",
     "settings.provider.addTitle": "API 공급자 추가",

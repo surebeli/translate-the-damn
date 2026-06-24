@@ -52,7 +52,7 @@
     "settings.field.protocol": "Protocol",
     "settings.field.reasoning": "Reasoning effort",
     "settings.field.fallback": "Fallback command",
-    "settings.provider.add": "Add provider…",
+    "settings.provider.add": "Add provider",
     "settings.provider.detectKeys": "🔍 Detect existing keys",
     "settings.provider.delete": "Delete provider",
     "settings.provider.addTitle": "Add API provider",
