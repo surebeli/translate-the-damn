@@ -175,13 +175,17 @@ struct DSSettingsView: View {
             }
 
             // Custom (generic HTTP) provider management — add an openai/anthropic provider, or delete
-            // the selected custom one (built-ins are protected).
+            // the selected custom one (built-ins are protected). Add + delete sit together on the left
+            // (~50% wider via minWidth, which also keeps longer localized labels from clipping); the
+            // detect-existing-keys entry is right-aligned on the same row.
             HStack {
                 Button(StringsLoader["settings.provider.add"]) { newProviderId = ""; showAddProvider = true }
-                Button(StringsLoader["settings.provider.detectKeys"]) { vm.detectKeys() }
-                Spacer()
+                    .frame(minWidth: 150)
                 Button(StringsLoader["settings.provider.delete"], role: .destructive) { vm.deleteProvider() }
+                    .frame(minWidth: 150)
                     .disabled(!vm.isCustomProvider)
+                Spacer()
+                Button(StringsLoader["settings.provider.detectKeys"]) { vm.detectKeys() }
             }
         }
         .alert(StringsLoader["settings.provider.addTitle"], isPresented: $showAddProvider) {
