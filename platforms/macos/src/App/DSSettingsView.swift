@@ -174,19 +174,20 @@ struct DSSettingsView: View {
                 }
             }
 
-            // Custom (generic HTTP) provider management — mirrors the Windows strategy (c49904b): a
-            // separator above; 新增 + 删除 grouped on the left at a shared MinWidth (140, as on Windows)
-            // with .fixedSize(horizontal:) so the FULL label always shows (no "…"); 检测已有密钥 is
-            // right-aligned on the same row.
+            // Custom (generic HTTP) provider management — separator above; 新增 + 删除 are a TIGHT matched
+            // pair on the left: each .fixedSize(horizontal:) so the button HUGS its full label (no "…",
+            // and no minWidth dead-padding — the earlier minWidth 140 centered the label in a wide button,
+            // which left a big visual gap between the two), with a small inter-button spacing so they read
+            // as one combo. 检测已有密钥 is right-aligned on the same row.
             Divider()
             HStack {
-                Button(StringsLoader["settings.provider.add"]) { newProviderId = ""; showAddProvider = true }
-                    .frame(minWidth: 140)
-                    .fixedSize(horizontal: true, vertical: false)
-                Button(StringsLoader["settings.provider.delete"], role: .destructive) { vm.deleteProvider() }
-                    .frame(minWidth: 140)
-                    .fixedSize(horizontal: true, vertical: false)
-                    .disabled(!vm.isCustomProvider)
+                HStack(spacing: 4) {
+                    Button(StringsLoader["settings.provider.add"]) { newProviderId = ""; showAddProvider = true }
+                        .fixedSize(horizontal: true, vertical: false)
+                    Button(StringsLoader["settings.provider.delete"], role: .destructive) { vm.deleteProvider() }
+                        .fixedSize(horizontal: true, vertical: false)
+                        .disabled(!vm.isCustomProvider)
+                }
                 Spacer()
                 Button(StringsLoader["settings.provider.detectKeys"]) { vm.detectKeys() }
             }
