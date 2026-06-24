@@ -94,23 +94,11 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="110"/>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock x:Name="LblBackend" Grid.Column="0" Text="后端"/>
                             <ComboBox x:Name="CmbBackend" Grid.Column="1" Height="28"/>
-                            <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="8,0,0,0">
-                                <Button x:Name="BtnAddProvider" Content="+ 新增 API" Padding="10,4" Cursor="Hand"
-                                        Background="#2A2A2A" Foreground="#EDEDED" BorderBrush="#44FFFFFF" BorderThickness="1"
-                                        Click="BtnAddProvider_Click"/>
-                                <Button x:Name="BtnDeleteProvider" Content="删除" Padding="10,4" Margin="6,0,0,0" Cursor="Hand"
-                                        Background="#2A2A2A" Foreground="#FFB4A9" BorderBrush="#44FFFFFF" BorderThickness="1"
-                                        Click="BtnDeleteProvider_Click"/>
-                            </StackPanel>
                         </Grid>
                         <TextBlock x:Name="LblAuth" Style="{StaticResource Hint}" Text=""/>
-                        <Button x:Name="BtnDetectKeys" Content="🔍 从本机检测并导入已有密钥" HorizontalAlignment="Left" Margin="0,8,0,0"
-                                Padding="10,4" Cursor="Hand" Background="#2A2A2A" Foreground="#8FE3C0" BorderBrush="#44FFFFFF"
-                                BorderThickness="1" Click="BtnDetectKeys_Click"/>
 
                         <Grid x:Name="RowModel" Margin="0,8,0,0">
                             <Grid.ColumnDefinitions>
@@ -193,6 +181,21 @@
                                  TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
                                  Background="#1E1E1E" Foreground="#CFCFCF" BorderBrush="#33FFFFFF"
                                  FontFamily="Consolas, Cascadia Mono" FontSize="12" Visibility="Collapsed"/>
+
+                        <!-- Provider 管理(放在「翻译后端」模块末尾):新增 / 删除自定义 API provider,
+                             以及从本机检测并导入已有密钥。 -->
+                        <Border Height="1" Background="#22FFFFFF" Margin="0,14,0,0"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                            <Button x:Name="BtnAddProvider" Content="+ 新增 API" Padding="10,4" Cursor="Hand"
+                                    Background="#2A2A2A" Foreground="#EDEDED" BorderBrush="#44FFFFFF" BorderThickness="1"
+                                    Click="BtnAddProvider_Click"/>
+                            <Button x:Name="BtnDeleteProvider" Content="删除" Padding="10,4" Margin="8,0,0,0" Cursor="Hand"
+                                    Background="#2A2A2A" Foreground="#FFB4A9" BorderBrush="#44FFFFFF" BorderThickness="1"
+                                    Click="BtnDeleteProvider_Click"/>
+                        </StackPanel>
+                        <Button x:Name="BtnDetectKeys" Content="🔍 从本机检测并导入已有密钥" HorizontalAlignment="Left" Margin="0,8,0,0"
+                                Padding="10,4" Cursor="Hand" Background="#2A2A2A" Foreground="#8FE3C0" BorderBrush="#44FFFFFF"
+                                BorderThickness="1" Click="BtnDetectKeys_Click"/>
                     </StackPanel>
                 </Border>
 
