@@ -174,19 +174,17 @@ struct DSSettingsView: View {
                 }
             }
 
-            // Custom (generic HTTP) provider management — add an openai/anthropic provider, or delete
-            // the selected custom one (built-ins are protected). Add + delete sit together on the left
-            // (~50% wider via minWidth, which also keeps longer localized labels from clipping); the
-            // detect-existing-keys entry is right-aligned on the same row.
+            // Custom (generic HTTP) provider management — mirrors the Windows strategy (c49904b): a
+            // separator above; 新增 + 删除 grouped on the left at a shared MinWidth (140, as on Windows)
+            // with .fixedSize(horizontal:) so the FULL label always shows (no "…"); 检测已有密钥 is
+            // right-aligned on the same row.
+            Divider()
             HStack {
-                // .fixedSize(horizontal:) makes each button hug its FULL label so it never truncates
-                // (no "…"), and minWidth widens it ~50%; the two sit together on the left, detect-keys
-                // is right-aligned on the same row via the Spacer.
                 Button(StringsLoader["settings.provider.add"]) { newProviderId = ""; showAddProvider = true }
-                    .frame(minWidth: 165)
+                    .frame(minWidth: 140)
                     .fixedSize(horizontal: true, vertical: false)
                 Button(StringsLoader["settings.provider.delete"], role: .destructive) { vm.deleteProvider() }
-                    .frame(minWidth: 165)
+                    .frame(minWidth: 140)
                     .fixedSize(horizontal: true, vertical: false)
                     .disabled(!vm.isCustomProvider)
                 Spacer()

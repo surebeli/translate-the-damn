@@ -39,7 +39,9 @@ final class SettingsWindowController {
 
     @MainActor func show() {
         if window == nil {
-            let win = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 560, height: 640),
+            // Height 832 = 640 +30% — the grouped form's full content is ~that tall, so 640 clipped the
+            // bottom sections; matches the Windows settings window (640→832).
+            let win = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 560, height: 832),
                                styleMask: [.titled, .closable, .miniaturizable],
                                backing: .buffered,
                                defer: false)
