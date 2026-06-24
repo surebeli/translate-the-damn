@@ -115,3 +115,9 @@ Legend: ✅ shipped · 🚧 in progress · ⬜ not started · ⚠️ partial/bes
     addition, not an incompatible data-format change. The GitHub **Release** for 0.4.0 is cut separately by
     tagging `v0.4.0` (`release.yml`'s per-platform version-match guards then require the built artifacts to
     report 0.4.0 — so both platform version sources had to move together, which they now have).
+- **Settings window is single-instance on both platforms.** Re-triggering "open settings" while the window
+  is already up surfaces the existing one (deminiaturizing from the Dock if needed) instead of opening a
+  second. Windows had this (`AppController.OpenSettings`); macOS was catching up — `AppDelegate.openSettings`
+  now reuses the live `SettingsWindowController` (via `isPresented`) and only builds a fresh one once the
+  window has been closed (so a reopen-after-close still reflects the latest on-disk config). The `Settings
+  window` row stays ✅/✅ — this is a behaviour parity catch-up within an already-shipped feature, no row flip.

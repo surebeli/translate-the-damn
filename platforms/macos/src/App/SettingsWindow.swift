@@ -27,6 +27,16 @@ final class SettingsWindowController {
         }
     }
 
+    /// Whether this controller's window is currently presented — on screen (even if obscured) OR
+    /// miniaturized in the Dock. The host uses this to enforce a SINGLE settings instance: a re-open
+    /// surfaces the existing window instead of building a second one (matches Windows
+    /// AppController.OpenSettings). A CLOSED window reads false (isReleasedWhenClosed=false keeps the
+    /// object alive but hidden), so the next open builds a fresh controller from the latest on-disk config.
+    @MainActor var isPresented: Bool {
+        guard let window else { return false }
+        return window.isVisible || window.isMiniaturized
+    }
+
     @MainActor func show() {
         if window == nil {
             let win = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 560, height: 640),
@@ -39,6 +49,7 @@ final class SettingsWindowController {
             rebuildRootView()
             refreshTitle()
         }
+        if window?.isMiniaturized == true { window?.deminiaturize(nil) }   // surface from the Dock, don't open a 2nd
         window?.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
     }

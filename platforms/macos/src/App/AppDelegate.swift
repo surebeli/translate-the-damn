@@ -187,8 +187,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func openSettings() {
-        // Create a fresh controller from the latest on-disk config so re-opening
-        // settings reflects prior saves (the previous controller is replaced).
+        // SINGLE INSTANCE (matches Windows AppController.OpenSettings): if a settings window is already
+        // presented (on screen or miniaturized), surface that one instead of opening a second. Only when
+        // there is no live window do we build a fresh controller from the latest on-disk config — so a
+        // reopen-AFTER-close still reflects prior saves (preserving the original intent).
+        if let existing = settingsWindowController, existing.isPresented {
+            existing.show()
+            return
+        }
         settingsWindowController = SettingsWindowController(
             config: ConfigService.load(from: configPath) ?? ConfigService.defaultConfig(),
             configPath: configPath,
