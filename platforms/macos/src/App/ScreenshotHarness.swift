@@ -112,7 +112,7 @@ final class ScreenshotHarness: NSObject, NSApplicationDelegate {
         let size = hosting.fittingSize
         let win = NSWindow(contentRect: NSRect(x: 0, y: 0, width: max(560, size.width), height: max(560, size.height)),
                            styleMask: [.titled, .closable], backing: .buffered, defer: false)
-        let version = ProcessInfo.processInfo.environment["TTD_SHOT_VERSION"] ?? "0.3.1"
+        let version = ProcessInfo.processInfo.environment["TTD_SHOT_VERSION"] ?? "0.4.0"
         win.title = "translate-the-damn · 设置   v" + version
         win.contentView = hosting
         win.center()

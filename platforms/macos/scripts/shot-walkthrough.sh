@@ -6,7 +6,7 @@ PROJECT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 OUT="${PROJECT_DIR}/.shots"
 BIN="${PROJECT_DIR}/.build/release/TranslateTheDamnApp"
 # Real version from Info.plist (the raw binary has no bundle, so pass it in for the settings title).
-VERSION="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "${PROJECT_DIR}/Resources/Info.plist" 2>/dev/null || echo 0.3.1)"
+VERSION="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "${PROJECT_DIR}/Resources/Info.plist" 2>/dev/null || echo 0.4.0)"
 export TTD_SHOT_VERSION="$VERSION"
 rm -rf "${OUT}"; mkdir -p "${OUT}"
 
