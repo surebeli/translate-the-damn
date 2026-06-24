@@ -1,0 +1,38 @@
+platforms/macos/src/App/SettingsWindow.swift
+  s_2b4fe8ea41ad13::t_75ea432ded7b5f 42-44
+platforms/macos/src/App/DSSettingsView.swift
+  s_2b4fe8ea41ad13::t_e0cd7673073c0b 177-181,184-184,187-187
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.10",
+  "base_commit_sha": "24555e13a511718477d3315ed1904a1a379091fa",
+  "prompts": {
+    "s_2b4fe8ea41ad13::t_75ea432ded7b5f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "aef3bbe6-fd50-4133-b04b-39b8990ee44a",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 3,
+      "total_deletions": 0,
+      "accepted_lines": 3,
+      "overriden_lines": 0
+    },
+    "s_2b4fe8ea41ad13::t_e0cd7673073c0b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "aef3bbe6-fd50-4133-b04b-39b8990ee44a",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 7,
+      "total_deletions": 0,
+      "accepted_lines": 7,
+      "overriden_lines": 0
+    }
+  }
+}
