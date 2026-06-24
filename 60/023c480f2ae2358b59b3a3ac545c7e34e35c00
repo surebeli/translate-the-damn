@@ -1,23 +1,19 @@
 platforms/macos/src/App/DSSettingsView.swift
-  s_2b4fe8ea41ad13::t_e7ca252d3ed866 178-180,183-183,185-185,187-188
+  s_2b4fe8ea41ad13::t_e7ca252d3ed866 178-180,183,185,187-188
 ---
 {
   "schema_version": "authorship/3.0.0",
   "git_ai_version": "1.5.10",
   "base_commit_sha": "60023c480f2ae2358b59b3a3ac545c7e34e35c00",
-  "prompts": {
-    "s_2b4fe8ea41ad13::t_e7ca252d3ed866": {
+  "prompts": {},
+  "sessions": {
+    "s_2b4fe8ea41ad13": {
       "agent_id": {
         "tool": "claude",
         "id": "aef3bbe6-fd50-4133-b04b-39b8990ee44a",
         "model": "claude-opus-4-8"
       },
-      "human_author": "litianyi <litianyi@corp.netease.com>",
-      "messages": [],
-      "total_additions": 7,
-      "total_deletions": 0,
-      "accepted_lines": 7,
-      "overriden_lines": 0
+      "human_author": "litianyi <litianyi@corp.netease.com>"
     }
   }
 }
