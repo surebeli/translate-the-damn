@@ -106,3 +106,11 @@ Legend: ✅ shipped · 🚧 in progress · ⬜ not started · ⚠️ partial/bes
   the same catalog; the native App is built on Windows / by `release.yml` (CI builds Core + Tests, not the WPF
   App) — the final per-platform UI walkthrough is the non-vector step, as for every UI row. Spec: §3/§4 of
   `docs/superpowers/specs/2026-06-23-i18n-ui-localization.md`.
+  - **Versioning (spec §12):** UI localization is a **new, backward-compatible feature** (MINOR-class, like
+    the cache / popup-close examples in §12). It lands in the current **0.3.1** line on **both** platforms
+    (same `MAJOR.MINOR` = same feature set, Law 3 ✓ — no per-platform version delta), and rolls into the next
+    coordinated MINOR release. **Config schema stays `1`** — i18n added `general.uiLanguage` as a *nil-default*
+    (`""` = follow-system) field, a backward-compatible addition, not an incompatible data-format change. The
+    Version table above is unchanged (0.3.1 / 0.3.1, schema 1 / 1); no version/schema bump is owed by this
+    feature. A MINOR bump (→ 0.4.0) is a separate **release** action (both `<Version>` + `CFBundleShortVersionString`
+    together) when the next release is cut, per the Releases note above.
