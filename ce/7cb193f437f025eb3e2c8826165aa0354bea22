@@ -1,0 +1,53 @@
+platforms/macos/src/App/SettingsWindow.swift
+  s_2b4fe8ea41ad13::t_57e06e2d6790f3 30-39,52-52
+platforms/macos/src/App/AppDelegate.swift
+  s_2b4fe8ea41ad13::t_b2a7961eea8f7b 190-197
+PARITY.md
+  s_2b4fe8ea41ad13::t_d2f42a5e031cc5 118-123
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.10",
+  "base_commit_sha": "ce7cb193f437f025eb3e2c8826165aa0354bea22",
+  "prompts": {
+    "s_2b4fe8ea41ad13::t_57e06e2d6790f3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "aef3bbe6-fd50-4133-b04b-39b8990ee44a",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 11,
+      "total_deletions": 0,
+      "accepted_lines": 11,
+      "overriden_lines": 0
+    },
+    "s_2b4fe8ea41ad13::t_b2a7961eea8f7b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "aef3bbe6-fd50-4133-b04b-39b8990ee44a",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 8,
+      "total_deletions": 0,
+      "accepted_lines": 8,
+      "overriden_lines": 0
+    },
+    "s_2b4fe8ea41ad13::t_d2f42a5e031cc5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "aef3bbe6-fd50-4133-b04b-39b8990ee44a",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 6,
+      "total_deletions": 0,
+      "accepted_lines": 6,
+      "overriden_lines": 0
+    }
+  }
+}
