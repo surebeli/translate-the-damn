@@ -1,4 +1,5 @@
 using System.Windows;   // Window, Thickness, TextWrapping, ResizeMode, SizeToContent, WindowStartupLocation
+using TranslateTheDamn.Core;
 // Alias the WPF types whose names collide with System.Windows.Forms (the App also uses WinForms for the tray).
 using Button = System.Windows.Controls.Button;
 using TextBox = System.Windows.Controls.TextBox;
@@ -22,8 +23,8 @@ internal static class InputBox
         var label = new TextBlock { Text = prompt, Foreground = new SolidColorBrush(Color.FromRgb(0xED, 0xED, 0xED)), TextWrapping = TextWrapping.Wrap };
         var box = new TextBox { Text = initial, Margin = new Thickness(0, 10, 0, 14), Height = 28, VerticalContentAlignment = VerticalAlignment.Center };
 
-        var ok = new Button { Content = "确定", Width = 84, Height = 30, IsDefault = true, Margin = new Thickness(0, 0, 8, 0), Cursor = System.Windows.Input.Cursors.Hand, Background = new SolidColorBrush(Color.FromRgb(0x2E, 0xA0, 0x43)), Foreground = Brushes.White, BorderThickness = new Thickness(0) };
-        var cancel = new Button { Content = "取消", Width = 80, Height = 30, IsCancel = true, Cursor = System.Windows.Input.Cursors.Hand };
+        var ok = new Button { Content = StringsLoader.Get("settings.button.add"), Width = 84, Height = 30, IsDefault = true, Margin = new Thickness(0, 0, 8, 0), Cursor = System.Windows.Input.Cursors.Hand, Background = new SolidColorBrush(Color.FromRgb(0x2E, 0xA0, 0x43)), Foreground = Brushes.White, BorderThickness = new Thickness(0) };
+        var cancel = new Button { Content = StringsLoader.Get("settings.button.cancel"), Width = 80, Height = 30, IsCancel = true, Cursor = System.Windows.Input.Cursors.Hand };
         var buttons = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right };
         buttons.Children.Add(ok);
         buttons.Children.Add(cancel);

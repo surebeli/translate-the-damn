@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Interop;
 using TranslateTheDamn.App.Interop;
 using TranslateTheDamn.App.Services;
+using TranslateTheDamn.Core;
 using TranslateTheDamn.Core.Backends;
 using TranslateTheDamn.Core.Backends.Manifest;
 using TranslateTheDamn.Core.Config;
@@ -24,6 +25,9 @@ public partial class SettingsWindow : Window
 
     /// <summary>Raised after a successful save with the persisted config (host hot-reloads).</summary>
     public event Action<AppConfig>? Saved;
+
+    /// <summary>Raised when the UI DISPLAY language is hot-switched, so the host re-localizes the tray.</summary>
+    public event Action? LocaleChanged;
 
     public SettingsWindow(ConfigService svc)
     {
@@ -64,8 +68,8 @@ public partial class SettingsWindow : Window
 
         // popup style
         CmbStyle.Items.Clear();
-        CmbStyle.Items.Add(new ComboBoxItem { Content = "毛玻璃(Acrylic)", Tag = "acrylic" });
-        CmbStyle.Items.Add(new ComboBoxItem { Content = "纯色半透明", Tag = "solid" });
+        CmbStyle.Items.Add(new ComboBoxItem { Content = StringsLoader.Get("settings.style.acrylic"), Tag = "acrylic" });
+        CmbStyle.Items.Add(new ComboBoxItem { Content = StringsLoader.Get("settings.style.solid"), Tag = "solid" });
         CmbStyle.SelectedIndex = string.Equals(_config.Popup.Style, "solid", StringComparison.OrdinalIgnoreCase) ? 1 : 0;
 
         SldDismiss.Value = Math.Clamp(_config.Popup.AutoDismissSeconds, 2, 30);
@@ -78,7 +82,18 @@ public partial class SettingsWindow : Window
         CmbTargetLang.Items.Clear();
         foreach (var lang in new[] { "简体中文", "繁體中文", "English", "日本語", "한국어", "Français", "Deutsch", "Español", "Русский", "Português" })
             CmbTargetLang.Items.Add(lang);
-        CmbTargetLang.Text = string.IsNullOrWhiteSpace(_config.Translation.TargetLanguage) ? "简体中文" : _config.Translation.TargetLanguage;
+        // UI DISPLAY language (spec §4): "Follow system" + the available locales — SEPARATE from the
+        // translation target above. Selecting it hot-reloads the UI (Relocalize) + tray (LocaleChanged).
+        CmbUiLang.Items.Clear();
+        CmbUiLang.Items.Add(new ComboBoxItem { Content = StringsLoader.Get("settings.uilang.system"), Tag = "" });
+        foreach (var id in LocaleResolver.Available)
+            CmbUiLang.Items.Add(new ComboBoxItem { Content = UiLanguageDisplayName(id), Tag = id });
+        SelectUiLangItem(_config.General.UiLanguage);
+        CmbUiLang.SelectionChanged += CmbUiLang_SelectionChanged;
+
+        // Keep the translation target consistent with the resolved display language (the two reviewed
+        // fixes): follow-system -> system language (fallback 简体中文); explicit display -> its target name.
+        CmbTargetLang.Text = TargetForDisplay();
 
         // backends — ordered doubao(API) -> google(API) -> other API -> CLI -> 暂不支持; Tag = raw id.
         CmbBackend.Items.Clear();
@@ -90,6 +105,120 @@ public partial class SettingsWindow : Window
         SelectBackendItem(_currentBackendId);
         CmbBackend.SelectionChanged += CmbBackend_SelectionChanged;
         if (_currentBackendId is not null) LoadBackendFields(_currentBackendId);
+
+        Relocalize();   // apply localized strings to the static labels/buttons/title
+    }
+
+    // ===== i18n: UI display language (separate from translation target) =====
+
+    private static string UiLanguageDisplayName(string id) => id switch
+    {
+        "zh-CN" => "简体中文",
+        "en" => "English",
+        "ja" => "日本語",
+        "ko" => "한국어",
+        _ => id
+    };
+
+    private void SelectUiLangItem(string id)
+    {
+        var want = id ?? string.Empty;
+        foreach (ComboBoxItem item in CmbUiLang.Items)
+            if (((string?)item.Tag ?? string.Empty) == want) { CmbUiLang.SelectedItem = item; return; }
+    }
+
+    /// <summary>Hot-switch the UI DISPLAY language: persist the selection, reconfigure the catalog,
+    /// re-localize the open window in place (state preserved), re-derive the target, and ask the host
+    /// to re-localize the tray. The translation target is kept consistent (the two reviewed fixes).</summary>
+    private void CmbUiLang_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (!_loaded) return;
+        var id = (CmbUiLang.SelectedItem as ComboBoxItem)?.Tag as string ?? string.Empty;
+        _config.General.UiLanguage = id;
+        StringsLoader.Configure(LocaleResolver.Resolve(id, LocaleResolver.SystemLocaleId()));
+        StringsLoader.Reload();
+        Relocalize();
+        CmbTargetLang.Text = TargetForDisplay();   // target follows display
+        LocaleChanged?.Invoke();                    // host re-localizes the tray
+    }
+
+    /// <summary>Translation target consistent with the resolved DISPLAY language: explicit display ->
+    /// its matching target name; "follow system" -> the system language mapped onto the (broader) target
+    /// list, falling back to 简体中文 when unobtainable/unsupported. Mirrors the macOS VM logic.</summary>
+    private string TargetForDisplay() => (_config.General.UiLanguage ?? string.Empty).Trim() switch
+    {
+        "zh-CN" => "简体中文",
+        "en" => "English",
+        "ja" => "日本語",
+        "ko" => "한국어",
+        _ => SystemTargetLanguageName()   // "" follow-system (or anything unexpected)
+    };
+
+    private static string SystemTargetLanguageName()
+    {
+        var sys = LocaleResolver.SystemLocaleId().ToLowerInvariant();
+        var lang = sys.Split('-', '_')[0];
+        if (lang == "zh")
+            return (sys.Contains("hant") || sys.Contains("tw") || sys.Contains("hk") || sys.Contains("mo")) ? "繁體中文" : "简体中文";
+        return lang switch
+        {
+            "en" => "English",
+            "ja" => "日本語",
+            "ko" => "한국어",
+            "fr" => "Français",
+            "de" => "Deutsch",
+            "es" => "Español",
+            "ru" => "Русский",
+            "pt" => "Português",
+            _ => "简体中文"   // unobtainable / unsupported -> Chinese (product default)
+        };
+    }
+
+    /// <summary>Re-apply localized strings to the static UI (initial load + display-language hot-switch),
+    /// preserving window state. Only labels with an existing shared key are set here; Windows-specific
+    /// strings without a macOS counterpart (LblGroupTranslate "翻译", LblTargetHint, ChkDeep, the doctor
+    /// result rendering, SetStatus/AuthHint messages) still need new shared keys — see the handoff.</summary>
+    private void Relocalize()
+    {
+        var v = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+        Title = v is not null
+            ? $"{StringsLoader.Get("settings.title")}   v{v.Major}.{v.Minor}.{v.Build}"
+            : StringsLoader.Get("settings.title");
+
+        LblGroupTrigger.Text = StringsLoader.Get("settings.group.trigger");
+        LblGroupTranslate.Text = StringsLoader.Get("settings.group.translate");
+        LblGroupBackend.Text = StringsLoader.Get("settings.group.backend");
+        LblGroupPopup.Text = StringsLoader.Get("settings.group.popup");
+        LblGroupGeneral.Text = StringsLoader.Get("settings.group.general");
+
+        ChkListen.Content = StringsLoader.Get("settings.field.listen");
+        LblHotkey.Text = StringsLoader.Get("settings.field.hotkey");
+        LblHotkeyExample.Text = StringsLoader.Get("settings.hotkey.hint");
+        LblTarget.Text = StringsLoader.Get("settings.field.target");
+        LblTargetHint.Text = StringsLoader.Get("settings.target.hint");
+        LblUiLang.Text = StringsLoader.Get("settings.field.uilang");
+        LblBackend.Text = StringsLoader.Get("settings.field.backend");
+        LblModel.Text = StringsLoader.Get("settings.field.model");
+        LblProtocol.Text = StringsLoader.Get("settings.field.protocol");
+        LblReasoning.Text = StringsLoader.Get("settings.field.reasoning");
+        LblFallback.Text = StringsLoader.Get("settings.field.fallback");
+        LblTimeout.Text = StringsLoader.Get("settings.field.timeout");
+        LblStyle.Text = StringsLoader.Get("settings.field.style");
+        LblAutoDismiss.Text = StringsLoader.Get("settings.field.autodismiss");
+        ChkHover.Content = StringsLoader.Get("settings.field.keephover");
+        ChkStartup.Content = StringsLoader.Get("settings.field.startup");
+        LblConfigHint.Text = StringsLoader.Get("settings.general.configHint");
+
+        BtnDoctor.Content = StringsLoader.Get("settings.doctor.button");
+        ChkDeep.Content = StringsLoader.Get("settings.doctor.deep");
+        BtnAddProvider.Content = StringsLoader.Get("settings.provider.add");
+        BtnDeleteProvider.Content = StringsLoader.Get("settings.provider.delete");
+        BtnDetectKeys.Content = StringsLoader.Get("settings.provider.detectKeys");
+        BtnSave.Content = StringsLoader.Get("settings.button.save");
+        BtnClose.Content = StringsLoader.Get("settings.button.close");
+
+        ValidateHotkey();   // re-render the hotkey status line in the new language
+        if (_currentBackendId is not null) SetAuthLamp(_currentBackendId, _config.Backends[_currentBackendId]);
     }
 
     /// <summary>Backend ids in display order: doubao(API), google(API), other API, CLI, then 暂不支持(agy).</summary>
@@ -257,16 +386,17 @@ public partial class SettingsWindow : Window
     {
         if (bc.Kind == BackendKind.Http)
             return string.IsNullOrWhiteSpace(bc.ApiKey)
-                ? ("● 未配置 API Key(请在下方填写)", false)
-                : ("● 已配置 API Key", true);
+                ? (StringsLoader.Get("settings.auth.httpMissing"), false)
+                : (StringsLoader.Get("settings.auth.httpReady"), true);
 
         var paths = id == "agy"
             ? new[] { System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "agy", "bin", "agy.exe") }
             : Array.Empty<string>();
         var resolved = PathResolver.Resolve(bc.Command ?? id, paths);
+        var cmd = bc.Command ?? id;
         return resolved is null
-            ? ($"● 未找到命令 “{bc.Command ?? id}”", false)
-            : ($"● 已检测到 {bc.Command ?? id}(认证在首次翻译时确认)", true);
+            ? (StringsLoader.Get("settings.auth.cliMissing").Replace("{command}", cmd), false)
+            : (StringsLoader.Get("settings.auth.cliReady").Replace("{command}", cmd), true);
     }
 
     /// <summary>Set the per-backend auth lamp text AND colour it by readiness: a missing key / missing CLI
@@ -282,7 +412,10 @@ public partial class SettingsWindow : Window
     private void ValidateHotkey()
     {
         var spec = HotkeyParser.Parse(TxtHotkey.Text);
-        LblHotkeyStatus.Text = spec.IsValid ? $"✓ {spec.Display}(保存时注册;若被占用会提示)" : $"✗ {spec.Error}";
+        // Mirror the macOS hotkey status keys: valid -> "✓ {hotkey} available", invalid -> "✗ Invalid format".
+        LblHotkeyStatus.Text = spec.IsValid
+            ? StringsLoader.Get("settings.hotkey.ok").Replace("{hotkey}", spec.Display)
+            : StringsLoader.Get("settings.hotkey.invalid");
         LblHotkeyStatus.Foreground = spec.IsValid ? StatusOkBrush : StatusErrorBrush;
     }
 
@@ -292,6 +425,7 @@ public partial class SettingsWindow : Window
 
         _config.General.ListenClipboard = ChkListen.IsChecked == true;
         _config.General.StartWithWindows = ChkStartup.IsChecked == true;
+        _config.General.UiLanguage = (CmbUiLang.SelectedItem as ComboBoxItem)?.Tag as string ?? "";
         if (_currentBackendId is not null) _config.General.ActiveBackend = _currentBackendId;
         _config.Hotkey.Translate = TxtHotkey.Text.Trim();
         _config.Translation.TargetLanguage = NullIfEmpty(CmbTargetLang.Text) ?? "简体中文";
@@ -304,7 +438,7 @@ public partial class SettingsWindow : Window
         {
             _svc.Save(_config);
             StartupManager.Apply(_config.General.StartWithWindows);
-            SetStatus("已保存 ✓", StatusKind.Ok);
+            SetStatus(StringsLoader.Get("settings.status.saved"), StatusKind.Ok);
             Saved?.Invoke(_config);
             if (_currentBackendId is not null) SetAuthLamp(_currentBackendId, _config.Backends[_currentBackendId]);
         }
@@ -344,7 +478,7 @@ public partial class SettingsWindow : Window
     /// <summary>Add a custom API provider (generic openai/anthropic http backend). User fills endpoint/key/model/protocol then saves.</summary>
     private void BtnAddProvider_Click(object sender, RoutedEventArgs e)
     {
-        var name = InputBox.Show(this, "新增 API provider", "provider 名称(英文 id,例如 my-deepseek):");
+        var name = InputBox.Show(this, StringsLoader.Get("settings.provider.addTitle"), StringsLoader.Get("settings.provider.idPlaceholder"));
         if (string.IsNullOrWhiteSpace(name)) return;
         var id = name.Trim();
         if (_config.Backends.ContainsKey(id)) { SetStatus($"已存在:{id}", StatusKind.Error); return; }
@@ -419,7 +553,7 @@ public partial class SettingsWindow : Window
         BtnDoctor.IsEnabled = false;
         TxtDoctorResult.Visibility = Visibility.Visible;
         TxtDoctorResult.Foreground = StatusInfoBrush;     // transient "诊断中" reads as neutral, not pass/fail
-        TxtDoctorResult.Text = deep ? "诊断中(含联网探测)…" : "诊断中…";
+        TxtDoctorResult.Text = deep ? StringsLoader.Get("settings.doctor.checkingDeep") : StringsLoader.Get("settings.doctor.checking");
         try
         {
             var doctor = new DoctorService(_config.Translation.PromptTemplate);
@@ -431,7 +565,7 @@ public partial class SettingsWindow : Window
         {
             // Doctor is CLI-only (RowDoctor is hidden for http backends), so no API key is in scope;
             // still surface only the exception type, never a raw message, to keep the no-leak guarantee.
-            if (!token.IsCancellationRequested) { TxtDoctorResult.Foreground = StatusErrorBrush; TxtDoctorResult.Text = "诊断失败(" + ex.GetType().Name + ")"; }
+            if (!token.IsCancellationRequested) { TxtDoctorResult.Foreground = StatusErrorBrush; TxtDoctorResult.Text = StringsLoader.Get("settings.doctor.failed") + "(" + ex.GetType().Name + ")"; }
         }
         finally
         {
@@ -450,7 +584,7 @@ public partial class SettingsWindow : Window
     private void RenderDoctor(DoctorReport report)
     {
         var sb = new System.Text.StringBuilder();
-        sb.AppendLine($"{Glyph(report.Overall)} {report.BackendId} — 总体:{StatusZh(report.Overall)}");
+        sb.AppendLine($"{Glyph(report.Overall)} {report.BackendId} — {StringsLoader.Get("settings.doctor.overall")}:{StatusZh(report.Overall)}");
         foreach (var c in report.Checks)
             sb.AppendLine($"  {Glyph(c.Status)} {c.Name}:{c.Detail}");
         TxtDoctorResult.Foreground = report.Overall switch
@@ -487,12 +621,13 @@ public partial class SettingsWindow : Window
         _ => "●"
     };
 
+    // Locale-aware doctor status word (kept the legacy name to avoid churn at the two call sites).
     private static string StatusZh(DoctorStatus s) => s switch
     {
-        DoctorStatus.Ok => "正常",
-        DoctorStatus.Degraded => "可用(有警告)",
-        DoctorStatus.Fail => "失败",
-        _ => "未知"
+        DoctorStatus.Ok => StringsLoader.Get("settings.doctor.status.ok"),
+        DoctorStatus.Degraded => StringsLoader.Get("settings.doctor.status.degraded"),
+        DoctorStatus.Fail => StringsLoader.Get("settings.doctor.status.fail"),
+        _ => StringsLoader.Get("settings.doctor.status.unknown")
     };
 
     private static void Show(UIElement el, bool visible) => el.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;

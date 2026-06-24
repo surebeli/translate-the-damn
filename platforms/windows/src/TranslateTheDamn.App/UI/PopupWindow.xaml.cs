@@ -2,6 +2,7 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Threading;
 using TranslateTheDamn.App.Interop;
+using TranslateTheDamn.Core;
 using TranslateTheDamn.Core.Config;
 
 namespace TranslateTheDamn.App.UI;
@@ -49,6 +50,13 @@ public partial class PopupWindow : Window
         _cfg = cfg;
         InitializeComponent();
 
+        // Static labels/tooltips from the shared locale catalog (the catalog is configured at startup
+        // before the popup is created; a Display-language switch recreates the popup on the next save).
+        CloseButton.Content = StringsLoader.Get("popup.button.close");
+        CopyButton.Content = StringsLoader.Get("popup.button.copy");
+        PrevButton.ToolTip = StringsLoader.Get("popup.nav.older");
+        NextButton.ToolTip = StringsLoader.Get("popup.nav.newer");
+
         _dismissTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(Math.Max(2, cfg.AutoDismissSeconds)) };
         _dismissTimer.Tick += (_, _) => { _dismissTimer.Stop(); Hide(); };
 
@@ -57,7 +65,7 @@ public partial class PopupWindow : Window
         _copyResetTimer.Tick += (_, _) =>
         {
             _copyResetTimer.Stop();
-            if (CopyButton.Visibility == Visibility.Visible) CopyButton.Content = "复制译文";
+            if (CopyButton.Visibility == Visibility.Visible) CopyButton.Content = StringsLoader.Get("popup.button.copy");
         };
 
         if (string.Equals(cfg.Style, "solid", StringComparison.OrdinalIgnoreCase))
@@ -79,11 +87,11 @@ public partial class PopupWindow : Window
     {
         _history.Clear();
         _index = 0;
-        HeaderText.Text = "翻译中…";
+        HeaderText.Text = StringsLoader.Get("popup.header.translating");
         HeaderText.Foreground = HeaderLoadingBrush;
         StatusText.Text = backendId;
         SetSource(Shorten(sourceText, 400));
-        TranslationText.Text = "正在翻译,请稍候…";
+        TranslationText.Text = StringsLoader.Get("popup.body.translating");
         TranslationText.Foreground = HeaderLoadingBrush;   // single-source the in-progress neutral (was a 2nd near-equal gray)
         CopyButton.Visibility = Visibility.Collapsed;
         UpdateHistoryControls();                 // no history yet -> nav stays hidden
@@ -116,7 +124,7 @@ public partial class PopupWindow : Window
     {
         _history.Clear();
         _index = 0;
-        HeaderText.Text = "翻译失败";
+        HeaderText.Text = StringsLoader.Get("popup.header.error");
         HeaderText.Foreground = HeaderErrorBrush;
         StatusText.Text = backendId;
         SetSource(Shorten(sourceText, 400));
@@ -139,7 +147,7 @@ public partial class PopupWindow : Window
         _index = Math.Clamp(_index, 0, _history.Count - 1);
         var (source, translation) = _history[_index];
         _translation = translation;
-        HeaderText.Text = "翻译";
+        HeaderText.Text = StringsLoader.Get("popup.header.result");
         HeaderText.Foreground = HeaderReadyBrush;
         StatusText.Text = _statusLabel;
         SetSource(Shorten(source, 400));
@@ -147,7 +155,7 @@ public partial class PopupWindow : Window
         TranslationText.Foreground = new System.Windows.Media.SolidColorBrush(
             System.Windows.Media.Color.FromArgb(0xFF, 0xF2, 0xF2, 0xF2));
         CopyButton.Visibility = Visibility.Visible;
-        CopyButton.Content = "复制译文";
+        CopyButton.Content = StringsLoader.Get("popup.button.copy");
         UpdateHistoryControls();
         ApplySize(source.Length);                // recompute the fixed size for THIS entry's source
         ShowAndPlace();
@@ -255,7 +263,7 @@ public partial class PopupWindow : Window
     {
         if (string.IsNullOrEmpty(_translation)) return;
         CopyRequested?.Invoke(_translation);
-        CopyButton.Content = "已复制 ✓";
+        CopyButton.Content = StringsLoader.Get("popup.button.copied");
         _copyResetTimer.Stop();
         _copyResetTimer.Start();                  // revert to "复制译文" after a moment so a 2nd copy is afforded
     }

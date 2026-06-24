@@ -4,6 +4,12 @@
     <ProjectReference Include="..\TranslateTheDamn.Core\TranslateTheDamn.Core.csproj" />
   </ItemGroup>
 
+  <!-- i18n: bundle the shared locale catalogs beside the exe so StringsLoader finds strings/<locale>.json
+       (repo-root strings/*.json -> output strings/). Mirrors the macOS build-app.sh locale copy. -->
+  <ItemGroup>
+    <Content Include="..\..\..\..\strings\*.json" Link="strings\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net9.0-windows</TargetFramework>
