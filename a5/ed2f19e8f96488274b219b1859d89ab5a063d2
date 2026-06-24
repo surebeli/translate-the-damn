@@ -1,0 +1,23 @@
+PARITY.md
+  s_2b4fe8ea41ad13::t_84a8e8d0137ddd 109-116
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.10",
+  "base_commit_sha": "a5ed2f19e8f96488274b219b1859d89ab5a063d2",
+  "prompts": {
+    "s_2b4fe8ea41ad13::t_84a8e8d0137ddd": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "aef3bbe6-fd50-4133-b04b-39b8990ee44a",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>",
+      "messages": [],
+      "total_additions": 8,
+      "total_deletions": 0,
+      "accepted_lines": 8,
+      "overriden_lines": 0
+    }
+  }
+}
