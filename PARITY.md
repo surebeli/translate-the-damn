@@ -46,7 +46,7 @@ Legend: ✅ shipped · 🚧 in progress · ⬜ not started · ⚠️ partial/bes
 
 | | Win | macOS |
 |---|---|---|
-| App version | **0.3.1** | **0.3.1** (`CFBundleShortVersionString` via Info.plist) |
+| App version | **0.4.0** | **0.4.0** (`CFBundleShortVersionString` via Info.plist) |
 | config schema | 1 | 1 |
 
 ## Notes
@@ -107,10 +107,11 @@ Legend: ✅ shipped · 🚧 in progress · ⬜ not started · ⚠️ partial/bes
   App) — the final per-platform UI walkthrough is the non-vector step, as for every UI row. Spec: §3/§4 of
   `docs/superpowers/specs/2026-06-23-i18n-ui-localization.md`.
   - **Versioning (spec §12):** UI localization is a **new, backward-compatible feature** (MINOR-class, like
-    the cache / popup-close examples in §12). It lands in the current **0.3.1** line on **both** platforms
-    (same `MAJOR.MINOR` = same feature set, Law 3 ✓ — no per-platform version delta), and rolls into the next
-    coordinated MINOR release. **Config schema stays `1`** — i18n added `general.uiLanguage` as a *nil-default*
-    (`""` = follow-system) field, a backward-compatible addition, not an incompatible data-format change. The
-    Version table above is unchanged (0.3.1 / 0.3.1, schema 1 / 1); no version/schema bump is owed by this
-    feature. A MINOR bump (→ 0.4.0) is a separate **release** action (both `<Version>` + `CFBundleShortVersionString`
-    together) when the next release is cut, per the Releases note above.
+    the cache / popup-close examples in §12), so the app version is bumped **0.3.1 → 0.4.0 on BOTH platforms
+    together** (same `MAJOR.MINOR` = same feature set, Law 3 ✓ — no per-platform version delta): Windows
+    `<Version>` family in the App `.csproj`, macOS `CFBundleShortVersionString` (+ `CFBundleVersion` 3→4) in
+    `Info.plist`, and the Version table above — all now read **0.4.0**. **Config schema stays `1`** — i18n
+    added `general.uiLanguage` as a *nil-default* (`""` = follow-system) field, a backward-compatible
+    addition, not an incompatible data-format change. The GitHub **Release** for 0.4.0 is cut separately by
+    tagging `v0.4.0` (`release.yml`'s per-platform version-match guards then require the built artifacts to
+    report 0.4.0 — so both platform version sources had to move together, which they now have).
