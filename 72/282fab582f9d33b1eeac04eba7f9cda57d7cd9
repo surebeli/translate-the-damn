@@ -1,48 +1,20 @@
-.hopper/handoffs/i18n-windows-wpf.md
-  s_2b4fe8ea41ad13::t_a90bd6a23f3eeb 42-46,48-48
 PARITY.md
-  s_2b4fe8ea41ad13::t_0f82284093e663 43-43
   s_2b4fe8ea41ad13::t_f4857b03d3d514 98-108
+  s_2b4fe8ea41ad13::t_0f82284093e663 43
 ---
 {
   "schema_version": "authorship/3.0.0",
   "git_ai_version": "1.5.10",
   "base_commit_sha": "72282fab582f9d33b1eeac04eba7f9cda57d7cd9",
-  "prompts": {
-    "s_2b4fe8ea41ad13::t_a90bd6a23f3eeb": {
+  "prompts": {},
+  "sessions": {
+    "s_2b4fe8ea41ad13": {
       "agent_id": {
         "tool": "claude",
         "id": "aef3bbe6-fd50-4133-b04b-39b8990ee44a",
         "model": "claude-opus-4-8"
       },
-      "human_author": "litianyi <litianyi@corp.netease.com>",
-      "messages": [],
-      "total_additions": 6,
-      "total_deletions": 0,
-      "accepted_lines": 6,
-      "overriden_lines": 0
-    },
-    "s_2b4fe8ea41ad13::t_0f82284093e663": {
-      "agent_id": {
-        "tool": "claude",
-        "id": "aef3bbe6-fd50-4133-b04b-39b8990ee44a",
-        "model": "claude-opus-4-8"
-      },
-      "human_author": "litianyi <litianyi@corp.netease.com>",
-      "messages": [],
-      "total_additions": 1,
-      "total_deletions": 0,
-      "accepted_lines": 1,
-      "overriden_lines": 0
-    },
-    "s_2b4fe8ea41ad13::t_f4857b03d3d514": {
-      "agent_id": null,
-      "human_author": null,
-      "messages": [],
-      "total_additions": 11,
-      "total_deletions": 0,
-      "accepted_lines": 11,
-      "overriden_lines": 0
+      "human_author": "litianyi <litianyi@corp.netease.com>"
     }
   }
 }
