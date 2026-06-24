@@ -31,6 +31,10 @@ internal static class ScreenshotHarness
         if (string.IsNullOrWhiteSpace(kind)) return false;
         var readyPath = Environment.GetEnvironmentVariable("TTD_SHOT_READY");
 
+        // Pin the UI language so shots are deterministic (match the macOS set + the app's canonical
+        // language) instead of following the capture machine's system locale. TTD_SHOT_LANG overrides.
+        StringsLoader.Configure(Environment.GetEnvironmentVariable("TTD_SHOT_LANG") ?? "zh-CN");
+
         ShowBackdrop();   // clean, controlled background so the acrylic frost + rounded corners read cleanly
 
         var target = kind.StartsWith("popup", StringComparison.Ordinal) ? BuildPopup(kind) : BuildSettings(kind);
@@ -133,10 +137,12 @@ internal static class ScreenshotHarness
         svc.Save(cfg);
         var win = new SettingsWindow(svc);
         // Size the shot to match the macOS settings window: 573 DIP wide = mac's 1146px @2x logical width
-        // (the script upscales the 150%-DPI capture to 1146px so the README pair lines up), and as tall as
-        // the work area allows so the full form shows like mac. Shot-only; the real app window is unchanged.
+        // (the script upscales the capture to 1146px so the README pair lines up). Height = the FORM's
+        // content (SizeToContent), not the whole screen — DPI-independent and no empty space below the
+        // last card (clamped to the work area if a scenario's form is taller than the screen). Shot-only;
+        // the real app window is unchanged.
         win.Width = 573;
-        win.Height = SystemParameters.WorkArea.Height;
+        win.SizeToContent = SizeToContent.Height;
 
         // Doctor lamp states (claude = CLI, so the doctor row is visible). Detail text matches macOS.
         switch (kind)
@@ -159,6 +165,15 @@ internal static class ScreenshotHarness
         }
 
         win.Show();
+        win.UpdateLayout();
+        // If a scenario's form is taller than the screen, clamp to the work area (re-enable scrolling)
+        // so the window stays fully on-screen and captures cleanly.
+        var wa = SystemParameters.WorkArea;
+        if (win.Height > wa.Height)
+        {
+            win.SizeToContent = SizeToContent.Manual;
+            win.Height = wa.Height;
+        }
         // Canonical dark title bar for the shot (the shipping window uses Mica, which samples the
         // capture machine's wallpaper into the title bar — light against the dark body).
         Interop.WindowEffects.UseDarkTitleBarSolid(new WindowInteropHelper(win).Handle);

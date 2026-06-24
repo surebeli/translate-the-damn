@@ -83,16 +83,6 @@
                             <ComboBox x:Name="CmbTargetLang" Grid.Column="1" Height="28" IsEditable="True"/>
                         </Grid>
                         <TextBlock x:Name="LblTargetHint" Style="{StaticResource Hint}" Text="统一目标语言:对所有后端生效(CLI/LLM 经提示词 {target} 注入;google/doubao 自动转换为对应的语言代码)。"/>
-
-                        <!-- 界面语言(显示语言)— 与上方"目标语言"相互独立。"跟随系统"时按系统语言解析。 -->
-                        <Grid Margin="0,10,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="110"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock x:Name="LblUiLang" Grid.Column="0" Text="界面语言"/>
-                            <ComboBox x:Name="CmbUiLang" Grid.Column="1" Height="28" Width="220" HorizontalAlignment="Left"/>
-                        </Grid>
                     </StackPanel>
                 </Border>
 
@@ -237,7 +227,19 @@
                 <Border Style="{StaticResource Card}">
                     <StackPanel>
                         <TextBlock x:Name="LblGroupGeneral" Text="通用" Style="{StaticResource GroupHeader}"/>
-                        <CheckBox x:Name="ChkStartup" Content="开机自启"/>
+
+                        <!-- 界面语言(显示语言)— 应用 UI 的语言,与"翻译目标语言"相互独立;"跟随系统"时按系统语言解析。
+                             放在「通用」组(与 macOS generalSection 对齐)。 -->
+                        <Grid Margin="0,0,0,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock x:Name="LblUiLang" Grid.Column="0" Text="界面语言"/>
+                            <ComboBox x:Name="CmbUiLang" Grid.Column="1" Height="28" Width="220" HorizontalAlignment="Left"/>
+                        </Grid>
+
+                        <CheckBox x:Name="ChkStartup" Content="开机自启" Margin="0,8,0,0"/>
                         <TextBlock x:Name="LblConfigHint" Style="{StaticResource Hint}"
                                    Text="配置保存在 %USERPROFILE%\.translatethedamn\config.json,API Key 仅保存在本机。"/>
                     </StackPanel>
