@@ -40,7 +40,7 @@ Legend: ✅ shipped · 🚧 in progress · ⬜ not started · ⚠️ partial/bes
 | Dark scrollbar theme | — | — (UI) | ✅ | — |
 | API Key field masked (secure entry) | §9 | — (UI) | ✅ | ✅ |
 | Popup drag-to-reposition (session-sticky) | §8 | — (UI) | ✅ | ✅ |
-| UI localization (follow-system + Display-language selector; locales zh-CN/en/ja/ko) | i18n design 2026-06-23 | — (i18n-locale-resolve at impl) | ⬜ | ⬜ |
+| UI localization (follow-system + Display-language selector; locales zh-CN/en/ja/ko) | §3/§4 (i18n design 2026-06-23) | `i18n-locale-resolve` | ✅ | ✅ |
 
 ## Version
 
@@ -95,3 +95,14 @@ Legend: ✅ shipped · 🚧 in progress · ⬜ not started · ⚠️ partial/bes
   green). **macOS = ⬜** — to pick its own platform-appropriate default (likely a ⌘-based one); until
   then it still carries the legacy `Ctrl+Alt+T`. This is a deliberate same-version different-*default*
   case (the hotkey schema/feature is identical across platforms; only the bootstrap default differs).
+- **UI localization shipped on both (Law-3 lockstep close).** The row is keyed to `i18n-locale-resolve`
+  (the locale-resolution contract: `LocaleResolver.resolve(uiLang, systemLocale)` — override → primary-subtag
+  map → `en` fallback), **green on BOTH runners** (macOS `swift test`, Windows `dotnet run`), so per Law 2
+  the forcing function requires ✅/✅ (a green vector with a non-✅ column is an UNDER-CLAIM). Shared layer:
+  `strings/{zh-CN,en,ja,ko}.json` (one key set, completeness + placeholder-consistent), display language
+  (`general.uiLanguage`, `""` = follow-system) kept SEPARATE from the translation target. **macOS**: shipped +
+  user-walked-through (system-following + Display-language selector + target-follows-display). **Windows**:
+  Core `StringsLoader` + resolver CI-compiled and the WPF UI (tray/popup/dialogs/settings) localized against
+  the same catalog; the native App is built on Windows / by `release.yml` (CI builds Core + Tests, not the WPF
+  App) — the final per-platform UI walkthrough is the non-vector step, as for every UI row. Spec: §3/§4 of
+  `docs/superpowers/specs/2026-06-23-i18n-ui-localization.md`.
