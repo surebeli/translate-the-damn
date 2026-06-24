@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Windows;
+using TranslateTheDamn.Core;
 using TranslateTheDamn.Core.Config;
 // Alias the WPF types whose names collide with System.Windows.Forms (the App also uses WinForms for the tray).
 using Button = System.Windows.Controls.Button;
@@ -33,21 +34,21 @@ internal static class CredentialImportDialog
             rows.Add((cb, c));
         }
 
-        var import = new Button { Content = "导入选中", Width = 96, Height = 30, IsDefault = true, Margin = new Thickness(0, 0, 8, 0), Background = new SolidColorBrush(Color.FromRgb(0x2E, 0xA0, 0x43)), Foreground = Brushes.White, BorderThickness = new Thickness(0), Cursor = System.Windows.Input.Cursors.Hand };
-        var cancel = new Button { Content = "取消", Width = 80, Height = 30, IsCancel = true, Cursor = System.Windows.Input.Cursors.Hand };
+        var import = new Button { Content = StringsLoader.Get("settings.detect.import"), Width = 96, Height = 30, IsDefault = true, Margin = new Thickness(0, 0, 8, 0), Background = new SolidColorBrush(Color.FromRgb(0x2E, 0xA0, 0x43)), Foreground = Brushes.White, BorderThickness = new Thickness(0), Cursor = System.Windows.Input.Cursors.Hand };
+        var cancel = new Button { Content = StringsLoader.Get("settings.button.cancel"), Width = 80, Height = 30, IsCancel = true, Cursor = System.Windows.Input.Cursors.Hand };
         var buttons = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right };
         buttons.Children.Add(import);
         buttons.Children.Add(cancel);
 
         var panel = new StackPanel { Margin = new Thickness(18) };
-        panel.Children.Add(new TextBlock { Text = $"在本机发现 {found.Count} 个可导入的静态 API key(不含订阅 OAuth)。勾选要导入的:", Foreground = ed, TextWrapping = TextWrapping.Wrap });
+        panel.Children.Add(new TextBlock { Text = StringsLoader.Get("settings.detect.header").Replace("{count}", found.Count.ToString()), Foreground = ed, TextWrapping = TextWrapping.Wrap });
         panel.Children.Add(new ScrollViewer { Content = list, VerticalScrollBarVisibility = ScrollBarVisibility.Auto, MaxHeight = 320, Margin = new Thickness(0, 8, 0, 10) });
-        panel.Children.Add(new TextBlock { Text = "注意:导入的 Key 以明文保存在 config.json(与现有 key 一致)。", Foreground = new SolidColorBrush(Color.FromRgb(0x9A, 0x9A, 0x9A)), FontSize = 11, TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 0, 0, 12) });
+        panel.Children.Add(new TextBlock { Text = StringsLoader.Get("settings.detect.note"), Foreground = new SolidColorBrush(Color.FromRgb(0x9A, 0x9A, 0x9A)), FontSize = 11, TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 0, 0, 12) });
         panel.Children.Add(buttons);
 
         var win = new Window
         {
-            Title = "检测已有密钥",
+            Title = StringsLoader.Get("settings.provider.detectKeys"),
             Width = 540,
             SizeToContent = SizeToContent.Height,
             WindowStartupLocation = WindowStartupLocation.CenterOwner,

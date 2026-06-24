@@ -163,6 +163,9 @@ internal sealed class AppController : IDisposable
         }
         _settings = new SettingsWindow(_configService);
         _settings.Saved += OnSettingsSaved;
+        // Display-language hot-switch: re-localize the tray menu/tooltip in place (the catalog is already
+        // reconfigured by the settings window before it raises this). A full save still recreates the popup.
+        _settings.LocaleChanged += () => _tray.RefreshLocalizedText();
         _settings.Closed += (_, _) => _settings = null;
         _settings.Show();
         _settings.Activate();

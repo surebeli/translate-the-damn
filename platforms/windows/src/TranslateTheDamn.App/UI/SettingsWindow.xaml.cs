@@ -186,6 +186,7 @@ public partial class SettingsWindow : Window
             : StringsLoader.Get("settings.title");
 
         LblGroupTrigger.Text = StringsLoader.Get("settings.group.trigger");
+        LblGroupTranslate.Text = StringsLoader.Get("settings.group.translate");
         LblGroupBackend.Text = StringsLoader.Get("settings.group.backend");
         LblGroupPopup.Text = StringsLoader.Get("settings.group.popup");
         LblGroupGeneral.Text = StringsLoader.Get("settings.group.general");
@@ -194,6 +195,7 @@ public partial class SettingsWindow : Window
         LblHotkey.Text = StringsLoader.Get("settings.field.hotkey");
         LblHotkeyExample.Text = StringsLoader.Get("settings.hotkey.hint");
         LblTarget.Text = StringsLoader.Get("settings.field.target");
+        LblTargetHint.Text = StringsLoader.Get("settings.target.hint");
         LblUiLang.Text = StringsLoader.Get("settings.field.uilang");
         LblBackend.Text = StringsLoader.Get("settings.field.backend");
         LblModel.Text = StringsLoader.Get("settings.field.model");
@@ -208,6 +210,7 @@ public partial class SettingsWindow : Window
         LblConfigHint.Text = StringsLoader.Get("settings.general.configHint");
 
         BtnDoctor.Content = StringsLoader.Get("settings.doctor.button");
+        ChkDeep.Content = StringsLoader.Get("settings.doctor.deep");
         BtnAddProvider.Content = StringsLoader.Get("settings.provider.add");
         BtnDeleteProvider.Content = StringsLoader.Get("settings.provider.delete");
         BtnDetectKeys.Content = StringsLoader.Get("settings.provider.detectKeys");
@@ -383,16 +386,17 @@ public partial class SettingsWindow : Window
     {
         if (bc.Kind == BackendKind.Http)
             return string.IsNullOrWhiteSpace(bc.ApiKey)
-                ? ("● 未配置 API Key(请在下方填写)", false)
-                : ("● 已配置 API Key", true);
+                ? (StringsLoader.Get("settings.auth.httpMissing"), false)
+                : (StringsLoader.Get("settings.auth.httpReady"), true);
 
         var paths = id == "agy"
             ? new[] { System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "agy", "bin", "agy.exe") }
             : Array.Empty<string>();
         var resolved = PathResolver.Resolve(bc.Command ?? id, paths);
+        var cmd = bc.Command ?? id;
         return resolved is null
-            ? ($"● 未找到命令 “{bc.Command ?? id}”", false)
-            : ($"● 已检测到 {bc.Command ?? id}(认证在首次翻译时确认)", true);
+            ? (StringsLoader.Get("settings.auth.cliMissing").Replace("{command}", cmd), false)
+            : (StringsLoader.Get("settings.auth.cliReady").Replace("{command}", cmd), true);
     }
 
     /// <summary>Set the per-backend auth lamp text AND colour it by readiness: a missing key / missing CLI
@@ -408,7 +412,10 @@ public partial class SettingsWindow : Window
     private void ValidateHotkey()
     {
         var spec = HotkeyParser.Parse(TxtHotkey.Text);
-        LblHotkeyStatus.Text = spec.IsValid ? $"✓ {spec.Display}(保存时注册;若被占用会提示)" : $"✗ {spec.Error}";
+        // Mirror the macOS hotkey status keys: valid -> "✓ {hotkey} available", invalid -> "✗ Invalid format".
+        LblHotkeyStatus.Text = spec.IsValid
+            ? StringsLoader.Get("settings.hotkey.ok").Replace("{hotkey}", spec.Display)
+            : StringsLoader.Get("settings.hotkey.invalid");
         LblHotkeyStatus.Foreground = spec.IsValid ? StatusOkBrush : StatusErrorBrush;
     }
 
@@ -431,7 +438,7 @@ public partial class SettingsWindow : Window
         {
             _svc.Save(_config);
             StartupManager.Apply(_config.General.StartWithWindows);
-            SetStatus("已保存 ✓", StatusKind.Ok);
+            SetStatus(StringsLoader.Get("settings.status.saved"), StatusKind.Ok);
             Saved?.Invoke(_config);
             if (_currentBackendId is not null) SetAuthLamp(_currentBackendId, _config.Backends[_currentBackendId]);
         }
@@ -471,7 +478,7 @@ public partial class SettingsWindow : Window
     /// <summary>Add a custom API provider (generic openai/anthropic http backend). User fills endpoint/key/model/protocol then saves.</summary>
     private void BtnAddProvider_Click(object sender, RoutedEventArgs e)
     {
-        var name = InputBox.Show(this, "新增 API provider", "provider 名称(英文 id,例如 my-deepseek):");
+        var name = InputBox.Show(this, StringsLoader.Get("settings.provider.addTitle"), StringsLoader.Get("settings.provider.idPlaceholder"));
         if (string.IsNullOrWhiteSpace(name)) return;
         var id = name.Trim();
         if (_config.Backends.ContainsKey(id)) { SetStatus($"已存在:{id}", StatusKind.Error); return; }
@@ -546,7 +553,7 @@ public partial class SettingsWindow : Window
         BtnDoctor.IsEnabled = false;
         TxtDoctorResult.Visibility = Visibility.Visible;
         TxtDoctorResult.Foreground = StatusInfoBrush;     // transient "诊断中" reads as neutral, not pass/fail
-        TxtDoctorResult.Text = deep ? "诊断中(含联网探测)…" : "诊断中…";
+        TxtDoctorResult.Text = deep ? StringsLoader.Get("settings.doctor.checkingDeep") : StringsLoader.Get("settings.doctor.checking");
         try
         {
             var doctor = new DoctorService(_config.Translation.PromptTemplate);
@@ -558,7 +565,7 @@ public partial class SettingsWindow : Window
         {
             // Doctor is CLI-only (RowDoctor is hidden for http backends), so no API key is in scope;
             // still surface only the exception type, never a raw message, to keep the no-leak guarantee.
-            if (!token.IsCancellationRequested) { TxtDoctorResult.Foreground = StatusErrorBrush; TxtDoctorResult.Text = "诊断失败(" + ex.GetType().Name + ")"; }
+            if (!token.IsCancellationRequested) { TxtDoctorResult.Foreground = StatusErrorBrush; TxtDoctorResult.Text = StringsLoader.Get("settings.doctor.failed") + "(" + ex.GetType().Name + ")"; }
         }
         finally
         {
@@ -577,7 +584,7 @@ public partial class SettingsWindow : Window
     private void RenderDoctor(DoctorReport report)
     {
         var sb = new System.Text.StringBuilder();
-        sb.AppendLine($"{Glyph(report.Overall)} {report.BackendId} — 总体:{StatusZh(report.Overall)}");
+        sb.AppendLine($"{Glyph(report.Overall)} {report.BackendId} — {StringsLoader.Get("settings.doctor.overall")}:{StatusZh(report.Overall)}");
         foreach (var c in report.Checks)
             sb.AppendLine($"  {Glyph(c.Status)} {c.Name}:{c.Detail}");
         TxtDoctorResult.Foreground = report.Overall switch
@@ -614,12 +621,13 @@ public partial class SettingsWindow : Window
         _ => "●"
     };
 
+    // Locale-aware doctor status word (kept the legacy name to avoid churn at the two call sites).
     private static string StatusZh(DoctorStatus s) => s switch
     {
-        DoctorStatus.Ok => "正常",
-        DoctorStatus.Degraded => "可用(有警告)",
-        DoctorStatus.Fail => "失败",
-        _ => "未知"
+        DoctorStatus.Ok => StringsLoader.Get("settings.doctor.status.ok"),
+        DoctorStatus.Degraded => StringsLoader.Get("settings.doctor.status.degraded"),
+        DoctorStatus.Fail => StringsLoader.Get("settings.doctor.status.fail"),
+        _ => StringsLoader.Get("settings.doctor.status.unknown")
     };
 
     private static void Show(UIElement el, bool visible) => el.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
